@@ -4,9 +4,9 @@
     prominent
   >
     <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-
-    <v-toolbar-title>Precios compra</v-toolbar-title>
-
+    <router-link class="no-link" to="/">
+      <v-toolbar-title>Precios compra</v-toolbar-title>
+    </router-link>
     <v-spacer></v-spacer>
 
     <template v-if="$vuetify.display.mdAndUp">
@@ -27,10 +27,29 @@
       ></v-list>
     </v-navigation-drawer>
 </template>
-<script setup>
+<script lang="ts">
 import { ref, watch } from 'vue'
+import { defineComponent } from 'vue'
+export default defineComponent({
+  name: 'NavigationComponent'
+})
+</script>
+<script setup lang="ts">
+
 const drawer = ref(false)
-const items = ref(['Articulos', 'Tipo de unidades'])
+const items = ref([
+  {
+    title: 'Articulos',
+    link: true,
+    value: null
+  }, 
+  {
+    title: 'Tipo de unidades',
+    props: {
+      to: '/tiposUnidades',
+      link: true
+    }
+  }])
 
 watch(drawer, async (newDrawer, oldDrawer) => {
 

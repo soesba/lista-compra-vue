@@ -2,12 +2,13 @@
   <v-app>
     <navigation />
     <v-main>
-      <router-view />
+      <v-container>
+        <router-view />
+      </v-container>
     </v-main>
   </v-app>
 </template>
 
 <script setup>
-import { ref } from 'vue'
 import { Navigation } from '@/components/index'
 </script>
