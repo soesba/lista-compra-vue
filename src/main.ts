@@ -1,7 +1,10 @@
-import { createApp } from "vue";
-import App from "./App.vue";
-import router from "./router";
-import store from "./store";
+import './assets/main.css'
+
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './router'
+import store from './store'
+
 // Vuetify
 import 'vuetify/styles'
 import '@mdi/font/css/materialdesignicons.css'
@@ -14,10 +17,10 @@ loadFonts()
 
 const vuetify = createVuetify({
   components,
-  directives,
+  directives
 })
 createApp(App).
   use(store).
   use(router).
   use(vuetify).
-  mount("#app")
+  mount('#app')
