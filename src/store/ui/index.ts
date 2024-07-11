@@ -5,7 +5,8 @@ const getDefaultDialog = () => {
   return {
     show: false,
     component: {},
-    props: {}
+    props: {},
+    events: {}
   }
 }
 export const useUiStore = defineStore('uiStore', {
@@ -18,16 +19,14 @@ export const useUiStore = defineStore('uiStore', {
 ,  },
   actions: {
     // no context as first argument, use `this` instead
-    showDialog ({ component, props }: any) {
+    showDialog ({ component, props, events }: any) {
       this.dialog.show = true
       this.dialog.component = component
       this.dialog.props = props
-      console.log(this.dialog)
+      this.dialog.events = events
     },
     hideDialog () {
       this.dialog.show = false
-      this.dialog.component = ''
-      this.dialog.props = {}
     }
   }
 })

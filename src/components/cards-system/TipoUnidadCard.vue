@@ -5,11 +5,6 @@
 			<v-btn icon="mdi-delete-circle" color="secondary" :disabled="!canDelete"></v-btn>
 		</v-card-actions>
 	</v-card>
-	<!-- <TipoUnidadCardDialog
-		:data="cardData"
-		@cancelEdit="cancelEdit"
-		@saveEdit="saveEdit(data)"
-	></TipoUnidadCardDialog> -->
 </template>
 
 <script lang="ts">
@@ -61,12 +56,20 @@
 
 	const toggleEditCard = () => {
 		editing.value = !editing.value
-		uiStore.showDialog({
-			component: markRaw(TipoUnidadCardDialog),
-			props: {
-				data: data
-			}
-		})
+		if (editing.value) {
+			uiStore.showDialog({
+				component: markRaw(TipoUnidadCardDialog),
+				props: {
+					data: data					
+				},
+				events: {
+					cancelEdit: () => cancelEdit(),
+					saveEdit: (evt: any) => saveEdit(evt)
+				}
+			})
+		} else {
+			uiStore.hideDialog()
+		}
 	}
 </script>
 <style lang="scss" scoped></style>
