@@ -1,6 +1,6 @@
 <template>
 	<div class="list-container">
-		<component :is="getComponent()"  v-for="item in items" :key="item.id" :cardData="item"/>		
+		<component :is="getComponent()" v-for="item in items" :key="item.id" :cardData="item"/>		
 	</div>
 </template>
 

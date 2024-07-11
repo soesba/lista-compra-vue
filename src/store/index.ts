@@ -1,3 +1,4 @@
 import { createPinia } from 'pinia'
 
-export default createPinia()
+export const pinia = createPinia()
+export { useUiStore } from './ui'

@@ -17,7 +17,8 @@ const titulo = ref('Tipos de unidades')
 const list = ref([{
 	id: '0000',
 	nombre: 'Kilogramo',
-	abreviatura: 'kg'
+	abreviatura: 'kg',
+  borrable: false
 }])
 
 </script>
