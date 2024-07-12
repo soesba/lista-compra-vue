@@ -34,7 +34,7 @@ import { computed } from 'vue'
 <script setup lang="ts">
 	import { required } from 'vuelidate/lib/validators'
 	import { useVuelidate } from '@vuelidate/core'
-	import type TipoUnidad from '@/services/TipoUnidad/models/TipoUnidad'
+	import type TipoUnidad from '@/services/tipoUnidad/models/TipoUnidad'
   import type { PropType } from 'vue'
 	// Events
 	const emit = defineEmits(['cancelEdit', 'saveEdit'])
@@ -72,7 +72,8 @@ import { computed } from 'vue'
 	}
 
 	const saveEdit = () => {
-		emit('saveEdit', editData.value)
+		emit('saveEdit', editData)
 	}
+		
 </script>
 <style lang="scss" scoped></style>

@@ -13,19 +13,24 @@ export default defineComponent({
 <script setup lang="ts">
 import { ref } from 'vue'
 import { CardList, TitleView } from '@/components'
+import get from '@/services/tipoUnidad/getTipoUnidad.service'
 const titulo = ref('Tipos de unidades')
-const list = ref([{
-	id: '0000',
-	nombre: 'Kilogramo',
-	abreviatura: 'kg',
-  borrable: false
-},
-{
-  id: '0001',
-	nombre: 'Litro',
-	abreviatura: 'l',
-  borrable: false
-}
-])
+// const list = ref([{
+// 	id: '0000',
+// 	nombre: 'Kilogramo',
+// 	abreviatura: 'kg',
+//   borrable: false
+// },
+// {
+//   id: '0001',
+// 	nombre: 'Litro',
+// 	abreviatura: 'l',
+//   borrable: false
+// }
+// ])
+const list = ref()
+get().then((response:any) => {
+  list.value = response.data
+})
 
 </script>

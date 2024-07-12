@@ -16,7 +16,7 @@
 </script>
 <script setup lang="ts">
 	import TipoUnidadCardDialog from './TipoUnidadCardDialog.vue'
-	import type TipoUnidad from '@/services/TipoUnidad/models/TipoUnidad'
+	import type TipoUnidad from '@/services/tipoUnidad/models/TipoUnidad'
 	import type { PropType } from 'vue'
 	import { computed, watch, ref, markRaw } from 'vue'
 	// Props

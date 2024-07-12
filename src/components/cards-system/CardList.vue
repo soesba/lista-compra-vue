@@ -12,7 +12,7 @@ export default defineComponent({
 })
 </script>
 <script setup lang="ts">
-import type TipoUnidad from '@/services/TipoUnidad/models/TipoUnidad'
+import type TipoUnidad from '@/services/tipoUnidad/models/TipoUnidad'
 const props = defineProps({
 	items: Array<TipoUnidad>,
 	component: String

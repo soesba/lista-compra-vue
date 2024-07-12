@@ -16,6 +16,9 @@ export default defineConfig({
     }
   },
   define: {
-    'process.env': {}
+    'process.env': {
+      "BASE_URL": "http://localhost",
+      "PORT": 3030 // puerto de lista-compra-server env\dev.js
+    }
   }
 })
