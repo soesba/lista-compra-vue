@@ -10,8 +10,5 @@ html {
 
 a.no-link {
 	text-decoration: none;
-
-	&:visited {
-		color: inherit;
-	}
+	color: inherit;
 }

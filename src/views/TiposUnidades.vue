@@ -19,6 +19,13 @@ const list = ref([{
 	nombre: 'Kilogramo',
 	abreviatura: 'kg',
   borrable: false
-}])
+},
+{
+  id: '0001',
+	nombre: 'Litro',
+	abreviatura: 'l',
+  borrable: false
+}
+])
 
 </script>

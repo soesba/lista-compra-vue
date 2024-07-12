@@ -72,4 +72,7 @@
 		}
 	}
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.v-card {
+	margin: 10px;
+}</style>

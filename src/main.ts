@@ -1,6 +1,7 @@
 import './assets/styles/main.scss'
 
 import { createApp, defineComponent } from 'vue'
+import Vuelidate from 'vuelidate'
 import App from './App.vue'
 import router from './router'
 import { pinia } from './store'
@@ -24,7 +25,8 @@ const vuetify = createVuetify({
 createApp(App).
   use(pinia).
   use(router).
-  use(vuetify).
+  use(vuetify).  
+  use(Vuelidate).
   mount('#app')
 
 export const uiStore = useUiStore()
