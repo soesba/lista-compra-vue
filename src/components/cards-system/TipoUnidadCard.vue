@@ -1,5 +1,5 @@
 <template>
-	<v-card v-if="!editing" :title="cardData.nombre" :subtitle="cardData.abreviatura">
+	<v-card :title="cardData.nombre" :subtitle="cardData.abreviatura">
 		<v-card-actions>
 			<v-btn icon="mdi-pencil-circle" color="primary" @click="editCard()"></v-btn>
 			<v-btn icon="mdi-delete-circle" color="secondary" :disabled="!canDelete"></v-btn>
@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-	import { uiStore } from '@/main'
+	import { eventCardStore, uiStore } from '@/main'
 	import { defineComponent } from 'vue'
 	export default defineComponent({
 		name: 'TipoUnidadCard',
@@ -18,7 +18,8 @@
 	import TipoUnidadCardDialog from './TipoUnidadCardDialog.vue'
 	import type TipoUnidad from '@/services/tipoUnidad/models/TipoUnidad'
 	import type { PropType } from 'vue'
-	import { computed, watch, ref, markRaw } from 'vue'
+	import { computed, ref, markRaw } from 'vue'
+	
 	// Props
 	const props = defineProps({
 		cardData: {
@@ -27,49 +28,21 @@
 				return {}
 			}
 		},
-	})
+	})	
 	// Data
 	let data = ref(props.cardData)
-	const editing = ref(false)
-	// Watch
-	watch(data, async (newData, oldData) => {
-		console.log('🚀 ~ watch ~ newData, oldData:', newData, oldData)
-	})
 	// Computed
 	const canDelete = computed(() => {
 		return props.cardData.borrable
 	})
 	// Methods
 	const editCard = () => {
-		toggleEditCard()
-	}
-
-	const cancelEdit = () => {
-		data = ref(props.cardData)
-		toggleEditCard()
-	}
-
-	const saveEdit = (data: TipoUnidad) => {
-		console.log(data)
-		toggleEditCard()
-	}
-
-	const toggleEditCard = () => {
-		editing.value = !editing.value
-		if (editing.value) {
-			uiStore.showDialog({
-				component: markRaw(TipoUnidadCardDialog),
-				props: {
-					data: data					
-				},
-				events: {
-					cancelEdit: () => cancelEdit(),
-					saveEdit: (evt: any) => saveEdit(evt)
-				}
-			})
-		} else {
-			uiStore.hideDialog()
-		}
+		uiStore.showDialog({
+			component: markRaw(TipoUnidadCardDialog),
+			props: {
+				data: data					
+			}
+		})
 	}
 </script>
 <style lang="scss" scoped>

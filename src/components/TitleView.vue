@@ -16,7 +16,7 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 .title-container {
-	padding: 5px;
+	padding: 10px;
 	text-align: center;
 }
 </style>

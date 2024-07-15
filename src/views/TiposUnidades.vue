@@ -1,10 +1,11 @@
 <template>
   <TitleView :titulo="titulo" />
-  <CardList :items="list" component="TipoUnidadCard"/>
+  <CardList :items="list" component="TipoUnidadCard" @saveCard="onSaveCard"/>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { eventCardStore } from '@/main';
 export default defineComponent({
   name: 'TiposUnidades'
 })
@@ -14,23 +15,21 @@ export default defineComponent({
 import { ref } from 'vue'
 import { CardList, TitleView } from '@/components'
 import get from '@/services/tipoUnidad/getTipoUnidad.service'
+
+const suscribe = eventCardStore.$onAction(({args, name}) => {
+	console.log("🚀 ~ suscribe ~ evtData:", args, name)
+})
+// Data
 const titulo = ref('Tipos de unidades')
-// const list = ref([{
-// 	id: '0000',
-// 	nombre: 'Kilogramo',
-// 	abreviatura: 'kg',
-//   borrable: false
-// },
-// {
-//   id: '0001',
-// 	nombre: 'Litro',
-// 	abreviatura: 'l',
-//   borrable: false
-// }
-// ])
 const list = ref()
+
+// Methods
 get().then((response:any) => {
   list.value = response.data
 })
+
+const onSaveCard = (data: any, adding: boolean) => {
+  console.log("🚀 ~ onAddCard ~ data:", data)
+}
 
 </script>

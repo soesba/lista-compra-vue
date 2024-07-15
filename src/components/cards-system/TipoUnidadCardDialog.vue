@@ -1,5 +1,5 @@
 <template>
-	<v-card prepend-icon="mdi-pencil" :title="data.nombre">
+	<v-card prepend-icon="mdi-pencil" :title="getTitle">
 		<v-card-text>
 			<v-row dense>
 				<v-col cols="12" lg="12" md="4" sm="6">
@@ -18,15 +18,16 @@
 			<small class="text-caption text-medium-emphasis">*campo requerido</small>
 		</v-card-text>
 		<template v-slot:actions>
-			<v-btn class="ml-auto" text="Aceptar" @click="saveEdit()"></v-btn>
-			<v-btn class="ml-auto" text="Cancelar" @click="cancelEdit()"></v-btn>
+			<v-btn class="ml-auto" text="Aceptar" @click="save()"></v-btn>
+			<v-btn class="ml-auto" text="Cancelar" @click="cancel()"></v-btn>
 		</template>
 	</v-card>
 </template>
 
 <script lang="ts">
-	import { defineComponent, reactive, ref } from 'vue'
-import { computed } from 'vue'
+	import { defineComponent, reactive } from 'vue'
+	import { computed } from 'vue'
+import { eventCardStore } from '@/main'
 	export default defineComponent({
 		name: 'TipoUnidadCardDialog',
 	})
@@ -36,8 +37,9 @@ import { computed } from 'vue'
 	import { useVuelidate } from '@vuelidate/core'
 	import type TipoUnidad from '@/services/tipoUnidad/models/TipoUnidad'
   import type { PropType } from 'vue'
+
 	// Events
-	const emit = defineEmits(['cancelEdit', 'saveEdit'])
+	const emit = defineEmits(['closeDialog'])
   // Props
 	const props = defineProps({
     data: {
@@ -45,8 +47,16 @@ import { computed } from 'vue'
 			default() {
 				return {}
 			}
-    }
+    },
+		adding: {
+			type: Boolean,
+			default: false
+		}
   })
+	// Computed 
+	const getTitle = computed(() => {
+		return props.adding ? 'Nuevo tipo de unidad' : props.data.nombre
+	})
 	// Data
 	let editData = reactive<any>({ ...props.data })
 	console.log("🚀 ~ editData:", editData)
@@ -63,16 +73,16 @@ import { computed } from 'vue'
 	})
 	// Use the "useVuelidate" function to perform form validation
 	const v$ = useVuelidate(validations, { editData })
-	// onMounted(() => {
-	// 	editData = { ...props.data }
-	// })
 	// Methods
-	const cancelEdit = () => {
-		emit('cancelEdit')
+	const cancel = () => {
+		eventCardStore.cancelCard()
+		emit('closeDialog')
 	}
 
-	const saveEdit = () => {
-		emit('saveEdit', editData)
+	const save = () => {
+		console.log("🚀 ~ save ~ editData:", editData)
+		eventCardStore.saveCard({ adding: props.adding, data: editData })
+		emit('closeDialog')
 	}
 		
 </script>

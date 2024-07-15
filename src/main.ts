@@ -5,7 +5,7 @@ import Vuelidate from 'vuelidate'
 import App from './App.vue'
 import router from './router'
 import { pinia } from './store'
-import { useUiStore } from './store'
+import { useUiStore, useEventCardStore } from './store'
 // Vuetify
 import 'vuetify/styles'
 import '@mdi/font/css/materialdesignicons.css'
@@ -30,3 +30,4 @@ createApp(App).
   mount('#app')
 
 export const uiStore = useUiStore()
+export const eventCardStore = useEventCardStore()

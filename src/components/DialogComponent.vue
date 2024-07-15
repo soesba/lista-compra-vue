@@ -1,6 +1,6 @@
 <template>
 	<v-dialog v-model="show" persistent max-width="340">
-		<component :is="component" v-bind="props" v-on="events"></component>
+		<component :is="component" v-bind="props" v-on="events" @close-dialog="onCloseDialog"></component>
 	</v-dialog>
 </template>
 
@@ -23,7 +23,12 @@
 		return uiStore.getDialog?.props
 	})
 	const events = computed(() => {
-		return uiStore.getDialog?.events
+		return uiStore.getDialog?.events || {}
 	})
+
+	// Methods 
+	const onCloseDialog = () => {
+		uiStore.hideDialog()
+	}
 </script>
 <style lang="scss" scoped></style>
