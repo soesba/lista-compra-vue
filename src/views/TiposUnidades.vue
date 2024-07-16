@@ -1,5 +1,6 @@
 <template>
   <TitleView :titulo="titulo" />
+  <SearchBox></SearchBox>
   <CardList :items="list" component="TipoUnidadCard" @saveCard="onSaveCard"/>
 </template>
 
@@ -13,7 +14,7 @@ export default defineComponent({
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { CardList, TitleView } from '@/components'
+import { CardList, TitleView, SearchBox } from '@/components'
 import get from '@/services/tipoUnidad/getTipoUnidad.service'
 
 const suscribe = eventCardStore.$onAction(({args, name}) => {

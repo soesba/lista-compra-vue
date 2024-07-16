@@ -1,8 +1,13 @@
 <template>
-	<div class="list-container">
-		<component :is="getComponent()" v-for="item in items" :key="item.id" :cardData="item" @saveCard="onSaveCard" />		
+	<div class="wrapper-list-container">
+		<div class="list-container">
+			<component :is="getComponent()" v-for="item in items" :key="item.id" :cardData="item" @saveCard="onSaveCard" />		
+		</div>
+		<div class="wrapper-add-button">
+		<v-btn v-if="props.addButton" class="add-button" icon="mdi-plus" color="primary" @click="addCard()"></v-btn>
 	</div>
-	<v-btn v-if="props.addButton" class="add-button" icon="mdi-plus" color="primary" @click="addCard()"></v-btn>
+	</div>
+	
 </template>
 
 <script lang="ts">
@@ -60,8 +65,9 @@ const addCard = () => {
 
 </script>
 <style lang="scss" scoped>
-.title-container {
-	text-align: center;
+.wrapper-list-container {
+	display: flex;
+	justify-content: center;
 }
 
 .card-list-container {
@@ -77,13 +83,19 @@ const addCard = () => {
 	justify-content: flex-start;
 	flex-wrap: wrap;
 	margin: 0 auto;
-	margin-bottom: 50px; // salvar boton de añadir
+	margin-bottom: 60px; // salvar boton de añadir
 }
 
+.wrapper-add-button {
+	position: fixed;
+	height: 50px;
+	width: 100%;
+	bottom: 10px;
+}
 .add-button {
 	position: absolute;
-	right: 15px;
-	bottom: 20px;
+	right: 16px;
+	
 }
 
 </style>
