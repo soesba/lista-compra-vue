@@ -1,7 +1,7 @@
 <template>
 	<div class="wrapper-list-container">
 		<div class="list-container">
-			<component :is="getComponent()" v-for="item in items" :key="item.id" :cardData="item" @saveCard="onSaveCard" />		
+			<component :is="getComponent()" v-for="item in items" :key="item.id" :cardData="item" />		
 		</div>
 		<div class="wrapper-add-button">
 		<v-btn v-if="props.addButton" class="add-button" icon="mdi-plus" color="primary" @click="addCard()"></v-btn>
@@ -44,10 +44,10 @@ const getComponentDialog = () => {
 	}
 }
 
-const onSaveCard = (data: TipoUnidad) => {
-		console.log(data)
-		emit('saveCard', data)
-	}
+// const onSaveCard = (data: TipoUnidad) => {
+// 		console.log(data)
+// 		emit('saveCard', data)
+// 	}
 
 const addCard = () => {
 	uiStore.showDialog({

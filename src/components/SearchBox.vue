@@ -2,22 +2,31 @@
   <div class="wrapper-search-box">
     <v-text-field
       class="max-width"
-      v-model="texto"
       append-inner-icon="mdi-magnify" 
       label="Buscar"
-      variant="solo">
+      variant="solo"
+      v-model="textoBusqueda">
 
     </v-text-field>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 export default defineComponent({
 name: 'SearchBox'
 })
 </script>
 <script setup lang="ts">
-const texto = ref()
+const emit = defineEmits(['search'])
+const textoBusqueda = ref()
+let timeoutSearchId = 0
+
+watch(textoBusqueda, (newValue) => {
+  clearTimeout(timeoutSearchId)
+  timeoutSearchId = window.setTimeout(() => {
+    emit('search', newValue)
+  }, 500)
+})
 </script>
 <style lang="scss" scoped>
 .wrapper-search-box {

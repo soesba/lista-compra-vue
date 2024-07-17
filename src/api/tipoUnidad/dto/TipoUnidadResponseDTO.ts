@@ -1,6 +1,6 @@
 import type TipoUnidadDTO from "./TipoUnidadDTO"
 
 export default interface TipoUnidadResponseDTO {
-  respuesta: string;
+  respuesta: number;
   data: TipoUnidadDTO[];
 }

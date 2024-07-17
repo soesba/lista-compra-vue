@@ -2,14 +2,14 @@
 	<v-card prepend-icon="mdi-pencil" :title="getTitle">
 		<v-card-text>
 			<v-row dense>
-				<v-col cols="12" lg="12" md="4" sm="6">
+				<v-col cols="12">
 					<v-text-field label="Nombre*" required v-model="editData.nombre"
 						:error-messages="v$.editData.nombre.$errors.map(e => e.$message)"
 						@blur="v$.editData.nombre.$touch"></v-text-field>
 				</v-col>
 			</v-row>
 			<v-row dense>
-				<v-col cols="12" lg="12" md="4" sm="6">
+				<v-col cols="12">
 					<v-text-field label="Abreviatura*" required v-model="editData.abreviatura"
 					:error-messages="v$.editData.abreviatura.$errors.map(e => e.$message)"
 					@blur="v$.editData.abreviatura.$touch"></v-text-field>
@@ -27,7 +27,7 @@
 <script lang="ts">
 	import { defineComponent, reactive } from 'vue'
 	import { computed } from 'vue'
-import { eventCardStore } from '@/main'
+import { storeToRefs } from 'pinia'
 	export default defineComponent({
 		name: 'TipoUnidadCardDialog',
 	})
@@ -37,6 +37,7 @@ import { eventCardStore } from '@/main'
 	import { useVuelidate } from '@vuelidate/core'
 	import type TipoUnidad from '@/services/tipoUnidad/models/TipoUnidad'
   import type { PropType } from 'vue'
+	import { eventCardStore } from '@/main'
 
 	// Events
 	const emit = defineEmits(['closeDialog'])

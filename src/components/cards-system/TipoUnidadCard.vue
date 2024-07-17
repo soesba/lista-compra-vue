@@ -19,7 +19,6 @@
 	import type TipoUnidad from '@/services/tipoUnidad/models/TipoUnidad'
 	import type { PropType } from 'vue'
 	import { computed, ref, markRaw } from 'vue'
-	
 	// Props
 	const props = defineProps({
 		cardData: {
