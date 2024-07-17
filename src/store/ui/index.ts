@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import type UiState from "./types";
 
-const getDefaultDialog = () => {
+const getDefaultCustomDialog = () => {
   return {
     show: false,
     component: {},
@@ -9,24 +9,47 @@ const getDefaultDialog = () => {
     events: {}
   }
 }
+
+const getDefaultConfirmDialog = () => {
+  return {
+    show: false,
+    props: {
+      title: 'Confirmación',
+      text: ''
+    },
+    aceptarFn: () => {}
+  }
+}
+
 export const useUiStore = defineStore('uiStore', {
   // convert to a function
   state: (): UiState => ({
-    dialog: getDefaultDialog()
+    customDialog: getDefaultCustomDialog(),
+    confirmDialog: getDefaultConfirmDialog()
   }),
   getters: {
-    getDialog: (state) => state.dialog
+    getCustomDialog: (state) => state.customDialog,
+    getConfirmDialog: (state) => state.confirmDialog
 ,  },
   actions: {
     // no context as first argument, use `this` instead
-    showDialog ({ component, props, events }: any) {
-      this.dialog.show = true
-      this.dialog.component = component
-      this.dialog.props = props
-      this.dialog.events = events
+    showCustomDialog ({ component, props, events }: any) {
+      this.customDialog.show = true
+      this.customDialog.component = component
+      this.customDialog.props = props
+      this.customDialog.events = events
     },
-    hideDialog () {
-      this.dialog.show = false
+    hideCustomDialog () {
+      this.customDialog.show = false
+    },
+    showConfirmDialog ({ props, aceptarFn }: any) {
+      console.log("🚀 ~ showConfirmDialog ~ aceptarFn:", aceptarFn)
+      this.confirmDialog.show = true
+      this.confirmDialog.props = { ...props }
+      this.confirmDialog.aceptarFn = aceptarFn
+    },
+    hideConfirmDialog () {
+      this.confirmDialog.show = false
     }
   }
 })

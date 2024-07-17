@@ -21,7 +21,6 @@ export default defineComponent({
 </script>
 <script setup lang="ts">
 import type TipoUnidad from '@/services/tipoUnidad/models/TipoUnidad'
-const emit = defineEmits(['saveCard'])
 const props = defineProps({
 	items: Array<TipoUnidad>,
 	component: String,
@@ -44,21 +43,12 @@ const getComponentDialog = () => {
 	}
 }
 
-// const onSaveCard = (data: TipoUnidad) => {
-// 		console.log(data)
-// 		emit('saveCard', data)
-// 	}
-
 const addCard = () => {
-	uiStore.showDialog({
+	uiStore.showCustomDialog({
 		component: markRaw(getComponentDialog() as object),
 		props: {
 			adding: true,
-			data: {}					
-		},
-		events: {
-			cancelCard: () => uiStore.hideDialog(),
-			saveCard: (evt: any) => emit('saveCard', evt)
+			data: {}
 		}
 	})
 }

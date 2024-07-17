@@ -24,6 +24,9 @@ export const useEventCardStore = defineStore('eventCardStore', {
     cancelCard () {
       this.eventCard.adding = false
       this.eventCard.data = {}
+    },
+    deleteCard (eventData: any) {
+      this.eventCard = { ...eventData }
     }
   }
 })

@@ -27,7 +27,6 @@
 <script lang="ts">
 	import { defineComponent, reactive } from 'vue'
 	import { computed } from 'vue'
-import { storeToRefs } from 'pinia'
 	export default defineComponent({
 		name: 'TipoUnidadCardDialog',
 	})
@@ -37,11 +36,9 @@ import { storeToRefs } from 'pinia'
 	import { useVuelidate } from '@vuelidate/core'
 	import type TipoUnidad from '@/services/tipoUnidad/models/TipoUnidad'
   import type { PropType } from 'vue'
-	import { eventCardStore } from '@/main'
+	import { eventCardStore, uiStore } from '@/main'
 
-	// Events
-	const emit = defineEmits(['closeDialog'])
-  // Props
+		// Props
 	const props = defineProps({
     data: {
       type: Object as PropType<TipoUnidad>,
@@ -77,13 +74,13 @@ import { storeToRefs } from 'pinia'
 	// Methods
 	const cancel = () => {
 		eventCardStore.cancelCard()
-		emit('closeDialog')
+		uiStore.hideCustomDialog()
 	}
 
 	const save = () => {
 		console.log("🚀 ~ save ~ editData:", editData)
 		eventCardStore.saveCard({ adding: props.adding, data: editData })
-		emit('closeDialog')
+		uiStore.hideCustomDialog()
 	}
 		
 </script>

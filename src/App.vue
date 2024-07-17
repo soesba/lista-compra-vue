@@ -2,7 +2,8 @@
   <v-app>
     <navigation />
     <v-main>
-      <rawDialog></rawDialog>
+      <rawConfirmDialog></rawConfirmDialog>
+      <rawDialogComponent></rawDialogComponent>
       <v-container>
         <router-view />
       </v-container>
@@ -11,10 +12,10 @@
 </template>
 
 <script setup lang="ts">
-import { Dialog } from '@/components/index'
+import { ConfirmDialog, DialogComponent } from '@/components/index'
 import { Navigation } from '@/components/index'
 import { markRaw } from 'vue';
 
-const rawDialog = markRaw(Dialog)
-
+const rawDialogComponent = markRaw(DialogComponent)
+const rawConfirmDialog = markRaw(ConfirmDialog)
 </script>

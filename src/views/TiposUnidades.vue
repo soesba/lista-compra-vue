@@ -9,7 +9,6 @@ import { defineComponent } from 'vue'
 import { eventCardStore } from '@/main';
 import type TipoUnidadRequest from '@/services/tipoUnidad/models/TipoUnidadRequest'
 import type TipoUnidadResponse from '@/services/tipoUnidad/models/TipoUnidadResponse'
-import { storeToRefs } from 'pinia'
 export default defineComponent({
   name: 'TiposUnidades'
 })
@@ -22,11 +21,17 @@ import get from '@/services/tipoUnidad/getTipoUnidad.service'
 import getByAny from '@/services/tipoUnidad/getTipoUnidadByAny.service'
 import create from '@/services/tipoUnidad/createTipoUnidad.service'
 
+const emit = defineEmits(['close-dialog'])
+
 const suscribe = eventCardStore.$onAction(({args, name}) => {
 	console.log("🚀 ~ suscribe ~ evtData:", args[0], name)
   switch(name) {
     case 'saveCard': 
       onSaveCard(args[0])
+      break
+    case 'deleteCard':
+      onDeleteCard(args[0])
+      break
   }
 })
 // Data
@@ -42,6 +47,10 @@ const getAllData = () => {
   get().then((response: TipoUnidadResponse) => {
     list.value = response.data
   })
+}
+
+const onDeleteCard = (cardData: any) => {
+		
 }
 
 const onSaveCard = (cardData: any) => {
