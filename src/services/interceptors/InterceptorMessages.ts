@@ -28,7 +28,7 @@ export default class InterceptorMessages implements Interceptor {
     }, (error) => {
       // Handle errors here
       uiStore.showAlertComponent({
-        text: error.message,
+        text: error.response.data.message,
         type: 'error'
       })
       console.error(error)

@@ -3,23 +3,33 @@
 </template>
 <script lang="ts">
 import { uiStore } from '@/main';
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, onMounted, ref } from 'vue'
 export default defineComponent({
 name: 'AlertComponent'
 })
 </script>
 <script setup lang="ts">
 	// Computed
-  const alert = computed(() => {
-    return uiStore.getAlerComponent
-  })
 	const show = computed(() => {
-		return uiStore.getAlerComponent?.show
+		return uiStore.getAlertComponent?.show
 	})
-  // Data
-  const text = ref(alert.value.props.text)
-  const type = ref(alert.value.props.type) || 'success'
-  const variant = ref(alert.value.props.variant) || 'tonal'
+  const text = computed(() => {
+		return uiStore.getAlertComponent?.props.text
+	})
+  const type = computed(() => {
+		return uiStore.getAlertComponent?.props.type
+	})
+  const variant = computed(() => {
+		return uiStore.getAlertComponent?.props.variant || 'tonal'
+	})
+
+  onMounted(() => {
+   const vAlert = document.getElementsByClassName('v-alert__close')[0]
+   const iconClose = vAlert?.getElementsByClassName('mdi-close')[0]
+   iconClose?.addEventListener('click', () => {
+    uiStore.hideAlertComponent()
+   })
+  })
 </script>
 <style lang="scss" scoped>
 </style>

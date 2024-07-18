@@ -43,7 +43,7 @@ export const useUiStore = defineStore('uiStore', {
   getters: {
     getCustomDialog: (state) => state.customDialog,
     getConfirmDialog: (state) => state.confirmDialog,
-    getAlerComponent: (state) => state.alertComponent
+    getAlertComponent: (state) => state.alertComponent
 ,  },
   actions: {
     // no context as first argument, use `this` instead
@@ -64,8 +64,8 @@ export const useUiStore = defineStore('uiStore', {
     hideConfirmDialog () {
       this.confirmDialog.show = false
     },
-    showAlertComponent ({ props}: any) {
-      this.alertComponent = { ...props }
+    showAlertComponent (props: any) {
+      this.alertComponent.props = { ...props }
       this.alertComponent.show = true
     },
     hideAlertComponent () {
