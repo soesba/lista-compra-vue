@@ -2,8 +2,9 @@
   <v-app>
     <navigation />
     <v-main>
-      <rawConfirmDialog></rawConfirmDialog>
-      <rawDialogComponent></rawDialogComponent>
+      <alert-component></alert-component>
+      <raw-confirm-dialog></raw-confirm-dialog>
+      <raw-dialog-component></raw-dialog-component>
       <v-container>
         <router-view />
       </v-container>
@@ -12,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { ConfirmDialog, DialogComponent } from '@/components/index'
+import { ConfirmDialog, DialogComponent, AlertComponent } from '@/components/index'
 import { Navigation } from '@/components/index'
 import { markRaw } from 'vue';
 

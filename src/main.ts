@@ -6,6 +6,7 @@ import App from './App.vue'
 import router from './router'
 import { pinia } from './store'
 import { useUiStore, useEventCardStore } from './store'
+import { xhr } from '@/api/config/Repository'
 // Vuetify
 import 'vuetify/styles'
 import '@mdi/font/css/materialdesignicons.css'
@@ -13,6 +14,8 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { loadFonts } from './plugins/webfontloader'
+
+import InterceptorMessages from './services/interceptors/InterceptorMessages'
 
 loadFonts()
 export const CustomDialog = defineComponent({
@@ -29,5 +32,7 @@ createApp(App).
   use(Vuelidate).
   mount('#app')
 
+export const interceptorMsg = new InterceptorMessages(xhr)
+interceptorMsg.execute()
 export const uiStore = useUiStore()
 export const eventCardStore = useEventCardStore()

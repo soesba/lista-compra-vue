@@ -9,6 +9,7 @@ import { defineComponent } from 'vue'
 import { eventCardStore } from '@/main';
 import type TipoUnidadRequest from '@/services/tipoUnidad/models/TipoUnidadRequest'
 import type TipoUnidadResponse from '@/services/tipoUnidad/models/TipoUnidadResponse'
+import update from '@/services/tipoUnidad/updateTipoUnidad.service'
 export default defineComponent({
   name: 'TiposUnidades'
 })
@@ -20,6 +21,7 @@ import { CardList, TitleView, SearchBox } from '@/components'
 import get from '@/services/tipoUnidad/getTipoUnidad.service'
 import getByAny from '@/services/tipoUnidad/getTipoUnidadByAny.service'
 import create from '@/services/tipoUnidad/createTipoUnidad.service'
+import udpate from '@/services/tipoUnidad/updateTipoUnidad.service'
 import deleteItem from '@/services/tipoUnidad/deleteTipoUnidad.service'
 
 const emit = defineEmits(['close-dialog'])
@@ -52,23 +54,36 @@ const getAllData = () => {
 
 const onDeleteCard = (cardData: any) => {
   console.log("🚀 ~ onDeleteCard ~ cardData:", cardData)
-  deleteItem(cardData._id).then(response => {
-    if (response.respuesta === 200) {
-      getAllData()
-    }
-  })
+  if (cardData.borrable) {
+    deleteItem(cardData.id).then(response => {
+      if (response.respuesta === 200) {
+        getAllData()
+      }
+    })
+  }
 }
 
 const onSaveCard = (cardData: any) => {
   console.log("🚀 ~ onAddCard ~ data:", cardData)
   if (cardData.adding) {
     createCard(cardData.data)
+  } else {
+    updateCard(cardData.data)
   }
 }
 
 const createCard = (card: TipoUnidadRequest) => {
   card.borrable = true
   create(card).then(response => {
+    if (response.respuesta === 200) {
+      getAllData()
+    }
+    
+  })
+}
+
+const updateCard = (card: TipoUnidadRequest) => {
+  update(card).then(response => {
     if (response.respuesta === 200) {
       getAllData()
     }

@@ -21,15 +21,29 @@ const getDefaultConfirmDialog = () => {
   }
 }
 
+const getDefaultAlertComponent = () => {
+  return {
+    show: false,
+    props: {
+      title: '',
+      text: '',
+      variant: '',
+      type: ''
+    }
+  } 
+}
+
 export const useUiStore = defineStore('uiStore', {
   // convert to a function
   state: (): UiState => ({
     customDialog: getDefaultCustomDialog(),
-    confirmDialog: getDefaultConfirmDialog()
+    confirmDialog: getDefaultConfirmDialog(),
+    alertComponent: getDefaultAlertComponent()
   }),
   getters: {
     getCustomDialog: (state) => state.customDialog,
-    getConfirmDialog: (state) => state.confirmDialog
+    getConfirmDialog: (state) => state.confirmDialog,
+    getAlerComponent: (state) => state.alertComponent
 ,  },
   actions: {
     // no context as first argument, use `this` instead
@@ -43,13 +57,19 @@ export const useUiStore = defineStore('uiStore', {
       this.customDialog.show = false
     },
     showConfirmDialog ({ props, aceptarFn }: any) {
-      console.log("🚀 ~ showConfirmDialog ~ aceptarFn:", aceptarFn)
       this.confirmDialog.show = true
       this.confirmDialog.props = { ...props }
       this.confirmDialog.aceptarFn = aceptarFn
     },
     hideConfirmDialog () {
       this.confirmDialog.show = false
+    },
+    showAlertComponent ({ props}: any) {
+      this.alertComponent = { ...props }
+      this.alertComponent.show = true
+    },
+    hideAlertComponent () {
+      this.alertComponent.show = false
     }
   }
 })

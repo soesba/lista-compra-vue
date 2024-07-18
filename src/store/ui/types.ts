@@ -12,5 +12,14 @@ export default interface UiState {
       text: string;
     },
     aceptarFn: Function;
-  }
+  },
+  alertComponent: {
+    show: boolean,
+    props: {
+      title: string,
+      text: string,
+      variant: string,
+      type: string
+    }
+  } 
 }

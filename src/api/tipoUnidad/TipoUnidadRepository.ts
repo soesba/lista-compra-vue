@@ -5,5 +5,6 @@ export default interface TipoUnidadRepository {
   get(): Promise<TipoUnidadResponse>;
   getByAny(request: string): Promise<TipoUnidadResponse>;
   insert(request: TipoUnidadRequest): Promise<TipoUnidadResponse>;
+  update(request: TipoUnidadRequest): Promise<TipoUnidadResponse>;
   delete(id: string): Promise<TipoUnidadResponse>;
 }

@@ -3,13 +3,11 @@ import { xhr } from "../config/Repository"
 import type TipoUnidadRepository from "./TipoUnidadRepository"
 import { DTOtoModel, requestModelToDTO } from "./mapping/TipoUnidadMapping"
 import type TipoUnidadDTO from "./dto/TipoUnidadDTO"
-import type TipoUnidadRequestDTO from "./dto/TipoUnidadRequestDTO"
-import type TipoUnidadResponseDTO from "./dto/TipoUnidadResponseDTO"
 import type TipoUnidadRequest from "@/services/tipoUnidad/models/TipoUnidadRequest"
 
 export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
   async get (): Promise<TipoUnidadResponse> {
-    const endpoint = '/tipoUnidad'
+    const endpoint = '/tipoUnidad/get'
     const headers = {
       'Content-Type': 'application/json;charset=UTF-8'
     }
@@ -22,7 +20,7 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
   }
 
   async getByAny (request: string): Promise<TipoUnidadResponse> {
-    const endpoint = `/tipoUnidades/${request}`
+    const endpoint = `/tipoUnidad/getByAny/${request}`
     const headers = {
       'Content-Type': 'application/json;charset=UTF-8'
     }
@@ -35,7 +33,7 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
   }
 
   async insert(request: TipoUnidadRequest): Promise<TipoUnidadResponse> {
-    const endpoint = `/tipoUnidad`
+    const endpoint = `/tipoUnidad/insert/`
     const headers = {
       'Content-Type': 'application/json;charset=UTF-8'
     }
@@ -48,8 +46,24 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
     return result
   }
 
+  async update(request: TipoUnidadRequest): Promise<TipoUnidadResponse> {
+    const endpoint = `/tipoUnidad/update`
+    const headers = {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+    const requestDTO = requestModelToDTO(request)
+    console.log("🚀 ~ TipoUnidadRepositoryImpl ~ update ~ requestDTO:", requestDTO)
+    const response = await xhr.put(endpoint, requestDTO, { headers})
+    console.log("🚀 ~ TipoUnidadRepositoryImpl ~ update ~ response:", response)
+    const result = {
+      data: DTOtoModel(response.data),
+      respuesta: response.status
+    }
+    return result
+  }
+
   async delete(id: string): Promise<TipoUnidadResponse> {
-    const endpoint = `/tipoUnidad/${id}`
+    const endpoint = `/tipoUnidad/delete/${id}`
     const headers = {
       'Content-Type': 'application/json;charset=UTF-8'
     }
