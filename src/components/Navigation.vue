@@ -40,8 +40,10 @@ const drawer = ref(false)
 const items = ref([
   {
     title: 'Articulos',
-    link: true,
-    value: null
+    props: {
+      to: '/articulos',
+      link: true
+    }
   }, 
   {
     title: 'Tipo de unidades',

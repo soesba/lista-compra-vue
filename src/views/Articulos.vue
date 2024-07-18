@@ -1,23 +1,23 @@
 <template>
   <TitleView :titulo="titulo" />
   <SearchBox @search="onSearch"></SearchBox>
-  <CardList :items="list" component="TipoUnidadCard"/>
+  <CardList :items="list" component="ArticuloCard"/>
 </template>
 
 <script lang="ts">
 import { onMounted, ref } from 'vue'
 import { CardList, TitleView, SearchBox } from '@/components'
-import get from '@/services/tipoUnidad/getTipoUnidad.service'
-import getByAny from '@/services/tipoUnidad/getTipoUnidadByAny.service'
-import create from '@/services/tipoUnidad/createTipoUnidad.service'
-import update from '@/services/tipoUnidad/updateTipoUnidad.service'
-import deleteItem from '@/services/tipoUnidad/deleteTipoUnidad.service'
+import get from '@/services/articulo/getArticulo.service'
+import getByAny from '@/services/articulo/getArticuloByAny.service'
+import create from '@/services/articulo/createArticulo.service'
+import update from '@/services/articulo/updateArticulo.service'
+import deleteItem from '@/services/articulo/deleteArticulo.service'
 import { defineComponent } from 'vue'
 import { eventCardStore } from '@/main';
-import type TipoUnidadRequest from '@/services/tipoUnidad/models/TipoUnidadRequest'
-import type TipoUnidadResponse from '@/services/tipoUnidad/models/TipoUnidadResponse'
+import type ArticuloRequest from '@/services/articulo/models/ArticuloRequest'
+import type ArticuloResponse from '@/services/articulo/models/ArticuloResponse'
 export default defineComponent({
-  name: 'TiposUnidades'
+  name: 'Articulos'
 })
 </script>
 
@@ -36,7 +36,7 @@ const suscribe = eventCardStore.$onAction(({args, name}) => {
   }
 })
 // Data
-const titulo = ref('Tipos de unidades')
+const titulo = ref('Articulos')
 const list = ref()
 
 onMounted(() => {
@@ -45,7 +45,7 @@ onMounted(() => {
 
 // Methods
 const getAllData = () => {
-  get().then((response: TipoUnidadResponse) => {
+  get().then((response: ArticuloResponse) => {
     list.value = response.data
   })
 }
@@ -70,7 +70,7 @@ const onSaveCard = (cardData: any) => {
   }
 }
 
-const createCard = (card: TipoUnidadRequest) => {
+const createCard = (card: ArticuloRequest) => {
   card.borrable = true
   create(card).then(response => {
     if (response.respuesta === 200) {
@@ -80,7 +80,7 @@ const createCard = (card: TipoUnidadRequest) => {
   })
 }
 
-const updateCard = (card: TipoUnidadRequest) => {
+const updateCard = (card: ArticuloRequest) => {
   update(card).then(response => {
     if (response.respuesta === 200) {
       getAllData()
@@ -91,7 +91,7 @@ const updateCard = (card: TipoUnidadRequest) => {
 
 const onSearch = (evt: any) => {
   if (evt) {
-    getByAny(evt).then((response:TipoUnidadResponse) => {
+    getByAny(evt).then((response:ArticuloResponse) => {
       list.value = response.data
     })
   } else {

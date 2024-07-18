@@ -3,7 +3,7 @@
 </template>
 <script lang="ts">
 import { uiStore } from '@/main';
-import { computed, defineComponent, onMounted, ref } from 'vue'
+import { computed, defineComponent, onMounted } from 'vue'
 export default defineComponent({
 name: 'AlertComponent'
 })

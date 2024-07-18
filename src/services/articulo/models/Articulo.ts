@@ -1,4 +1,4 @@
-export default interface TipoUnidadDTO {
+export default interface Articulo {
   id: string;
   nombre: string;
   descripcion: string;

@@ -15,6 +15,8 @@ import { defineComponent, markRaw } from 'vue'
 import TipoUnidadCard from './TipoUnidadCard.vue';
 import { uiStore } from '@/main';
 import TipoUnidadCardDialog from './TipoUnidadCardDialog.vue';
+import ArticuloCard from './ArticuloCard.vue';
+import ArticuloCardDialog from './ArticuloCardDialog.vue';
 export default defineComponent({
 	name: 'CardList'
 })
@@ -33,6 +35,8 @@ const getComponent = () => {
 	switch(props.component) {
 		case 'TipoUnidadCard':
 			return TipoUnidadCard
+		case 'ArticuloCard':
+			return ArticuloCard
 	}
 }
 
@@ -40,6 +44,8 @@ const getComponentDialog = () => {
 	switch(props.component) {
 		case 'TipoUnidadCard':
 			return TipoUnidadCardDialog
+		case 'ArticuloCard':
+			return ArticuloCardDialog
 	}
 }
 
@@ -58,14 +64,6 @@ const addCard = () => {
 .wrapper-list-container {
 	display: flex;
 	justify-content: center;
-}
-
-.card-list-container {
-	display: flex;
-	justify-content: center;
-	flex-wrap: wrap;
-	align-items: center;
-	flex-direction: column;
 }
 
 .list-container {
