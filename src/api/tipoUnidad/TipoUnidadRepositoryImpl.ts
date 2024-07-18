@@ -40,9 +40,20 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
       'Content-Type': 'application/json;charset=UTF-8'
     }
     const requestDTO = requestModelToDTO(request)
-    console.log("🚀 ~ TipoUnidadRepositoryImpl ~ insert ~ requestDTO:", requestDTO)
     const response = await xhr.post(endpoint, requestDTO, { headers})
-    console.log("🚀 ~ TipoUnidadRepositoryImpl ~ insert ~ response:", response)
+    const result = {
+      data: DTOtoModel(response.data),
+      respuesta: response.status
+    }
+    return result
+  }
+
+  async delete(id: string): Promise<TipoUnidadResponse> {
+    const endpoint = `/tipoUnidad/${id}`
+    const headers = {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+    const response = await xhr.delete(endpoint, { headers})
     const result = {
       data: DTOtoModel(response.data),
       respuesta: response.status

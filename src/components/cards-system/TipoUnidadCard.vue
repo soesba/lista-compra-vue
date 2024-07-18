@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-	import { uiStore } from '@/main'
+	import { eventCardStore, uiStore } from '@/main'
 	import { defineComponent } from 'vue'
 	export default defineComponent({
 		name: 'TipoUnidadCard',
@@ -57,7 +57,7 @@
 	}
 
 	const onCloseConfirmDialog = () => {
-		console.log('hola')
+		eventCardStore.deleteCard(data.value)
 	}
 </script>
 <style lang="scss" scoped>

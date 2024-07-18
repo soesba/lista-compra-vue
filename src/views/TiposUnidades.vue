@@ -20,6 +20,7 @@ import { CardList, TitleView, SearchBox } from '@/components'
 import get from '@/services/tipoUnidad/getTipoUnidad.service'
 import getByAny from '@/services/tipoUnidad/getTipoUnidadByAny.service'
 import create from '@/services/tipoUnidad/createTipoUnidad.service'
+import deleteItem from '@/services/tipoUnidad/deleteTipoUnidad.service'
 
 const emit = defineEmits(['close-dialog'])
 
@@ -50,7 +51,12 @@ const getAllData = () => {
 }
 
 const onDeleteCard = (cardData: any) => {
-		
+  console.log("🚀 ~ onDeleteCard ~ cardData:", cardData)
+  deleteItem(cardData._id).then(response => {
+    if (response.respuesta === 200) {
+      getAllData()
+    }
+  })
 }
 
 const onSaveCard = (cardData: any) => {
