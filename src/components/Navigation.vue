@@ -58,6 +58,13 @@ const items = ref([
       to: '/tiposEstablecimientos',
       link: true
     }
+  },
+  {
+    title: 'Establecimientos',
+    props: {
+      to: '/establecimientos',
+      link: true
+    }
   }
 ])
 

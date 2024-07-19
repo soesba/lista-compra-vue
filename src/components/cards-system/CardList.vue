@@ -19,6 +19,8 @@ import ArticuloCard from './ArticuloCard.vue';
 import ArticuloCardDialog from './ArticuloCardDialog.vue';
 import TipoEstablecimientoCard from './TipoEstablecimientoCard.vue';
 import TipoEstablecimientoCardDialog from './TipoEstablecimientoCardDialog.vue';
+import EstablecimientoCardDialog from './EstablecimientoCardDialog.vue';
+import EstablecimientoCard from './EstablecimientoCard.vue';
 export default defineComponent({
 	name: 'CardList'
 })
@@ -41,6 +43,8 @@ const getComponent = () => {
 			return ArticuloCard
 		case 'TipoEstablecimientoCard':
 			return TipoEstablecimientoCard
+		case 'EstablecimientoCard':
+			return EstablecimientoCard
 	}
 }
 
@@ -52,6 +56,8 @@ const getComponentDialog = () => {
 			return ArticuloCardDialog
 		case 'TipoEstablecimiento':
 			return TipoEstablecimientoCardDialog
+		case 'EstablecimientoCard':
+			return EstablecimientoCardDialog
 	}
 }
 
