@@ -1,5 +1,5 @@
 <template>
-	<v-dialog v-model="show" persistent max-width="340">
+	<v-dialog v-model="show" persistent>
 		<component :is="component" v-bind="props" v-on="events" @close-dialog="$emit('close-dialog')"></component>
 	</v-dialog>
 </template>

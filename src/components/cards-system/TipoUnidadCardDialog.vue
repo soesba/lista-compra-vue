@@ -1,5 +1,5 @@
 <template>
-	<v-card prepend-icon="mdi-pencil" :title="getTitle">
+	<v-card prepend-icon="mdi-pencil" :title="getTitle" width="340" class="screen-center">
 		<v-card-text>
 			<v-row dense>
 				<v-col cols="12">

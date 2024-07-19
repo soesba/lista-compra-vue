@@ -22,3 +22,15 @@ a.no-link {
 		font-size: 0.6rem;
 	}
 }
+
+.v-card {
+	&.screen-center {
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.v-card-actions {
+		button {
+			margin-left: 10px !important;
+		}
+	}
+}
