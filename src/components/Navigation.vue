@@ -51,7 +51,15 @@ const items = ref([
       to: '/tiposUnidades',
       link: true
     }
-  }])
+  },
+  {
+    title: 'Tipo de establecimientos',
+    props: {
+      to: '/tiposEstablecimientos',
+      link: true
+    }
+  }
+])
 
 watch(drawer, async (newDrawer, oldDrawer) => {
 

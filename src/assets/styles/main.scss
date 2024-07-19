@@ -12,3 +12,13 @@ a.no-link {
 	text-decoration: none;
 	color: inherit;
 }
+
+.text-small {
+	font-size: 0.6rem;
+}
+
+.v-card-text {
+	&.text-small {
+		font-size: 0.6rem;
+	}
+}

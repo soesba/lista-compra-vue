@@ -1,7 +1,7 @@
-export default interface Articulo {
+export default interface TipoEstablecimientoDTO {
   id: string;
   nombre: string;
-  descripcion: string;  
+  abreviatura: string;
   fechaCreacion: string;
   borrable: boolean;
 }

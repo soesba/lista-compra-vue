@@ -11,5 +11,11 @@ module.exports = {
   ],
   parserOptions: {
     ecmaVersion: 'latest'
+  },
+  rules: {
+    "quotes": ["error", "double"],
+    "@typescript-eslint/no-explicit-any": 'off',
+    "curly": "error", 
+    "no-empty": "error", 
   }
 }

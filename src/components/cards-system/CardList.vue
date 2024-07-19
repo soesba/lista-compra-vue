@@ -17,6 +17,8 @@ import { uiStore } from '@/main';
 import TipoUnidadCardDialog from './TipoUnidadCardDialog.vue';
 import ArticuloCard from './ArticuloCard.vue';
 import ArticuloCardDialog from './ArticuloCardDialog.vue';
+import TipoEstablecimientoCard from './TipoEstablecimientoCard.vue';
+import TipoEstablecimientoCardDialog from './TipoEstablecimientoCardDialog.vue';
 export default defineComponent({
 	name: 'CardList'
 })
@@ -37,6 +39,8 @@ const getComponent = () => {
 			return TipoUnidadCard
 		case 'ArticuloCard':
 			return ArticuloCard
+		case 'TipoEstablecimientoCard':
+			return TipoEstablecimientoCard
 	}
 }
 
@@ -46,6 +50,8 @@ const getComponentDialog = () => {
 			return TipoUnidadCardDialog
 		case 'ArticuloCard':
 			return ArticuloCardDialog
+		case 'TipoEstablecimiento':
+			return TipoEstablecimientoCardDialog
 	}
 }
 

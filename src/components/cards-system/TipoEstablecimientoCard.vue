@@ -1,7 +1,7 @@
 <template>
 	<v-card>
 		<v-card-title>{{ cardData.nombre }}</v-card-title>
-		<v-card-text>{{ cardData.descripcion }}</v-card-text>
+		<v-card-subtitle>{{ cardData.abreviatura }}</v-card-subtitle>
 		<v-card-text class="text-small">Creado: {{ cardData.fechaCreacion }}</v-card-text>
 		<v-card-actions>
 			<v-btn icon="mdi-pencil-circle" color="primary" @click="editCard()"></v-btn>
@@ -14,19 +14,19 @@
 	import { eventCardStore, uiStore } from '@/main'
 	import { defineComponent } from 'vue'
 	export default defineComponent({
-		name: 'ArticuloCard',
+		name: 'TipoEstablecimientoCard',
 	})
 </script>
 <script setup lang="ts">
-	import ArticuloCardDialog from './ArticuloCardDialog.vue'
-	import type Articulo from '@/services/articulo/models/Articulo'
+	import TipoEstablecimientoCardDialog from './TipoEstablecimientoCardDialog.vue'
+	import type TipoEstablecimiento from '@/services/tipoEstablecimiento/models/TipoEstablecimiento'
 	import type { PropType } from 'vue'
 	import { computed, ref, markRaw } from 'vue'
 	
 	// Props
 	const props = defineProps({
 		cardData: {
-			type: Object as PropType<Articulo>,
+			type: Object as PropType<TipoEstablecimiento>,
 			default() {
 				return {}
 			}
@@ -41,7 +41,7 @@
 	// Methods
 	const editCard = () => {
 		uiStore.showCustomDialog({
-			component: markRaw(ArticuloCardDialog),
+			component: markRaw(TipoEstablecimientoCardDialog),
 			props: {
 				data: data					
 			}

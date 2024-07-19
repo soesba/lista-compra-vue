@@ -1,7 +1,7 @@
-export default interface Articulo {
+export default interface TipoEstablecimiento {
   id: string;
   nombre: string;
-  descripcion: string;  
+  abreviatura: string;
   fechaCreacion: string;
   borrable: boolean;
 }

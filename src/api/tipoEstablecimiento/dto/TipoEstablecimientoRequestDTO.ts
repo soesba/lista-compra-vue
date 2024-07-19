@@ -1,4 +1,4 @@
-export default interface TipoUnidadRequestDTO {
+export default interface TipoEstablecimientoRequestDTO {
   id?: string;
   nombre: string;
   abreviatura: string;
