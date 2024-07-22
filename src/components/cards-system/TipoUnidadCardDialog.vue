@@ -5,20 +5,22 @@
 				<v-col cols="12">
 					<v-text-field label="Nombre*" required v-model="editData.nombre"
 						:error-messages="v$.editData.nombre.$errors.map(e => e.$message)"
-						@blur="v$.editData.nombre.$touch"></v-text-field>
+						@blur="v$.editData.nombre.$touch"
+						@input="v$.editData.nombre.$touch"></v-text-field>
 				</v-col>
 			</v-row>
 			<v-row dense>
 				<v-col cols="12">
 					<v-text-field label="Abreviatura*" required v-model="editData.abreviatura"
 					:error-messages="v$.editData.abreviatura.$errors.map(e => e.$message)"
-					@blur="v$.editData.abreviatura.$touch"></v-text-field>
+					@blur="v$.editData.abreviatura.$touch"
+					@input="v$.editData.abreviatura.$touch"></v-text-field>
 				</v-col>
 			</v-row>
 			<small class="text-caption text-medium-emphasis">*campo requerido</small>
 		</v-card-text>
 		<template v-slot:actions>
-			<v-btn class="ml-auto" text="Aceptar" @click="save()"></v-btn>
+			<v-btn class="ml-auto" text="Aceptar" @click="save()" :disabled="!canSave"></v-btn>
 			<v-btn class="ml-auto" text="Cancelar" @click="cancel()"></v-btn>
 		</template>
 	</v-card>
@@ -54,6 +56,9 @@
 	// Computed 
 	const getTitle = computed(() => {
 		return props.adding ? 'Nuevo tipo de unidad' : props.data.nombre
+	})
+	const canSave = computed(() => {
+		return !v$.value.$invalid
 	})
 	// Data
 	let editData = reactive<any>({ ...props.data })
