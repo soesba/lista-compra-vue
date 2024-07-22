@@ -34,7 +34,7 @@
 	})
 </script>
 <script setup lang="ts">
-	import { required } from 'vuelidate/lib/validators'
+	import { required, requiredIf } from 'vuelidate/lib/validators'
 	import { useVuelidate } from '@vuelidate/core'
 	import type TipoEstablecimiento from '@/services/tipoEstablecimiento/models/TipoEstablecimiento'
   import type { PropType } from 'vue'
@@ -67,7 +67,7 @@
 	const validations = computed(() => {
 		return {
 			editData: {
-				id: { required },
+				id: { required: requiredIf(!props.adding) },
 				nombre: { required },
 				abreviatura: { required },
 				borrable: { required }

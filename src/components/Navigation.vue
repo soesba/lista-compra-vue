@@ -53,7 +53,7 @@ const items = ref([
     }
   },
   {
-    title: 'Tipo de establecimientos',
+    title: 'Categorías de establecimientos',
     props: {
       to: '/tiposEstablecimientos',
       link: true

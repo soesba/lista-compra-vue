@@ -34,3 +34,20 @@ a.no-link {
 		}
 	}
 }
+
+.body {
+  .labelFor {
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.75;
+    letter-spacing: 0.009375em;
+  }
+	.inputGroup {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		.labelFor {
+			margin-right: 10px;;
+		}
+	}
+}

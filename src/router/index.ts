@@ -27,7 +27,17 @@ const router = createRouter({
     {
       path: '/establecimientos',
       name: 'establecimientos',
-      component: () => import('@/views/Establecimientos.vue')
+      component: () => import('@/views/establecimientos/Establecimientos.vue')
+    },
+    {
+      path: '/establecimiento-detalle',
+      name: 'establecimientoDetalle',
+      component: () => import('@/views/establecimientos/EstablecimientoDetalle.vue')
+    },
+    {
+      path: '/establecimiento-edicion',
+      name: 'establecimientoEdicion',
+      component: () => import('@/views/establecimientos/EstablecimientoEdicion.vue')
     }
   ]
 })

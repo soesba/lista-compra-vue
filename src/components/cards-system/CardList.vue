@@ -21,6 +21,7 @@ import TipoEstablecimientoCard from './TipoEstablecimientoCard.vue';
 import TipoEstablecimientoCardDialog from './TipoEstablecimientoCardDialog.vue';
 import EstablecimientoCardDialog from './EstablecimientoCardDialog.vue';
 import EstablecimientoCard from './EstablecimientoCard.vue';
+import router from '@/router';
 export default defineComponent({
 	name: 'CardList'
 })
@@ -62,13 +63,19 @@ const getComponentDialog = () => {
 }
 
 const addCard = () => {
-	uiStore.showCustomDialog({
-		component: markRaw(getComponentDialog() as object),
-		props: {
-			adding: true,
-			data: {}
-		}
-	})
+	if (props.component === 'EstablecimientoCard') {
+		router.push('/establecimiento-detalle')
+	} else {
+		uiStore.showCustomDialog({
+			component: markRaw(getComponentDialog() as object),
+			props: {
+				adding: true,
+				data: {
+					borrable: true
+				}
+			}
+		})
+	}
 }
 
 </script>

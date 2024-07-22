@@ -11,14 +11,14 @@
 </template>
 
 <script lang="ts">
-	import { eventCardStore, uiStore } from '@/main'
+	import { eventCardStore, modelStore, uiStore } from '@/main'
 	import { defineComponent } from 'vue'
+import router from '@/router'
 	export default defineComponent({
 		name: 'EstablecimientoCard',
 	})
 </script>
 <script setup lang="ts">
-	import EstablecimientoCardDialog from './EstablecimientoCardDialog.vue'
 	import type Establecimiento from '@/services/establecimiento/models/Establecimiento'
 	import type { PropType } from 'vue'
 	import { computed, ref, markRaw } from 'vue'
@@ -40,12 +40,8 @@
 	})
 	// Methods
 	const editCard = () => {
-		uiStore.showCustomDialog({
-			component: markRaw(EstablecimientoCardDialog),
-			props: {
-				data: data					
-			}
-		})
+		modelStore.setEstablecimiento(data.value)
+		router.push('/establecimiento-detalle')
 	}
 
 	const deleteCard = () => {
