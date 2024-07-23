@@ -16,6 +16,7 @@ import * as directives from 'vuetify/directives'
 import { loadFonts } from './plugins/webfontloader'
 
 import InterceptorMessages from './services/interceptors/InterceptorMessages'
+import { useRoute } from 'vue-router'
 
 loadFonts()
 export const CustomDialog = defineComponent({

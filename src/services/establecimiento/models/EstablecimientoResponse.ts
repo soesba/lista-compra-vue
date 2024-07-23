@@ -1,6 +1,6 @@
-import type TipoEstablecimiento from "./TipoEstablecimiento";
+import type Establecimiento from "./Establecimiento";
 
-export default interface TipoEstablecimientoResponseO {
+export default interface EstablecimientoResponse {
   respuesta: number;
-  data: TipoEstablecimiento | TipoEstablecimiento[];
+  data: Establecimiento | Establecimiento[];
 }

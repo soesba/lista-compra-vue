@@ -24,6 +24,7 @@ import { computed, defineComponent, reactive, ref } from 'vue'
 <style lang="scss" scoped>
 .wrapper {
   display: flex;
+  align-items: center;
   .left {
     display: flex;
     flex: 0.33;

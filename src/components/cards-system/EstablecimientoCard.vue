@@ -1,19 +1,16 @@
 <template>
-	<v-card>
+	<v-card @click="editCard()">
+		<v-img class="logo" :src="getImageSrc"></v-img>
 		<v-card-title>{{ cardData.nombre }}</v-card-title>
 		<v-card-subtitle>{{ cardData.tipoEstablecimiento.nombre }}</v-card-subtitle>
 		<v-card-text class="text-small">Creado: {{ cardData.fechaCreacion }}</v-card-text>
-		<v-card-actions>
-			<v-btn icon="mdi-pencil-circle" color="primary" @click="editCard()"></v-btn>
-			<v-btn icon="mdi-delete-circle" color="secondary" @click="deleteCard()" :disabled="!canDelete"></v-btn>
-		</v-card-actions>
 	</v-card>
 </template>
 
 <script lang="ts">
-	import { eventCardStore, modelStore, uiStore } from '@/main'
+	import { eventCardStore, modelStore, noLogoUrl, uiStore } from '@/main'
 	import { defineComponent } from 'vue'
-import router from '@/router'
+	import router from '@/router'
 	export default defineComponent({
 		name: 'EstablecimientoCard',
 	})
@@ -21,7 +18,7 @@ import router from '@/router'
 <script setup lang="ts">
 	import type Establecimiento from '@/services/establecimiento/models/Establecimiento'
 	import type { PropType } from 'vue'
-	import { computed, ref, markRaw } from 'vue'
+	import { computed, ref } from 'vue'
 	
 	// Props
 	const props = defineProps({
@@ -35,13 +32,15 @@ import router from '@/router'
 	// Data
 	let data = ref(props.cardData)
 	// Computed
+	const getImageSrc = computed(() => {
+    return props.cardData.logo ?  props.cardData.logo.content : noLogoUrl
+  })
 	const canDelete = computed(() => {
 		return props.cardData.borrable
 	})
 	// Methods
 	const editCard = () => {
-		modelStore.setEstablecimiento(data.value)
-		router.push('/establecimiento-detalle')
+		router.push(`/establecimiento-detalle/${data.value.id}`)
 	}
 
 	const deleteCard = () => {
@@ -62,4 +61,10 @@ import router from '@/router'
 <style lang="scss" scoped>
 .v-card {
 	margin: 10px;
-}</style>
+}
+
+.logo {
+	width: 150px;
+	height: auto;
+}
+</style>

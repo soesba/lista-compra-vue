@@ -7,6 +7,10 @@ export default interface Establecimiento {
     id: string;
     nombre: string;
   };
+  logo: {
+    type: string,
+    content: string
+  };
   notas: string;
   direcciones: Direccion[];
   fechaCreacion: string;

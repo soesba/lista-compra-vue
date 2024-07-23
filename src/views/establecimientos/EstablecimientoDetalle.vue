@@ -5,17 +5,18 @@
     </template>
     <template v-slot:right>
       <v-btn icon="mdi-pencil" variant="text" color="primary" @click="setEdicion()"></v-btn>
+      <v-btn icon="mdi-delete" variant="text" color="primary" @click="deleteCard()" v-if="canDelete"></v-btn>
     </template>
   </detalle-toolbar>
   <div class="form">
     <div class="header">
-      <v-img class="logo" :src="noLogoUrl"></v-img>
-      <label class="text-h6">{{  editData.nombre }}</label>
+      <v-img class="logo" :src="getImageSrc"></v-img>
+      <label class="text-h6">{{  data.nombre }}</label>
     </div>
     <div class="body">
       <div class="inputGroup">
 					<label class="labelFor">Categoría</label>
-          <label>{{ editData.tipoEstablecimiento.nombre }}</label>
+          <label>{{ data.tipoEstablecimiento.nombre }}</label>
 			</div>
       <div class="inputGroup">
 					<label class="labelFor">Direcciones</label>
@@ -29,9 +30,11 @@
 </template>
 
 <script lang="ts">
-	import { defineComponent, onMounted, reactive } from 'vue'
+	import { defineComponent } from 'vue'
 	import { computed } from 'vue'
   import router from '@/router'
+  import getById from '@/services/establecimiento/getEstablecimientoById.service'
+  import { useRoute } from 'vue-router'
 	export default defineComponent({
 		name: 'EstablecimientoDetalle',
 	})
@@ -40,34 +43,57 @@
   import DetalleToolbar from '@/components/DetalleToolbar.vue' 
 	import type Establecimiento from '@/services/establecimiento/models/Establecimiento'
   import type { PropType } from 'vue'
-	import { modelStore, noLogoUrl} from '@/main'
+	import { eventCardStore, modelStore, noLogoUrl, uiStore} from '@/main'
   
 		// Props
 	const props = defineProps({
-    data: {
-      type: Object as PropType<Establecimiento>,
-			default: modelStore.establecimiento
-    },
+    // data: {
+    //   type: Object as PropType<Establecimiento>,
+		// 	default: modelStore.establecimiento
+    // },
 		adding: {
 			type: Boolean,
 			default: false
 		}
   })
+  const route = useRoute()
+  console.log(route.params)
+  // Data 
+  let data: Establecimiento = (await getById(route.params['id'].toString())).data as Establecimiento
   // Computed 
-  const mostrarDirecciones = computed(() => {
-    return editData.direcciones.length !== 0
+  const getImageSrc = computed(() => {
+    console.log(data.logo)
+    return data.logo ?  data.logo.content : noLogoUrl
   })
-	// Data
-	let editData = reactive<any>({ ...props.data })
-
+  const mostrarDirecciones = computed(() => {
+    return data.direcciones.length !== 0
+  })
+  const canDelete = computed(() => {
+		return data.borrable
+	})
+  
 	// Methods	
   const onBack = () => {
     router.push('/establecimientos')
   }
 
   const setEdicion = () => {
-    router.replace('/establecimiento-edicion')
+    router.replace(`/establecimiento-edicion/${data.id}`)
   }
+
+  const deleteCard = () => {
+		uiStore.showConfirmDialog({
+			props: {
+				text: '¿Desea eliminar el elemento?',
+				title: 'Confirmación'
+			},
+			aceptarFn: onCloseConfirmDialog
+		})
+	}
+
+	const onCloseConfirmDialog = () => {
+		eventCardStore.deleteCard(data)
+	}
 </script>
 <style lang="scss" scoped>
 .header {
