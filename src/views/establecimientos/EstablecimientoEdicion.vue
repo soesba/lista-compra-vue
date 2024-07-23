@@ -7,7 +7,7 @@
       <v-btn variant="text" color="primary" @click="save()" :disabled="!canSave">Guardar</v-btn>
     </template>
   </detalle-toolbar>
-  <div class="form">
+  <div class="form" v-if="editData">
     <div class="wrapper-logo">
       <v-img class="logo" :src="getImageSrc"></v-img>
       <div class="controles-logo">
@@ -42,15 +42,13 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, ref, toRefs } from 'vue'
+  import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue'
   import { computed } from 'vue'
   import router from '@/router'
   import getById from '@/services/establecimiento/getEstablecimientoById.service'
   import create from '@/services/establecimiento/createEstablecimiento.service'
   import update from '@/services/establecimiento/updateEstablecimiento.service'
   import { fileToBase64 } from '@/utils/utils'
-import type TipoEstablecimientoRequest from '@/services/establecimiento/models/EstablecimientoRequest'
-import type EstablecimientoRequest from '@/services/establecimiento/models/EstablecimientoRequest'
   export default defineComponent({
     name: 'EstablecimientoEdicion',
   })
@@ -59,10 +57,10 @@ import type EstablecimientoRequest from '@/services/establecimiento/models/Estab
   import DetalleToolbar from '@/components/DetalleToolbar.vue'
   import { required, requiredIf } from 'vuelidate/lib/validators'
   import { useVuelidate } from '@vuelidate/core'
-  import type Establecimiento from '@/services/establecimiento/models/Establecimiento'
   import getTipoEstablecimiento from '@/services/tipoEstablecimiento/getTipoEstablecimiento.service'
   import { useRoute } from 'vue-router'
-  import { eventCardStore, noLogoUrl, uiStore } from '@/main'
+  import { noLogoUrl } from '@/main'
+
   // Refs
   const fileUpload = ref(null)
   // Computed
@@ -70,29 +68,38 @@ import type EstablecimientoRequest from '@/services/establecimiento/models/Estab
     return !v$.value.$invalid
   })
   const mostrarDirecciones = computed(() => {
-    return editData.direcciones.length !== 0
+    return editData && editData.value.direcciones ? editData.value.direcciones.length !== 0 : false
   })
   const fileName = computed(() => {
     return selectedFile ? selectedFile.name : ''
   })
   const getImageSrc = computed(() => {
-    return editData.logo  ? editData.logo.content : noLogoUrl
+    return editData.value.logo ? editData.value.logo.content : noLogoUrl
   })
 
   // Data
+  const adding = ref(false)
   const route = useRoute()
-  const adding = route.params['adding'] ? route.params['adding'].toString() : false
-  let editData: any = (await getById(route.params['id'].toString())).data
-  const typeFile = 'image/png, image/gif, image/jpeg'
+  let editData = ref<any>({ borrable: true })
+  if (route.params['id']) {
+    console.log("🚀 ~ onMounted ~ route.params['id']:", route.params['id'])
+    getById(route.params['id'].toString()).then(response => {
+      editData.value = response.data
+    })
+  } else { 
+    adding.value = true
+  }
+
+  const typeFile = 'image/png, image/gif, image/jpeg, image/svg'
   const upload = ''
   let selectedFile = reactive<any>(null)
   const tiposEstablecimientos = (await getTipoEstablecimiento()).data
-  console.log("🚀 ~ editData:", editData)
+
   // Validations
   const validations = computed(() => {
     return {
       editData: {
-        id: { required: requiredIf(!adding) },
+        id: { required: requiredIf(!adding.value) },
         nombre: { required },
         tipoEstablecimiento: { required },
         borrable: { required }
@@ -101,39 +108,46 @@ import type EstablecimientoRequest from '@/services/establecimiento/models/Estab
   })
   // Use the "useVuelidate" function to perform form validation
   const v$ = useVuelidate(validations, { editData })
+
+  onMounted(() => {
+
+  })
   // Methods	
   const onBack = () => {
-    router.push(`/establecimiento-detalle/${editData.id}`)
+    if (adding.value) {
+      router.push('/establecimientos')
+    } else {
+      router.push(`/establecimiento-detalle/${editData.value.id}`)
+    }
   }
 
   const save = async () => {
-    console.log("🚀 ~ save ~ editData:", editData)
     if (selectedFile) {
       const imgBase64 = await fileToBase64(selectedFile)
-      editData.logo = {
+      editData.value.logo = {
         type: selectedFile.type,
         content: imgBase64
       }
     }
-    if (adding) {
-      createEstablecimiento(editData)
+    if (adding.value) {
+      createEstablecimiento(editData.value)
     } else {
-      updateEstablecimiento(editData)
-    }    
+      updateEstablecimiento(editData.value)
+    }
   }
 
   const createEstablecimiento = (data: any) => {
     data.borrable = true
-  create(data).then(response => {    
-    onBack()
-  })
-}
+    create(data).then(response => {
+      onBack()
+    })
+  }
 
-const updateEstablecimiento = (data: any) => {
-  update(data).then(response => {
-    onBack()
-  })
-}
+  const updateEstablecimiento = (data: any) => {
+    update(data).then(response => {
+      onBack()
+    })
+  }
 
   const getFile = () => {
     document.getElementById('upfile')?.click()
@@ -141,13 +155,15 @@ const updateEstablecimiento = (data: any) => {
 
   const onSelectLogo = (evt: any) => {
     selectedFile = evt.target.files[0]
-    console.log("🚀 ~ onSelectLogo ~ selectedFile:", selectedFile)
     if (selectedFile) {
       var reader = new FileReader()
 
       reader.onload = function (e) {
-        editData.logo.type = selectedFile.type
-        editData.logo.content = URL.createObjectURL(selectedFile)
+        if (!editData.value.logo) {
+          editData.value.logo = {}
+        }
+        editData.value.logo.type = selectedFile.type
+        editData.value.logo.content = URL.createObjectURL(selectedFile)
       }
 
       reader.readAsDataURL(selectedFile)
@@ -157,7 +173,7 @@ const updateEstablecimiento = (data: any) => {
   const resetLogo = () => {
     selectedFile = null
     fileUpload.value = null
-    editData.logo = null
+    editData.value.logo = null
   }
 
 </script>

@@ -42,8 +42,7 @@
 <script setup lang="ts">
   import DetalleToolbar from '@/components/DetalleToolbar.vue' 
 	import type Establecimiento from '@/services/establecimiento/models/Establecimiento'
-  import type { PropType } from 'vue'
-	import { eventCardStore, modelStore, noLogoUrl, uiStore} from '@/main'
+	import { eventCardStore, noLogoUrl, uiStore} from '@/main'
   
 		// Props
 	const props = defineProps({
@@ -57,13 +56,11 @@
 		}
   })
   const route = useRoute()
-  console.log(route.params)
   // Data 
   let data: Establecimiento = (await getById(route.params['id'].toString())).data as Establecimiento
   // Computed 
   const getImageSrc = computed(() => {
-    console.log(data.logo)
-    return data.logo ?  data.logo.content : noLogoUrl
+    return data.logo ? data.logo.content : noLogoUrl
   })
   const mostrarDirecciones = computed(() => {
     return data.direcciones.length !== 0
@@ -78,7 +75,7 @@
   }
 
   const setEdicion = () => {
-    router.replace(`/establecimiento-edicion/${data.id}`)
+    router.push(`/establecimiento-edicion/${data.id}`)
   }
 
   const deleteCard = () => {

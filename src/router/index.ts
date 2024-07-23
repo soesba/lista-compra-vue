@@ -35,7 +35,7 @@ const router = createRouter({
       component: () => import('@/views/establecimientos/EstablecimientoDetalle.vue')
     },
     {
-      path: '/establecimiento-edicion/:id',
+      path: '/establecimiento-edicion/:id?',
       name: 'establecimientoEdicion',
       component: () => import('@/views/establecimientos/EstablecimientoEdicion.vue')
     }
