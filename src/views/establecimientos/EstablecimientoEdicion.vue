@@ -42,14 +42,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue'
-  import { computed } from 'vue'
-  import router from '@/router'
-  import getById from '@/services/establecimiento/getEstablecimientoById.service'
-  import create from '@/services/establecimiento/createEstablecimiento.service'
-  import update from '@/services/establecimiento/updateEstablecimiento.service'
-  import { fileToBase64 } from '@/utils/utils'
-  export default defineComponent({
+ export default defineComponent({
     name: 'EstablecimientoEdicion',
   })
 </script>
@@ -60,7 +53,14 @@
   import getTipoEstablecimiento from '@/services/tipoEstablecimiento/getTipoEstablecimiento.service'
   import { useRoute } from 'vue-router'
   import { noLogoUrl } from '@/main'
-
+  import { defineComponent, onMounted, reactive, ref } from 'vue'
+  import { computed } from 'vue'
+  import router from '@/router'
+  import getById from '@/services/establecimiento/getEstablecimientoById.service'
+  import create from '@/services/establecimiento/createEstablecimiento.service'
+  import update from '@/services/establecimiento/updateEstablecimiento.service'
+  import { fileToBase64 } from '@/utils/utils'
+  
   // Refs
   const fileUpload = ref(null)
   // Computed

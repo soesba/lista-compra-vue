@@ -19,7 +19,6 @@ import ArticuloCard from './ArticuloCard.vue';
 import ArticuloCardDialog from './ArticuloCardDialog.vue';
 import TipoEstablecimientoCard from './TipoEstablecimientoCard.vue';
 import TipoEstablecimientoCardDialog from './TipoEstablecimientoCardDialog.vue';
-import EstablecimientoCardDialog from './EstablecimientoCardDialog.vue';
 import EstablecimientoCard from './EstablecimientoCard.vue';
 import router from '@/router';
 export default defineComponent({
@@ -57,8 +56,6 @@ const getComponentDialog = () => {
 			return ArticuloCardDialog
 		case 'TipoEstablecimiento':
 			return TipoEstablecimientoCardDialog
-		case 'EstablecimientoCard':
-			return EstablecimientoCardDialog
 	}
 }
 
