@@ -73,8 +73,8 @@
 	import create from '@/services/establecimiento/createEstablecimiento.service'
 	import update from '@/services/establecimiento/updateEstablecimiento.service'
 	import { fileToBase64 } from '@/utils/utils'
-import type Direccion from '@/services/establecimiento/models/Direccion'
-import type Establecimiento from '@/services/establecimiento/models/Establecimiento'
+	import type Direccion from '@/services/establecimiento/models/Direccion'
+	import type Establecimiento from '@/services/establecimiento/models/Establecimiento'
 	export default defineComponent({
 		name: 'EstablecimientoEdicion',
 	})

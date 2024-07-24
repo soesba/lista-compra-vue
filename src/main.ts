@@ -1,6 +1,6 @@
 import './assets/styles/main.scss'
 
-import { createApp, defineComponent } from 'vue'
+import { createApp } from 'vue'
 import Vuelidate from 'vuelidate'
 import App from './App.vue'
 import router from './router'
@@ -16,12 +16,8 @@ import * as directives from 'vuetify/directives'
 import { loadFonts } from './plugins/webfontloader'
 
 import InterceptorMessages from './services/interceptors/InterceptorMessages'
-import { useRoute } from 'vue-router'
 
 loadFonts()
-export const CustomDialog = defineComponent({
-  name: 'DialogComponent'
-})
 const vuetify = createVuetify({
   components,
   directives

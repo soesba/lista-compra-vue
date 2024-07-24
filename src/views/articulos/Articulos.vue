@@ -1,7 +1,7 @@
 <template>
   <TitleView :titulo="titulo" />
   <SearchBox @search="onSearch"></SearchBox>
-  <CardList :items="list" component="ArticuloCard"/>
+  <CardList :items="list" component="ArticuloCard" class="list"/>
 </template>
 
 <script lang="ts">

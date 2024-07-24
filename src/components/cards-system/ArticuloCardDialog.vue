@@ -14,13 +14,7 @@
 			</v-row>
 			<v-row dense>
 				<v-col cols="12">
-					<v-text-field
-						label="Abreviatura*"
-						required
-						v-model="editData.abreviatura"
-						:error-messages="v$.editData.abreviatura.$errors.map((e) => e.$message)"
-						@blur="v$.editData.abreviatura.$touch"
-					></v-text-field>
+					<v-text-field label="Descripción" v-model="editData.descripcion"></v-text-field>
 				</v-col>
 			</v-row>
 			<small class="text-caption text-medium-emphasis">*campo requerido</small>
@@ -33,19 +27,18 @@
 </template>
 
 <script lang="ts">
-	import { defineComponent, reactive } from 'vue'
+	import { defineComponent, reactive, ref } from 'vue'
 	import { computed } from 'vue'
+	import { required, requiredIf } from 'vuelidate/lib/validators'
+	import { useVuelidate } from '@vuelidate/core'
+	import type Articulo from '@/services/articulo/models/Articulo'
+	import type { PropType } from 'vue'
+	import { eventCardStore, uiStore } from '@/main'
 	export default defineComponent({
 		name: 'ArticuloCardDialog',
 	})
 </script>
 <script setup lang="ts">
-	import { required } from 'vuelidate/lib/validators'
-	import { useVuelidate } from '@vuelidate/core'
-	import type Articulo from '@/services/articulo/models/Articulo'
-	import type { PropType } from 'vue'
-	import { eventCardStore, uiStore } from '@/main'
-
 	// Props
 	const props = defineProps({
 		data: {
@@ -53,26 +46,23 @@
 			default() {
 				return {}
 			},
-		},
-		adding: {
-			type: Boolean,
-			default: false,
-		},
+		}
 	})
 	// Computed
 	const getTitle = computed(() => {
-		return props.adding ? 'Nuevo tipo de unidad' : props.data.nombre
+		return adding ? 'Nuevo artículo' : props.data.nombre
 	})
 	// Data
+	const adding = !props.data.id
 	let editData = reactive<any>({ ...props.data })
 	console.log('🚀 ~ editData:', editData)
 	// Validations
 	const validations = computed(() => {
 		return {
 			editData: {
-				id: { required },
+				id: { required: requiredIf(!adding) },
 				nombre: { required },
-				abreviatura: { required },
+				descripcion: {},
 				borrable: { required },
 			},
 		}
@@ -87,7 +77,7 @@
 
 	const save = () => {
 		console.log('🚀 ~ save ~ editData:', editData)
-		eventCardStore.saveCard({ adding: props.adding, data: editData })
+		eventCardStore.saveCard({ adding: adding, data: editData })
 		uiStore.hideCustomDialog()
 	}
 </script>

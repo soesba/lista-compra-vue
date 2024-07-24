@@ -19,6 +19,19 @@ export default class ArticuloRepositoryImpl implements ArticuloRepository {
     return result
   }
 
+  async getById (id: string): Promise<ArticuloResponse> {
+    const endpoint = `/articulo/getByAny/${id}`
+    const headers = {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+    const response = await xhr.get(endpoint, { headers})
+    const result = {
+      data: DTOtoModel(response.data),
+      respuesta: response.status
+    }
+    return result
+  }
+
   async getByAny (request: string): Promise<ArticuloResponse> {
     const endpoint = `/articulo/getByAny/${request}`
     const headers = {

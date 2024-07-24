@@ -1,12 +1,17 @@
 <template>
 	<v-card>
-		<v-card-title>{{ cardData.nombre }}</v-card-title>
+		<v-card-title>
+			<div>
+				{{ cardData.nombre }}
+			</div>
+			<v-icon icon="mdi-pencil-circle" color="primary" @click="editCard()"></v-icon>
+		</v-card-title>
 		<v-card-text>{{ cardData.descripcion }}</v-card-text>
-		<v-card-text class="text-small">Creado: {{ cardData.fechaCreacion }}</v-card-text>
-		<v-card-actions>
+		<!--<v-card-text class="text-small">Creado: {{ cardData.fechaCreacion }}</v-card-text>
+		 <v-card-actions>
 			<v-btn icon="mdi-pencil-circle" color="primary" @click="editCard()"></v-btn>
 			<v-btn icon="mdi-delete-circle" color="secondary" @click="deleteCard()" :disabled="!canDelete"></v-btn>
-		</v-card-actions>
+		</v-card-actions> -->
 	</v-card>
 </template>
 
@@ -22,16 +27,16 @@
 	import type Articulo from '@/services/articulo/models/Articulo'
 	import type { PropType } from 'vue'
 	import { computed, ref, markRaw } from 'vue'
-	
+
 	// Props
 	const props = defineProps({
 		cardData: {
 			type: Object as PropType<Articulo>,
 			default() {
 				return {}
-			}
+			},
 		},
-	})	
+	})
 	// Data
 	let data = ref(props.cardData)
 	// Computed
@@ -43,8 +48,8 @@
 		uiStore.showCustomDialog({
 			component: markRaw(ArticuloCardDialog),
 			props: {
-				data: data					
-			}
+				data: data,
+			},
 		})
 	}
 
@@ -53,9 +58,9 @@
 		uiStore.showConfirmDialog({
 			props: {
 				text: '¿Desea eliminar el elemento?',
-				title: 'Confirmación'
+				title: 'Confirmación',
 			},
-			aceptarFn: onCloseConfirmDialog
+			aceptarFn: onCloseConfirmDialog,
 		})
 	}
 
@@ -64,6 +69,14 @@
 	}
 </script>
 <style lang="scss" scoped>
-.v-card {
-	margin: 10px;
-}</style>
+	.v-card {
+		margin: 10px;
+		.v-card-title {
+			display: flex;
+			flex-direction: row;
+			div:first-of-type {
+				flex: 2;
+			}
+		}
+	}
+</style>

@@ -37,7 +37,7 @@
 	import { required, requiredIf } from 'vuelidate/lib/validators'
 	import { useVuelidate } from '@vuelidate/core'
 	import type TipoUnidad from '@/services/tipoUnidad/models/TipoUnidad'
-  import type { PropType } from 'vue'
+  	import type { PropType } from 'vue'
 	import { eventCardStore, uiStore } from '@/main'
 
 		// Props
