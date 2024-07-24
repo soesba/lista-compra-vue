@@ -2,6 +2,7 @@ import type Direccion from "./Direccion";
 
 export default interface Establecimiento {
   id: string;
+  tmpId?: string;
   nombre: string;
   tipoEstablecimiento: {
     id: string;

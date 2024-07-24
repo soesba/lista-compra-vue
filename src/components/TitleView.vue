@@ -1,13 +1,13 @@
 <template>
-    <div class="title-container">
-			<h2>{{  titulo  }}</h2>
-		</div>
+	<div class="title-container">
+		<h2>{{ titulo }}</h2>
+	</div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
-export default defineComponent({
-	name: 'TitleView'
-})
+	import { defineComponent } from 'vue'
+	export default defineComponent({
+		name: 'TitleView'
+	})
 </script>
 <script setup lang="ts">
 	defineProps({
@@ -15,8 +15,8 @@ export default defineComponent({
 	})
 </script>
 <style lang="scss" scoped>
-.title-container {
-	padding: 10px;
-	text-align: center;
-}
+	.title-container {
+		padding: 10px;
+		text-align: center;
+	}
 </style>
