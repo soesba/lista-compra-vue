@@ -139,7 +139,6 @@
   }
 
   const onUpdateDireccion = (data: Establecimiento) => {
-    console.log("🚀 ~ onUpdateDireccion ~ data:", data)
     editData.value.direcciones = editData.value.direcciones.map((item: any) => {      
       if ((data.id && item.id === data.id) ||
         (data.tmpId && data.tmpId === item.tmpId)) {
@@ -171,6 +170,7 @@
 	}
 
 	const createEstablecimiento = (data: any) => {
+		console.log("🚀 ~ createEstablecimiento ~ data:", data)
 		create(data).then((response) => {
 			onBack()
 		})

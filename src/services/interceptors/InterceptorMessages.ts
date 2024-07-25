@@ -20,10 +20,6 @@ export default class InterceptorMessages implements Interceptor {
     axiosInstance.interceptors.response.use((response) => {
       console.log("🚀 ~ InterceptorMessages ~ axiosInstance.interceptors.response.use ~ response:", response)
       // Handle the response here
-      if (response.status !== 200) {
-        console.log("🚀 ~ InterceptorMessages ~ axiosInstance.interceptors.response.use ~ response.status:", response.status)
-        
-      }
       return response
     }, (error) => {
       // Handle errors here
@@ -32,7 +28,8 @@ export default class InterceptorMessages implements Interceptor {
         type: 'error'
       })
       console.error(error)
-      return Promise.reject(error)
+      // return Promise.reject(error)
+      return error
     })        
   }
 }

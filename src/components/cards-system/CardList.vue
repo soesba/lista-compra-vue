@@ -63,7 +63,7 @@
 				return TipoUnidadCardDialog
 			case 'ArticuloCard':
 				return ArticuloCardDialog
-			case 'TipoEstablecimiento':
+			case 'TipoEstablecimientoCard':
 				return TipoEstablecimientoCardDialog
 		}
 	}

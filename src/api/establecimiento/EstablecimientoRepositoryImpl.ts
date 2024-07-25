@@ -66,9 +66,7 @@ export default class EstablecimientoRepositoryImpl implements EstablecimientoRep
       'Content-Type': 'application/json;charset=UTF-8'
     }
     const requestDTO = requestModelToDTO(request)
-    console.log("🚀 ~ EstablecimientoRepositoryImpl ~ update ~ requestDTO:", requestDTO)
     const response = await xhr.put(endpoint, requestDTO, { headers})
-    console.log("🚀 ~ EstablecimientoRepositoryImpl ~ update ~ response:", response)
     const result = {
       data: DTOtoModel(response.data),
       respuesta: response.status

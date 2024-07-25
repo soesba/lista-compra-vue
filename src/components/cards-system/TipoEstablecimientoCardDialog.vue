@@ -55,7 +55,7 @@
   })
 	// Computed 
 	const getTitle = computed(() => {
-		return props.adding ? 'Nuevo tipo de unidad' : props.data.nombre
+		return props.adding ? 'Nueva categoría' : props.data.nombre
 	})
 	const canSave = computed(() => {
 		return !v$.value.$invalid

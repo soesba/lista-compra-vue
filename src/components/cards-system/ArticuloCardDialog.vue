@@ -17,21 +17,37 @@
 					<v-text-field label="Descripción" v-model="editData.descripcion"></v-text-field>
 				</v-col>
 			</v-row>
+			<v-row dense>
+				<v-col cols="12">
+					<v-select
+						label="Unidades de medida (máx 2)*"
+						required
+						multiple
+						v-model="editData.tiposUnidad"
+						:items="listaTiposUnidad"
+						item-title="nombre"
+						item-value="id"
+						:error-messages="v$.editData.tiposUnidad.$errors.map((e: any) => e.$message)"
+						@update:modelValue="v$.editData.tiposUnidad.$touch"
+					></v-select>
+				</v-col>
+			</v-row>
 			<small class="text-caption text-medium-emphasis">*campo requerido</small>
 		</v-card-text>
 		<template v-slot:actions>
-			<v-btn class="ml-auto" text="Aceptar" @click="save()"></v-btn>
+			<v-btn class="ml-auto" text="Aceptar" @click="save()" :disabled="!canSave"></v-btn>
 			<v-btn class="ml-auto" text="Cancelar" @click="cancel()"></v-btn>
 		</template>
 	</v-card>
 </template>
 
 <script lang="ts">
-	import { defineComponent, reactive, ref } from 'vue'
+	import { defineComponent, reactive } from 'vue'
 	import { computed } from 'vue'
 	import { required, requiredIf } from 'vuelidate/lib/validators'
 	import { useVuelidate } from '@vuelidate/core'
 	import type Articulo from '@/services/articulo/models/Articulo'
+	import get from '@/services/tipoUnidad/getTipoUnidad.service'
 	import type { PropType } from 'vue'
 	import { eventCardStore, uiStore } from '@/main'
 	export default defineComponent({
@@ -52,23 +68,32 @@
 	const getTitle = computed(() => {
 		return adding ? 'Nuevo artículo' : props.data.nombre
 	})
+	const canSave = computed(() => {
+		return !v$.value.editData.$invalid
+	})
 	// Data
 	const adding = !props.data.id
 	let editData = reactive<any>({ ...props.data })
+	const listaTiposUnidad = (await get()).data
 	console.log('🚀 ~ editData:', editData)
 	// Validations
 	const validations = computed(() => {
+		const maxTiposUnidad = (value: any) => {
+			return value.length <= 2
+		}
 		return {
 			editData: {
 				id: { required: requiredIf(!adding) },
 				nombre: { required },
 				descripcion: {},
+				tiposUnidad: { required, maxTiposUnidad },
 				borrable: { required },
 			},
 		}
 	})
 	// Use the "useVuelidate" function to perform form validation
 	const v$ = useVuelidate(validations, { editData })
+
 	// Methods
 	const cancel = () => {
 		eventCardStore.cancelCard()

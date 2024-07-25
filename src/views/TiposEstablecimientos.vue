@@ -36,7 +36,7 @@ const suscribe = eventCardStore.$onAction(({args, name}) => {
   }
 })
 // Data
-const titulo = ref('Tipos de establecimientos')
+const titulo = ref('Categorías de establecimientos')
 const list = ref()
 
 onMounted(() => {

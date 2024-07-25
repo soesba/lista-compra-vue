@@ -1,5 +1,5 @@
 <template>
-  <v-alert v-if="show" closable :text="text" :variant="variant" :type="type"></v-alert>
+  <v-alert v-if="show" :icon="icon" closable :text="text" :variant="variant" :type="type"></v-alert>
 </template>
 <script lang="ts">
 import { uiStore } from '@/main';
@@ -20,8 +20,11 @@ name: 'AlertComponent'
 		return uiStore.getAlertComponent?.props.type
 	})
   const variant = computed(() => {
-		return uiStore.getAlertComponent?.props.variant || 'tonal'
+		return uiStore.getAlertComponent?.props.variant || 'flat'
 	})
+  const icon = computed(() => {
+    return type.value === 'error' ? 'mdi-alert-circle-outline' : ''
+  })
 
   onMounted(() => {
    const vAlert = document.getElementsByClassName('v-alert__close')[0]
@@ -32,4 +35,9 @@ name: 'AlertComponent'
   })
 </script>
 <style lang="scss" scoped>
+  .v-alert {
+    position: fixed;
+    z-index: 100;
+    width: 100%;
+  }
 </style>
