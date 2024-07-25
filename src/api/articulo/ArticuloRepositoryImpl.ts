@@ -20,7 +20,7 @@ export default class ArticuloRepositoryImpl implements ArticuloRepository {
   }
 
   async getById (id: string): Promise<ArticuloResponse> {
-    const endpoint = `/articulo/getByAny/${id}`
+    const endpoint = `/articulo/getById/${id}`
     const headers = {
       'Content-Type': 'application/json;charset=UTF-8'
     }

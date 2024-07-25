@@ -14,9 +14,15 @@
 		</template>
 	</detalle-toolbar>
 	<div class="form">
-		<div class="body">
-			<label class="text-h6">{{ data.nombre }}</label>
-			<label class="text-h6">{{ data.descripcion }}</label>
+		<div class="header">
+			<div class="text-h6">{{ data.nombre }}</div>
+			<div class="text-body-2">{{ data.descripcion }}</div>
+		</div>
+		<div class="body">			
+			<div class="inputGroup">
+				<div class="labelFor">Unidades de medida: </div>
+				<div class="text-body-1" v-for="tipoUnidad in data.tiposUnidad">{{  tipoUnidad.nombre }}</div>
+			</div>
 			<div class="inputGroup">
 				<label class="labelFor">Histórico</label>
 			</div>

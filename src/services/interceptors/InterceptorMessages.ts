@@ -20,15 +20,25 @@ export default class InterceptorMessages implements Interceptor {
     axiosInstance.interceptors.response.use((response) => {
       console.log("🚀 ~ InterceptorMessages ~ axiosInstance.interceptors.response.use ~ response:", response)
       // Handle the response here
+      if (response.status !== 200) {
+        uiStore.showAlertComponent({
+          text: response.data.message,
+          type: 'error'
+        })
+        
+      }
       return response
     }, (error) => {
       // Handle errors here
-      uiStore.showAlertComponent({
-        text: error.response.data.message,
-        type: 'error'
-      })
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        uiStore.showAlertComponent({
+          text: error.response.data.message,
+          type: 'error'
+        })
+      }
       console.error(error)
-      // return Promise.reject(error)
       return error
     })        
   }

@@ -1,5 +1,5 @@
 <template>
-	<v-card>
+	<v-card @click="editCard()">
 		<v-card-title>
 			<div>
 				{{ cardData.nombre }}
@@ -18,6 +18,7 @@
 <script lang="ts">
 	import { eventCardStore, uiStore } from '@/main'
 	import { defineComponent } from 'vue'
+import router from '@/router'
 	export default defineComponent({
 		name: 'ArticuloCard',
 	})
@@ -45,12 +46,7 @@
 	})
 	// Methods
 	const editCard = () => {
-		uiStore.showCustomDialog({
-			component: markRaw(ArticuloCardDialog),
-			props: {
-				data: data,
-			},
-		})
+		router.push(`/articulo-detalle/${data.value.id}`)
 	}
 
 	const deleteCard = () => {
