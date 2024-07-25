@@ -1,12 +1,12 @@
 <template>
-	<v-card>
+	<v-card @click="editCard()">
 		<v-card-title>
-			<div @click="detalleCard()">
-				{{ cardData.nombre }}
+			<div>
+				{{ cardData.establecimiento.nombre }}
 			</div>
 			<v-icon icon="mdi-pencil-circle" color="primary" @click="editCard()"></v-icon>
 		</v-card-title>
-		<v-card-text @click="detalleCard()">{{ cardData.descripcion }}</v-card-text>
+		<v-card-text>{{ cardData.fechaCompra }}</v-card-text>
 		<!--<v-card-text class="text-small">Creado: {{ cardData.fechaCreacion }}</v-card-text>
 		 <v-card-actions>
 			<v-btn icon="mdi-pencil-circle" color="primary" @click="editCard()"></v-btn>
@@ -20,19 +20,18 @@
 	import { defineComponent } from 'vue'
 import router from '@/router'
 	export default defineComponent({
-		name: 'ArticuloCard',
+		name: 'CompraCard',
 	})
 </script>
 <script setup lang="ts">
-	import ArticuloCardDialog from './ArticuloCardDialog.vue'
-	import type Articulo from '@/services/articulo/models/Articulo'
+	import type Compra from '@/services/compra/models/Compra'
 	import type { PropType } from 'vue'
 	import { computed, ref, markRaw } from 'vue'
 
 	// Props
 	const props = defineProps({
 		cardData: {
-			type: Object as PropType<Articulo>,
+			type: Object as PropType<Compra>,
 			default() {
 				return {}
 			},
@@ -46,15 +45,7 @@ import router from '@/router'
 	})
 	// Methods
 	const editCard = () => {
-		uiStore.showCustomDialog({
-			component: markRaw(ArticuloCardDialog),
-			props: {
-				data: data					
-			}
-		})
-	}
-	const detalleCard = () => {
-		router.push(`/articulo-detalle/${data.value.id}`)
+		router.push(`/compra-detalle/${data.value.id}`)
 	}
 
 	const deleteCard = () => {

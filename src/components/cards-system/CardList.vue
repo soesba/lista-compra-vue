@@ -71,6 +71,8 @@
 	const addCard = () => {
 		if (props.component === 'EstablecimientoCard') {
 			router.push('/establecimiento-edicion')
+		} else if (props.component === 'CompraCard') {
+			router.push('/compra-edicion')
 		} else {
 			uiStore.showCustomDialog({
 				component: markRaw(getComponentDialog() as object),

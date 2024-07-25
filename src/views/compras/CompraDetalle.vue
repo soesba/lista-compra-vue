@@ -4,6 +4,7 @@
 			<v-btn icon="mdi-arrow-left" @click="onBack" variant="text" color="primary"></v-btn>
 		</template>
 		<template v-slot:right>
+			<v-btn icon="mdi-pencil" variant="text" color="primary" @click="setEdicion()"></v-btn>
 			<v-btn
 				icon="mdi-delete"
 				variant="text"
@@ -15,17 +16,22 @@
 	</detalle-toolbar>
 	<div class="form">
 		<div class="header">
-			<div class="text-h6">{{ data.nombre }}</div>
-			<div class="text-body-2">{{ data.descripcion }}</div>
+			<label class="text-h6">{{ data.fechaCompra }} {{ data.establecimiento?.nombre }} {{ data.factura }}</label>
 		</div>
-		<div class="body">			
+		<div class="body">
 			<div class="inputGroup">
-				<div class="labelFor">Unidades de medida: </div>
-				<div class="text-body-1" v-for="tipoUnidad in data.tiposUnidad">{{  tipoUnidad.nombre }}</div>
+				<label class="labelFor">Categoría</label>
+				<label>{{ data.establecimiento?.nombre }}</label>
 			</div>
 			<div class="inputGroup">
-				<label class="labelFor">Histórico</label>
+				<label class="labelFor">Direcciones</label>
+				<label v-if="!mostrarArticulos"> No hay direcciones </label>
 			</div>
+      <div v-if="mostrarArticulos" v-for="articulo in data.articulos" class="inputGroup indent">
+        <label>{{articulo.articulo.nombre}}</label>
+        <label>{{articulo.cantidad}}</label>
+        <label>{{articulo.precioUnitario}}</label>
+      </div>
 		</div>
 	</div>
 </template>
@@ -34,23 +40,22 @@
 	import { defineComponent } from 'vue'
 	import { computed } from 'vue'
 	import router from '@/router'
-	import getById from '@/services/articulo/getArticuloById.service'
+	import getById from '@/services/compra/getCompraById.service'
 	import { useRoute } from 'vue-router'
-	import DetalleToolbar from '@/components/DetalleToolbar.vue'
-	import { eventCardStore, uiStore } from '@/main'
-	import type Articulo from '@/services/articulo/models/Articulo'
 	export default defineComponent({
-		name: 'ArticuloDetalle',
+		name: 'CompraDetalle',
 	})
 </script>
 <script setup lang="ts">
-	
+	import DetalleToolbar from '@/components/DetalleToolbar.vue'
+	import type Compra from '@/services/compra/models/Compra'
+	import { eventCardStore, noLogoUrl, uiStore } from '@/main'
 
 	// Props
 	const props = defineProps({
 		// data: {
-		//   type: Object as PropType<Establecimiento>,
-		// 	default: modelStore.establecimiento
+		//   type: Object as PropType<Compra>,
+		// 	default: modelStore.compra
 		// },
 		adding: {
 			type: Boolean,
@@ -59,15 +64,22 @@
 	})
 	const route = useRoute()
 	// Data
-	let data: Articulo = (await getById(route.params['id'].toString())).data as Articulo
+	let data: Compra = (await getById(route.params['id'].toString())).data as Compra
 	// Computed
+	const mostrarArticulos = computed(() => {
+		return data.articulos.length !== 0
+	})
 	const canDelete = computed(() => {
 		return data.borrable
 	})
 
 	// Methods
 	const onBack = () => {
-		router.push('/articulos')
+		router.push('/compras')
+	}
+
+	const setEdicion = () => {
+		router.push(`/compra-edicion/${data.id}`)
 	}
 
 	const deleteCard = () => {

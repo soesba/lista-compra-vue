@@ -28,6 +28,7 @@
 		<div class="body">
 			<div class="inputGroup">
 				<v-text-field
+					variant="underlined"
 					label="Nombre*"
 					required
 					v-model="editData.nombre"
@@ -38,6 +39,7 @@
 			</div>
 			<div class="inputGroup">
 				<v-select
+				variant="underlined"
 					label="Categoría*"
 					required
 					v-model="editData.tipoEstablecimiento"

@@ -43,6 +43,16 @@ const router = createRouter({
       path: '/establecimiento-edicion/:id?',
       name: 'establecimientoEdicion',
       component: () => import('@/views/establecimientos/EstablecimientoEdicion.vue')
+    },
+    {
+      path: '/compras',
+      name: 'compras',
+      component: () => import('@/views/compras/Compras.vue')
+    },
+    {
+      path: '/compra-edicion/:id?',
+      name: 'compraEdicion',
+      component: () => import('@/views/compras/CompraEdicion.vue')
     }
   ]
 })

@@ -4,6 +4,7 @@
 			<v-row dense>
 				<v-col cols="12">
 					<v-text-field
+						variant="underlined"
 						label="Nombre*"
 						required
 						v-model="editData.nombre"
@@ -14,12 +15,13 @@
 			</v-row>
 			<v-row dense>
 				<v-col cols="12">
-					<v-text-field label="Descripción" v-model="editData.descripcion"></v-text-field>
+					<v-text-field variant="underlined" label="Descripción" v-model="editData.descripcion"></v-text-field>
 				</v-col>
 			</v-row>
 			<v-row dense>
 				<v-col cols="12">
 					<v-select
+						variant="underlined"
 						label="Unidades de medida (máx 2)*"
 						required
 						multiple

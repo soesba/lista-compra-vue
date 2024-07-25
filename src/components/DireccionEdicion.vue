@@ -4,7 +4,7 @@
 			<v-text-field
 				label="Dirección*"
 				required
-        :variant="props.direccion ? 'outlined' : 'filled'"
+        :variant="props.direccion ? 'outlined' : 'underlined'"
 				v-model="nuevaDireccion.direccion"
 				:error-messages="v$.nuevaDireccion.direccion.$errors.map((e: any) => e.$message)"
 				@blur="txtDireccionOnBlur"
@@ -39,7 +39,7 @@
 			<v-text-field
 				type="number"
 				label="C.Postal"
-        :variant="props.direccion ? 'outlined' : 'filled'"
+        :variant="props.direccion ? 'outlined' : 'underlined'"
 				v-model="nuevaDireccion.codPostal"
 				:hide-spin-buttons="true"
 				max-width="100"
@@ -48,7 +48,7 @@
 			></v-text-field>
 			<v-text-field
         label="Población"
-        :variant="props.direccion ? 'outlined' : 'filled'"
+        :variant="props.direccion ? 'outlined' : 'underlined'"
         v-model="nuevaDireccion.poblacion"
         @blur="txtPoblacionOnBlur"
       ></v-text-field>
@@ -100,7 +100,6 @@
 	// Methods
   const setFavorita = () => {
     nuevaDireccion.value.favorita = !nuevaDireccion.value.favorita
-    console.log("🚀 ~ setFavorita ~ nuevaDireccion.value:", nuevaDireccion.value)
     emitter('updateDireccion', nuevaDireccion.value)
   }
 

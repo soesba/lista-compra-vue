@@ -3,7 +3,8 @@
 		<v-card-text>
 			<v-row dense>
 				<v-col cols="12">
-					<v-text-field label="Nombre*" required v-model="editData.nombre"
+					<v-text-field
+						variant="underlined" label="Nombre*" required v-model="editData.nombre"
 						:error-messages="v$.editData.nombre.$errors.map(e => e.$message)"
 						@blur="v$.editData.nombre.$touch"
 						@input="v$.editData.nombre.$touch"></v-text-field>
@@ -11,10 +12,11 @@
 			</v-row>
 			<v-row dense>
 				<v-col cols="12">
-					<v-text-field label="Abreviatura*" required v-model="editData.abreviatura"
-					:error-messages="v$.editData.abreviatura.$errors.map(e => e.$message)"
-					@blur="v$.editData.abreviatura.$touch"
-					@input="v$.editData.abreviatura.$touch"></v-text-field>
+					<v-text-field
+						variant="underlined" label="Abreviatura*" required v-model="editData.abreviatura"
+						:error-messages="v$.editData.abreviatura.$errors.map(e => e.$message)"
+						@blur="v$.editData.abreviatura.$touch"
+						@input="v$.editData.abreviatura.$touch"></v-text-field>
 				</v-col>
 			</v-row>
 			<small class="text-caption text-medium-emphasis">*campo requerido</small>
