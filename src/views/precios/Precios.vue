@@ -1,23 +1,23 @@
 <template>
   <TitleView :titulo="titulo" />
   <SearchBox @search="onSearch"></SearchBox>
-  <CardList :items="list" component="CompraCard" class="list"/>
+  <CardList :items="listaPrecios" component="PrecioCard" class="list"/>
 </template>
 
 <script lang="ts">
 import { onMounted, ref } from 'vue'
 import { CardList, TitleView, SearchBox } from '@/components'
-import get from '@/services/compra/getCompra.service'
-import getByAny from '@/services/compra/getCompraByAny.service'
-import create from '@/services/compra/createCompra.service'
-import update from '@/services/compra/updateCompra.service'
-import deleteItem from '@/services/compra/deleteCompra.service'
+import get from '@/services/precio/getPrecio.service'
+import getByAny from '@/services/precio/getPrecioByAny.service'
+import create from '@/services/precio/createPrecio.service'
+import update from '@/services/precio/updatePrecio.service'
+import deleteItem from '@/services/precio/deletePrecio.service'
 import { defineComponent } from 'vue'
 import { eventCardStore } from '@/main';
-import type CompraRequest from '@/services/compra/models/CompraRequest'
-import type CompraResponse from '@/services/compra/models/CompraResponse'
+import type PrecioRequest from '@/services/precio/models/PrecioRequest'
+import type PrecioResponse from '@/services/precio/models/PrecioResponse'
 export default defineComponent({
-  name: 'Compras'
+  name: 'Precios'
 })
 </script>
 
@@ -36,8 +36,8 @@ const suscribe = eventCardStore.$onAction(({args, name}) => {
   }
 })
 // Data
-const titulo = ref('Compras')
-const list = ref()
+const titulo = ref('Precios')
+const listaPrecios = ref()
 
 onMounted(() => {
   getAllData()
@@ -45,8 +45,8 @@ onMounted(() => {
 
 // Methods
 const getAllData = () => {
-  get().then((response: CompraResponse) => {
-    list.value = response.data
+  get().then((response: PrecioResponse) => {
+    listaPrecios.value = response.data
   })
 }
 
@@ -70,7 +70,7 @@ const onSaveCard = (cardData: any) => {
   }
 }
 
-const createCard = (card: CompraRequest) => {
+const createCard = (card: PrecioRequest) => {
   card.borrable = true
   create(card).then(response => {
     if (response.respuesta === 200) {
@@ -80,7 +80,7 @@ const createCard = (card: CompraRequest) => {
   })
 }
 
-const updateCard = (card: CompraRequest) => {
+const updateCard = (card: PrecioRequest) => {
   update(card).then(response => {
     if (response.respuesta === 200) {
       getAllData()
@@ -91,8 +91,8 @@ const updateCard = (card: CompraRequest) => {
 
 const onSearch = (evt: any) => {
   if (evt) {
-    getByAny(evt).then((response:CompraResponse) => {
-      list.value = response.data
+    getByAny(evt).then((response:PrecioResponse) => {
+      listaPrecios.value = response.data
     })
   } else {
     getAllData()

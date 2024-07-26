@@ -16,23 +16,23 @@
 	</detalle-toolbar>
 	<div class="form">
 		<div class="header">
-			<label class="text-h6">{{ data.fechaCompra }} {{ data.establecimiento?.nombre }} {{ data.factura }}</label>
+			<label class="text-h6">{{ data.fechaCompra }} {{ data.establecimiento?.nombre }} </label>
 		</div>
 		<div class="body">
 			<div class="inputGroup">
 				<label class="labelFor">Categoría</label>
 				<label>{{ data.establecimiento?.nombre }}</label>
 			</div>
-			<div class="inputGroup">
-				<label class="labelFor">Direcciones</label>
-				<label v-if="!mostrarArticulos"> No hay direcciones </label>
+			<!-- <div class="inputGroup">
+				<label class="labelFor">Articulos</label>
+				<label v-if="!mostrarArticulos"> No hay articulos </label>
 			</div>
       <div v-if="mostrarArticulos" v-for="articulo in data.articulos" class="inputGroup indent">
         <label>{{articulo.articulo.nombre}}</label>
         <label>{{articulo.cantidad}}</label>
         <label>{{articulo.precioUnitario}}</label>
-      </div>
-		</div>
+      </div>-->
+		</div> 
 	</div>
 </template>
 
@@ -40,7 +40,7 @@
 	import { defineComponent } from 'vue'
 	import { computed } from 'vue'
 	import router from '@/router'
-	import getById from '@/services/compra/getCompraById.service'
+	import getById from '@/services/precio/getPrecioById.service'
 	import { useRoute } from 'vue-router'
 	export default defineComponent({
 		name: 'CompraDetalle',
@@ -48,14 +48,14 @@
 </script>
 <script setup lang="ts">
 	import DetalleToolbar from '@/components/DetalleToolbar.vue'
-	import type Compra from '@/services/compra/models/Compra'
+	import type Precio from '@/services/precio/models/Precio'
 	import { eventCardStore, noLogoUrl, uiStore } from '@/main'
 
 	// Props
 	const props = defineProps({
 		// data: {
-		//   type: Object as PropType<Compra>,
-		// 	default: modelStore.compra
+		//   type: Object as PropType<Precio>,
+		// 	default: modelStore.precio
 		// },
 		adding: {
 			type: Boolean,
@@ -64,22 +64,19 @@
 	})
 	const route = useRoute()
 	// Data
-	let data: Compra = (await getById(route.params['id'].toString())).data as Compra
+	let data: Precio = (await getById(route.params['id'].toString())).data as Precio
 	// Computed
-	const mostrarArticulos = computed(() => {
-		return data.articulos.length !== 0
-	})
 	const canDelete = computed(() => {
 		return data.borrable
 	})
 
 	// Methods
 	const onBack = () => {
-		router.push('/compras')
+		router.push('/precios')
 	}
 
 	const setEdicion = () => {
-		router.push(`/compra-edicion/${data.id}`)
+		router.push(`/precio-edicion/${data.id}`)
 	}
 
 	const deleteCard = () => {

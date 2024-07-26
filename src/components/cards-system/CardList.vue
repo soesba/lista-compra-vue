@@ -26,14 +26,14 @@
 	import TipoEstablecimientoCardDialog from './TipoEstablecimientoCardDialog.vue'
 	import EstablecimientoCard from './EstablecimientoCard.vue'
 	import router from '@/router'
+import PrecioCard from './PrecioCard.vue'
 	export default defineComponent({
 		name: 'CardList',
 	})
 </script>
 <script setup lang="ts">
-	import type TipoUnidad from '@/services/tipoUnidad/models/TipoUnidad'
 	const props = defineProps({
-		items: Array<TipoUnidad>,
+		items: Array<any>,
 		component: String,
 		addButton: {
 			type: Boolean,
@@ -54,6 +54,8 @@
 				return TipoEstablecimientoCard
 			case 'EstablecimientoCard':
 				return EstablecimientoCard
+			case 'PrecioCard': 
+			return PrecioCard
 		}
 	}
 
@@ -71,8 +73,8 @@
 	const addCard = () => {
 		if (props.component === 'EstablecimientoCard') {
 			router.push('/establecimiento-edicion')
-		} else if (props.component === 'CompraCard') {
-			router.push('/compra-edicion')
+		} else if (props.component === 'PrecioCard') {
+			router.push('/precio-edicion')
 		} else {
 			uiStore.showCustomDialog({
 				component: markRaw(getComponentDialog() as object),

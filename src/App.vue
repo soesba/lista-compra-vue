@@ -15,8 +15,22 @@
 <script setup lang="ts">
 import { ConfirmDialog, DialogComponent, AlertComponent } from '@/components/index'
 import { Navigation } from '@/components/index'
-import { markRaw } from 'vue';
+import { markRaw, onMounted } from 'vue';
+import type ArticuloResponse from './services/articulo/models/ArticuloResponse';
+import get from './services/articulo/getArticulo.service';
+import { modelStore } from './main';
+import type Articulo from './services/articulo/models/Articulo';
 
 const rawDialogComponent = markRaw(DialogComponent)
 const rawConfirmDialog = markRaw(ConfirmDialog)
+
+onMounted (() => {
+  getAllArticulos()
+})
+// Methods
+const getAllArticulos = () => {
+  get().then((response: ArticuloResponse) => {
+    modelStore.setArticulos(response.data as Articulo[])
+  })
+}
 </script>

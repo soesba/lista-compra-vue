@@ -82,7 +82,7 @@
 	import type { PropType } from 'vue'
 	import { computed, defineComponent, ref } from 'vue'
   import get from '@/services/articulo/getArticulo.service'
-  import type ArticuloCompra from '@/services/compra/models/ArticuloCompra'
+  import type ArticuloCompra from '@/services/precio/models/ArticuloCompra'
 	export default defineComponent({
 		name: 'ArticulosCompra',
 	})

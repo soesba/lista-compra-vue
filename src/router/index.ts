@@ -45,14 +45,19 @@ const router = createRouter({
       component: () => import('@/views/establecimientos/EstablecimientoEdicion.vue')
     },
     {
-      path: '/compras',
-      name: 'compras',
-      component: () => import('@/views/compras/Compras.vue')
+      path: '/precios',
+      name: 'precios',
+      component: () => import('@/views/precios/Precios.vue')
     },
     {
-      path: '/compra-edicion/:id?',
-      name: 'compraEdicion',
-      component: () => import('@/views/compras/CompraEdicion.vue')
+      path: '/precio-edicion/:id?',
+      name: 'precioEdicion',
+      component: () => import('@/views/precios/PrecioEdicion.vue')
+    },
+    {
+      path: '/precio-detalle/:id?',
+      name: 'precioDetalle',
+      component: () => import('@/views/precios/PrecioDetalle.vue')
     }
   ]
 })

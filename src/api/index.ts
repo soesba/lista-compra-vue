@@ -1,5 +1,5 @@
 import ArticuloFactory from "./articulo/ArticuloFactory"
-import CompraFactory from "./compra/CompraFactory"
+import PrecioFactory from "./precio/PrecioFactory"
 import EstablecimientoFactory from "./establecimiento/EstablecimientoFactory"
 import TipoEstablecimientoFactory from "./tipoEstablecimiento/TipoEstablecimientoFactory"
 import TipoUnidadFactory from "./tipoUnidad/TipoUnidadFactory"
@@ -9,6 +9,6 @@ const API = {
   ArticuloRepository: ArticuloFactory.getInstance(),
   TipoEstablecimientoRepository: TipoEstablecimientoFactory.getInstance(),
   EstablecimientoRepository: EstablecimientoFactory.getInstance(),
-  CompraRepository: CompraFactory.getInstance()
+  PrecioRepository: PrecioFactory.getInstance()
 }
 export default API

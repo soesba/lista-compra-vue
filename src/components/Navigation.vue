@@ -67,9 +67,9 @@ const items = ref([
     }
   },
   {
-    title: 'Compras',
+    title: 'Precios',
     props: {
-      to: '/compras',
+      to: '/precios',
       link: true
     }
   }

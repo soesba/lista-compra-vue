@@ -8,6 +8,7 @@ import { pinia, useModelStore } from './store'
 import { useUiStore, useEventCardStore } from './store'
 import { xhr } from '@/api/config/Repository'
 // Vuetify
+import { es } from 'vuetify/locale'
 import 'vuetify/styles'
 import '@mdi/font/css/materialdesignicons.css'
 import { createVuetify } from 'vuetify'
@@ -20,7 +21,11 @@ import InterceptorMessages from './services/interceptors/InterceptorMessages'
 loadFonts()
 const vuetify = createVuetify({
   components,
-  directives
+  directives,
+  locale: {
+    locale: 'es',
+    messages: { es }
+  }
 })
 createApp(App).
   use(pinia).
