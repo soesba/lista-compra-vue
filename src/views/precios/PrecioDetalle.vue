@@ -16,12 +16,17 @@
 	</detalle-toolbar>
 	<div class="form">
 		<div class="header">
-			<label class="text-h6">{{ data.fechaCompra }} {{ data.establecimiento?.nombre }} </label>
+			<div class="text-h6">{{ articulo.nombre }}</div>
+			<div class="text-body-2">{{ data.marca }}</div>
 		</div>
 		<div class="body">
 			<div class="inputGroup">
-				<label class="labelFor">Categoría</label>
+				<div class="labelFor">Establecimiento </div>
 				<label>{{ data.establecimiento?.nombre }}</label>
+			</div>
+			<div class="inputGroup">
+				<div class="labelFor">Medidas: </div>
+				<div class="text-body-1" v-for="tipoUnidad in data.unidadesMedida">{{  tipoUnidad.valor }} {{ pluralize(tipoUnidad.nombre, tipoUnidad.valor) }}</div>
 			</div>
 			<!-- <div class="inputGroup">
 				<label class="labelFor">Articulos</label>
@@ -42,6 +47,8 @@
 	import router from '@/router'
 	import getById from '@/services/precio/getPrecioById.service'
 	import { useRoute } from 'vue-router'
+import type Articulo from '@/services/articulo/models/Articulo'
+import { pluralize } from '@/utils/utils'
 	export default defineComponent({
 		name: 'CompraDetalle',
 	})
@@ -49,7 +56,7 @@
 <script setup lang="ts">
 	import DetalleToolbar from '@/components/DetalleToolbar.vue'
 	import type Precio from '@/services/precio/models/Precio'
-	import { eventCardStore, noLogoUrl, uiStore } from '@/main'
+	import { eventCardStore, modelStore, noLogoUrl, uiStore } from '@/main'
 
 	// Props
 	const props = defineProps({
@@ -65,6 +72,7 @@
 	const route = useRoute()
 	// Data
 	let data: Precio = (await getById(route.params['id'].toString())).data as Precio
+	const articulo: Articulo = modelStore.articulos.find(item => item.id === data.articulo) as Articulo
 	// Computed
 	const canDelete = computed(() => {
 		return data.borrable

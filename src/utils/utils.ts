@@ -9,3 +9,18 @@ export const fileToBase64 = (file: any): any => new Promise((resolve, reject) =>
   reader.onload = () => resolve(reader.result)
   reader.onerror = error => reject(error)
 })
+
+export const pluralize = (cadena: string, valor: number | null) => {
+  if (!valor || valor < 2) {
+    return cadena
+  }
+  if (cadena === 'unidad') {
+    return 'unidades'
+  }
+  const vocales = ['u', 'e', 'o', 'a', 'i']
+  const ultimoCaracter = cadena.charAt(cadena.length - 1)
+  if (vocales.includes(ultimoCaracter)) {
+    return cadena.concat('s')
+  }
+  return cadena.concat('as')
+}

@@ -65,7 +65,7 @@
 							v-for="unidad in editData.unidadesMedida"
 							type="number"
 							class="text-capitalize"
-							:label="pluralize(unidad.nombre)"
+							:label="pluralize(unidad.nombre, unidad.valor)"
 							variant="underlined"
 							:hide-spin-buttons="true"
 							v-model="unidad.valor"
@@ -96,6 +96,7 @@
 	import get from '@/services/establecimiento/getEstablecimiento.service'
 	import { modelStore } from '@/main'
 import type Articulo from '@/services/articulo/models/Articulo'
+import { pluralize } from '@/utils/utils'
 	export default defineComponent({
 		name: 'PrecioEdicion',
 	})
@@ -194,27 +195,6 @@ import type Articulo from '@/services/articulo/models/Articulo'
 			tmpArray.push(tmp)
 		})
 		return tmpArray
-	}
-
-	// const cargaUnidadesMedida = () => {
-	// 	const articulo = listaArticulos.find(item => item.id === editData.value.articulo) as Articulo
-	// 	articulo.tiposUnidad.forEach(element => {
-	// 			const tmp:any = {...element}
-	// 			tmp.valor = null
-	// 		  editData.value.unidadesMedida.push(tmp)
-	// 		})
-	// }
-
-	const pluralize = (value: string) => {
-		if (value === 'unidad') {
-			return 'unidades'
-		}
-		const vocales = ['u', 'e', 'o', 'a', 'i']
-		const ultimoCaracter = value.charAt(value.length - 1)
-		if (vocales.includes(ultimoCaracter)) {
-			return value.concat('s')
-		}
-		return value.concat('as')
 	}
 
 	const onBack = () => {

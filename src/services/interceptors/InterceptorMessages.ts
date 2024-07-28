@@ -34,7 +34,7 @@ export default class InterceptorMessages implements Interceptor {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
         uiStore.showAlertComponent({
-          text: error.response.data.message,
+          text: error.response.data.message.name,
           type: 'error'
         })
       }
