@@ -187,7 +187,7 @@ import { pluralize } from '@/utils/utils'
 	})	
 	// Methods
 	const getArrayUnidadesMedida = () => {
-		const articulo = listaArticulos.find(item => item.id === editData.value.articulo) as Articulo
+		const articulo = listaArticulos.find(item => item.id === editData.value.articulo?.id) as Articulo
 		const tmpArray: any = []
 		articulo.tiposUnidad.forEach(element => {
 			const tmp:any = {...element}

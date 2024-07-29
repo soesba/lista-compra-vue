@@ -11,7 +11,7 @@ export const fileToBase64 = (file: any): any => new Promise((resolve, reject) =>
 })
 
 export const pluralize = (cadena: string, valor: number | null) => {
-  if (!valor || valor < 2) {
+  if (valor && valor < 2) {
     return cadena
   }
   if (cadena === 'unidad') {
@@ -23,4 +23,27 @@ export const pluralize = (cadena: string, valor: number | null) => {
     return cadena.concat('s')
   }
   return cadena.concat('as')
+}
+
+export const sort = (property) => {
+  let sortOrder = 1
+  if (property[0] === '-') {
+    sortOrder = -1
+    property = property.substr(1)
+  }
+  const arrayProperties = (<string>property).split('.')
+  return function (a, b) {
+    /* next line works with strings and numbers,
+       * and you may want to customize it to your needs
+       */
+    if (arrayProperties.length > 1) {
+      for(let i = 0; i < arrayProperties.length - 1; i++) {
+        a = a[arrayProperties[i]]
+        b = b[arrayProperties[i]]        
+      }
+      property = arrayProperties[arrayProperties.length-1]
+    } 
+    const result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0
+    return result * sortOrder
+  }
 }

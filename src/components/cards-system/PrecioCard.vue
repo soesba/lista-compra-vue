@@ -2,7 +2,7 @@
 	<v-card>
 		<v-card-title>
 			<div>
-				{{ data.articulo }}
+				{{ data.articulo.nombre }}
 			</div>
 			<v-icon icon="mdi-pencil-circle" color="primary" @click="editCard()"></v-icon>
 		</v-card-title>
@@ -38,7 +38,6 @@ import router from '@/router'
 	})
 	// Data
 	let data = { ...props.cardData}
-	data.articulo = modelStore.articulos.find(item => item.id === data.articulo)?.nombre || ''
 	
 	// Computed
 	const canDelete = computed(() => {

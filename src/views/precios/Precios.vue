@@ -1,7 +1,24 @@
 <template>
-  <TitleView :titulo="titulo" />
+  <TitleView :titulo="titulo">
+    <template v-slot:menu>
+      <v-menu>
+        <template v-slot:activator="{ props }">
+          <v-btn icon="mdi-dots-vertical" v-bind="props" variant="text"></v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item
+            v-for="(item, i) in itemsMenu"
+            :key="i" :value="i" @click="handleClick(i)"
+          >
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </template>
+  </TitleView>
   <SearchBox @search="onSearch"></SearchBox>
-  <CardList :items="listaPrecios" component="PrecioCard" class="list"/>
+  <CardList :items="list" component="PrecioCard" class="list"/>
 </template>
 
 <script lang="ts">
@@ -16,6 +33,7 @@ import { defineComponent } from 'vue'
 import { eventCardStore } from '@/main';
 import type PrecioRequest from '@/services/precio/models/PrecioRequest'
 import type PrecioResponse from '@/services/precio/models/PrecioResponse'
+import { sort } from '@/utils/utils'
 export default defineComponent({
   name: 'Precios'
 })
@@ -37,16 +55,24 @@ const suscribe = eventCardStore.$onAction(({args, name}) => {
 })
 // Data
 const titulo = ref('Precios')
-const listaPrecios = ref()
+const list = ref()
+const itemsMenu = ref([
+  { title: 'Ordenar por nombre ascendente', click: () =>  list.value = list.value.sort(sort('articulo.nombre'))},
+  { title: 'Ordenar por nombre descendente', click: () =>  list.value = list.value.sort(sort('-articulo.nombre'))},
+])
 
 onMounted(() => {
   getAllData()
 })
 
 // Methods
+const handleClick = (index) => {
+  itemsMenu.value[index].click.call(this)
+}
+
 const getAllData = () => {
   get().then((response: PrecioResponse) => {
-    listaPrecios.value = response.data
+    list.value = response.data
   })
 }
 
@@ -92,7 +118,7 @@ const updateCard = (card: PrecioRequest) => {
 const onSearch = (evt: any) => {
   if (evt) {
     getByAny(evt).then((response:PrecioResponse) => {
-      listaPrecios.value = response.data
+      list.value = response.data
     })
   } else {
     getAllData()

@@ -16,7 +16,7 @@
 	</detalle-toolbar>
 	<div class="form">
 		<div class="header">
-			<div class="text-h6">{{ articulo.nombre }}</div>
+			<div class="text-h6">{{ data.articulo?.nombre }}</div>
 			<div class="text-body-2">{{ data.marca }}</div>
 		</div>
 		<div class="body">
@@ -72,7 +72,6 @@ import { pluralize } from '@/utils/utils'
 	const route = useRoute()
 	// Data
 	let data: Precio = (await getById(route.params['id'].toString())).data as Precio
-	const articulo: Articulo = modelStore.articulos.find(item => item.id === data.articulo) as Articulo
 	// Computed
 	const canDelete = computed(() => {
 		return data.borrable

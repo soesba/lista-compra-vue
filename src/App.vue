@@ -11,15 +11,15 @@
     </v-main>
   </v-app>
 </template>
-
 <script setup lang="ts">
-import { ConfirmDialog, DialogComponent, AlertComponent } from '@/components/index'
 import { Navigation } from '@/components/index'
 import { markRaw, onMounted } from 'vue';
 import type ArticuloResponse from './services/articulo/models/ArticuloResponse';
 import get from './services/articulo/getArticulo.service';
 import { modelStore } from './main';
 import type Articulo from './services/articulo/models/Articulo';
+import DialogComponent from '@/components/DialogComponent.vue';
+import ConfirmDialog from '@/components/dialogs-system/ConfirmDialog.vue';
 
 const rawDialogComponent = markRaw(DialogComponent)
 const rawConfirmDialog = markRaw(ConfirmDialog)
