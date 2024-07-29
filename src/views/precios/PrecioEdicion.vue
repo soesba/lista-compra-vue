@@ -121,7 +121,7 @@ import { pluralize } from '@/utils/utils'
 	const route = useRoute()
 	let editData = ref<Precio>({
 		id: '',
-		articulo: '',
+		articulo: null,
 		precio: null,
 		marca: '',
 		unidadesMedida: [],

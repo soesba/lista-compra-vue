@@ -4,13 +4,23 @@
 			<component :is="getComponent()" v-for="item in items" :key="item.id" :cardData="item" />
 		</div>
 		<div class="wrapper-add-button">
-			<v-btn
+			<v-fab
+				icon="mdi-plus"
+				class="ms-4"
+				location="bottom end"
+				absolute
+				offset
+				color="primary"
+				@click="addCard()"
+			></v-fab>
+			<!-- <v-btn
 				v-if="props.addButton"
 				class="add-button"
 				icon="mdi-plus"
 				color="primary"
 				@click="addCard()"
-			></v-btn>
+			></v-btn> -->
+			
 		</div>
 	</div>
 </template>
@@ -92,13 +102,9 @@ import PrecioCard from './PrecioCard.vue'
 	.wrapper-list-container {
 		.wrapper-add-button {
 			position: fixed;
-			height: 50px;
 			width: 100%;
-			bottom: 10px;
-			.add-button {
-				position: absolute;
-				right: 16px;
-			}
+			bottom: 40px;
+			right: 20px;
 		}
 		&.card {
 			display: flex;
@@ -113,10 +119,14 @@ import PrecioCard from './PrecioCard.vue'
 			
 		}
 		&.list {
-			.wrapper-add-button {
-				.add-button {
-					right: 30px;
-				}
+			.list-container {
+				display: flex;
+				flex-direction: column;
+				justify-content: flex-start;
+				// align-content: center;
+				flex-wrap: wrap;
+				margin: 0 auto;
+				margin-bottom: 60px; // salvar boton de añadir
 			}
 		}
 	}

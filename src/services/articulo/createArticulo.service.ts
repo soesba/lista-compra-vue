@@ -1,9 +1,17 @@
 import API from "@/api"
 import type ArticuloResponse from "./models/ArticuloResponse"
 import type ArticuloRequest from "./models/ArticuloRequest"
+import type Articulo from "./models/Articulo"
+import { modelStore } from "@/main"
+import getById from "./getArticuloById.service"
 
 const create = async (request: ArticuloRequest): Promise<ArticuloResponse> => {
-  return await API.ArticuloRepository.insert(request)
+  const response = await API.ArticuloRepository.insert(request)
+  const articulo = (await getById((response.data as Articulo).id)).data as Articulo
+  const listaArticulos = modelStore.articulos
+  listaArticulos.push(articulo)
+  modelStore.articulos = listaArticulos
+  return response
 }
 
 export default create
