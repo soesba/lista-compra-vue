@@ -1,12 +1,13 @@
 <template>
-	<v-card>
+	<v-card class="cursor">
 		<v-card-title>
-			<div>
+			<div @click="detalleCard()">
 				{{ cardData.nombre }}
 			</div>
 			<v-icon icon="mdi-pencil-circle" color="primary" @click="editCard()"></v-icon>
 		</v-card-title>
-		<v-card-text class="cursor" @click="detalleCard()">{{ cardData.descripcion }}</v-card-text>
+		<v-card-text @click="detalleCard()">{{ cardData.descripcion }}
+		</v-card-text>
 		<!--<v-card-text class="text-small">Creado: {{ cardData.fechaCreacion }}</v-card-text>
 		 <v-card-actions>
 			<v-btn icon="mdi-pencil-circle" color="primary" @click="editCard()"></v-btn>
@@ -81,6 +82,11 @@ import router from '@/router'
 			div:first-of-type {
 				flex: 2;
 			}
+		}
+
+		.wrapper-icons {
+			display: flex;
+			flex-direction: column;
 		}
 	}
 </style>

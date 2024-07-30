@@ -66,13 +66,14 @@ onMounted(() => {
 })
 
 // Methods
-const handleClick = (index) => {
+const handleClick = (index: number) => {
   itemsMenu.value[index].click.call(this)
 }
 
 const getAllData = () => {
   get().then((response: TipoUnidadResponse) => {
     list.value = response.data
+    handleClick(0)
   })
 }
 

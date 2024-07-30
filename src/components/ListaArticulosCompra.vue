@@ -47,17 +47,6 @@
     return 0
   }
 
-  const pluralize = (value: string) => {
-    if (value === 'unidad') {
-      return 'unidades'
-    }
-    const vocales = ['u', 'e', 'o', 'a', 'i'];
-    const ultimoCaracter = value.charAt(value.length - 1)    
-    if (vocales.includes(ultimoCaracter)) {
-      return value.concat('s')
-    }
-    return value.concat('as')
-  }
 </script>
 <style lang="scss" scoped>
 	#wrapper-list {

@@ -32,6 +32,19 @@ export default class PrecioRepositoryImpl implements PrecioRepository {
     return result
   }
 
+  async getByArticuloId (id: string): Promise<PrecioResponse> {
+    const endpoint = `/precio/getByArticuloId/${id}`
+    const headers = {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+    const response = await xhr.get(endpoint, { headers})
+    const result = {
+      data: response.data.map((item:PrecioDTO) => DTOtoModel(item)),
+      respuesta: response.status
+    }
+    return result
+  }
+
   async getByAny (request: string): Promise<PrecioResponse> {
     const endpoint = `/precio/getByAny/${request}`
     const headers = {

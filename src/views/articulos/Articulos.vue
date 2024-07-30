@@ -65,13 +65,14 @@ onMounted(() => {
 })
 
 // Methods
-const handleClick = (index) => {
+const handleClick = (index: number) => {
   itemsMenu.value[index].click.call(this)
 }
 
 const getAllData = () => {
   get().then((response: ArticuloResponse) => {
     list.value = response.data
+    handleClick(0)
   })
 }
 

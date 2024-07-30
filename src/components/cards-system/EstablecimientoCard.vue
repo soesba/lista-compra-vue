@@ -1,5 +1,5 @@
 <template>
-	<v-card @click="editCard()">
+	<v-card class="cursor" @click="editCard()">
 		<v-img class="logo" :src="getImageSrc"></v-img>
 		<v-card-title>{{ cardData.nombre }}</v-card-title>
 		<v-card-subtitle>{{ cardData.tipoEstablecimiento.nombre }}</v-card-subtitle>

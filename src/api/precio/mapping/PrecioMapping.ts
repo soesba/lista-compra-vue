@@ -23,7 +23,7 @@ export const DTOtoModel = (origin: PrecioDTO): Precio => {
 export const requestModelToDTO = (origin: PrecioRequest): PrecioRequestDTO => {
   const dto: PrecioRequestDTO = { 
     id: origin.id,
-    articulo: origin.articulo,
+    articulo: origin.articulo.id,
     precio: origin.precio,
     marca: origin.marca,
     establecimiento: origin.establecimiento,

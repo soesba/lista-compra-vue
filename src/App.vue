@@ -20,6 +20,7 @@ import { modelStore } from './main';
 import type Articulo from './services/articulo/models/Articulo';
 import DialogComponent from '@/components/DialogComponent.vue';
 import ConfirmDialog from '@/components/dialogs-system/ConfirmDialog.vue';
+import AlertComponent from './components/AlertComponent.vue';
 
 const rawDialogComponent = markRaw(DialogComponent)
 const rawConfirmDialog = markRaw(ConfirmDialog)

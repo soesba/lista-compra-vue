@@ -1,12 +1,12 @@
 <template>
-	<v-card>
+	<v-card class="cursor">
 		<v-card-title>
-			<div>
-				{{ data.articulo.nombre }}
+			<div @click="detalleCard()">
+				{{ data.articulo?.nombre }}
 			</div>
 			<v-icon icon="mdi-pencil-circle" color="primary" @click="editCard()"></v-icon>
 		</v-card-title>
-		<v-card-text class="text-small cursor" @click="detalleCard()">
+		<v-card-text class="text-small" @click="detalleCard()">
 			Establecimiento: {{ data.establecimiento?.nombre }} <br>
 			Última fecha compra: {{ getFechaCompra }} <br>
 			Precio: {{ getPrecio }}

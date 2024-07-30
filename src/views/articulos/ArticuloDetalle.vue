@@ -26,6 +26,31 @@
 			<div class="inputGroup">
 				<label class="labelFor">Histórico</label>
 			</div>
+			<table class="tabla-historico">
+				<tr>
+					<th>Fecha compra</th>
+					<th>Establecimiento</th>
+					<th>Precio</th>
+					<th>Cantidad</th>
+				</tr>
+				<tr v-for="precio in precios">
+				<td>
+					<label> {{ getFechaCompra(precio.fechaCompra) }}</label>
+				</td>
+				<td>
+					<label> {{ precio.establecimiento?.nombre }}</label>
+				</td>
+				<td>
+					<label> {{ getPrecio(precio.precio) }}</label>					
+				</td>
+				<td>
+					<div v-for="medida in precio.unidadesMedida">
+						<label> {{ medida.valor }} {{ pluralize(medida.nombre, medida.valor) }}</label>
+					</div>
+				</td>
+			</tr>
+			</table>
+			
 		</div>
 	</div>
 </template>
@@ -39,6 +64,9 @@
 	import DetalleToolbar from '@/components/DetalleToolbar.vue'
 	import { eventCardStore, uiStore } from '@/main'
 	import type Articulo from '@/services/articulo/models/Articulo'
+	import type Precio from '@/services/precio/models/Precio'
+	import getByArticuloId from '@/services/precio/getPrecioByArticuloId.service'
+	import { pluralize, sort } from '@/utils/utils'
 	export default defineComponent({
 		name: 'ArticuloDetalle',
 	})
@@ -60,14 +88,29 @@
 	const route = useRoute()
 	// Data
 	let data: Articulo = (await getById(route.params['id'].toString())).data as Articulo
+	const precios: Precio[] = (((await getByArticuloId(data.id)).data) as Precio[]).sort(sort('fechaCompra'))
+
+	console.log("🚀 ~ precios:", precios)
 	// Computed
 	const canDelete = computed(() => {
 		return data.borrable
 	})
-
+	
 	// Methods
 	const onBack = () => {
 		router.push('/articulos')
+	}
+
+	const getPrecio = (value) => {
+		return value ? value.toFixed(2).concat(' €') : null
+	}
+
+	const getFechaCompra = (value) => {
+		return value ? new Intl.DateTimeFormat('es-ES', {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    }).format(value) : ''
 	}
 
 	const deleteCard = () => {
@@ -100,4 +143,24 @@
   .inputGroup {
 		align-items: center;
   }
+
+	.tabla-historico {
+		width: 100%;
+		margin-left: 1%;
+		margin-right: 1%;
+		text-align: left;
+		th {
+			font-size: 0.875rem;
+			font-weight: 500;
+			line-height: 1.6;
+			letter-spacing: 0.0071428571em;
+		}
+		td {
+			padding: 0px 5px;
+			font-size: 0.875rem;
+			font-weight: 400;
+			line-height: 1.425;
+			letter-spacing: 0.0178571429em;
+		}
+	}
 </style>

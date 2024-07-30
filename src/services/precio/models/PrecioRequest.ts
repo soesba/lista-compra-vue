@@ -2,7 +2,10 @@ import type UnidadMedida from "./UnidadMedida";
 
 export default interface PrecioRequest {
   id: string;
-  articulo: string;
+  articulo: {
+    id: string;
+    nombre: string;
+  };
   precio: number | null;
   marca: string;
   establecimiento: string;

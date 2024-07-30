@@ -13,10 +13,11 @@
 				<v-text-field
 					variant="underlined"
 					label="Fecha*"
-					:model-value="getFechaCompra"
-					append-icon="mdi-calendar"
+					v-model="getFechaCompra"
+					append-inner-icon="mdi-calendar"
+					@blur="setFechaCompra($event)"
 				>
-				<v-menu activator="parent">
+				<v-menu activator="parent" :close-on-content-click="false">
 					<v-date-picker 
 						color="primary"
 						hideHeader
@@ -30,6 +31,7 @@
 				<v-autocomplete
 					variant="underlined"
 					label="Artículo*"
+					:return-object="true"
 					v-model="editData.articulo"
 					:items="listaArticulos"
 					item-value="id"
@@ -79,11 +81,8 @@
 </template>
 
 <script lang="ts">
-	import { VDateInput } from 'vuetify/labs/VDateInput'
 	import { DetalleToolbar } from '@/components/index'
-	import { ArticulosCompra } from '@/components/index'
-	import { ListaArticulosCompra } from '@/components/index'
-	import { required, requiredIf } from 'vuelidate/lib/validators'
+	import { required } from 'vuelidate/lib/validators'
 	import { useVuelidate } from '@vuelidate/core'
 	import { useRoute } from 'vue-router'
 	import { defineComponent, onMounted, reactive, ref, useModel, watch } from 'vue'
@@ -135,6 +134,7 @@ import { pluralize } from '@/utils/utils'
 		getById(route.params['id'].toString()).then((response) => {
 			if (response.respuesta === 200) {
 				editData.value = response.data as Precio
+				console.log("🚀 ~ getById ~ editData.value:", editData.value)
 			}
 		})
 	} else {
@@ -142,6 +142,7 @@ import { pluralize } from '@/utils/utils'
 	}
 	const listaEstablecimientos = (await get()).data
 	const listaArticulos = modelStore.articulos
+	console.log("🚀 ~ listaArticulos:", listaArticulos)
 	// Watch
 	watch (
 		() => editData.value.articulo,
@@ -161,7 +162,7 @@ import { pluralize } from '@/utils/utils'
 	// Validations
 	const validations = computed(() => {
 		const fechaCompraValid = (value: string) => {
-			return value ? new Date(value).getTime() < new Date().getTime() : false
+			return value ? new Date(value).getTime() <= new Date().getTime() : false
 		}
 		return {
 			editData: {
@@ -195,6 +196,11 @@ import { pluralize } from '@/utils/utils'
 			tmpArray.push(tmp)
 		})
 		return tmpArray
+	}
+
+	const setFechaCompra = (event: any) => {
+		console.log("🚀 ~ setFechaCompra ~ event:", event.target.value)
+		editData.value.fechaCompra = event.target.value ? new Date(event.target.value.split('/').reverse().join('-')) : null
 	}
 
 	const onBack = () => {

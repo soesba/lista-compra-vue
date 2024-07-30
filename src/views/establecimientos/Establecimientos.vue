@@ -1,5 +1,22 @@
 <template>
-  <TitleView :titulo="titulo" />
+  <TitleView :titulo="titulo">
+    <template v-slot:menu>
+      <v-menu>
+        <template v-slot:activator="{ props }">
+          <v-btn icon="mdi-dots-vertical" v-bind="props" variant="text"></v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item
+            v-for="(item, i) in itemsMenu"
+            :key="i" :value="i" @click="handleClick(i)"
+          >
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </template>
+  </TitleView>
   <SearchBox @search="onSearch"></SearchBox>
   <CardList :items="list" component="EstablecimientoCard"/>
 </template>
@@ -16,6 +33,7 @@ import { defineComponent } from 'vue'
 import { eventCardStore } from '@/main';
 import type EstablecimientoRequest from '@/services/establecimiento/models/EstablecimientoRequest'
 import type EstablecimientoResponse from '@/services/establecimiento/models/EstablecimientoResponse'
+import { sort } from '@/utils/utils'
 export default defineComponent({
   name: 'Establecimientos'
 })
@@ -38,15 +56,24 @@ const suscribe = eventCardStore.$onAction(({args, name}) => {
 // Data
 const titulo = ref('Establecimientos')
 const list = ref()
+const itemsMenu = ref([
+  { title: 'Ordenar por nombre ascendente', click: () =>  list.value = list.value.sort(sort('nombre'))},
+  { title: 'Ordenar por nombre descendente', click: () =>  list.value = list.value.sort(sort('-nombre'))},
+])
 
 onMounted(() => {
   getAllData()
 })
 
 // Methods
+const handleClick = (index: number) => {
+  itemsMenu.value[index].click.call(this)
+}
+
 const getAllData = () => {
   get().then((response: EstablecimientoResponse) => {
     list.value = response.data
+    handleClick(0)
   })
 }
 

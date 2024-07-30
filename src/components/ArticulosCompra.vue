@@ -66,7 +66,7 @@
         <v-text-field v-for="unidad in nuevoArticulo.unidadesMedida"
             type="number"
             class="text-capitalize"
-            :label="pluralize(unidad.nombre)"
+            :label="pluralize(unidad.nombre, unidad.valor)"
             :variant="props.articulo ? 'outlined' : 'underlined'"
             :hide-spin-buttons="true"
             v-model="unidad.valor"
@@ -83,6 +83,7 @@
 	import { computed, defineComponent, ref } from 'vue'
   import get from '@/services/articulo/getArticulo.service'
   import type ArticuloCompra from '@/services/precio/models/ArticuloCompra'
+import { pluralize } from '@/utils/utils'
 	export default defineComponent({
 		name: 'ArticulosCompra',
 	})
@@ -130,17 +131,6 @@
     return null
   }
 
-  const pluralize = (value: string) => {
-    if (value === 'unidad') {
-      return 'unidades'
-    }
-    const vocales = ['u', 'e', 'o', 'a', 'i'];
-    const ultimoCaracter = value.charAt(value.length - 1)    
-    if (vocales.includes(ultimoCaracter)) {
-      return value.concat('s')
-    }
-    return value.concat('as')
-  }
 
   const onArticuloUpdate = (evt: any) => {
     nuevoArticulo.value.unidadesMedida = new Array()
