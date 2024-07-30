@@ -26,30 +26,7 @@
 			<div class="inputGroup">
 				<label class="labelFor">Histórico</label>
 			</div>
-			<table class="tabla-historico">
-				<tr>
-					<th>Fecha compra</th>
-					<th>Establecimiento</th>
-					<th>Precio</th>
-					<th>Cantidad</th>
-				</tr>
-				<tr v-for="precio in precios">
-				<td>
-					<label> {{ getFechaCompra(precio.fechaCompra) }}</label>
-				</td>
-				<td>
-					<label> {{ precio.establecimiento?.nombre }}</label>
-				</td>
-				<td>
-					<label> {{ getPrecio(precio.precio) }}</label>					
-				</td>
-				<td>
-					<div v-for="medida in precio.unidadesMedida">
-						<label> {{ medida.valor }} {{ pluralize(medida.nombre, medida.valor) }}</label>
-					</div>
-				</td>
-			</tr>
-			</table>
+			<HistoricoPrecios :precios="precios"></HistoricoPrecios>
 			
 		</div>
 	</div>
@@ -67,6 +44,7 @@
 	import type Precio from '@/services/precio/models/Precio'
 	import getByArticuloId from '@/services/precio/getPrecioByArticuloId.service'
 	import { pluralize, sort } from '@/utils/utils'
+import HistoricoPrecios from '@/components/HistoricoPrecios.vue'
 	export default defineComponent({
 		name: 'ArticuloDetalle',
 	})
@@ -99,18 +77,6 @@
 	// Methods
 	const onBack = () => {
 		router.push('/articulos')
-	}
-
-	const getPrecio = (value) => {
-		return value ? value.toFixed(2).concat(' €') : null
-	}
-
-	const getFechaCompra = (value) => {
-		return value ? new Intl.DateTimeFormat('es-ES', {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    }).format(value) : ''
 	}
 
 	const deleteCard = () => {
