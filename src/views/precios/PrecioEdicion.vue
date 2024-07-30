@@ -95,7 +95,7 @@
 	import get from '@/services/establecimiento/getEstablecimiento.service'
 	import { modelStore } from '@/main'
 import type Articulo from '@/services/articulo/models/Articulo'
-import { pluralize } from '@/utils/utils'
+import { pluralize, sort } from '@/utils/utils'
 	export default defineComponent({
 		name: 'PrecioEdicion',
 	})
@@ -140,7 +140,7 @@ import { pluralize } from '@/utils/utils'
 		adding.value = true
 	}
 	const listaEstablecimientos = (await get()).data
-	const listaArticulos = modelStore.articulos
+	const listaArticulos = modelStore.articulos.sort(sort('nombre'))
 	// Watch
 	watch (
 		() => editData.value.articulo,
