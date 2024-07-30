@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-	import { eventCardStore, modelStore, noLogoUrl, uiStore } from '@/main'
+	import { noLogoUrl } from '@/main'
 	import { defineComponent } from 'vue'
 	import router from '@/router'
 	export default defineComponent({
@@ -41,21 +41,6 @@
 	// Methods
 	const editCard = () => {
 		router.push(`/establecimiento-detalle/${data.value.id}`)
-	}
-
-	const deleteCard = () => {
-		console.log(data)
-		uiStore.showConfirmDialog({
-			props: {
-				text: '¿Desea eliminar el elemento?',
-				title: 'Confirmación'
-			},
-			aceptarFn: onCloseConfirmDialog
-		})
-	}
-
-	const onCloseConfirmDialog = () => {
-		eventCardStore.deleteCard(data.value)
 	}
 </script>
 <style lang="scss" scoped>

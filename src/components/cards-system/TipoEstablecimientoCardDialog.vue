@@ -64,7 +64,6 @@
 	})
 	// Data
 	let editData = reactive<any>({ ...props.data })
-	console.log("🚀 ~ editData:", editData)
 	// Validations
 	const validations = computed(() => {
 		return {
@@ -85,7 +84,6 @@
 	}
 
 	const save = () => {
-		console.log("🚀 ~ save ~ editData:", editData)
 		eventCardStore.saveCard({ adding: props.adding, data: editData })
 		uiStore.hideCustomDialog()
 	}

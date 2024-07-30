@@ -172,7 +172,6 @@
 	}
 
 	const createEstablecimiento = (data: any) => {
-		console.log("🚀 ~ createEstablecimiento ~ data:", data)
 		create(data).then((response) => {
 			onBack()
 		})

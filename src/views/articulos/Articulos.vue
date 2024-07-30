@@ -43,7 +43,6 @@ export default defineComponent({
 const emit = defineEmits(['close-dialog'])
 
 const suscribe = eventCardStore.$onAction(({args, name}) => {
-	console.log("🚀 ~ suscribe ~ evtData:", args[0], name)
   switch(name) {
     case 'saveCard': 
       onSaveCard(args[0])
@@ -77,7 +76,6 @@ const getAllData = () => {
 }
 
 const onDeleteCard = (cardData: any) => {
-  console.log("🚀 ~ onDeleteCard ~ cardData:", cardData)
   if (cardData.borrable) {
     deleteItem(cardData.id).then(response => {
       if (response.respuesta === 200) {
@@ -88,7 +86,6 @@ const onDeleteCard = (cardData: any) => {
 }
 
 const onSaveCard = (cardData: any) => {
-  console.log("🚀 ~ onAddCard ~ data:", cardData)
   if (cardData.adding) {
     createCard(cardData.data)
   } else {

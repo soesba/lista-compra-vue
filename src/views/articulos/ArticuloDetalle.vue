@@ -68,7 +68,6 @@ import HistoricoPrecios from '@/components/HistoricoPrecios.vue'
 	let data: Articulo = (await getById(route.params['id'].toString())).data as Articulo
 	const precios: Precio[] = (((await getByArticuloId(data.id)).data) as Precio[]).sort(sort('fechaCompra'))
 
-	console.log("🚀 ~ precios:", precios)
 	// Computed
 	const canDelete = computed(() => {
 		return data.borrable

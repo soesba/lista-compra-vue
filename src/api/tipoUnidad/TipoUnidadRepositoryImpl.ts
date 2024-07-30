@@ -52,9 +52,7 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
       'Content-Type': 'application/json;charset=UTF-8'
     }
     const requestDTO = requestModelToDTO(request)
-    console.log("🚀 ~ TipoUnidadRepositoryImpl ~ update ~ requestDTO:", requestDTO)
     const response = await xhr.put(endpoint, requestDTO, { headers})
-    console.log("🚀 ~ TipoUnidadRepositoryImpl ~ update ~ response:", response)
     const result = {
       data: DTOtoModel(response.data),
       respuesta: response.status

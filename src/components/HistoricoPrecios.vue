@@ -41,7 +41,6 @@
 			default: {},
 		},
 	})
-  console.log(props.precios)
 
   const getPrecio = (value) => {
 		return value ? value.toFixed(2).concat(' €') : null

@@ -134,7 +134,6 @@ import { pluralize } from '@/utils/utils'
 		getById(route.params['id'].toString()).then((response) => {
 			if (response.respuesta === 200) {
 				editData.value = response.data as Precio
-				console.log("🚀 ~ getById ~ editData.value:", editData.value)
 			}
 		})
 	} else {
@@ -142,12 +141,10 @@ import { pluralize } from '@/utils/utils'
 	}
 	const listaEstablecimientos = (await get()).data
 	const listaArticulos = modelStore.articulos
-	console.log("🚀 ~ listaArticulos:", listaArticulos)
 	// Watch
 	watch (
 		() => editData.value.articulo,
 		(newValue, oldValue) => {
-			console.log('🚀 ~ watch ~ editData.value:', editData.value)
 			if (!editData.value.id) {
 				editData.value.unidadesMedida = getArrayUnidadesMedida()
 			}
@@ -199,7 +196,6 @@ import { pluralize } from '@/utils/utils'
 	}
 
 	const setFechaCompra = (event: any) => {
-		console.log("🚀 ~ setFechaCompra ~ event:", event.target.value)
 		editData.value.fechaCompra = event.target.value ? new Date(event.target.value.split('/').reverse().join('-')) : null
 	}
 
@@ -220,7 +216,6 @@ import { pluralize } from '@/utils/utils'
 	}
 
 	const createPrecio = (data: any) => {
-		console.log('🚀 ~ createPrecio ~ data:', data)
 		create(data).then((response) => {
 			onBack()
 		})

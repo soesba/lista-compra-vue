@@ -77,7 +77,6 @@
 	const adding = !props.data.id
 	let editData = reactive<any>({ ...props.data })
 	const listaTiposUnidad = (await get()).data
-	console.log('🚀 ~ editData:', editData)
 	// Validations
 	const validations = computed(() => {
 		const maxTiposUnidad = (value: any) => {
@@ -103,7 +102,6 @@
 	}
 
 	const save = () => {
-		console.log('🚀 ~ save ~ editData:', editData)
 		eventCardStore.saveCard({ adding: adding, data: editData })
 		uiStore.hideCustomDialog()
 	}

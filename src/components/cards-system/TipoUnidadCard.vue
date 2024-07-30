@@ -49,7 +49,6 @@
 	}
 
 	const deleteCard = () => {
-		console.log(data)
 		uiStore.showConfirmDialog({
 			props: {
 				text: '¿Desea eliminar el elemento?',

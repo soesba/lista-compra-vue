@@ -60,22 +60,7 @@ import router from '@/router'
 
 	const detalleCard = () => {
 		router.push(`/precio-detalle/${data.id}`)
-	}
-
-	const deleteCard = () => {
-		console.log(data)
-		uiStore.showConfirmDialog({
-			props: {
-				text: '¿Desea eliminar el elemento?',
-				title: 'Confirmación',
-			},
-			aceptarFn: onCloseConfirmDialog,
-		})
-	}
-
-	const onCloseConfirmDialog = () => {
-		eventCardStore.deleteCard(data)
-	}
+	}	
 </script>
 <style lang="scss" scoped>
 	.v-card {

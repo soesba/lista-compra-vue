@@ -64,7 +64,6 @@ export default class PrecioRepositoryImpl implements PrecioRepository {
       'Content-Type': 'application/json;charset=UTF-8'
     }
     const requestDTO = requestModelToDTO(request)
-    console.log("🚀 ~ PrecioRepositoryImpl ~ insert ~ requestDTO:", requestDTO)
     const response = await xhr.post(endpoint, requestDTO, { headers})
     const result = {
       data: DTOtoModel(response.data),
@@ -79,9 +78,7 @@ export default class PrecioRepositoryImpl implements PrecioRepository {
       'Content-Type': 'application/json;charset=UTF-8'
     }
     const requestDTO = requestModelToDTO(request)
-    console.log("🚀 ~ PrecioRepositoryImpl ~ update ~ requestDTO:", requestDTO)
     const response = await xhr.put(endpoint, requestDTO, { headers})
-    console.log("🚀 ~ PrecioRepositoryImpl ~ update ~ response:", response)
     const result = {
       data: DTOtoModel(response.data),
       respuesta: response.status
