@@ -4,7 +4,7 @@
 			<v-btn icon="mdi-arrow-left" @click="onBack" variant="text" color="primary"></v-btn>
 		</template>
 		<template v-slot:right>
-			<v-btn icon="mdi-pencil" variant="text" color="primary" @click="setEdicion()"></v-btn>
+			<!-- <v-btn icon="mdi-pencil" variant="text" color="primary" @click="setEdicion()"></v-btn> -->
 			<v-btn
 				icon="mdi-delete"
 				variant="text"
