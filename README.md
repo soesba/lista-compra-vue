@@ -1,39 +1,9 @@
-# lista-compra-vue
+#  lista-compra-vue
 
-This template should help get you started developing with Vue 3 in Vite.
+**Iniciar aplicación local :** npm run serve
 
-## Recommended IDE Setup
+Esta aplicación está desarrollada en VUE 3 + Vuetify, y en el diseño se ha priorizado el uso de móviles o dispositivos de pantalla pequeña.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+Trabaja contra el proyecto lista-compra-serve ejecutado en local, se puede configurar en .env.development
 
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+Se ha aislado completamente el front del back, de manera que si se migra la aplicación a cualquier otro framework, se podrían seguir usando las llamadas Axios de la carpeta src\api simplemente adaptando las llamadas de src\services
