@@ -1,7 +1,10 @@
 <template>
 	<div class="wrapper-list-container" :class="props.class">
-		<div class="list-container">
+		<div class="list-container" v-if="items && items?.length > 0">
 			<component :is="getComponent()" v-for="item in items" :key="item.id" :cardData="item" />
+		</div>
+		<div v-else>
+			<empty-card></empty-card>
 		</div>
 		<div class="wrapper-add-button">
 			<v-fab
@@ -28,6 +31,7 @@
 <script lang="ts">
 	import { defineComponent, markRaw } from 'vue'
 	import TipoUnidadCard from './TipoUnidadCard.vue'
+	import { EmptyCard } from '@/components/index'
 	import { uiStore } from '@/main'
 	import TipoUnidadCardDialog from './TipoUnidadCardDialog.vue'
 	import ArticuloCard from './ArticuloCard.vue'

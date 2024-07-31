@@ -19,6 +19,16 @@
 						@input="v$.editData.abreviatura.$touch"></v-text-field>
 				</v-col>
 			</v-row>
+			<!-- <v-row dense>
+				<v-col cols="12">
+					<label>Equivalencias</label>
+					<div class="wrapper-equivalencias">
+          <v-btn v-for="tipoUnidad in listaTiposUnidad" :key="tipoUnidad.id">
+            {{ tipoUnidad.nombre }}
+          </v-btn>
+        </div>
+				</v-col>
+			</v-row> -->
 			<small class="text-caption text-medium-emphasis">*campo requerido</small>
 		</v-card-text>
 		<template v-slot:actions>
@@ -29,8 +39,9 @@
 </template>
 
 <script lang="ts">
-	import { defineComponent, reactive } from 'vue'
+	import { defineComponent, onMounted, reactive, ref } from 'vue'
 	import { computed } from 'vue'
+import get from '@/services/tipoUnidad/getTipoUnidad.service'
 	export default defineComponent({
 		name: 'TipoUnidadCardDialog',
 	})
@@ -63,7 +74,9 @@
 		return !v$.value.$invalid
 	})
 	// Data
+	const equivalencias = ref([])
 	let editData = reactive<any>({ ...props.data })
+	let listaTiposUnidad = ref<TipoUnidad[]>([])
 	// Validations
 	const validations = computed(() => {
 		return {
@@ -77,7 +90,17 @@
 	})
 	// Use the "useVuelidate" function to perform form validation
 	const v$ = useVuelidate(validations, { editData })
+	onMounted(() => {
+		get().then(response => {
+			if (props.data.id) {
+				listaTiposUnidad.value = (response.data as TipoUnidad[]).filter(item => item.id !== props.data.id)
+			} else {
+				listaTiposUnidad.value = response.data as TipoUnidad[]
+			}
+		})
+	})
 	// Methods
+
 	const cancel = () => {
 		eventCardStore.cancelCard()
 		uiStore.hideCustomDialog()
