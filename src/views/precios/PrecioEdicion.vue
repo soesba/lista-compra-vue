@@ -60,6 +60,7 @@
 					v-model.number="editData.precio"
 					:hide-spin-buttons="true"
 					max-width="120"
+					@keypress="onKeypressPrecio"
 				></v-text-field>
 				<div v-if="editData.articulo">
 					<div class="inputGroup">
@@ -174,16 +175,12 @@ import { pluralize, sort } from '@/utils/utils'
 	})
 	// Use the "useVuelidate" function to perform form validation
 	const v$ = useVuelidate(validations, { editData })
-	onMounted(() => {
-		inputPrecio.value?.addEventListener('blur', (event: any) => {
-			event.target.value = parseFloat(event.target.value).toFixed(2)
-		})
-		inputPrecio.value.value = parseFloat(inputPrecio.value.value).toFixed(2)
-		if (editData.value.articulo && editData.value.unidadesMedida.length === 0) {
-			editData.value.unidadesMedida = getArrayUnidadesMedida()
-		}
-	})	
+
 	// Methods
+	const onKeypressPrecio = (evt) => {
+		if (evt.charCode == 46) { evt.preventDefault() }
+	}
+
 	const getArrayUnidadesMedida = () => {
 		const articulo = listaArticulos.find(item => item.id === editData.value.articulo?.id) as Articulo
 		const tmpArray: any = []

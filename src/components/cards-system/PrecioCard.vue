@@ -9,7 +9,7 @@
 		<v-card-text class="text-small" @click="detalleCard()">
 			Establecimiento: {{ data.establecimiento?.nombre }} <br>
 			Última fecha compra: {{ getFechaCompra }} <br>
-			Precio: {{ getPrecio }}
+			Precio: {{ formatDecimal(data.precio) }}
 		</v-card-text>
 	</v-card>
 </template>
@@ -18,6 +18,7 @@
 	import { eventCardStore, modelStore, uiStore } from '@/main'
 	import { defineComponent } from 'vue'
 import router from '@/router'
+import { formatDecimal } from '@/utils/utils'
 	export default defineComponent({
 		name: 'PrecioCard',
 	})
@@ -38,14 +39,12 @@ import router from '@/router'
 	})
 	// Data
 	let data = { ...props.cardData}
-	
+
 	// Computed
 	const canDelete = computed(() => {
 		return props.cardData.borrable
 	})
-	const getPrecio = computed(() => {
-		return props.cardData ? props.cardData.precio?.toFixed(2).concat(' €') : null
-	})
+
 	const getFechaCompra = computed(() => {
 		return props.cardData.fechaCompra ? new Intl.DateTimeFormat('es-ES', {
       day: "2-digit",

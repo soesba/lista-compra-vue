@@ -26,8 +26,7 @@
 			<div class="inputGroup">
 				<label class="labelFor">Histórico</label>
 			</div>
-			<HistoricoPrecios :precios="precios"></HistoricoPrecios>
-			
+			<HistoricoPrecios :precios="precios"></HistoricoPrecios>			
 		</div>
 	</div>
 </template>
@@ -44,7 +43,7 @@
 	import type Precio from '@/services/precio/models/Precio'
 	import getByArticuloId from '@/services/precio/getPrecioByArticuloId.service'
 	import { pluralize, sort } from '@/utils/utils'
-import HistoricoPrecios from '@/components/HistoricoPrecios.vue'
+	import HistoricoPrecios from '@/components/HistoricoPrecios.vue'
 	export default defineComponent({
 		name: 'ArticuloDetalle',
 	})

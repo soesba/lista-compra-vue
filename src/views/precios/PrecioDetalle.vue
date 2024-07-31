@@ -28,27 +28,23 @@
 				<div class="labelFor">Medidas: </div>
 				<div class="text-body-1" v-for="tipoUnidad in data.unidadesMedida">{{  tipoUnidad.valor }} {{ pluralize(tipoUnidad.nombre, tipoUnidad.valor) }}</div>
 			</div>
-			<!-- <div class="inputGroup">
-				<label class="labelFor">Articulos</label>
-				<label v-if="!mostrarArticulos"> No hay articulos </label>
+			<div class="inputGroup">
+				<div class="labelFor">Precio: </div>
+				<label>{{ formatDecimal(data.precio) }}</label>
 			</div>
-      <div v-if="mostrarArticulos" v-for="articulo in data.articulos" class="inputGroup indent">
-        <label>{{articulo.articulo.nombre}}</label>
-        <label>{{articulo.cantidad}}</label>
-        <label>{{articulo.precioUnitario}}</label>
-      </div>-->
 		</div> 
 	</div>
 </template>
 
 <script lang="ts">
+	import HistoricoPrecios from '@/components/HistoricoPrecios.vue'
 	import { defineComponent } from 'vue'
 	import { computed } from 'vue'
 	import router from '@/router'
 	import getById from '@/services/precio/getPrecioById.service'
 	import { useRoute } from 'vue-router'
-import type Articulo from '@/services/articulo/models/Articulo'
-import { pluralize } from '@/utils/utils'
+	import { formatDecimal, pluralize, sort } from '@/utils/utils'
+	import getByArticuloId from '@/services/precio/getPrecioByArticuloId.service'
 	export default defineComponent({
 		name: 'CompraDetalle',
 	})

@@ -47,3 +47,8 @@ export const sort = (property) => {
     return result * sortOrder
   }
 }
+
+export const formatDecimal = (value, currency = true) => {
+  const result = value ? value.toLocaleString('es-ES', {minimumFractionDigits: 2}).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') : null
+  return currency ? result.concat(' €') : result
+}
