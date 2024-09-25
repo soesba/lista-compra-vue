@@ -8,7 +8,7 @@
 				icon="mdi-delete"
 				variant="text"
 				color="primary"
-				@click="deleteCard()"
+				@click="confirmDeleteCard()"
 				v-if="canDelete"
 			></v-btn>
 		</template>
@@ -42,6 +42,7 @@
 	import type Articulo from '@/services/articulo/models/Articulo'
 	import type Precio from '@/services/precio/models/Precio'
 	import getByArticuloId from '@/services/precio/getPrecioByArticuloId.service'
+	import deleteItem from '@/services/articulo/deleteArticulo.service'
 	import { pluralize, sort } from '@/utils/utils'
 	import HistoricoPrecios from '@/components/HistoricoPrecios.vue'
 	export default defineComponent({
@@ -49,7 +50,6 @@
 	})
 </script>
 <script setup lang="ts">
-	
 
 	// Props
 	const props = defineProps({
@@ -77,7 +77,7 @@
 		router.push('/articulos')
 	}
 
-	const deleteCard = () => {
+	const confirmDeleteCard = () => {
 		uiStore.showConfirmDialog({
 			props: {
 				text: '¿Desea eliminar el elemento?',
@@ -88,8 +88,20 @@
 	}
 
 	const onCloseConfirmDialog = () => {
-		eventCardStore.deleteCard(data)
+		deleteCard(data)
 	}
+
+	const deleteCard = (cardData: any) => {
+  if (cardData.borrable) {
+    deleteItem(cardData.id).then(response => {
+      if (response.respuesta === 200) {
+        console.log("🚀 ~ deleteItem ~ response:", response)
+				onBack()
+      }
+    })
+  }
+}
+
 </script>
 <style lang="scss" scoped>
 	.header {

@@ -178,7 +178,10 @@ import { pluralize, sort } from '@/utils/utils'
 
 	// Methods
 	const onKeypressPrecio = (evt) => {
-		if (evt.charCode == 46) { evt.preventDefault() }
+		if (evt.charCode == 46) { 
+			evt.preventDefault() 
+			evt.target.value = evt.target.value + ','
+		}
 	}
 
 	const getArrayUnidadesMedida = () => {

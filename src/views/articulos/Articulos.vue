@@ -28,7 +28,6 @@ import get from '@/services/articulo/getArticulo.service'
 import getByAny from '@/services/articulo/getArticuloByAny.service'
 import create from '@/services/articulo/createArticulo.service'
 import update from '@/services/articulo/updateArticulo.service'
-import deleteItem from '@/services/articulo/deleteArticulo.service'
 import { defineComponent } from 'vue'
 import { eventCardStore } from '@/main';
 import type ArticuloRequest from '@/services/articulo/models/ArticuloRequest'
@@ -46,9 +45,6 @@ const suscribe = eventCardStore.$onAction(({args, name}) => {
   switch(name) {
     case 'saveCard': 
       onSaveCard(args[0])
-      break
-    case 'deleteCard':
-      onDeleteCard(args[0])
       break
   }
 })
@@ -73,16 +69,6 @@ const getAllData = () => {
     list.value = response.data
     handleClick(0)
   })
-}
-
-const onDeleteCard = (cardData: any) => {
-  if (cardData.borrable) {
-    deleteItem(cardData.id).then(response => {
-      if (response.respuesta === 200) {
-        getAllData()
-      }
-    })
-  }
 }
 
 const onSaveCard = (cardData: any) => {

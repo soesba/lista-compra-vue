@@ -8,11 +8,6 @@
 		</v-card-title>
 		<v-card-text @click="detalleCard()">{{ cardData.descripcion }}
 		</v-card-text>
-		<!--<v-card-text class="text-small">Creado: {{ cardData.fechaCreacion }}</v-card-text>
-		 <v-card-actions>
-			<v-btn icon="mdi-pencil-circle" color="primary" @click="editCard()"></v-btn>
-			<v-btn icon="mdi-delete-circle" color="secondary" @click="deleteCard()" :disabled="!canDelete"></v-btn>
-		</v-card-actions> -->
 	</v-card>
 </template>
 
