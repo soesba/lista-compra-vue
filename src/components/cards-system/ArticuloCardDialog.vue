@@ -20,18 +20,16 @@
 			</v-row>
 			<v-row dense>
 				<v-col cols="12">
-					<v-select
-						variant="underlined"
-						label="Unidades de medida (máx 2)*"
+					<combo-component
+						:tipo-dato="TipoDato.TipoUnidad"
+						:model-value="editData.tiposUnidad"
+						label="Unidades de medida (máx 2)"
 						required
 						multiple
-						v-model="editData.tiposUnidad"
-						:items="listaTiposUnidad"
-						item-title="nombre"
-						item-value="id"
 						:error-messages="v$.editData.tiposUnidad.$errors.map((e: any) => e.$message)"
-						@update:modelValue="v$.editData.tiposUnidad.$touch"
-					></v-select>
+						@blur="v$.editData.tiposUnidad.$touch"
+						@change="onChange"
+					></combo-component>
 				</v-col>
 			</v-row>
 			<small class="text-caption text-medium-emphasis">*campo requerido</small>
@@ -52,6 +50,9 @@
 	import get from '@/services/tipoUnidad/getTipoUnidad.service'
 	import type { PropType } from 'vue'
 	import { eventCardStore, uiStore } from '@/main'
+	import ComboComponent from '../combos/ComboComponent.vue'
+import { TipoDato } from '@/services/desplegables/models/TipoDato'
+
 	export default defineComponent({
 		name: 'ArticuloCardDialog',
 	})
@@ -96,6 +97,11 @@
 	const v$ = useVuelidate(validations, { editData })
 
 	// Methods
+	const onChange = (event) => {
+		editData.tiposUnidad = event
+		v$.value.editData.tiposUnidad.$touch()
+	}
+
 	const cancel = () => {
 		eventCardStore.cancelCard()
 		uiStore.hideCustomDialog()

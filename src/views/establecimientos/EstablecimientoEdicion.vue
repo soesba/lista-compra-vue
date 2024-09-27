@@ -38,17 +38,14 @@
 				></v-text-field>
 			</div>
 			<div class="inputGroup">
-				<v-select
-				variant="underlined"
-					label="Categoría*"
+				<combo-component
+					:tipo-dato="TipoDato.TipoEstablecimientos"
+					:model-value="editData.tipoEstablecimiento"
 					required
-					v-model="editData.tipoEstablecimiento"
-					:items="tiposEstablecimientos"
-					item-title="nombre"
-					item-value="id"
 					:error-messages="v$.editData.tipoEstablecimiento.$errors.map((e) => e.$message)"
 					@blur="v$.editData.tipoEstablecimiento.$touch"
-				></v-select>
+					@change="onChange"
+				></combo-component>
 			</div>
 			<div class="inputGroup">
 				<label class="labelFor">Direcciones</label>
@@ -61,11 +58,12 @@
 </template>
 
 <script lang="ts">
+	import ComboComponent from '@/components/combos/ComboComponent.vue'
   import DireccionEdicion from '@/components/DireccionEdicion.vue'
 	import DetalleToolbar from '@/components/DetalleToolbar.vue'
 	import { required, requiredIf } from 'vuelidate/lib/validators'
 	import { useVuelidate } from '@vuelidate/core'
-	import getTipoEstablecimiento from '@/services/tipoEstablecimiento/getTipoEstablecimiento.service'
+	import { TipoDato } from '@/services/desplegables/models/TipoDato'
 	import { useRoute } from 'vue-router'
 	import { noLogoUrl } from '@/main'
 	import { defineComponent, reactive, ref } from 'vue'
@@ -111,7 +109,6 @@
 	const typeFile = 'image/png, image/gif, image/jpeg, image/svg'
 	const upload = ''
 	let selectedFile = reactive<any>('')
-	const tiposEstablecimientos = (await getTipoEstablecimiento()).data
 
 	// Validations
 	const validations = computed(() => {
@@ -128,6 +125,10 @@
 	const v$ = useVuelidate(validations, { editData })
 
 	// Methods
+	const onChange = (event) => {
+		editData.value.tipoEstablecimiento = event
+	}
+
 	const onBack = () => {
 		if (adding.value) {
 			router.push('/establecimientos')

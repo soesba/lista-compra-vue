@@ -28,25 +28,15 @@
 				</v-text-field>
 			</div>
 			<div class="inputGroup">
-				<v-autocomplete
-					variant="underlined"
-					label="Artículo*"
+				<combo-component
 					:return-object="true"
 					v-model="editData.articulo"
-					:items="listaArticulos"
-					item-value="id"
-					item-title="nombre"
-				></v-autocomplete>
+				></combo-component>
 			</div>
 			<div class="inputGroup">
-				<v-autocomplete
-					variant="underlined"
-					label="Establecimiento*"
+				<combo-component
 					v-model="editData.establecimiento"
-					:items="listaEstablecimientos"
-					item-value="id"
-					item-title="nombre"
-				></v-autocomplete>
+				></combo-component>
 			</div>
 			<div class="inputGroup">
 				<v-text-field variant="underlined" label="Marca*" v-model="editData.marca"></v-text-field>
@@ -95,8 +85,10 @@
 	import type Precio from '@/services/precio/models/Precio'
 	import get from '@/services/establecimiento/getEstablecimiento.service'
 	import { modelStore } from '@/main'
-import type Articulo from '@/services/articulo/models/Articulo'
-import { pluralize, sort } from '@/utils/utils'
+	import type Articulo from '@/services/articulo/models/Articulo'
+	import { pluralize, sort } from '@/utils/utils'
+	import ComboComponent from '@/components/combos/ComboComponent.vue'
+
 	export default defineComponent({
 		name: 'PrecioEdicion',
 	})
