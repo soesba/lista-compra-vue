@@ -2,6 +2,7 @@ import type Articulo from "@/services/articulo/models/Articulo";
 import type ArticuloDTO from "../dto/ArticuloDTO";
 import type ArticuloRequestDTO from "../dto/ArticuloRequestDTO";
 import type ArticuloRequest from "@/services/articulo/models/ArticuloRequest";
+import { DTOtoModel as precioDTOToModel } from "@/api/precio/mapping/PrecioMapping";
 
 export const DTOtoModel = (origin: ArticuloDTO): Articulo => {
   const model = {
@@ -14,6 +15,7 @@ export const DTOtoModel = (origin: ArticuloDTO): Articulo => {
         nombre: item.nombre
       }
     }) : [],
+    precios: origin.precios.map(item => precioDTOToModel(item)),
     fechaCreacion: origin.fechaCreacion,
     borrable: origin.borrable
 

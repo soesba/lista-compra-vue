@@ -1,6 +1,5 @@
 import type EstablecimientoDTO from "@/api/establecimiento/dto/EstablecimientoDTO"
 import type UnidadMedidaDTO from "./UnidadMedidaDTO";
-import type Articulo from "@/services/articulo/models/Articulo";
 import type ArticuloDTO from "@/api/articulo/dto/ArticuloDTO";
 
 export default interface PrecioDTO {

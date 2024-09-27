@@ -26,7 +26,7 @@
 			<div class="inputGroup">
 				<label class="labelFor">Histórico</label>
 			</div>
-			<HistoricoPrecios :precios="precios"></HistoricoPrecios>			
+			<HistoricoPrecios :precios="data.precios"></HistoricoPrecios>			
 		</div>
 	</div>
 </template>
@@ -65,7 +65,7 @@
 	const route = useRoute()
 	// Data
 	let data: Articulo = (await getById(route.params['id'].toString())).data as Articulo
-	const precios: Precio[] = (((await getByArticuloId(data.id)).data) as Precio[]).sort(sort('fechaCompra'))
+	data.precios = data.precios.sort(sort('fechaCompra'))
 
 	// Computed
 	const canDelete = computed(() => {

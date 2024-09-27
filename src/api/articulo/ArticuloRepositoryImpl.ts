@@ -12,6 +12,7 @@ export default class ArticuloRepositoryImpl implements ArticuloRepository {
       'Content-Type': 'application/json;charset=UTF-8'
     }
     const response = await xhr.get(endpoint, { headers})
+    console.log("🚀 ~ ArticuloRepositoryImpl ~ get ~ response:", response)
     const result = {
       data: response.data.map((item:ArticuloDTO) => DTOtoModel(item)),
       respuesta: response.status
