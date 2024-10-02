@@ -29,13 +29,24 @@
 			</div>
 			<div class="inputGroup">
 				<combo-component
+					:tipo-dato="TipoDato.Articulos"
+					:model-value="editData.articulo"
 					:return-object="true"
-					v-model="editData.articulo"
+					required
+					:error-messages="v$.editData.articulo.$errors.map((e) => e.$message)"
+					@blur="v$.editData.articulo.$touch"
+					@change="onChangeArticulo"
 				></combo-component>
 			</div>
 			<div class="inputGroup">
 				<combo-component
-					v-model="editData.establecimiento"
+					:tipo-dato="TipoDato.Establecimientos"
+					:model-value="editData.establecimiento"
+					:return-object="true"
+					required
+					:error-messages="v$.editData.articulo.$errors.map((e) => e.$message)"
+					@blur="v$.editData.establecimiento.$touch"
+					@change="onChangeEstablecimiento"
 				></combo-component>
 			</div>
 			<div class="inputGroup">
@@ -73,21 +84,21 @@
 
 <script lang="ts">
 	import { DetalleToolbar } from '@/components/index'
-	import { required } from 'vuelidate/lib/validators'
+	import { required, requiredIf } from 'vuelidate/lib/validators'
 	import { useVuelidate } from '@vuelidate/core'
 	import { useRoute } from 'vue-router'
-	import { defineComponent, onMounted, reactive, ref, useModel, watch } from 'vue'
+	import { defineComponent, onMounted, ref, watch } from 'vue'
 	import { computed } from 'vue'
 	import router from '@/router'
-	import getById from '@/services/precio/getPrecioById.service'
+	import getPrecioById from '@/services/precio/getPrecioById.service'
 	import create from '@/services/precio/createPrecio.service'
 	import update from '@/services/precio/updatePrecio.service'
 	import type Precio from '@/services/precio/models/Precio'
-	import get from '@/services/establecimiento/getEstablecimiento.service'
-	import { modelStore } from '@/main'
+	import getArticuloById from '@/services/articulo/getArticuloById.service'
 	import type Articulo from '@/services/articulo/models/Articulo'
-	import { pluralize, sort } from '@/utils/utils'
+	import { pluralize } from '@/utils/utils'
 	import ComboComponent from '@/components/combos/ComboComponent.vue'
+	import { TipoDato } from '@/services/desplegables/models/TipoDato'
 
 	export default defineComponent({
 		name: 'PrecioEdicion',
@@ -101,7 +112,7 @@
 		return !v$.value.editData.$invalid
 	})
 	const getFechaCompra = computed(() => {
-		return editData.value.fechaCompra ? new Intl.DateTimeFormat('es-ES', {
+		return editData?.value?.fechaCompra ? new Intl.DateTimeFormat('es-ES', {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
@@ -111,20 +122,21 @@
 	const inputPrecio = ref()
 	const adding = ref(false)
 	const route = useRoute()
-	let editData = ref<Precio>({
-		id: '',
-		articulo: null,
-		precio: null,
-		marca: '',
-		unidadesMedida: [],
-		establecimiento: null,
-		fechaCompra: null,
-		fechaCreacion: '',
-		notas: '',
-		borrable: true,
-	})
+	let editData = ref<any>({
+				id: '',
+				precio: 0,
+				marca: '',
+				articulo: null,
+				establcimiento: null,
+				unidadesMedida: [],
+				fechaCreacion: '',
+				notas: '',
+				borrable: true,
+			})
+
 	if (route.params['id']) {
-		getById(route.params['id'].toString()).then((response) => {
+		getPrecioById(route.params['id'].toString()).then((response) => {
+			console.log("🚀 ~ getPrecioById ~ response:", response)
 			if (response.respuesta === 200) {
 				editData.value = response.data as Precio
 			}
@@ -132,20 +144,15 @@
 	} else {
 		adding.value = true
 	}
-	const listaEstablecimientos = (await get()).data
-	const listaArticulos = modelStore.articulos.sort(sort('nombre'))
+		
 	// Watch
 	watch (
-		() => editData.value.articulo,
-		(newValue, oldValue) => {
-			if (!editData.value.id) {
-				editData.value.unidadesMedida = getArrayUnidadesMedida()
+		async () => editData.value?.articulo,
+		async (newValue, oldValue) => {
+			if (!editData.value?.id) {
+				const response = await getArrayUnidadesMedida()
+				editData.value!.unidadesMedida = response
 			}
-			// newValue?.tiposUnidad.forEach(element => {
-			// 	const tmp:any = {...element}
-			// 	tmp.valor = null
-			//   editData.value.unidadesMedida.push(tmp)
-			// })
 		}
 	)
 
@@ -156,17 +163,24 @@
 		}
 		return {
 			editData: {
+				id: { required: requiredIf(!adding.value) },
 				articulo: { required },
 				marca: { required },
 				establecimiento: { required },
 				precio: { required },
 				fechaCompra: { required, fechaCompraValid },
-				borrable: { required },
-			},
+				borrable: { required }
+			}
 		}
 	})
+
 	// Use the "useVuelidate" function to perform form validation
 	const v$ = useVuelidate(validations, { editData })
+
+	onMounted(() => {
+		v$.value.editData.articulo.$reset
+		v$.value.editData.establecimiento.$reset
+	})
 
 	// Methods
 	const onKeypressPrecio = (evt) => {
@@ -176,19 +190,29 @@
 		}
 	}
 
+	const onChangeArticulo = (event) => {
+		editData.value!.articulo = event
+	}
+
+	const onChangeEstablecimiento = (event) => {
+		editData.value!.establecimiento = event
+	}
+
 	const getArrayUnidadesMedida = () => {
-		const articulo = listaArticulos.find(item => item.id === editData.value.articulo?.id) as Articulo
-		const tmpArray: any = []
-		articulo.tiposUnidad.forEach(element => {
-			const tmp:any = {...element}
-			tmp.valor = null
-			tmpArray.push(tmp)
+		return getArticuloById(editData.value!.articulo!.id).then(response => {
+			const articulo = response.data as Articulo
+			const tmpArray: any = []
+			articulo.tiposUnidad.forEach(element => {
+				const tmp:any = {...element}
+				tmp.valor = null
+				tmpArray.push(tmp)
+			})
+			return tmpArray
 		})
-		return tmpArray
 	}
 
 	const setFechaCompra = (event: any) => {
-		editData.value.fechaCompra = event.target.value ? new Date(event.target.value.split('/').reverse().join('-')) : null
+		editData.value!.fechaCompra = event.target.value ? new Date(event.target.value.split('/').reverse().join('-')) : null
 	}
 
 	const onBack = () => {

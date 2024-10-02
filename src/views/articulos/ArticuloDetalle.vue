@@ -35,7 +35,7 @@
 	import { defineComponent } from 'vue'
 	import { computed } from 'vue'
 	import router from '@/router'
-	import getById from '@/services/articulo/getArticuloById.service'
+	import getArticuloById from '@/services/articulo/getArticuloById.service'
 	import { useRoute } from 'vue-router'
 	import DetalleToolbar from '@/components/DetalleToolbar.vue'
 	import { eventCardStore, uiStore } from '@/main'
@@ -64,7 +64,7 @@
 	})
 	const route = useRoute()
 	// Data
-	let data: Articulo = (await getById(route.params['id'].toString())).data as Articulo
+	let data: Articulo = (await getArticuloById(route.params['id'].toString())).data as Articulo
 	const precios: Precio[] = (((await getByArticuloId(data.id)).data) as Precio[]).sort(sort('fechaCompra'))
 
 	// Computed

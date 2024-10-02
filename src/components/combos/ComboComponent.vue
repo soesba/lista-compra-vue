@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts">
-	import { defineComponent, ref, type PropType, watch, onMounted } from 'vue'
+	import { defineComponent, ref, type PropType, watch } from 'vue'
 	import getDesplegable from '@/services/desplegables/getDesplegable.service'
 	import { TipoDato } from '@/services/desplegables/models/TipoDato'
 
@@ -87,6 +87,7 @@
 	watch (
 		() => props.modelValue,
 		(newValue, oldValue) => {
+			console.log("🚀 ~ newValue, oldValue:", newValue, oldValue)
 			selected.value = newValue
 		}
 	)
@@ -107,10 +108,14 @@
 		}
 	}
 	const onBlur = () => {
+		console.log("LOG ~ onBlur ~ emit('blur'):")
 		emit('blur')
 	}
+		
 	const onChange = (event) => {
+		console.log("LOG ~ onChange ~ emit('change', event):", event)
 		emit('change', event)
 	}
+		
 </script>
 <style lang="scss" scoped></style>

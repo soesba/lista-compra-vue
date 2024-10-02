@@ -41,7 +41,7 @@
 	import { defineComponent } from 'vue'
 	import { computed } from 'vue'
 	import router from '@/router'
-	import getById from '@/services/precio/getPrecioById.service'
+	import getPrecioById from '@/services/precio/getPrecioById.service'
 	import { useRoute } from 'vue-router'
 	import { formatDecimal, pluralize, sort } from '@/utils/utils'
 	import getByArticuloId from '@/services/precio/getPrecioByArticuloId.service'
@@ -67,7 +67,7 @@
 	})
 	const route = useRoute()
 	// Data
-	let data: Precio = (await getById(route.params['id'].toString())).data as Precio
+	let data: Precio = (await getPrecioById(route.params['id'].toString())).data as Precio
 	// Computed
 	const canDelete = computed(() => {
 		return data.borrable

@@ -7,7 +7,7 @@ export default interface Precio {
     id: string;
     nombre: string;
   } | null;
-  precio: number | null;
+  precio: number;
   marca: string;
   establecimiento: {
     id: string;

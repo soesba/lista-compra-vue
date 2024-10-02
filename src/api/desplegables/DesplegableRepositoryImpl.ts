@@ -3,8 +3,8 @@ import type DesplegableRepository from "./DesplegableRepository";
 import { xhr } from "../config/Repository";
 
 enum TipoDato {
-	Articulos = "articulo",
-	Establecimientos = "establecimiento",
+	Articulo = "articulo",
+	Establecimiento = "establecimiento",
 	TipoEstablecimiento = "tipoEstablecimiento",
   TipoUnidad = "tipoUnidad"
 }

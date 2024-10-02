@@ -47,7 +47,6 @@
 	import { required, requiredIf } from 'vuelidate/lib/validators'
 	import { useVuelidate } from '@vuelidate/core'
 	import type Articulo from '@/services/articulo/models/Articulo'
-	import get from '@/services/tipoUnidad/getTipoUnidad.service'
 	import type { PropType } from 'vue'
 	import { eventCardStore, uiStore } from '@/main'
 	import ComboComponent from '../combos/ComboComponent.vue'
@@ -77,7 +76,6 @@ import { TipoDato } from '@/services/desplegables/models/TipoDato'
 	// Data
 	const adding = !props.data.id
 	let editData = reactive<any>({ ...props.data })
-	const listaTiposUnidad = (await get()).data
 	// Validations
 	const validations = computed(() => {
 		const maxTiposUnidad = (value: any) => {
