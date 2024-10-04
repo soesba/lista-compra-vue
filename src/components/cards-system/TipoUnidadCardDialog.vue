@@ -19,16 +19,17 @@
 						@input="v$.editData.abreviatura.$touch"></v-text-field>
 				</v-col>
 			</v-row>
-			<!-- <v-row dense>
-				<v-col cols="12">
-					<label>Equivalencias</label>
-					<div class="wrapper-equivalencias">
-          <v-btn v-for="tipoUnidad in listaTiposUnidad" :key="tipoUnidad.id">
-            {{ tipoUnidad.nombre }}
-          </v-btn>
-        </div>
-				</v-col>
-			</v-row> -->
+			<div v-if="editData.nombre">
+				<v-row dense>
+					<v-col cols="12">
+						<div class="inputGroup">
+							<label class="labelFor">Equivalencias</label> <br>
+							<label v-if="equivalencias?.length === 0"> No hay equivalencias </label>
+						</div>
+						<equivalencia-component :from="editData" :equivalencias="editData.equivalencias"></equivalencia-component>
+					</v-col>
+				</v-row>
+			</div>
 			<small class="text-caption text-medium-emphasis">*campo requerido</small>
 		</v-card-text>
 		<template v-slot:actions>
@@ -41,7 +42,9 @@
 <script lang="ts">
 	import { defineComponent, onMounted, reactive, ref } from 'vue'
 	import { computed } from 'vue'
-import get from '@/services/tipoUnidad/getTipoUnidad.service'
+	import EquivalenciaComponent from '../EquivalenciaComponent.vue'
+	import getByFrom from '@/services/equivalencia/getEquivalenciaByFrom.service'
+	import type Equivalencia from '@/services/equivalencia/models/Equivalencia'
 	export default defineComponent({
 		name: 'TipoUnidadCardDialog',
 	})
@@ -66,6 +69,7 @@ import get from '@/services/tipoUnidad/getTipoUnidad.service'
 			default: false
 		}
   })
+	
 	// Computed 
 	const getTitle = computed(() => {
 		return props.adding ? 'Nuevo tipo de unidad' : props.data.nombre
@@ -74,9 +78,13 @@ import get from '@/services/tipoUnidad/getTipoUnidad.service'
 		return !v$.value.$invalid
 	})
 	// Data
-	const equivalencias = ref([])
+	let equivalencias = ref()
 	let editData = reactive<any>({ ...props.data })
-	let listaTiposUnidad = ref<TipoUnidad[]>([])
+	
+	const from = ref({
+		id: editData.id,
+		nombre: editData.nombre
+	})
 	// Validations
 	const validations = computed(() => {
 		return {
@@ -90,13 +98,10 @@ import get from '@/services/tipoUnidad/getTipoUnidad.service'
 	})
 	// Use the "useVuelidate" function to perform form validation
 	const v$ = useVuelidate(validations, { editData })
+
 	onMounted(() => {
-		get().then(response => {
-			if (props.data.id) {
-				listaTiposUnidad.value = (response.data as TipoUnidad[]).filter(item => item.id !== props.data.id)
-			} else {
-				listaTiposUnidad.value = response.data as TipoUnidad[]
-			}
+		getByFrom(editData.id).then(response => {
+			equivalencias.value = response.data as Equivalencia[]
 		})
 	})
 	// Methods
