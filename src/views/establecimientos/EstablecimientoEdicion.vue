@@ -51,7 +51,7 @@
 				<label class="labelFor">Direcciones</label>
         <label v-if="!mostrarDirecciones"> No hay direcciones </label>
 			</div>
-      <direccion-edicion @update-direccion="onUpdateDireccion" v-for="direccion in editData.direcciones" :direccion="direccion"></direccion-edicion>      
+      <direccion-edicion @update-direccion="onUpdateDireccion" @delete-direccion="onDeleteDireccion" v-for="direccion in editData.direcciones" :direccion="direccion"></direccion-edicion>      
 			<direccion-edicion @save-direccion="onSaveDireccion"></direccion-edicion>
 		</div>
 	</div>
@@ -141,7 +141,7 @@
     editData.value.direcciones.push(dir)
   }
 
-  const onUpdateDireccion = (data: Establecimiento) => {
+  const onUpdateDireccion = (data: Direccion) => {
     editData.value.direcciones = editData.value.direcciones.map((item: any) => {      
       if ((data.id && item.id === data.id) ||
         (data.tmpId && data.tmpId === item.tmpId)) {
@@ -151,6 +151,16 @@
       }
     })
   }
+
+	const onDeleteDireccion = (dir: Direccion) => {
+		editData.value.direcciones = editData.value.direcciones.filter((item) => {
+			if (dir.tmpId) {
+				return item.tmpId !== dir.tmpId
+			} else {
+				return item.id !== dir.id
+			}
+		})
+	}
 
 	const save = async () => {
 		if (selectedFile) {
