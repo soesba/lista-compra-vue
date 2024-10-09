@@ -1,5 +1,5 @@
 <template>
-	<v-card prepend-icon="mdi-pencil" :title="getTitle" width="340" class="screen-center">
+	<v-card prepend-icon="mdi-pencil" :title="getTitle" width="400" class="screen-center">
 		<v-card-text>
 			<v-row dense>
 				<v-col cols="12">
@@ -23,10 +23,22 @@
 				<v-row dense>
 					<v-col cols="12">
 						<div class="inputGroup">
-							<label class="labelFor">Equivalencias</label> <br>
+							<label class="labelFor">Equivalencias</label>
+						</div>
+						<div class="inputGroup">
 							<label v-if="equivalencias?.length === 0"> No hay equivalencias </label>
 						</div>
-						<equivalencia-component :from="editData" :equivalencias="editData.equivalencias"></equivalencia-component>
+						<div class="inputGroup">
+						<label>1 {{editData.nombre}} equivale a </label>  
+					</div>
+						<equivalencia-component
+							v-for="equivalencia in equivalencias"
+							:equivalencia="equivalencia"
+							@update-equivalencia="onUpdateEquivalencia">
+						</equivalencia-component>
+						<equivalencia-component
+							:from="from"
+							@save-equivalencia="onSaveEquivalencia" />
 					</v-col>
 				</v-row>
 			</div>
@@ -79,11 +91,11 @@
 	})
 	// Data
 	let equivalencias = ref()
-	let editData = reactive<any>({ ...props.data })
+	let editData = ref({ ...props.data })
 	
 	const from = ref({
-		id: editData.id,
-		nombre: editData.nombre
+		id: editData.value.id,
+		nombre: editData.value.nombre
 	})
 	// Validations
 	const validations = computed(() => {
@@ -100,11 +112,29 @@
 	const v$ = useVuelidate(validations, { editData })
 
 	onMounted(() => {
-		getByFrom(editData.id).then(response => {
+		getByFrom(editData.value.id).then(response => {
 			equivalencias.value = response.data as Equivalencia[]
 		})
 	})
 	// Methods
+
+	const onUpdateEquivalencia = (data: Equivalencia) => {
+		console.log("LOG ~ onUpdateEquivalencia ~ data:", data)
+		equivalencias = equivalencias.value.map((item: any) => {      
+      if ((data.id && item.id === data.id) ||
+        (data.tmpId && data.tmpId === item.tmpId)) {
+        return data
+      } else {
+        return item
+      }
+    })
+	}
+	
+	const onSaveEquivalencia = (data) => {
+		console.log("LOG ~ onSaveEquivalencia ~ data:", data)
+		data.from = editData.value.id
+		equivalencias.value.push(data)
+	}
 
 	const cancel = () => {
 		eventCardStore.cancelCard()

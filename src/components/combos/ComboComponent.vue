@@ -1,37 +1,20 @@
 <template>
-	<v-autocomplete
-		v-if="autoComplete"
-		:return-object="returnObject"
-		:variant="variant"
-		:label="getLabel()"
-		v-model="selected"
-		:items="items"
+	<component :is="autoComplete ? 'v-autocomplete' : 'v-select'"
+		v-on="bindEvents"
+		v-bind="bindProps"
+		:items="items" 
 		item-value="id"
 		item-title="nombre"
-		@blur="onBlur"
-		@change="onChange"
-	></v-autocomplete>
-	<v-select
-		v-else
-		:return-object="returnObject"
-		:variant="variant"
-		:label="getLabel()"
-		:required="required"
-		:multiple="multiple"
-		v-model="selected"
-		:items="items"
-		item-title="nombre"
-		item-value="id"
-		:error-messages="errorMessage"
-		@blur="onBlur"
-		@update:modelValue="onChange"
-	></v-select>
+		:model-value="selected"
+		:label="getLabel()"></component>
 </template>
 
 <script lang="ts">
 	import { defineComponent, ref, type PropType, watch } from 'vue'
 	import getDesplegable from '@/services/desplegables/getDesplegable.service'
 	import { TipoDato } from '@/services/desplegables/models/TipoDato'
+	import { sort } from '@/utils/utils';
+	import type Item from '@/services/desplegables/models/Item';
 
 	export default defineComponent({
 		name: 'ComboComponent',
@@ -77,11 +60,25 @@
 		returnObject: {
 			type: Boolean,
 			default: false
+		},
+		maxWidth: {
+			type: String,
+			default: ''
+		},
+		minWidth: {
+			type: String,
+			default: ''
 		}
 	})
 	// Data
-	let items = await (await getDesplegable(props.tipoDato)).data
+	let items = (await (await getDesplegable(props.tipoDato)).data as Item[]).sort(sort('nombre'))
 	let selected = ref(props.modelValue)
+	const eventNameChange = !props.autoComplete ? 'update:modelValue' : 'change'
+	let bindProps = { ...props }
+	let bindEvents = {
+		blur: () => onBlur(),
+		[eventNameChange]: (event) => onChange(event)
+	}
 		
 	// Watch
 	watch (
@@ -107,6 +104,7 @@
 				return 'Unidad'.concat(label)
 		}
 	}
+
 	const onBlur = () => {
 		console.log("LOG ~ onBlur ~ emit('blur'):")
 		emit('blur')

@@ -1,24 +1,29 @@
 <template>
-	<div>
-    <div class="inputGroup">
-      <label>1 {{props.from.nombre}} equivale a </label>  
-    </div>
-    <div v-if="props.equivalencias.length !== 0">
-      <div class="inputGroup" v-for="equivalencia in props.equivalencias">
+	<div>   
+    <div>
+      <div class="inputGroup">
         <v-text-field
+          label="Factor*"
           required
-          :variant="equivalencia ? 'outlined' : 'underlined'"
-          v-model="equivalencia.factor"
-          :error-messages="v$.equivalencia.factor.$errors.map((e: any) => e.$message)"
+          :variant="props.equivalencia ? 'outlined' : 'underlined'"
+          v-model="nuevaEquivalencia.factor"
+          :error-messages="v$.nuevaEquivalencia.factor.$errors.map((e: any) => e.$message)"
           max-width="100"
+          @blur="txtFactorOnBlur"
+          @keypress="txtFactorOnKeyPress"
+          @input="v$.nuevaEquivalencia.factor.$touch"
         ></v-text-field>
         <combo-component
           :tipo-dato="TipoDato.TipoUnidad"
-          :model-value="equivalencia.to"
+          :model-value="nuevaEquivalencia.to"
+          :variant="props.equivalencia ? 'outlined' : 'underlined'"
           required
-          :error-messages="v$.equivalencia.to.$errors.map((e) => e.$message)">
+          :error-messages="v$.nuevaEquivalencia.to.$errors.map((e) => e.$message)"
+          min-width="150"
+          max-width="150"
+          @change="onChangeCboTo">
         </combo-component>
-        <div class="wrapper-icons">  
+        <div class="wrapper-icons" v-if="props.equivalencia">
           <v-btn
             icon="mdi-delete"
             variant="text"
@@ -26,37 +31,22 @@
             @click="onClickDelete"
           ></v-btn>
         </div>
+        <div class="wrapper-icons" v-else>
+          <v-btn
+            icon="mdi-check"
+            variant="text"
+            color="primary"
+            :disabled="!canSave"
+            @click="onClickSave"
+          ></v-btn>
+          <v-btn
+            icon="mdi-close"
+            variant="text"
+            color="primary"
+            @click="onClickCancel">
+          </v-btn>
+        </div>
       </div>    
-    </div>
-		<div class="inputGroup">
-      <v-text-field
-        required
-        variant="underlined"
-        v-model="nuevaEquivalencia.factor"
-        :error-messages="v$.nuevaEquivalencia.factor.$errors.map((e: any) => e.$message)"
-        max-width="100"
-      ></v-text-field>
-
-      <combo-component
-        :tipo-dato="TipoDato.TipoUnidad"
-        :model-value="nuevaEquivalencia.to"
-        :return-object="true"
-        required
-        :error-messages="v$.nuevaEquivalencia.to.$errors.map((e) => e.$message)"
-        @change="onChangeCboTo">
-      </combo-component>   
-    </div>
-    <div class="inputGroup">
-      <div class="wrapper-icons" v-if="nuevaEquivalencia.tmpId">
-        <v-btn
-          icon="mdi-check"
-          variant="text"
-          color="primary"
-          :disabled="!canSave"
-          @click="onClickSave"
-        ></v-btn>
-        <v-btn icon="mdi-close" variant="text" color="primary" @click="onClickCancel"></v-btn>
-      </div>
     </div>
   </div>
 </template>
@@ -64,7 +54,7 @@
 	import useVuelidate from '@vuelidate/core'
 	import { required } from 'vuelidate/lib/validators'
 	import ComboComponent from './combos/ComboComponent.vue'
-	import { computed, defineComponent, Fragment, ref, type PropType } from 'vue'
+	import { computed, defineComponent, ref, type PropType } from 'vue'
 	import type Equivalencia from '@/services/equivalencia/models/Equivalencia'
   import { TipoDato } from '@/services/desplegables/models/TipoDato'
   import type Item from '@/services/desplegables/models/Item'
@@ -76,9 +66,9 @@
 <script setup lang="ts">
 	const emitter = defineEmits(['saveEquivalencia', 'updateEquivalencia'])
 	const props = defineProps({
-		equivalencias: {
-			type: Array<Equivalencia>,
-			default: [],
+		equivalencia: {
+			type: Object as PropType<Equivalencia>,
+			default: null,
 		},
     from: {
       type: Object as PropType<Item>,
@@ -87,11 +77,13 @@
 			}
     }
 	})
-	const nuevaEquivalencia = ref({
+
+  console.log(props.from)
+	let nuevaEquivalencia = props.equivalencia ? ref({ ...props.equivalencia}) : ref({
     tmpId: Date.now(),
 		from: props.from,
 		to: null,
-		factor: 0,
+		factor: null,
 		borrable: true
 	})
 
@@ -111,29 +103,28 @@
 	})
 	const v$ = useVuelidate(validations, { nuevaEquivalencia })
 	// Methods
+  
   const onChangeCboTo = (value)=> {
+    console.log("LOG ~ onChangeCboTo ~ value:", value)
     nuevaEquivalencia.value.to = value
+    if (props.equivalencia && nuevaEquivalencia.value.to !== props.equivalencia.to) {
+      emitter('updateEquivalencia', nuevaEquivalencia.value)
+    }
+    v$.value.nuevaEquivalencia.to.$touch()
   }
 
-  // const txtEquivalenciaOnBlur = () => {
-  //   if (props.equivalencia && nuevaEquivalencia.value.equivalencia !== props.equivalencia.equivalencia) {
-  //     emitter('updateEquivalencia', nuevaEquivalencia.value)
-  //   }
-  //   v$.value.nuevaEquivalencia.equivalencia.$touch
-  // }
+  const txtFactorOnBlur = () => {
+    if (props.equivalencia && nuevaEquivalencia.value.factor !== props.equivalencia.factor) {
+      emitter('updateEquivalencia', nuevaEquivalencia.value)
+    }
+    v$.value.nuevaEquivalencia.factor.$touch
+  }
 
-  // const txtCodPostalOnBlur = () => {
-  //   if (props.equivalencia && nuevaEquivalencia.value.codPostal !== props.equivalencia.codPostal) {
-  //     emitter('updateEquivalencia', nuevaEquivalencia.value)
-  //   }
-  // }
 
-  // const txtPoblacionOnBlur = () => {
-  //   if (props.equivalencia && nuevaEquivalencia.value.poblacion !== props.equivalencia.poblacion) {
-  //     emitter('updateEquivalencia', nuevaEquivalencia.value)
-  //   }
-  // }
-
+  const txtFactorOnKeyPress = (evt: any) => {
+		console.log("LOG ~ txtFactorOnKeyPress ~ evt:", evt)
+	}
+  
 	const onClickSave = () => {
 		emitter('saveEquivalencia', nuevaEquivalencia.value)
 		resetForm()
@@ -152,7 +143,7 @@
       tmpId: 0,
 			from: props.from,
       to: null,
-      factor: 0,
+      factor: null,
       borrable: true
 		}
     v$.value.$reset()
@@ -166,7 +157,6 @@
 	}
 
   .wrapper-icons {
-    width: 100%;
     display: flex;
     justify-content: flex-end;
   }
