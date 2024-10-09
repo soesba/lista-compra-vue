@@ -87,6 +87,7 @@ const onDeleteCard = (cardData: any) => {
 }
 
 const onSaveCard = (cardData: any) => {
+  console.log("LOG ~ onSaveCard ~ cardData:", cardData)
   if (cardData.adding) {
     createCard(cardData.data)
   } else {

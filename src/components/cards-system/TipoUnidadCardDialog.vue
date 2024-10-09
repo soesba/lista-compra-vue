@@ -28,9 +28,17 @@
 						<div class="inputGroup">
 							<label v-if="equivalencias?.length === 0"> No hay equivalencias </label>
 						</div>
+					</v-col>
+				</v-row>
+				<v-row dense>
+					<v-col cols="12">
 						<div class="inputGroup">
-						<label>1 {{editData.nombre}} equivale a </label>  
-					</div>
+							<label>1 {{editData.nombre}} equivale a </label>  
+						</div>
+					</v-col>
+				</v-row>
+				<v-row dense>
+					<v-col cols="12">
 						<equivalencia-component
 							v-for="equivalencia in equivalencias"
 							:equivalencia="equivalencia"
@@ -87,7 +95,7 @@
 		return props.adding ? 'Nuevo tipo de unidad' : props.data.nombre
 	})
 	const canSave = computed(() => {
-		return !v$.value.$invalid
+		return !v$.value.editData.$invalid
 	})
 	// Data
 	let equivalencias = ref()

@@ -47,6 +47,7 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
   }
 
   async update(request: TipoUnidadRequest): Promise<TipoUnidadResponse> {
+    console.log("LOG ~ TipoUnidadRepositoryImpl ~ update ~ request:", request)
     const endpoint = `/tipoUnidad/update`
     const headers = {
       'Content-Type': 'application/json;charset=UTF-8'
