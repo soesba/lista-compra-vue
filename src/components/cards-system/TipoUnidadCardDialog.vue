@@ -60,10 +60,9 @@
 </template>
 
 <script lang="ts">
-	import { defineComponent, onMounted, reactive, ref } from 'vue'
+	import { defineComponent, ref } from 'vue'
 	import { computed } from 'vue'
 	import EquivalenciaComponent from '../EquivalenciaComponent.vue'
-	import getByFrom from '@/services/equivalencia/getEquivalenciaByFrom.service'
 	import type Equivalencia from '@/services/equivalencia/models/Equivalencia'
 	export default defineComponent({
 		name: 'TipoUnidadCardDialog',

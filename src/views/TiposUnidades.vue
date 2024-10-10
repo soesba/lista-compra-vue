@@ -88,7 +88,6 @@ const onDeleteCard = (cardData: any) => {
 }
 
 const onSaveCard = (cardData: any) => {
-  console.log("LOG ~ onSaveCard ~ cardData:", cardData)
   const tipoUnidad = cardData.data.value
   delete tipoUnidad.tmpId
   tipoUnidad.equivalencias = tipoUnidad.equivalencias.map((item: Equivalencia) => {
