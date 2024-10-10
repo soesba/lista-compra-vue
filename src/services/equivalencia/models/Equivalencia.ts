@@ -1,11 +1,8 @@
 import type Item from "@/services/desplegables/models/Item";
 
 export default interface Equivalencia {
-  id: string;
-  tmpId?: string;
-  from: Item;
+  id: String;
+  tmpId?: String;
   to: Item;
   factor: Number;
-  fechaCreacion: string;
-  borrable: boolean;
 }

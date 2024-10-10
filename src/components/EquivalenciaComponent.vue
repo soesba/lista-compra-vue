@@ -2,6 +2,16 @@
 	<div>   
     <div>
       <div class="inputGroup">
+        <combo-component
+          :tipo-dato="TipoDato.TipoUnidad"
+          :model-value="nuevaEquivalencia.to"
+          :variant="props.equivalencia ? 'outlined' : 'underlined'"
+          required
+          :error-messages="v$.nuevaEquivalencia.to.$errors.map((e) => e.$message)"
+          min-width="150"
+          max-width="150"
+          @change="onChangeCboTo">
+        </combo-component>
         <v-text-field
           label="Factor*"
           required
@@ -13,16 +23,6 @@
           @keypress="txtFactorOnKeyPress"
           @input="v$.nuevaEquivalencia.factor.$touch"
         ></v-text-field>
-        <combo-component
-          :tipo-dato="TipoDato.TipoUnidad"
-          :model-value="nuevaEquivalencia.to"
-          :variant="props.equivalencia ? 'outlined' : 'underlined'"
-          required
-          :error-messages="v$.nuevaEquivalencia.to.$errors.map((e) => e.$message)"
-          min-width="150"
-          max-width="150"
-          @change="onChangeCboTo">
-        </combo-component>
         <div class="wrapper-icons" v-if="props.equivalencia">
           <v-btn
             icon="mdi-delete"
@@ -81,7 +81,6 @@
   console.log(props.from)
 	let nuevaEquivalencia = props.equivalencia ? ref({ ...props.equivalencia}) : ref({
     tmpId: Date.now(),
-		from: props.from,
 		to: null,
 		factor: null,
 		borrable: true
@@ -95,7 +94,6 @@
 	const validations = computed(() => {
 		return {
 			nuevaEquivalencia: {
-				from: {  required },
         to: {  required },
 		    factor: { required }
 			}
@@ -141,7 +139,6 @@
 	const resetForm = () => {
 		nuevaEquivalencia.value = {
       tmpId: 0,
-			from: props.from,
       to: null,
       factor: null,
       borrable: true

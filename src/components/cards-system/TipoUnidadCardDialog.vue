@@ -26,7 +26,7 @@
 							<label class="labelFor">Equivalencias</label>
 						</div>
 						<div class="inputGroup">
-							<label v-if="equivalencias?.length === 0"> No hay equivalencias </label>
+							<label v-if="editData.equivalencias?.length === 0"> No hay equivalencias </label>
 						</div>
 					</v-col>
 				</v-row>
@@ -40,7 +40,7 @@
 				<v-row dense>
 					<v-col cols="12">
 						<equivalencia-component
-							v-for="equivalencia in equivalencias"
+							v-for="equivalencia in editData.equivalencias"
 							:equivalencia="equivalencia"
 							@update-equivalencia="onUpdateEquivalencia">
 						</equivalencia-component>
@@ -73,7 +73,7 @@
 	import { required, requiredIf } from 'vuelidate/lib/validators'
 	import { useVuelidate } from '@vuelidate/core'
 	import type TipoUnidad from '@/services/tipoUnidad/models/TipoUnidad'
-  	import type { PropType } from 'vue'
+  import type { PropType } from 'vue'
 	import { eventCardStore, uiStore } from '@/main'
 
 		// Props
@@ -98,8 +98,7 @@
 		return !v$.value.editData.$invalid
 	})
 	// Data
-	let equivalencias = ref()
-	let editData = ref({ ...props.data })
+		let editData = ref({ ...props.data })
 	
 	const from = ref({
 		id: editData.value.id,
@@ -119,16 +118,11 @@
 	// Use the "useVuelidate" function to perform form validation
 	const v$ = useVuelidate(validations, { editData })
 
-	onMounted(() => {
-		getByFrom(editData.value.id).then(response => {
-			equivalencias.value = response.data as Equivalencia[]
-		})
-	})
 	// Methods
 
 	const onUpdateEquivalencia = (data: Equivalencia) => {
 		console.log("LOG ~ onUpdateEquivalencia ~ data:", data)
-		equivalencias = equivalencias.value.map((item: any) => {      
+		editData.value.equivalencias = editData.value.equivalencias.map((item: any) => {      
       if ((data.id && item.id === data.id) ||
         (data.tmpId && data.tmpId === item.tmpId)) {
         return data
@@ -140,8 +134,7 @@
 	
 	const onSaveEquivalencia = (data) => {
 		console.log("LOG ~ onSaveEquivalencia ~ data:", data)
-		data.from = editData.value.id
-		equivalencias.value.push(data)
+		editData.value.equivalencias.push(data)
 	}
 
 	const cancel = () => {
