@@ -4,7 +4,6 @@ import EstablecimientoFactory from "./establecimiento/EstablecimientoFactory"
 import TipoEstablecimientoFactory from "./tipoEstablecimiento/TipoEstablecimientoFactory"
 import TipoUnidadFactory from "./tipoUnidad/TipoUnidadFactory"
 import DesplegableFactory from "./desplegables/DesplegableFactory"
-import DesplegableRepositoryImpl from "./desplegables/DesplegableRepositoryImpl"
 import EquivalenciaFactory from "./equivalencia/EquivalenciaFactory"
 
 const API = {

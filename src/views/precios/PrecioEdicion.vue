@@ -136,7 +136,6 @@
 
 	if (route.params['id']) {
 		getPrecioById(route.params['id'].toString()).then((response) => {
-			console.log("🚀 ~ getPrecioById ~ response:", response)
 			if (response.respuesta === 200) {
 				editData.value = response.data as Precio
 			}

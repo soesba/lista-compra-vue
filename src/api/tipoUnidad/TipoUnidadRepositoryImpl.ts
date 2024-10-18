@@ -19,8 +19,21 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
     return result
   }
 
-  async getByAny (request: string): Promise<TipoUnidadResponse> {
-    const endpoint = `/tipoUnidad/getByAny/${request}`
+  async getById (id: string): Promise<TipoUnidadResponse> {
+    const endpoint = `/tipoUnidad/getById/${id}`
+    const headers = {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+    const response = await xhr.get(endpoint, { headers})
+    const result = {
+      data: DTOtoModel(response.data),
+      respuesta: response.status
+    }
+    return result
+  }
+
+  async getByAny (id: string): Promise<TipoUnidadResponse> {
+    const endpoint = `/tipoUnidad/getByAny/${id}`
     const headers = {
       'Content-Type': 'application/json;charset=UTF-8'
     }

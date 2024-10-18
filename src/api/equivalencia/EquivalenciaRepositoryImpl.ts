@@ -45,6 +45,32 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
     return result
   }
 
+  async getByFromMultiple (request: Array<string>): Promise<EquivalenciaResponse> {
+    const endpoint = `/tipoUnidadEquivalencia/getByFrom/${request}`
+    const headers = {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+    const response = await xhr.get(endpoint, { headers})
+    const result = {
+      data: response.data.map((item:EquivalenciaDTO) => DTOtoModel(item)),
+      respuesta: response.status
+    }
+    return result
+  }
+
+  async getByAny (request: string): Promise<EquivalenciaResponse> {
+    const endpoint = `/tipoUnidadEquivalencia/getByAny/${request}`
+    const headers = {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+    const response = await xhr.get(endpoint, { headers})
+    const result = {
+      data: response.data.map((item:EquivalenciaDTO) => DTOtoModel(item)),
+      respuesta: response.status
+    }
+    return result
+  }
+
   async insert(request: EquivalenciaRequest): Promise<EquivalenciaResponse> {
     const endpoint = `/tipoUnidadEquivalencia/insert/`
     const headers = {

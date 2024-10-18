@@ -1,52 +1,45 @@
 <template>
-	<div>   
-    <div>
-      <div class="inputGroup">
-        <combo-component
-          :tipo-dato="TipoDato.TipoUnidad"
-          :model-value="nuevaEquivalencia.to"
-          :variant="props.equivalencia ? 'outlined' : 'underlined'"
-          required
-          :error-messages="v$.nuevaEquivalencia.to.$errors.map((e) => e.$message)"
-          min-width="150"
-          max-width="150"
-          @change="onChangeCboTo">
-        </combo-component>
-        <v-text-field
-          label="Factor*"
-          required
-          :variant="props.equivalencia ? 'outlined' : 'underlined'"
-          v-model="nuevaEquivalencia.factor"
-          :error-messages="v$.nuevaEquivalencia.factor.$errors.map((e: any) => e.$message)"
-          max-width="100"
-          @blur="txtFactorOnBlur"
-          @keypress="txtFactorOnKeyPress"
-          @input="v$.nuevaEquivalencia.factor.$touch"
-        ></v-text-field>
-        <div class="wrapper-icons" v-if="props.equivalencia">
-          <v-btn
-            icon="mdi-delete"
-            variant="text"
-            color="red"
-            @click="onClickDelete"
-          ></v-btn>
-        </div>
-        <div class="wrapper-icons" v-else>
-          <v-btn
-            icon="mdi-check"
-            variant="text"
-            color="primary"
-            :disabled="!canSave"
-            @click="onClickSave"
-          ></v-btn>
-          <v-btn
-            icon="mdi-close"
-            variant="text"
-            color="primary"
-            @click="onClickCancel">
-          </v-btn>
-        </div>
-      </div>    
+  <div class="inputGroup">
+    <combo-component
+      :tipo-dato="TipoDato.TipoUnidad"
+      :model-value="nuevaEquivalencia.to"
+      :variant="props.equivalencia ? 'outlined' : 'underlined'"
+      required
+      :error-messages="v$.nuevaEquivalencia.to.$errors.map((e) => e.$message)"
+      @change="onChangeCboTo">
+    </combo-component>
+    <v-text-field
+      label="Factor*"
+      required
+      :variant="props.equivalencia ? 'outlined' : 'underlined'"
+      v-model="nuevaEquivalencia.factor"
+      :error-messages="v$.nuevaEquivalencia.factor.$errors.map((e: any) => e.$message)"
+      @blur="txtFactorOnBlur"
+      @keypress="txtFactorOnKeyPress"
+      @input="v$.nuevaEquivalencia.factor.$touch"
+    ></v-text-field>
+    <div class="wrapper-icons" v-if="props.equivalencia">
+      <v-btn
+        icon="mdi-delete"
+        variant="text"
+        color="red"
+        @click="onClickDelete"
+      ></v-btn>
+    </div>
+    <div class="wrapper-icons" v-else>
+      <v-btn
+        icon="mdi-check"
+        variant="text"
+        color="primary"
+        :disabled="!canSave"
+        @click="onClickSave"
+      ></v-btn>
+      <v-btn
+        icon="mdi-close"
+        variant="text"
+        color="primary"
+        @click="onClickCancel">
+      </v-btn>
     </div>
   </div>
 </template>
@@ -156,5 +149,9 @@
   .wrapper-icons {
     display: flex;
     justify-content: flex-end;
+  }
+
+  .inputGroup {
+    flex-basis: 100%;
   }
 </style>
