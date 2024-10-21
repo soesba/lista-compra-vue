@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-	import { defineComponent, ref, type PropType, watch } from 'vue'
+	import { defineComponent, ref, type PropType, watch, onBeforeMount } from 'vue'
 	import getDesplegable from '@/services/desplegables/getDesplegable.service'
 	import { TipoDato } from '@/services/desplegables/models/TipoDato'
 	import { sort } from '@/utils/utils';
@@ -71,7 +71,7 @@
 		}
 	})
 	// Data
-	let items = (await (await getDesplegable(props.tipoDato)).data as Item[]).sort(sort('nombre'))
+	let items = ref()
 	let selected = ref(props.modelValue)
 	const eventNameChange = !props.autoComplete ? 'update:modelValue' : 'change'
 	let bindProps = { ...props }
@@ -88,6 +88,10 @@
 			selected.value = newValue
 		}
 	)
+
+  onBeforeMount(async () => {
+    items.value = (await (await getDesplegable(props.tipoDato)).data as Item[]).sort(sort('nombre'))
+  })
 
 	// Methods
 	const getLabel = () => {
