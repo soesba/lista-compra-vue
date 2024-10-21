@@ -27,7 +27,7 @@ const getDefaultAlertComponent = () => {
     props: {
       title: '',
       text: '',
-      variant: '',
+      variant: 'flat' as const,
       type: ''
     }
   } 
