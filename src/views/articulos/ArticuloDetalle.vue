@@ -32,18 +32,18 @@
 </template>
 
 <script lang="ts">
-	import { defineComponent } from 'vue'
+	import { defineComponent, onMounted } from 'vue'
 	import { computed } from 'vue'
 	import router from '@/router'
 	import getArticuloById from '@/services/articulo/getArticuloById.service'
 	import { useRoute } from 'vue-router'
 	import DetalleToolbar from '@/components/DetalleToolbar.vue'
-	import { eventCardStore, uiStore } from '@/main'
+	import { uiStore } from '@/main'
 	import type Articulo from '@/services/articulo/models/Articulo'
 	import type Precio from '@/services/precio/models/Precio'
 	import getByArticuloId from '@/services/precio/getPrecioByArticuloId.service'
 	import deleteItem from '@/services/articulo/deleteArticulo.service'
-	import { pluralize, sort } from '@/utils/utils'
+	import { sort } from '@/utils/utils'
 	import HistoricoPrecios from '@/components/HistoricoPrecios.vue'
 	export default defineComponent({
 		name: 'ArticuloDetalle',
@@ -52,11 +52,7 @@
 <script setup lang="ts">
 
 	// Props
-	const props = defineProps({
-		// data: {
-		//   type: Object as PropType<Establecimiento>,
-		// 	default: modelStore.establecimiento
-		// },
+	defineProps({
 		adding: {
 			type: Boolean,
 			default: false,
@@ -71,15 +67,10 @@
 	const canDelete = computed(() => {
 		return data.borrable
 	})
-	
+  
 	// Methods
 	const onBack = () => {
-		router.isReady().then(() => {
 			router.push('/articulos')
-		}).catch(err => {
-			console.error(err)
-		})
-		
 	}
 
 	const confirmDeleteCard = () => {

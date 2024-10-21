@@ -6,7 +6,16 @@
       <raw-confirm-dialog v-if="rawConfirmDialog"></raw-confirm-dialog>
       <raw-dialog-component v-if="rawDialogComponent"></raw-dialog-component>
       <v-container>
-        <router-view />
+        <router-view v-slot="{ Component }">
+          <suspense timeout="0">
+            <template #default>
+              <component :is="Component" :key="$route.path"></component>
+            </template>
+            <template #fallback>
+              <div>Loading...</div>
+            </template>
+          </suspense>
+        </router-view>
       </v-container>
     </v-main>
   </v-app>

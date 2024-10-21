@@ -50,7 +50,7 @@ import router from '@/router'
 		})
 	}
 	const detalleCard = () => {
-		router.push(`/articulo-detalle/${data.value.id}`)
+    router.push(`/articulo-detalle/${data.value.id}`)
 	}
 </script>
 <style lang="scss" scoped>
