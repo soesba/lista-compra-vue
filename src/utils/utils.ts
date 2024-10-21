@@ -11,7 +11,7 @@ export const fileToBase64 = (file: any): any => new Promise((resolve, reject) =>
 })
 
 export const pluralize = (cadena: string, valor: number | null) => {
-  if (valor && valor < 2) {
+  if (!cadena || (valor && valor < 2)) {
     return cadena
   }
   if (cadena === 'unidad') {

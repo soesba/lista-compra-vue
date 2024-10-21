@@ -34,6 +34,7 @@ import { eventCardStore } from '@/main';
 import type TipoUnidadRequest from '@/services/tipoUnidad/models/TipoUnidadRequest'
 import type TipoUnidadResponse from '@/services/tipoUnidad/models/TipoUnidadResponse'
 import { sort } from '@/utils/utils'
+import type Equivalencia from '@/services/equivalencia/models/Equivalencia'
 export default defineComponent({
   name: 'TiposUnidades'
 })
@@ -87,10 +88,16 @@ const onDeleteCard = (cardData: any) => {
 }
 
 const onSaveCard = (cardData: any) => {
+  const tipoUnidad = cardData.data.value
+  delete tipoUnidad.tmpId
+  tipoUnidad.equivalencias = tipoUnidad.equivalencias.map((item: Equivalencia) => {
+    delete item.tmpId
+    return item
+  })
   if (cardData.adding) {
-    createCard(cardData.data)
+    createCard(tipoUnidad)
   } else {
-    updateCard(cardData.data)
+    updateCard(tipoUnidad)
   }
 }
 

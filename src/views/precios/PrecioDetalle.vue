@@ -19,7 +19,7 @@
 			<div class="text-h6">{{ data.articulo?.nombre }}</div>
 			<div class="text-body-2">{{ data.marca }}</div>
 		</div>
-		<div class="body">
+		<div v-if="data.precio" class="body">
 			<div class="inputGroup">
 				<div class="labelFor">Establecimiento </div>
 				<label>{{ data.establecimiento?.nombre }}</label>
@@ -32,19 +32,22 @@
 				<div class="labelFor">Precio: </div>
 				<label>{{ formatDecimal(data.precio) }}</label>
 			</div>
+			<PrecioEquivalenciaComponent :unidades-medida="data.unidadesMedida" :precio="data.precio"/>
 		</div> 
+		<div v-else class="body">
+			No hay precios introducidos
+		</div>
 	</div>
 </template>
 
 <script lang="ts">
-	import HistoricoPrecios from '@/components/HistoricoPrecios.vue'
-	import { defineComponent } from 'vue'
+	import { defineComponent, reactive, ref } from 'vue'
 	import { computed } from 'vue'
 	import router from '@/router'
 	import getPrecioById from '@/services/precio/getPrecioById.service'
 	import { useRoute } from 'vue-router'
-	import { formatDecimal, pluralize, sort } from '@/utils/utils'
-	import getByArticuloId from '@/services/precio/getPrecioByArticuloId.service'
+	import { formatDecimal, pluralize } from '@/utils/utils'
+	import PrecioEquivalenciaComponent from '@/components/PrecioEquivalenciaComponent.vue'
 	export default defineComponent({
 		name: 'CompraDetalle',
 	})
@@ -52,14 +55,10 @@
 <script setup lang="ts">
 	import DetalleToolbar from '@/components/DetalleToolbar.vue'
 	import type Precio from '@/services/precio/models/Precio'
-	import { eventCardStore, modelStore, noLogoUrl, uiStore } from '@/main'
+	import { eventCardStore, uiStore } from '@/main'
 
 	// Props
 	const props = defineProps({
-		// data: {
-		//   type: Object as PropType<Precio>,
-		// 	default: modelStore.precio
-		// },
 		adding: {
 			type: Boolean,
 			default: false,
@@ -67,7 +66,7 @@
 	})
 	const route = useRoute()
 	// Data
-	let data: Precio = (await getPrecioById(route.params['id'].toString())).data as Precio
+	let data: Precio = reactive((await getPrecioById(route.params['id'].toString())).data as Precio)
 	// Computed
 	const canDelete = computed(() => {
 		return data.borrable

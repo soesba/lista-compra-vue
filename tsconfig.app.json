@@ -12,6 +12,7 @@
     },
     "declaration": true,
     "strict": false,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "allowJs": true
   }
 }

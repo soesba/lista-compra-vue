@@ -34,8 +34,7 @@
 	})
 </script>
 <script setup lang="ts">
-	const emitter = defineEmits(['saveArticulo', 'updateArticulo'])
-	const props = defineProps({
+	defineProps({
 		precios: {
 			type: Array<Precio>,
 			default: {},

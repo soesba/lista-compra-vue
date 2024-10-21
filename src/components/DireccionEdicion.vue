@@ -66,7 +66,7 @@
 	})
 </script>
 <script setup lang="ts">
-	const emitter = defineEmits(['saveDireccion', 'updateDireccion'])
+	const emitter = defineEmits(['saveDireccion', 'updateDireccion', 'deleteDireccion'])
 	const props = defineProps({
 		direccion: {
 			type: Object as PropType<Direccion>,
@@ -136,7 +136,7 @@
 	}
 
   const onClickDelete = () => {
-
+		emitter('deleteDireccion', nuevaDireccion.value)
   }
 
 	const resetForm = () => {

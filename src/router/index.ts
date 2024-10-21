@@ -12,7 +12,12 @@ const router = createRouter({
     {
       path: '/tiposUnidades',
       name: 'tiposUnidades',
-      component: () => import('@/views/TiposUnidades.vue')
+      component: () => import('@/views/tiposUnidad/TiposUnidades.vue')
+    },
+    {
+      path: '/tiposUnidades-edicion/:id',
+      name: 'tiposUnidades-edicion',
+      component: () => import('@/views/tiposUnidad/TipoUnidadEdicion.vue')
     },
     {
       path: '/articulos',

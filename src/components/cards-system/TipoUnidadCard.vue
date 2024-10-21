@@ -1,10 +1,10 @@
 <template>
-	<v-card>
+	<v-card  class="cursor" @click="editCard()">
 		<v-card-title>{{ cardData.nombre }}</v-card-title>
 		<v-card-subtitle>{{ cardData.abreviatura }}</v-card-subtitle>
 		<v-card-text class="text-small">Creado: {{ cardData.fechaCreacion }}</v-card-text>
 		<v-card-actions>
-			<v-btn icon="mdi-pencil-circle" color="primary" @click="editCard()"></v-btn>
+			<!-- <v-btn icon="mdi-pencil-circle" color="primary" @click="editCard()"></v-btn> -->
 			<v-btn icon="mdi-delete-circle" color="secondary" @click="deleteCard()" :disabled="!canDelete"></v-btn>
 		</v-card-actions>
 	</v-card>
@@ -13,12 +13,12 @@
 <script lang="ts">
 	import { eventCardStore, uiStore } from '@/main'
 	import { defineComponent } from 'vue'
+	import router from '@/router'
 	export default defineComponent({
 		name: 'TipoUnidadCard',
 	})
 </script>
 <script setup lang="ts">
-	import TipoUnidadCardDialog from './TipoUnidadCardDialog.vue'
 	import type TipoUnidad from '@/services/tipoUnidad/models/TipoUnidad'
 	import type { PropType } from 'vue'
 	import { computed, ref, markRaw } from 'vue'
@@ -40,12 +40,7 @@
 	})
 	// Methods
 	const editCard = () => {
-		uiStore.showCustomDialog({
-			component: markRaw(TipoUnidadCardDialog),
-			props: {
-				data: data					
-			}
-		})
+		router.push(`/tiposUnidades-edicion/${data.value.id}`)
 	}
 
 	const deleteCard = () => {

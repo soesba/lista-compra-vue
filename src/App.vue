@@ -26,7 +26,7 @@ const rawDialogComponent = markRaw(DialogComponent)
 const rawConfirmDialog = markRaw(ConfirmDialog)
 
 onMounted (() => {
-  getAllArticulos()
+  // getAllArticulos()
 })
 // Methods
 const getAllArticulos = () => {

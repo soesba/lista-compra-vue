@@ -6,7 +6,7 @@ import type ArticuloDTO from "@/api/articulo/dto/ArticuloDTO";
 export default interface PrecioDTO {
   id: string;
   articulo: ArticuloDTO;
-  precio: number | null;
+  precio: number;
   marca: string;
   establecimiento: EstablecimientoDTO;
   unidadesMedida: Array<UnidadMedidaDTO>;

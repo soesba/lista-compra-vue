@@ -1,5 +1,5 @@
 <template>
-	<v-card prepend-icon="mdi-pencil" :title="getTitle" width="340" class="screen-center">
+	<v-card prepend-icon="mdi-pencil" :title="getTitle" width="400" class="screen-center">
 		<v-card-text>
 			<v-row dense>
 				<v-col cols="12">
@@ -19,16 +19,37 @@
 						@input="v$.editData.abreviatura.$touch"></v-text-field>
 				</v-col>
 			</v-row>
-			<!-- <v-row dense>
-				<v-col cols="12">
-					<label>Equivalencias</label>
-					<div class="wrapper-equivalencias">
-          <v-btn v-for="tipoUnidad in listaTiposUnidad" :key="tipoUnidad.id">
-            {{ tipoUnidad.nombre }}
-          </v-btn>
-        </div>
-				</v-col>
-			</v-row> -->
+			<div v-if="editData.nombre">
+				<v-row dense>
+					<v-col cols="12">
+						<div class="inputGroup">
+							<label class="labelFor">Equivalencias</label>
+						</div>
+						<div class="inputGroup">
+							<label v-if="editData.equivalencias?.length === 0"> No hay equivalencias </label>
+						</div>
+					</v-col>
+				</v-row>
+				<v-row dense>
+					<v-col cols="12">
+						<div class="inputGroup">
+							<label>1 {{editData.nombre}} equivale a </label>  
+						</div>
+					</v-col>
+				</v-row>
+				<v-row dense>
+					<v-col cols="12">
+						<equivalencia-component
+							v-for="equivalencia in editData.equivalencias"
+							:equivalencia="equivalencia"
+							@update-equivalencia="onUpdateEquivalencia">
+						</equivalencia-component>
+						<equivalencia-component
+							:from="from"
+							@save-equivalencia="onSaveEquivalencia" />
+					</v-col>
+				</v-row>
+			</div>
 			<small class="text-caption text-medium-emphasis">*campo requerido</small>
 		</v-card-text>
 		<template v-slot:actions>
@@ -39,9 +60,10 @@
 </template>
 
 <script lang="ts">
-	import { defineComponent, onMounted, reactive, ref } from 'vue'
+	import { defineComponent, ref } from 'vue'
 	import { computed } from 'vue'
-import get from '@/services/tipoUnidad/getTipoUnidad.service'
+	import EquivalenciaComponent from '../EquivalenciaComponent.vue'
+	import type Equivalencia from '@/services/equivalencia/models/Equivalencia'
 	export default defineComponent({
 		name: 'TipoUnidadCardDialog',
 	})
@@ -50,7 +72,7 @@ import get from '@/services/tipoUnidad/getTipoUnidad.service'
 	import { required, requiredIf } from 'vuelidate/lib/validators'
 	import { useVuelidate } from '@vuelidate/core'
 	import type TipoUnidad from '@/services/tipoUnidad/models/TipoUnidad'
-  	import type { PropType } from 'vue'
+  import type { PropType } from 'vue'
 	import { eventCardStore, uiStore } from '@/main'
 
 		// Props
@@ -66,17 +88,21 @@ import get from '@/services/tipoUnidad/getTipoUnidad.service'
 			default: false
 		}
   })
+	
 	// Computed 
 	const getTitle = computed(() => {
 		return props.adding ? 'Nuevo tipo de unidad' : props.data.nombre
 	})
 	const canSave = computed(() => {
-		return !v$.value.$invalid
+		return !v$.value.editData.$invalid
 	})
 	// Data
-	const equivalencias = ref([])
-	let editData = reactive<any>({ ...props.data })
-	let listaTiposUnidad = ref<TipoUnidad[]>([])
+		let editData = ref({ ...props.data })
+	
+	const from = ref({
+		id: editData.value.id,
+		nombre: editData.value.nombre
+	})
 	// Validations
 	const validations = computed(() => {
 		return {
@@ -90,16 +116,25 @@ import get from '@/services/tipoUnidad/getTipoUnidad.service'
 	})
 	// Use the "useVuelidate" function to perform form validation
 	const v$ = useVuelidate(validations, { editData })
-	onMounted(() => {
-		get().then(response => {
-			if (props.data.id) {
-				listaTiposUnidad.value = (response.data as TipoUnidad[]).filter(item => item.id !== props.data.id)
-			} else {
-				listaTiposUnidad.value = response.data as TipoUnidad[]
-			}
-		})
-	})
+
 	// Methods
+
+	const onUpdateEquivalencia = (data: Equivalencia) => {
+		console.log("LOG ~ onUpdateEquivalencia ~ data:", data)
+		editData.value.equivalencias = editData.value.equivalencias.map((item: any) => {      
+      if ((data.id && item.id === data.id) ||
+        (data.tmpId && data.tmpId === item.tmpId)) {
+        return data
+      } else {
+        return item
+      }
+    })
+	}
+	
+	const onSaveEquivalencia = (data) => {
+		console.log("LOG ~ onSaveEquivalencia ~ data:", data)
+		editData.value.equivalencias.push(data)
+	}
 
 	const cancel = () => {
 		eventCardStore.cancelCard()
