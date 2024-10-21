@@ -74,7 +74,12 @@
 	
 	// Methods
 	const onBack = () => {
-		router.push('/articulos')
+		router.isReady().then(() => {
+			router.push('/articulos')
+		}).catch(err => {
+			console.error(err)
+		})
+		
 	}
 
 	const confirmDeleteCard = () => {

@@ -19,7 +19,7 @@
 			<div class="text-h6">{{ data.articulo?.nombre }}</div>
 			<div class="text-body-2">{{ data.marca }}</div>
 		</div>
-		<div class="body">
+		<div v-if="data.precio" class="body">
 			<div class="inputGroup">
 				<div class="labelFor">Establecimiento </div>
 				<label>{{ data.establecimiento?.nombre }}</label>
@@ -34,6 +34,9 @@
 			</div>
 			<PrecioEquivalenciaComponent :unidades-medida="data.unidadesMedida" :precio="data.precio"/>
 		</div> 
+		<div v-else class="body">
+			No hay precios introducidos
+		</div>
 	</div>
 </template>
 
