@@ -18,8 +18,8 @@ export default interface UiState {
     props: {
       title: string,
       text: string,
-      variant: string,
-      type: string
+      variant:  'flat' | 'text' | 'elevated' | 'tonal' | 'outlined' | 'plain',
+      type: any
     }
   } 
 }

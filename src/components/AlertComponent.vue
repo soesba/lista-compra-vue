@@ -2,13 +2,14 @@
   <v-alert v-if="show" :icon="icon" closable :text="text" :variant="variant" :type="type"></v-alert>
 </template>
 <script lang="ts">
-import { uiStore } from '@/main';
 import { computed, defineComponent, onMounted } from 'vue'
+import { useUiStore } from '@/store';
 export default defineComponent({
 name: 'AlertComponent'
 })
 </script>
 <script setup lang="ts">
+  const uiStore = useUiStore()
 	// Computed
 	const show = computed(() => {
 		return uiStore.getAlertComponent?.show
@@ -20,7 +21,7 @@ name: 'AlertComponent'
 		return uiStore.getAlertComponent?.props.type
 	})
   const variant = computed(() => {
-		return uiStore.getAlertComponent?.props.variant || 'flat'
+		return uiStore.getAlertComponent?.props.variant
 	})
   const icon = computed(() => {
     return type.value === 'error' ? 'mdi-alert-circle-outline' : ''
