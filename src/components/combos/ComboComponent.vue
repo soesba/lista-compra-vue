@@ -2,7 +2,7 @@
 	<component :is="autoComplete ? 'v-autocomplete' : 'v-select'"
 		v-on="bindEvents"
 		v-bind="bindProps"
-		:items="items" 
+		:items="items"
 		item-value="id"
 		item-title="nombre"
 		:model-value="selected"
@@ -79,11 +79,11 @@ const bindEvents = {
 	blur: () => onBlur(),
 	[eventNameChange]: (event: any) => onChange(event)
 }
-		
+
 // Watch
 watch (
 	() => props.modelValue,
-	(newValue, oldValue) => {
+	(newValue) => {
 		selected.value = newValue
 	}
 )
@@ -112,7 +112,7 @@ const onBlur = () => {
 	console.log("LOG ~ onBlur ~ emit('blur'):")
 	emit('blur')
 }
-		
+
 const onChange = (event: any) => {
 	console.log("LOG ~ onChange ~ emit('change', event):", event)
 	emit('change', event)

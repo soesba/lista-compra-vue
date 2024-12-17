@@ -19,7 +19,7 @@ export default defineComponent({
 import type Establecimiento from '@/services/establecimiento/models/Establecimiento'
 import type { PropType } from 'vue'
 import { computed, ref } from 'vue'
-	
+
 // Props
 const props = defineProps({
 	cardData: {
@@ -28,16 +28,14 @@ const props = defineProps({
 			return {}
 		}
 	},
-})	
+})
 // Data
 const data = ref(props.cardData)
 // Computed
 const getImageSrc = computed(() => {
 	return props.cardData.logo ? props.cardData.logo.content : noLogoUrl
 })
-const canDelete = computed(() => {
-	return props.cardData.borrable
-})
+
 // Methods
 const editCard = () => {
 	router.push(`/establecimiento-detalle/${data.value.id}`)

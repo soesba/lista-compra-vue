@@ -83,7 +83,7 @@
 	import { required, requiredIf } from '@vuelidate/validators'
 	import { useVuelidate } from '@vuelidate/core'
 	import { useRoute } from 'vue-router'
-	import { defineComponent, onMounted, reactive, ref, watch, defineExpose } from 'vue'
+	import { defineComponent, onMounted, ref, watch } from 'vue'
 	import { computed } from 'vue'
 	import router from '@/router'
 	import getPrecioById from '@/services/precio/getPrecioById.service'
@@ -101,8 +101,6 @@
 	})
 </script>
 <script setup lang="ts">
-	// Refs
-	const fileUpload = ref(null)
 	// Computed
 	const canSave = computed(() => {
 		return !v$.value.$invalid
@@ -150,7 +148,7 @@
 	// Watch
 	watch(
 		async () => editData.value?.articulo,
-		async (newValue, oldValue) => {
+		async () => {
 			if (!editData.value?.id) {
 				const response = await getArrayUnidadesMedida()
 				editData.value!.unidadesMedida = response
@@ -232,13 +230,13 @@
 	}
 
 	const createPrecio = (data: any) => {
-		create(data).then((response) => {
+		create(data).then(() => {
 			onBack()
 		})
 	}
 
 	const updateCompra = (data: any) => {
-		update(data).then((response) => {
+		update(data).then(() => {
 			onBack()
 		})
 	}

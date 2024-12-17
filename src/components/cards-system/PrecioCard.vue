@@ -15,7 +15,6 @@
 </template>
 
 <script lang="ts">
-import { eventCardStore, modelStore, uiStore } from '@/main'
 import { defineComponent } from 'vue'
 import router from '@/router'
 import { formatDecimal } from '@/utils/utils'
@@ -41,9 +40,6 @@ const props = defineProps({
 const data = { ...props.cardData}
 
 // Computed
-const canDelete = computed(() => {
-	return props.cardData.borrable
-})
 
 const getFechaCompra = computed(() => {
 	return props.cardData.fechaCompra ? new Intl.DateTimeFormat('es-ES', {
@@ -59,7 +55,7 @@ const editCard = () => {
 
 const detalleCard = () => {
 	router.push(`/precio-detalle/${data.id}`)
-}	
+}
 </script>
 <style lang="scss" scoped>
 	.v-card {

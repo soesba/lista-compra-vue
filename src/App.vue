@@ -22,25 +22,12 @@
 </template>
 <script setup lang="ts">
 import { Navigation } from '@/components/index'
-import { markRaw, onMounted } from 'vue';
-import type ArticuloResponse from './services/articulo/models/ArticuloResponse';
-import get from './services/articulo/getArticulo.service';
-import { modelStore } from './main';
-import type Articulo from './services/articulo/models/Articulo';
-import DialogComponent from '@/components/DialogComponent.vue';
-import ConfirmDialog from '@/components/dialogs-system/ConfirmDialog.vue';
-import AlertComponent from './components/AlertComponent.vue';
+import { markRaw } from 'vue'
+import DialogComponent from '@/components/DialogComponent.vue'
+import ConfirmDialog from '@/components/dialogs-system/ConfirmDialog.vue'
+import AlertComponent from './components/AlertComponent.vue'
 
 const rawDialogComponent = markRaw(DialogComponent)
 const rawConfirmDialog = markRaw(ConfirmDialog)
 
-onMounted (() => {
-	// getAllArticulos()
-})
-// Methods
-const getAllArticulos = () => {
-	get().then((response: ArticuloResponse) => {
-		modelStore.setArticulos(response.data as Articulo[])
-	})
-}
 </script>

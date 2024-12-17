@@ -1,4 +1,3 @@
-import type TipoUnidad from "@/services/tipoUnidad/models/TipoUnidad";
 import type UnidadMedida from "./UnidadMedida";
 
 export default interface Precio {

@@ -42,9 +42,9 @@ export default defineComponent({
 <script setup lang="ts">
 const emit = defineEmits(['close-dialog'])
 
-const suscribe = eventCardStore.$onAction(({args, name}) => {
+eventCardStore.$onAction(({args, name}) => {
 	switch(name) {
-		case 'saveCard': 
+		case 'saveCard':
 			onSaveCard(args[0])
 			break
 		case 'deleteCard':
@@ -100,7 +100,7 @@ const createCard = (card: TipoEstablecimientoRequest) => {
 		if (response.respuesta === 200) {
 			getAllData()
 		}
-    
+
 	})
 }
 
@@ -109,7 +109,7 @@ const updateCard = (card: TipoEstablecimientoRequest) => {
 		if (response.respuesta === 200) {
 			getAllData()
 		}
-    
+
 	})
 }
 

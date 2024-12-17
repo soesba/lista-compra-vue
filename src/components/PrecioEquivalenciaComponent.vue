@@ -8,7 +8,6 @@ import { defineComponent, ref } from 'vue'
 import getByFromMultiple from '@/services/equivalencia/getEquivalenciaByFromMultiple.service'
 import type UnidadMedida from '@/services/precio/models/UnidadMedida'
 import { formatDecimal } from '@/utils/utils'
-import type Equivalencia from '@/services/equivalencia/models/Equivalencia';
 
 export default defineComponent({
 	name: 'PrecioEquivalenciaComponent',

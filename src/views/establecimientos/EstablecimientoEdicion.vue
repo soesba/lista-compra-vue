@@ -51,7 +51,7 @@
 				<label class="labelFor">Direcciones</label>
         <label v-if="!mostrarDirecciones"> No hay direcciones </label>
 			</div>
-      <direccion-edicion @update-direccion="onUpdateDireccion" @delete-direccion="onDeleteDireccion" v-for="direccion in editData.direcciones" :direccion="direccion"></direccion-edicion>      
+      <direccion-edicion @update-direccion="onUpdateDireccion" @delete-direccion="onDeleteDireccion" v-for="direccion in editData.direcciones" :direccion="direccion"></direccion-edicion>
 			<direccion-edicion @save-direccion="onSaveDireccion"></direccion-edicion>
 		</div>
 	</div>
@@ -74,7 +74,6 @@ import create from '@/services/establecimiento/createEstablecimiento.service'
 import update from '@/services/establecimiento/updateEstablecimiento.service'
 import { fileToBase64 } from '@/utils/utils'
 import type Direccion from '@/services/establecimiento/models/Direccion'
-import type Establecimiento from '@/services/establecimiento/models/Establecimiento'
 export default defineComponent({
 	name: 'EstablecimientoEdicion',
 })
@@ -142,7 +141,7 @@ const onSaveDireccion = (dir: any) => {
 }
 
 const onUpdateDireccion = (data: Direccion) => {
-	editData.value.direcciones = editData.value.direcciones.map((item: any) => {      
+	editData.value.direcciones = editData.value.direcciones.map((item: any) => {
 		if ((data.id && item.id === data.id) ||
         (data.tmpId && data.tmpId === item.tmpId)) {
 			return data
@@ -183,13 +182,13 @@ const save = async () => {
 }
 
 const createEstablecimiento = (data: any) => {
-	create(data).then((response) => {
+	create(data).then(() => {
 		onBack()
 	})
 }
 
 const updateEstablecimiento = (data: any) => {
-	update(data).then((response) => {
+	update(data).then(() => {
 		onBack()
 	})
 }
@@ -203,7 +202,7 @@ const onSelectLogo = (evt: any) => {
 	if (selectedFile) {
 		const reader = new FileReader()
 
-		reader.onload = function (e) {
+		reader.onload = function () {
 			if (!editData.value.logo) {
 				editData.value.logo = {}
 			}

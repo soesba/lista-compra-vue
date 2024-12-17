@@ -13,13 +13,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, ref } from 'vue'
+import { defineComponent } from 'vue'
 export default defineComponent({
 	name: 'DetalleToolbar',
 })
 </script>
 <script setup lang="ts">
-  
+
 </script>
 <style lang="scss" scoped>
 .wrapper {
@@ -38,7 +38,7 @@ export default defineComponent({
   .right {
     display: flex;
     flex: 0.33;
-    justify-content: flex-end;    
+    justify-content: flex-end;
   }
 }
 </style>

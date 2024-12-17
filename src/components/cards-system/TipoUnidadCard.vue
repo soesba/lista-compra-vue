@@ -21,8 +21,8 @@ export default defineComponent({
 <script setup lang="ts">
 import type TipoUnidad from '@/services/tipoUnidad/models/TipoUnidad'
 import type { PropType } from 'vue'
-import { computed, ref, markRaw } from 'vue'
-	
+import { computed, ref } from 'vue'
+
 // Props
 const props = defineProps({
 	cardData: {
@@ -31,7 +31,7 @@ const props = defineProps({
 			return {}
 		}
 	},
-})	
+})
 // Data
 const data = ref(props.cardData)
 // Computed

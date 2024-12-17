@@ -59,7 +59,7 @@
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import type { PropType } from 'vue'
-import { computed, defineComponent, reactive, ref, watch } from 'vue'
+import { computed, defineComponent, reactive } from 'vue'
 import type Direccion from '@/services/establecimiento/models/Direccion'
 export default defineComponent({
 	name: 'DireccionEdicion',

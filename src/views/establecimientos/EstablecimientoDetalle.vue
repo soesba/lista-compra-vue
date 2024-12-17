@@ -58,7 +58,7 @@ import type Establecimiento from '@/services/establecimiento/models/Establecimie
 import { eventCardStore, noLogoUrl, uiStore } from '@/main'
 
 // Props
-const props = defineProps({
+defineProps({
 	// data: {
 	//   type: Object as PropType<Establecimiento>,
 	// 	default: modelStore.establecimiento

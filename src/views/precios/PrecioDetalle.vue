@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts">
-	import { defineComponent, reactive, ref } from 'vue'
+	import { defineComponent, reactive } from 'vue'
 	import { computed } from 'vue'
 	import router from '@/router'
 	import getPrecioById from '@/services/precio/getPrecioById.service'
@@ -57,7 +57,7 @@
 	import { eventCardStore, uiStore } from '@/main'
 
 	// Props
-	const props = defineProps({
+	defineProps({
 		adding: {
 			type: Boolean,
 			default: false
@@ -74,10 +74,6 @@
 	// Methods
 	const onBack = () => {
 		router.push('/precios')
-	}
-
-	const setEdicion = () => {
-		router.push(`/precio-edicion/${data.id}`)
 	}
 
 	const deleteCard = () => {

@@ -28,7 +28,7 @@
     </v-navigation-drawer>
 </template>
 <script lang="ts">
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import { defineComponent } from 'vue'
 export default defineComponent({
 	name: 'NavigationComponent'
@@ -44,7 +44,7 @@ const items = ref([
 			to: '/articulos',
 			link: true
 		}
-	}, 
+	},
 	{
 		title: 'Tipo de unidades',
 		props: {
@@ -75,7 +75,4 @@ const items = ref([
 	}
 ])
 
-watch(drawer, async (newDrawer, oldDrawer) => {
-
-})
 </script>

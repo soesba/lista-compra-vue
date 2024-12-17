@@ -39,10 +39,6 @@ const props = defineProps({
 // Data
 const data = ref(props.cardData)
 // Computed
-const canDelete = computed(() => {
-	return props.cardData.borrable
-})
-
 const getTienePrecios = computed(() => {
 	return props.cardData.tienePrecios ? 'Se han introducido precios' : 'No se han introducido precios'
 })
@@ -51,7 +47,7 @@ const editCard = () => {
 	uiStore.showCustomDialog({
 		component: markRaw(ArticuloCardDialog),
 		props: {
-			data: data					
+			data: data
 		}
 	})
 }

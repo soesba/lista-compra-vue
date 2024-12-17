@@ -33,7 +33,7 @@
 				<v-row dense>
 					<v-col cols="12">
 						<div class="inputGroup">
-							<label>1 {{editData.nombre}} equivale a </label>  
+							<label>1 {{editData.nombre}} equivale a </label>
 						</div>
 					</v-col>
 				</v-row>
@@ -60,7 +60,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { computed } from 'vue'
 import EquivalenciaComponent from '../EquivalenciaComponent.vue'
 import type Equivalencia from '@/services/equivalencia/models/Equivalencia'
@@ -88,8 +88,8 @@ const props = defineProps({
 		default: false
 	}
 })
-	
-// Computed 
+
+// Computed
 const getTitle = computed(() => {
 	return props.adding ? 'Nuevo tipo de unidad' : props.data.nombre
 })
@@ -98,7 +98,7 @@ const canSave = computed(() => {
 })
 // Data
 const editData = ref<any>({ ...props.data })
-	
+
 const from = ref({
 	id: editData.value.id,
 	nombre: editData.value.nombre
@@ -121,7 +121,7 @@ const v$ = useVuelidate(validations, editData)
 
 const onUpdateEquivalencia = (data: Equivalencia) => {
 	console.log("LOG ~ onUpdateEquivalencia ~ data:", data)
-	editData.value.equivalencias = editData.value.equivalencias.map((item: any) => {      
+	editData.value.equivalencias = editData.value.equivalencias.map((item: any) => {
 		if ((data.id && item.id === data.id) ||
         (data.tmpId && data.tmpId === item.tmpId)) {
 			return data
@@ -130,7 +130,7 @@ const onUpdateEquivalencia = (data: Equivalencia) => {
 		}
 	})
 }
-	
+
 const onSaveEquivalencia = (data: Equivalencia) => {
 	console.log("LOG ~ onSaveEquivalencia ~ data:", data)
 	editData.value.equivalencias.push(data)
@@ -145,6 +145,6 @@ const save = () => {
 	eventCardStore.saveCard({ adding: props.adding, data: editData })
 	uiStore.hideCustomDialog()
 }
-		
+
 </script>
 <style lang="scss" scoped></style>
