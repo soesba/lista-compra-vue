@@ -10,8 +10,7 @@
 				variant="text"
 				color="primary"
 				@click="deleteCard()"
-				v-if="canDelete"
-			></v-btn>
+				v-if="canDelete"></v-btn>
 		</template>
 	</detalle-toolbar>
 	<div class="form">
@@ -21,22 +20,22 @@
 		</div>
 		<div v-if="data.precio" class="body">
 			<div class="inputGroup">
-				<div class="labelFor">Establecimiento </div>
+				<div class="labelFor">Establecimiento</div>
 				<label>{{ data.establecimiento?.nombre }}</label>
 			</div>
 			<div class="inputGroup">
-				<div class="labelFor">Medidas: </div>
-				<div class="text-body-1" v-for="tipoUnidad in data.unidadesMedida">{{  tipoUnidad.valor }} {{ pluralize(tipoUnidad.nombre, tipoUnidad.valor) }}</div>
+				<div class="labelFor">Medidas:</div>
+				<div class="labelData" v-for="tipoUnidad in data.unidadesMedida">
+					{{ tipoUnidad.valor }} {{ pluralize(tipoUnidad.nombre, tipoUnidad.valor) }}
+				</div>
 			</div>
 			<div class="inputGroup">
-				<div class="labelFor">Precio: </div>
+				<div class="labelFor">Precio:</div>
 				<label>{{ formatDecimal(data.precio) }}</label>
 			</div>
-			<PrecioEquivalenciaComponent :unidades-medida="data.unidadesMedida" :precio="data.precio"/>
-		</div> 
-		<div v-else class="body">
-			No hay precios introducidos
+			<PrecioEquivalenciaComponent :unidades-medida="data.unidadesMedida" :precio="data.precio" />
 		</div>
+		<div v-else class="body">No hay precios introducidos</div>
 	</div>
 </template>
 
@@ -49,7 +48,7 @@
 	import { formatDecimal, pluralize } from '@/utils/utils'
 	import PrecioEquivalenciaComponent from '@/components/PrecioEquivalenciaComponent.vue'
 	export default defineComponent({
-		name: 'CompraDetalle',
+		name: 'CompraDetalle'
 	})
 </script>
 <script setup lang="ts">
@@ -61,12 +60,12 @@
 	const props = defineProps({
 		adding: {
 			type: Boolean,
-			default: false,
-		},
+			default: false
+		}
 	})
 	const route = useRoute()
 	// Data
-	let data: Precio = reactive((await getPrecioById(route.params['id'].toString())).data as Precio)
+	const data: Precio = reactive((await getPrecioById(route.params['id'].toString())).data as Precio)
 	// Computed
 	const canDelete = computed(() => {
 		return data.borrable
@@ -85,9 +84,9 @@
 		uiStore.showConfirmDialog({
 			props: {
 				text: '¿Desea eliminar el elemento?',
-				title: 'Confirmación',
+				title: 'Confirmación'
 			},
-			aceptarFn: onCloseConfirmDialog,
+			aceptarFn: onCloseConfirmDialog
 		})
 	}
 
@@ -96,19 +95,14 @@
 	}
 </script>
 <style lang="scss" scoped>
-	.header {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
 	.logo {
 		width: 150px;
 	}
-  .indent {
-    margin-left: 20px;
-  }
+	.indent {
+		margin-left: 20px;
+	}
 
-  .inputGroup {
+	.inputGroup {
 		align-items: center;
-  }
+	}
 </style>

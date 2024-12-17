@@ -1,0 +1,66 @@
+@media (min-width: 1008px) {
+  body {
+    font-size: 16px;
+  }
+
+  .inputGroup {
+    .labelFor {
+      font-size: 1.2rem;
+      font-weight: 500;
+      line-height: 1.75;
+    }
+    .labelData {
+      line-height: 1.75;
+    }
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1007px) {
+  body {
+    font-size: 16px;
+  } 
+
+  .inputGroup {
+    .labelFor {
+      font-size: 1rem;
+      font-weight: 500;
+      line-height: 1.75;
+    }
+    .labelData {
+      line-height: 1.75;
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    font-size: 12px;
+  } 
+
+  .inputGroup {
+    .labelFor {
+      font-size: 0.8rem;
+      font-weight: 500;
+      line-height: 1.75;
+    }
+    .labelData {
+      line-height: 1.75;
+    }
+  }
+}
+
+// h1 {
+//   font-size: 3.5vw;
+// }
+
+// h2 {
+//   font-size: 3.5vw;
+// }
+
+// h3 {
+//   font-size: 2.8vw;
+// }
+
+// p {
+//   font-size: 2.5vw;
+// }

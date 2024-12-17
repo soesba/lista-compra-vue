@@ -1,6 +1,6 @@
 import type ArticuloDTO from "./ArticuloDTO"
 
 export default interface ArticuloResponseDTO {
-  respuesta: number;
-  data: ArticuloDTO | ArticuloDTO[];
+	respuesta: number;
+	data: ArticuloDTO | ArticuloDTO[];
 }

@@ -1,7 +1,7 @@
 import TipoEstablecimientoRepositoryImpl from "./TipoEstablecimientoRepositoryImpl"
 
 export default {
-  getInstance () {
-    return new TipoEstablecimientoRepositoryImpl()
-  }
+	getInstance () {
+		return new TipoEstablecimientoRepositoryImpl()
+	}
 }

@@ -4,13 +4,13 @@ import type TipoUnidadRequestDTO from "../dto/TipoUnidadRequestDTO";
 import type TipoUnidadRequest from "@/services/tipoUnidad/models/TipoUnidadRequest";
 
 export const DTOtoModel = (origin: TipoUnidadDTO): TipoUnidad => {
-  return {...origin}
+	return {...origin}
 }
 
 export const requestDTOtoModel = (origin: TipoUnidadRequestDTO): TipoUnidadRequest => {
-  return {...origin}
+	return {...origin}
 }
 
 export const requestModelToDTO = (origin: TipoUnidadRequest): TipoUnidadRequestDTO => {
-  return { ...origin }
+	return { ...origin }
 }

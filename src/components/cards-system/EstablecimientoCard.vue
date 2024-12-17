@@ -8,40 +8,40 @@
 </template>
 
 <script lang="ts">
-	import { noLogoUrl } from '@/main'
-	import { defineComponent } from 'vue'
-	import router from '@/router'
-	export default defineComponent({
-		name: 'EstablecimientoCard',
-	})
+import { noLogoUrl } from '@/main'
+import { defineComponent } from 'vue'
+import router from '@/router'
+export default defineComponent({
+	name: 'EstablecimientoCard',
+})
 </script>
 <script setup lang="ts">
-	import type Establecimiento from '@/services/establecimiento/models/Establecimiento'
-	import type { PropType } from 'vue'
-	import { computed, ref } from 'vue'
+import type Establecimiento from '@/services/establecimiento/models/Establecimiento'
+import type { PropType } from 'vue'
+import { computed, ref } from 'vue'
 	
-	// Props
-	const props = defineProps({
-		cardData: {
-			type: Object as PropType<Establecimiento>,
-			default() {
-				return {}
-			}
-		},
-	})	
-	// Data
-	let data = ref(props.cardData)
-	// Computed
-	const getImageSrc = computed(() => {
-    return props.cardData.logo ?  props.cardData.logo.content : noLogoUrl
-  })
-	const canDelete = computed(() => {
-		return props.cardData.borrable
-	})
-	// Methods
-	const editCard = () => {
-		router.push(`/establecimiento-detalle/${data.value.id}`)
-	}
+// Props
+const props = defineProps({
+	cardData: {
+		type: Object as PropType<Establecimiento>,
+		default() {
+			return {}
+		}
+	},
+})	
+// Data
+const data = ref(props.cardData)
+// Computed
+const getImageSrc = computed(() => {
+	return props.cardData.logo ? props.cardData.logo.content : noLogoUrl
+})
+const canDelete = computed(() => {
+	return props.cardData.borrable
+})
+// Methods
+const editCard = () => {
+	router.push(`/establecimiento-detalle/${data.value.id}`)
+}
 </script>
 <style lang="scss" scoped>
 .v-card {

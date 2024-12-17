@@ -7,12 +7,12 @@ import { aliases, mdi } from 'vuetify/iconsets/mdi'
 import { createVuetify } from 'vuetify'
 
 export default createVuetify({
-  // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
-  icons: {
-    defaultSet: 'mdi',
-    aliases,
-    sets: {
-      mdi,
-    }
-  }
+	// https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
+	icons: {
+		defaultSet: 'mdi',
+		aliases,
+		sets: {
+			mdi,
+		}
+	}
 })

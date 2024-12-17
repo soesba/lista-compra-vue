@@ -5,35 +5,35 @@
 import { computed, defineComponent, onMounted } from 'vue'
 import { useUiStore } from '@/store';
 export default defineComponent({
-name: 'AlertComponent'
+	name: 'AlertComponent'
 })
 </script>
 <script setup lang="ts">
-  const uiStore = useUiStore()
-	// Computed
-	const show = computed(() => {
-		return uiStore.getAlertComponent?.show
-	})
-  const text = computed(() => {
-		return uiStore.getAlertComponent?.props.text
-	})
-  const type = computed(() => {
-		return uiStore.getAlertComponent?.props.type
-	})
-  const variant = computed(() => {
-		return uiStore.getAlertComponent?.props.variant
-	})
-  const icon = computed(() => {
-    return type.value === 'error' ? 'mdi-alert-circle-outline' : ''
-  })
+const uiStore = useUiStore()
+// Computed
+const show = computed(() => {
+	return uiStore.getAlertComponent?.show
+})
+const text = computed(() => {
+	return uiStore.getAlertComponent?.props.text
+})
+const type = computed(() => {
+	return uiStore.getAlertComponent?.props.type
+})
+const variant = computed(() => {
+	return uiStore.getAlertComponent?.props.variant
+})
+const icon = computed(() => {
+	return type.value === 'error' ? 'mdi-alert-circle-outline' : ''
+})
 
-  onMounted(() => {
-   const vAlert = document.getElementsByClassName('v-alert__close')[0]
-   const iconClose = vAlert?.getElementsByClassName('mdi-close')[0]
-   iconClose?.addEventListener('click', () => {
-    uiStore.hideAlertComponent()
-   })
-  })
+onMounted(() => {
+	const vAlert = document.getElementsByClassName('v-alert__close')[0]
+	const iconClose = vAlert?.getElementsByClassName('mdi-close')[0]
+	iconClose?.addEventListener('click', () => {
+		uiStore.hideAlertComponent()
+	})
+})
 </script>
 <style lang="scss" scoped>
   .v-alert {

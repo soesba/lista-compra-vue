@@ -56,99 +56,99 @@
 	</div>
 </template>
 <script lang="ts">
-	import useVuelidate from '@vuelidate/core'
-	import { required } from 'vuelidate/lib/validators'
-	import type { PropType } from 'vue'
-	import { computed, defineComponent, ref, watch } from 'vue'
-	import type Direccion from '@/services/establecimiento/models/Direccion'
-	export default defineComponent({
-		name: 'DireccionEdicion',
-	})
+import useVuelidate from '@vuelidate/core'
+import { required } from '@vuelidate/validators'
+import type { PropType } from 'vue'
+import { computed, defineComponent, reactive, ref, watch } from 'vue'
+import type Direccion from '@/services/establecimiento/models/Direccion'
+export default defineComponent({
+	name: 'DireccionEdicion',
+})
 </script>
 <script setup lang="ts">
-	const emitter = defineEmits(['saveDireccion', 'updateDireccion', 'deleteDireccion'])
-	const props = defineProps({
-		direccion: {
-			type: Object as PropType<Direccion>,
-			default: null,
-		},
-	})
+const emitter = defineEmits(['saveDireccion', 'updateDireccion', 'deleteDireccion'])
+const props = defineProps({
+	direccion: {
+		type: Object as PropType<Direccion>,
+		default: null,
+	},
+})
 
-	const nuevaDireccion = props.direccion ? ref({ ...props.direccion }) : ref({
-    tmpId: Date.now(),
+const nuevaDireccion = props.direccion ? reactive<any>({ ...props.direccion }) : reactive({
+	tmpId: Date.now(),
+	direccion: '',
+	codPostal: '',
+	poblacion: '',
+	favorita: false,
+})
+
+// Computed
+const canSave = computed(() => {
+	return !v$.value.$invalid
+})
+// Validations
+const validations = computed(() => {
+	return {
+		nuevaDireccion: {
+			direccion: { required },
+			codPostal: {},
+			poblacion: {},
+		},
+	}
+})
+const v$ = useVuelidate(validations, nuevaDireccion )
+// Methods
+const setFavorita = () => {
+	nuevaDireccion.value.favorita = !nuevaDireccion.value.favorita
+	emitter('updateDireccion', nuevaDireccion.value)
+}
+
+const onCodPostalKeyPress = (evt: any) => {
+	if (evt.target.value.length === 5) evt.preventDefault()
+}
+
+const txtDireccionOnBlur = () => {
+	if (props.direccion && nuevaDireccion.value.direccion !== props.direccion.direccion) {
+		emitter('updateDireccion', nuevaDireccion.value)
+	}
+	v$.value.nuevaDireccion.direccion.$touch
+}
+
+const txtCodPostalOnBlur = () => {
+	if (props.direccion && nuevaDireccion.value.codPostal !== props.direccion.codPostal) {
+		emitter('updateDireccion', nuevaDireccion.value)
+	}
+}
+
+const txtPoblacionOnBlur = () => {
+	if (props.direccion && nuevaDireccion.value.poblacion !== props.direccion.poblacion) {
+		emitter('updateDireccion', nuevaDireccion.value)
+	}
+}
+
+const onClickSave = () => {
+	emitter('saveDireccion', nuevaDireccion.value)
+	resetForm()
+}
+
+const onClickCancel = () => {
+	resetForm()
+}
+
+const onClickDelete = () => {
+	emitter('deleteDireccion', nuevaDireccion.value)
+}
+
+const resetForm = () => {
+	nuevaDireccion.value = {
+		tmpId: 0,
 		direccion: '',
 		codPostal: '',
 		poblacion: '',
 		favorita: false,
-	})
-
-	// Computed
-	const canSave = computed(() => {
-		return !v$.value.$invalid
-	})
-	// Validations
-	const validations = computed(() => {
-		return {
-			nuevaDireccion: {
-				direccion: { required },
-        codPostal: {},
-		    poblacion: {},
-			},
-		}
-	})
-	const v$ = useVuelidate(validations, { nuevaDireccion })
-	// Methods
-  const setFavorita = () => {
-    nuevaDireccion.value.favorita = !nuevaDireccion.value.favorita
-    emitter('updateDireccion', nuevaDireccion.value)
-  }
-
-	const onCodPostalKeyPress = (evt: any) => {
-		if (evt.target.value.length === 5) evt.preventDefault()
 	}
-
-  const txtDireccionOnBlur = () => {
-    if (props.direccion && nuevaDireccion.value.direccion !== props.direccion.direccion) {
-      emitter('updateDireccion', nuevaDireccion.value)
-    }
-    v$.value.nuevaDireccion.direccion.$touch
-  }
-
-  const txtCodPostalOnBlur = () => {
-    if (props.direccion && nuevaDireccion.value.codPostal !== props.direccion.codPostal) {
-      emitter('updateDireccion', nuevaDireccion.value)
-    }
-  }
-
-  const txtPoblacionOnBlur = () => {
-    if (props.direccion && nuevaDireccion.value.poblacion !== props.direccion.poblacion) {
-      emitter('updateDireccion', nuevaDireccion.value)
-    }
-  }
-
-	const onClickSave = () => {
-		emitter('saveDireccion', nuevaDireccion.value)
-		resetForm()
-	}
-
-	const onClickCancel = () => {
-		resetForm()
-	}
-
-  const onClickDelete = () => {
-		emitter('deleteDireccion', nuevaDireccion.value)
-  }
-
-	const resetForm = () => {
-		nuevaDireccion.value = {
-      tmpId: 0,
-			direccion: '',
-			codPostal: '',
-			poblacion: '',
-			favorita: false,
-		}
-    v$.value.$reset()
-	}
+	v$.value.$reset()
+}
 </script>
 <style lang="scss" scoped>
 	#bloqueEdicion {

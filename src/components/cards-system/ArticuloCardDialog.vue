@@ -8,8 +8,8 @@
 						label="Nombre*"
 						required
 						v-model="editData.nombre"
-						:error-messages="v$.editData.nombre.$errors.map((e) => e.$message)"
-						@blur="v$.editData.nombre.$touch"
+						:error-messages="v$.editData.nombre.$errors.map((e) => e.$message.toString())"
+						@blur="v$.editData.nombre.$touch()"
 					></v-text-field>
 				</v-col>
 			</v-row>
@@ -27,7 +27,7 @@
 						required
 						multiple
 						:error-messages="v$.editData.tiposUnidad.$errors.map((e: any) => e.$message)"
-						@blur="v$.editData.tiposUnidad.$touch"
+						@blur="v$.editData.tiposUnidad.$touch()"
 						@change="onChange"
 					></combo-component>
 				</v-col>
@@ -42,72 +42,72 @@
 </template>
 
 <script lang="ts">
-	import { defineComponent, reactive } from 'vue'
-	import { computed } from 'vue'
-	import { required, requiredIf } from 'vuelidate/lib/validators'
-	import { useVuelidate } from '@vuelidate/core'
-	import type Articulo from '@/services/articulo/models/Articulo'
-	import type { PropType } from 'vue'
-	import { eventCardStore, uiStore } from '@/main'
-	import ComboComponent from '../combos/ComboComponent.vue'
+import { defineComponent, reactive } from 'vue'
+import { computed } from 'vue'
+import { required, requiredIf } from '@vuelidate/validators'
+import { useVuelidate } from '@vuelidate/core'
+import type Articulo from '@/services/articulo/models/Articulo'
+import type { PropType } from 'vue'
+import { eventCardStore, uiStore } from '@/main'
+import ComboComponent from '../combos/ComboComponent.vue'
 import { TipoDato } from '@/services/desplegables/models/TipoDato'
 
-	export default defineComponent({
-		name: 'ArticuloCardDialog',
-	})
+export default defineComponent({
+	name: 'ArticuloCardDialog',
+})
 </script>
 <script setup lang="ts">
-	// Props
-	const props = defineProps({
-		data: {
-			type: Object as PropType<Articulo>,
-			default() {
-				return {}
-			},
-		}
-	})
-	// Computed
-	const getTitle = computed(() => {
-		return adding ? 'Nuevo artículo' : props.data.nombre
-	})
-	const canSave = computed(() => {
-		return !v$.value.editData.$invalid
-	})
-	// Data
-	const adding = !props.data.id
-	let editData = reactive<any>({ ...props.data })
-	// Validations
-	const validations = computed(() => {
-		const maxTiposUnidad = (value: any) => {
-			return value.length <= 2
-		}
-		return {
-			editData: {
-				id: { required: requiredIf(!adding) },
-				nombre: { required },
-				descripcion: {},
-				tiposUnidad: { required, maxTiposUnidad },
-				borrable: { required },
-			},
-		}
-	})
-	// Use the "useVuelidate" function to perform form validation
-	const v$ = useVuelidate(validations, { editData })
-
-	// Methods
-	const onChange = (event) => {
-		editData.tiposUnidad = event
-		v$.value.editData.tiposUnidad.$touch()
+// Props
+const props = defineProps({
+	data: {
+		type: Object as PropType<Articulo>,
+		default() {
+			return {}
+		},
 	}
-
-	const cancel = () => {
-		eventCardStore.cancelCard()
-		uiStore.hideCustomDialog()
+})
+// Computed
+const getTitle = computed(() => {
+	return adding ? 'Nuevo artículo' : props.data.nombre
+})
+const canSave = computed(() => {
+	return !v$.value.$invalid
+})
+// Data
+const adding = !props.data.id
+const editData = reactive<any>({ ...props.data })
+// Validations
+const validations = computed(() => {
+	const maxTiposUnidad = (value: any) => {
+		return value.length <= 2
 	}
-
-	const save = () => {
-		eventCardStore.saveCard({ adding: adding, data: editData })
-		uiStore.hideCustomDialog()
+	return {
+		editData: {
+			id: { required: requiredIf(!adding) },
+			nombre: { required },
+			descripcion: {},
+			tiposUnidad: { required, maxTiposUnidad },
+			borrable: { required },
+		},
 	}
+})
+// Use the "useVuelidate" function to perform form validation
+const v$ = useVuelidate(validations, { editData })
+
+// Methods
+const onChange = (event: any) => {
+	editData.tiposUnidad = event
+	v$.value.editData.tiposUnidad.$touch()
+}
+
+const cancel = () => {
+	eventCardStore.cancelCard()
+	uiStore.hideCustomDialog()
+}
+
+const save = () => {
+	eventCardStore.saveCard({ adding: adding, data: editData })
+	uiStore.hideCustomDialog()
+}
 </script>
 <style lang="scss" scoped></style>

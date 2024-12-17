@@ -4,26 +4,26 @@ import type EstablecimientoRequestDTO from "../dto/EstablecimientoRequestDTO"
 import type EstablecimientoRequest from "@/services/establecimiento/models/EstablecimientoRequest"
 
 export const DTOtoModel = (origin: EstablecimientoDTO): Establecimiento => {
-  const model = {
-    id: origin.id,
-    nombre: origin.nombre,
-    tipoEstablecimiento: {
-      id: origin.tipoEstablecimiento.id,
-      nombre: origin.tipoEstablecimiento.nombre
-    },
-    notas: origin.notas,
-    logo: origin.logo,
-    direcciones: origin.direcciones || [],
-    fechaCreacion: origin.fechaCreacion,
-    borrable: origin.borrable
-  }
-  return model
+	const model = {
+		id: origin.id,
+		nombre: origin.nombre,
+		tipoEstablecimiento: {
+			id: origin.tipoEstablecimiento.id,
+			nombre: origin.tipoEstablecimiento.nombre
+		},
+		notas: origin.notas,
+		logo: origin.logo,
+		direcciones: origin.direcciones || [],
+		fechaCreacion: origin.fechaCreacion,
+		borrable: origin.borrable
+	}
+	return model
 }
 
 export const requestDTOtoModel = (origin: EstablecimientoRequestDTO): EstablecimientoRequest => {
-  return {...origin}
+	return {...origin}
 }
 
 export const requestModelToDTO = (origin: EstablecimientoRequest): EstablecimientoRequestDTO => {
-  return { ...origin }
+	return { ...origin }
 }

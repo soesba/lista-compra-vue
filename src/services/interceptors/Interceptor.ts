@@ -1,3 +1,3 @@
 export default interface Interceptor {
-  execute (): void;
+	execute (): void;
 }

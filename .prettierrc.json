@@ -5,13 +5,16 @@
   "useTabs": true,
   "singleQuote": true,
   "printWidth": 100,
-  "trailingComma": "es5",
+  "trailingComma": "none",
   "bracketSpacing": true,
-  "bracketSameLine": false,
+  "bracketSameLine": true,
   "parser": "vue",
   "vueIndentScriptAndStyle": true,
   "endOfLine": "lf",
   "insertFinalNewLine": "true",
   "proseWrap": "always",
-  "spaceBeforeFunctionParen": "always"
+  "spaceBeforeFunctionParen": "always",
+  "json": {
+	"tabWidth": 4
+  }
 }

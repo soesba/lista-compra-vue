@@ -43,74 +43,69 @@
 </template>
 
 <script lang="ts">
-	import { defineComponent } from 'vue'
-	import { computed } from 'vue'
-	import router from '@/router'
-	import getById from '@/services/establecimiento/getEstablecimientoById.service'
-	import { useRoute } from 'vue-router'
-	export default defineComponent({
-		name: 'EstablecimientoDetalle',
-	})
+import { defineComponent } from 'vue'
+import { computed } from 'vue'
+import router from '@/router'
+import getById from '@/services/establecimiento/getEstablecimientoById.service'
+import { useRoute } from 'vue-router'
+export default defineComponent({
+	name: 'EstablecimientoDetalle',
+})
 </script>
 <script setup lang="ts">
-	import DetalleToolbar from '@/components/DetalleToolbar.vue'
-	import type Establecimiento from '@/services/establecimiento/models/Establecimiento'
-	import { eventCardStore, noLogoUrl, uiStore } from '@/main'
+import DetalleToolbar from '@/components/DetalleToolbar.vue'
+import type Establecimiento from '@/services/establecimiento/models/Establecimiento'
+import { eventCardStore, noLogoUrl, uiStore } from '@/main'
 
-	// Props
-	const props = defineProps({
-		// data: {
-		//   type: Object as PropType<Establecimiento>,
-		// 	default: modelStore.establecimiento
-		// },
-		adding: {
-			type: Boolean,
-			default: false,
+// Props
+const props = defineProps({
+	// data: {
+	//   type: Object as PropType<Establecimiento>,
+	// 	default: modelStore.establecimiento
+	// },
+	adding: {
+		type: Boolean,
+		default: false,
+	},
+})
+const route = useRoute()
+// Data
+const data: Establecimiento = (await getById(route.params['id'].toString())).data as Establecimiento
+// Computed
+const getImageSrc = computed(() => {
+	return data.logo ? data.logo.content : noLogoUrl
+})
+const mostrarDirecciones = computed(() => {
+	return data.direcciones.length !== 0
+})
+const canDelete = computed(() => {
+	return data.borrable
+})
+
+// Methods
+const onBack = () => {
+	router.push('/establecimientos')
+}
+
+const setEdicion = () => {
+	router.push(`/establecimiento-edicion/${data.id}`)
+}
+
+const deleteCard = () => {
+	uiStore.showConfirmDialog({
+		props: {
+			text: '¿Desea eliminar el elemento?',
+			title: 'Confirmación',
 		},
+		aceptarFn: onCloseConfirmDialog,
 	})
-	const route = useRoute()
-	// Data
-	let data: Establecimiento = (await getById(route.params['id'].toString())).data as Establecimiento
-	// Computed
-	const getImageSrc = computed(() => {
-		return data.logo ? data.logo.content : noLogoUrl
-	})
-	const mostrarDirecciones = computed(() => {
-		return data.direcciones.length !== 0
-	})
-	const canDelete = computed(() => {
-		return data.borrable
-	})
+}
 
-	// Methods
-	const onBack = () => {
-		router.push('/establecimientos')
-	}
-
-	const setEdicion = () => {
-		router.push(`/establecimiento-edicion/${data.id}`)
-	}
-
-	const deleteCard = () => {
-		uiStore.showConfirmDialog({
-			props: {
-				text: '¿Desea eliminar el elemento?',
-				title: 'Confirmación',
-			},
-			aceptarFn: onCloseConfirmDialog,
-		})
-	}
-
-	const onCloseConfirmDialog = () => {
-		eventCardStore.deleteCard(data)
-	}
+const onCloseConfirmDialog = () => {
+	eventCardStore.deleteCard(data)
+}
 </script>
 <style lang="scss" scoped>
-	.header {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
 	.logo {
 		width: 150px;
 	}

@@ -4,13 +4,13 @@ import type TipoEstablecimientoRequestDTO from "../dto/TipoEstablecimientoReques
 import type TipoEstablecimientoRequest from "@/services/tipoEstablecimiento/models/TipoEstablecimientoRequest"
 
 export const DTOtoModel = (origin: TipoEstablecimientoDTO): TipoEstablecimiento => {
-  return {...origin}
+	return {...origin}
 }
 
 export const requestDTOtoModel = (origin: TipoEstablecimientoRequestDTO): TipoEstablecimientoRequest => {
-  return {...origin}
+	return {...origin}
 }
 
 export const requestModelToDTO = (origin: TipoEstablecimientoRequest): TipoEstablecimientoRequestDTO => {
-  return { ...origin }
+	return { ...origin }
 }

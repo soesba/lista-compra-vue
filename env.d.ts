@@ -1,3 +1,4 @@
 /// <reference types="vite/client" />
 declare module 'vuelidate';
-declare module 'vuelidate/lib/validators';
+declare module '@vuelidate/validators';
+declare module 'webfontloader';

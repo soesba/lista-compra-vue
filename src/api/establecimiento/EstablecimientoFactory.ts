@@ -1,7 +1,7 @@
 import EstablecimientoRepositoryImpl from "./EstablecimientoRepositoryImpl"
 
 export default {
-  getInstance () {
-    return new EstablecimientoRepositoryImpl()
-  }
+	getInstance () {
+		return new EstablecimientoRepositoryImpl()
+	}
 }

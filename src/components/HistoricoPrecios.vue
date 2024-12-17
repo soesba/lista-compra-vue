@@ -26,30 +26,33 @@
 </template>
 
 <script lang="ts">
-	import { defineComponent } from 'vue'
-  import type Precio from '@/services/precio/models/Precio'
-  import { formatDecimal, pluralize } from '@/utils/utils'
-	export default defineComponent({
-		name: 'HistoricoPrecios',
-	})
+import { defineComponent } from 'vue'
+import type Precio from '@/services/precio/models/Precio'
+import { formatDecimal, pluralize } from '@/utils/utils'
+export default defineComponent({
+	name: 'HistoricoPrecios',
+})
 </script>
 <script setup lang="ts">
-	defineProps({
-		precios: {
-			type: Array<Precio>,
-			default: {},
-		},
-	})
+defineProps({
+	precios: {
+		type: Array<Precio>,
+		default: {},
+	},
+})
 
-  const getFechaCompra = (value) => {
-		return value ? new Intl.DateTimeFormat('es-ES', {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    }).format(value) : ''
-	}
+const getFechaCompra = (value: any) => {
+	return value ? new Intl.DateTimeFormat('es-ES', {
+		day: "2-digit",
+		month: "2-digit",
+		year: "numeric",
+	}).format(value) : ''
+}
 </script>
 <style lang="scss" scoped>
+  .v-card-text {
+    font-size: inherit;
+  }
 	.wrapper {
 		display: flex;
     flex-wrap: wrap;

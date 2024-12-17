@@ -1,7 +1,7 @@
 import TipoUnidadRepositoryImpl from "./TipoUnidadRepositoryImpl"
 
 export default {
-  getInstance () {
-    return new TipoUnidadRepositoryImpl()
-  }
+	getInstance () {
+		return new TipoUnidadRepositoryImpl()
+	}
 }

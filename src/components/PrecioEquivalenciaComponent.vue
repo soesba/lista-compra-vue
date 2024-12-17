@@ -1,40 +1,45 @@
 <template>
 	<div v-for="eq in equivalencias" class="inputGroup">
-		<label class="labelFor">Precio por {{ eq.to.nombre }}:</label> <label style="line-height: 1.75;">{{ formatDecimal(getPrecio(eq)) }}</label>
+		<label class="labelFor">Precio por {{ eq.to.nombre }}:</label> <label class="labelData">{{ formatDecimal(getPrecio(eq)) }}</label>
 	</div>
 </template>
 <script lang="ts">
-	import { defineComponent, ref } from 'vue'
-	import getByFromMultiple from '@/services/equivalencia/getEquivalenciaByFromMultiple.service'
-	import type UnidadMedida from '@/services/precio/models/UnidadMedida'
-	import { formatDecimal } from '@/utils/utils'
+import { defineComponent, ref } from 'vue'
+import getByFromMultiple from '@/services/equivalencia/getEquivalenciaByFromMultiple.service'
+import type UnidadMedida from '@/services/precio/models/UnidadMedida'
+import { formatDecimal } from '@/utils/utils'
+import type Equivalencia from '@/services/equivalencia/models/Equivalencia';
 
-	export default defineComponent({
-		name: 'PrecioEquivalenciaComponent',
-	})
+export default defineComponent({
+	name: 'PrecioEquivalenciaComponent',
+})
 </script>
 <script setup lang="ts">
-	const props = defineProps({
-		unidadesMedida: {
-			type: Array<UnidadMedida>,
-			default: '',
-		},
-		precio: {
-			type: Number,
-			default: 0,
-		},
-	})
+const props = defineProps({
+	unidadesMedida: {
+		type: Array<UnidadMedida>,
+		default: '',
+	},
+	precio: {
+		type: Number,
+		default: 0,
+	},
+})
 
-	console.log(props.precio)
+console.log(props.precio)
 
-	const equivalencias = ref()
-	getByFromMultiple(props.unidadesMedida.map((x) => x.id)).then((response) => {
-		equivalencias.value = response.data
-	})
+const equivalencias = ref()
+getByFromMultiple(props.unidadesMedida.map((x) => x.id)).then((response) => {
+	equivalencias.value = response.data
+})
 
-	const getPrecio = (eq) => {
-		const valor = props.unidadesMedida.find((x) => x.id === eq.from.id) || 0
+const getPrecio = (eq: any) => {
+	console.log('LOG~ ~ file: PrecioEquivalenciaComponent.vue:37 ~ getPrecio ~ eq:', eq)
+	const valor = props.unidadesMedida.find((x) => x.id === eq.from.id)
+	if (valor) {
 		return props.precio / (valor['valor'] * eq.factor)
 	}
+	return 0
+}
 </script>
 <style lang="scss" scoped></style>

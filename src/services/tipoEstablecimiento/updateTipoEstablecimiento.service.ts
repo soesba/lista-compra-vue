@@ -3,7 +3,7 @@ import type TipoEstablecimientoResponse from "./models/TipoEstablecimientoRespon
 import type TipoEstablecimientoRequest from "./models/TipoEstablecimientoRequest"
 
 const update = async (request: TipoEstablecimientoRequest): Promise<TipoEstablecimientoResponse> => {
-  return await API.TipoEstablecimientoRepository.update(request)
+	return await API.TipoEstablecimientoRepository.update(request)
 }
 
 export default update

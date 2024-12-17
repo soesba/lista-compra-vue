@@ -36,7 +36,7 @@ import type TipoUnidadResponse from '@/services/tipoUnidad/models/TipoUnidadResp
 import { sort } from '@/utils/utils'
 import type Equivalencia from '@/services/equivalencia/models/Equivalencia'
 export default defineComponent({
-  name: 'TiposUnidades'
+	name: 'TiposUnidades'
 })
 </script>
 
@@ -44,90 +44,90 @@ export default defineComponent({
 const emit = defineEmits(['close-dialog'])
 
 const suscribe = eventCardStore.$onAction(({args, name}) => {
-  switch(name) {
-    case 'saveCard': 
-      onSaveCard(args[0])
-      break
-    case 'deleteCard':
-      onDeleteCard(args[0])
-      break
-  }
+	switch(name) {
+		case 'saveCard': 
+			onSaveCard(args[0])
+			break
+		case 'deleteCard':
+			onDeleteCard(args[0])
+			break
+	}
 })
 // Data
 const titulo = ref('Tipos de unidades')
 const list = ref()
 const itemsMenu = ref([
-  { title: 'Ordenar por nombre ascendente', click: () =>  list.value = list.value.sort(sort('nombre'))},
-  { title: 'Ordenar por nombre descendente', click: () =>  list.value = list.value.sort(sort('-nombre'))},
+	{ title: 'Ordenar por nombre ascendente', click: () => list.value = list.value.sort(sort('nombre'))},
+	{ title: 'Ordenar por nombre descendente', click: () => list.value = list.value.sort(sort('-nombre'))},
 ])
 
 onMounted(() => {
-  getAllData()
+	getAllData()
 })
 
 // Methods
 const handleClick = (index: number) => {
-  itemsMenu.value[index].click.call(this)
+	itemsMenu.value[index].click.call(this)
 }
 
 const getAllData = () => {
-  get().then((response: TipoUnidadResponse) => {
-    list.value = response.data
-    handleClick(0)
-  })
+	get().then((response: TipoUnidadResponse) => {
+		list.value = response.data
+		handleClick(0)
+	})
 }
 
 const onDeleteCard = (cardData: any) => {
-  if (cardData.borrable) {
-    deleteItem(cardData.id).then(response => {
-      if (response.respuesta === 200) {
-        getAllData()
-      }
-    })
-  }
+	if (cardData.borrable) {
+		deleteItem(cardData.id).then(response => {
+			if (response.respuesta === 200) {
+				getAllData()
+			}
+		})
+	}
 }
 
 const onSaveCard = (cardData: any) => {
-  const tipoUnidad = cardData.data.value
-  delete tipoUnidad.tmpId
-  tipoUnidad.equivalencias = tipoUnidad.equivalencias.map((item: Equivalencia) => {
-    delete item.tmpId
-    return item
-  })
-  if (cardData.adding) {
-    createCard(tipoUnidad)
-  } else {
-    updateCard(tipoUnidad)
-  }
+	const tipoUnidad = cardData.data.value
+	delete tipoUnidad.tmpId
+	tipoUnidad.equivalencias = tipoUnidad.equivalencias.map((item: Equivalencia) => {
+		delete item.tmpId
+		return item
+	})
+	if (cardData.adding) {
+		createCard(tipoUnidad)
+	} else {
+		updateCard(tipoUnidad)
+	}
 }
 
 const createCard = (card: TipoUnidadRequest) => {
-  card.borrable = true
-  create(card).then(response => {
-    if (response.respuesta === 200) {
-      getAllData()
-    }
+	card.borrable = true
+	create(card).then(response => {
+		if (response.respuesta === 200) {
+			getAllData()
+		}
     
-  })
+	})
 }
 
 const updateCard = (card: TipoUnidadRequest) => {
-  update(card).then(response => {
-    if (response.respuesta === 200) {
-      getAllData()
-    }
+	update(card).then(response => {
+		if (response.respuesta === 200) {
+			getAllData()
+		}
     
-  })
+	})
 }
 
 const onSearch = (evt: any) => {
-  if (evt) {
-    getByAny(evt).then((response:TipoUnidadResponse) => {
-      list.value = response.data
-    })
-  } else {
-    getAllData()
-  }
+	if (evt) {
+		getByAny(evt).then((response:TipoUnidadResponse) => {
+			list.value = response.data
+		})
+	} else {
+		getAllData()
+	}
 }
 
 </script>

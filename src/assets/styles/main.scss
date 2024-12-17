@@ -1,11 +1,18 @@
+@forward './typography_sizes.scss';
+
 * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 }
 
+body {
+  min-width: 360px;
+}
+
 html {
 	height: 100%;
+  min-width: 360px;
 }
 
 a.no-link {
@@ -15,6 +22,14 @@ a.no-link {
 
 .text-small {
 	font-size: 0.6rem;
+}
+
+.v-main {
+  min-width: 360px;
+}
+
+.v-dialog {
+  max-width: 400px;
 }
 
 .v-card-text {
@@ -36,35 +51,35 @@ a.no-link {
 	}
 }
 
-
-	.labelFor {
-		font-size: 1rem;
-		font-weight: 500;
-		line-height: 1.75;
-		letter-spacing: 0.009375em;
-	}
-
-	.inputGroup {
+.form {
+  .header {
 		display: flex;
-		flex-wrap: wrap;
-		align-items: flex-start;
-		gap: 10px;
+		flex-direction: column;
+		align-items: center;
+    padding-bottom: 10px;
+	}
+}
 
-		.labelFor {
-			margin-right: 10px;
-			;
-		}
-	}
+.inputGroup {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 10px;
 
-	.margin {
-		margin: 10px;
-	}
-	.margin-left-right {
-		margin: 0px 10px;
-	}
-	.margin-top-bottom {
-		margin: 10px 0px;
-	}
+  .labelFor {
+    margin-right: 10px;
+  }
+}
+
+.margin {
+  margin: 10px;
+}
+.margin-left-right {
+  margin: 0px 10px;
+}
+.margin-top-bottom {
+  margin: 10px 0px;
+}
 
 .cursor {
 	cursor: pointer;

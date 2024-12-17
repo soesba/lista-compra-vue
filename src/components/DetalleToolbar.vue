@@ -14,9 +14,9 @@
 
 <script lang="ts">
 import { computed, defineComponent, reactive, ref } from 'vue'
-	export default defineComponent({
-		name: 'DetalleToolbar',
-	})
+export default defineComponent({
+	name: 'DetalleToolbar',
+})
 </script>
 <script setup lang="ts">
   

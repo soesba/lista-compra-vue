@@ -11,51 +11,51 @@
 </template>
 
 <script lang="ts">
-	import { eventCardStore, uiStore } from '@/main'
-	import { defineComponent } from 'vue'
-	import router from '@/router'
-	export default defineComponent({
-		name: 'TipoUnidadCard',
-	})
+import { eventCardStore, uiStore } from '@/main'
+import { defineComponent } from 'vue'
+import router from '@/router'
+export default defineComponent({
+	name: 'TipoUnidadCard',
+})
 </script>
 <script setup lang="ts">
-	import type TipoUnidad from '@/services/tipoUnidad/models/TipoUnidad'
-	import type { PropType } from 'vue'
-	import { computed, ref, markRaw } from 'vue'
+import type TipoUnidad from '@/services/tipoUnidad/models/TipoUnidad'
+import type { PropType } from 'vue'
+import { computed, ref, markRaw } from 'vue'
 	
-	// Props
-	const props = defineProps({
-		cardData: {
-			type: Object as PropType<TipoUnidad>,
-			default() {
-				return {}
-			}
+// Props
+const props = defineProps({
+	cardData: {
+		type: Object as PropType<TipoUnidad>,
+		default() {
+			return {}
+		}
+	},
+})	
+// Data
+const data = ref(props.cardData)
+// Computed
+const canDelete = computed(() => {
+	return props.cardData.borrable
+})
+// Methods
+const editCard = () => {
+	router.push(`/tiposUnidades-edicion/${data.value.id}`)
+}
+
+const deleteCard = () => {
+	uiStore.showConfirmDialog({
+		props: {
+			text: '¿Desea eliminar el elemento?',
+			title: 'Confirmación'
 		},
-	})	
-	// Data
-	let data = ref(props.cardData)
-	// Computed
-	const canDelete = computed(() => {
-		return props.cardData.borrable
+		aceptarFn: onCloseConfirmDialog
 	})
-	// Methods
-	const editCard = () => {
-		router.push(`/tiposUnidades-edicion/${data.value.id}`)
-	}
+}
 
-	const deleteCard = () => {
-		uiStore.showConfirmDialog({
-			props: {
-				text: '¿Desea eliminar el elemento?',
-				title: 'Confirmación'
-			},
-			aceptarFn: onCloseConfirmDialog
-		})
-	}
-
-	const onCloseConfirmDialog = () => {
-		eventCardStore.deleteCard(data.value)
-	}
+const onCloseConfirmDialog = () => {
+	eventCardStore.deleteCard(data.value)
+}
 </script>
 <style lang="scss" scoped>
 .v-card {

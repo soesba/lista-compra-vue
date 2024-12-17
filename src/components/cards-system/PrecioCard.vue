@@ -15,51 +15,51 @@
 </template>
 
 <script lang="ts">
-	import { eventCardStore, modelStore, uiStore } from '@/main'
-	import { defineComponent } from 'vue'
+import { eventCardStore, modelStore, uiStore } from '@/main'
+import { defineComponent } from 'vue'
 import router from '@/router'
 import { formatDecimal } from '@/utils/utils'
-	export default defineComponent({
-		name: 'PrecioCard',
-	})
+export default defineComponent({
+	name: 'PrecioCard',
+})
 </script>
 <script setup lang="ts">
-	import type Precio from '@/services/precio/models/Precio'
-	import type { PropType } from 'vue'
-	import { computed } from 'vue'
+import type Precio from '@/services/precio/models/Precio'
+import type { PropType } from 'vue'
+import { computed } from 'vue'
 
-	// Props
-	const props = defineProps({
-		cardData: {
-			type: Object as PropType<Precio>,
-			default() {
-				return {}
-			},
+// Props
+const props = defineProps({
+	cardData: {
+		type: Object as PropType<Precio>,
+		default() {
+			return {}
 		},
-	})
-	// Data
-	let data = { ...props.cardData}
+	},
+})
+// Data
+const data = { ...props.cardData}
 
-	// Computed
-	const canDelete = computed(() => {
-		return props.cardData.borrable
-	})
+// Computed
+const canDelete = computed(() => {
+	return props.cardData.borrable
+})
 
-	const getFechaCompra = computed(() => {
-		return props.cardData.fechaCompra ? new Intl.DateTimeFormat('es-ES', {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    }).format(props.cardData.fechaCompra) : ''
-	})
-	// Methods
-	const editCard = () => {
-		router.push(`/precio-edicion/${data.id}`)
-	}
+const getFechaCompra = computed(() => {
+	return props.cardData.fechaCompra ? new Intl.DateTimeFormat('es-ES', {
+		day: "2-digit",
+		month: "2-digit",
+		year: "numeric",
+	}).format(props.cardData.fechaCompra) : ''
+})
+// Methods
+const editCard = () => {
+	router.push(`/precio-edicion/${data.id}`)
+}
 
-	const detalleCard = () => {
-		router.push(`/precio-detalle/${data.id}`)
-	}	
+const detalleCard = () => {
+	router.push(`/precio-detalle/${data.id}`)
+}	
 </script>
 <style lang="scss" scoped>
 	.v-card {

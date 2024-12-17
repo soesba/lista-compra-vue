@@ -15,39 +15,37 @@
 					label="Fecha*"
 					v-model="getFechaCompra"
 					append-inner-icon="mdi-calendar"
-					@blur="setFechaCompra($event)"
-				>
-				<v-menu activator="parent" :close-on-content-click="false">
-					<v-date-picker 
-						color="primary"
-						hideHeader
-						:first-day-of-week="1" 
-						v-model="editData.fechaCompra">
-					</v-date-picker>
-				</v-menu>
+					@blur="setFechaCompra($event)">
+					<v-menu activator="parent" :close-on-content-click="false">
+						<v-date-picker
+							color="primary"
+							hideHeader
+							:first-day-of-week="1"
+							v-model="editData.fechaCompra">
+						</v-date-picker>
+					</v-menu>
 				</v-text-field>
 			</div>
 			<div class="inputGroup">
 				<combo-component
+					ref="cboArticulos"
 					:tipo-dato="TipoDato.Articulos"
 					:model-value="editData.articulo"
 					:return-object="true"
 					required
 					:error-messages="v$.editData.articulo.$errors.map((e) => e.$message)"
-					@blur="v$.editData.articulo.$touch"
-					@change="onChangeArticulo"
-				></combo-component>
+					@blur="v$.editData.articulo.$touch()"
+					@change="onChangeArticulo"></combo-component>
 			</div>
 			<div class="inputGroup">
 				<combo-component
 					:tipo-dato="TipoDato.Establecimientos"
 					:model-value="editData.establecimiento"
-					:return-object="true"
 					required
-					:error-messages="v$.editData.articulo.$errors.map((e) => e.$message)"
-					@blur="v$.editData.establecimiento.$touch"
-					@change="onChangeEstablecimiento"
-				></combo-component>
+					:error-messages="v$.editData.establecimiento.$errors.map((e) => e.$message)"
+					:validations="v$.editData.establecimiento"
+					@blur="v$.editData.establecimiento.$touch()"
+					@change="onChangeEstablecimiento"></combo-component>
 			</div>
 			<div class="inputGroup">
 				<v-text-field variant="underlined" label="Marca*" v-model="editData.marca"></v-text-field>
@@ -61,8 +59,7 @@
 					v-model.number="editData.precio"
 					:hide-spin-buttons="true"
 					max-width="120"
-					@keypress="onKeypressPrecio"
-				></v-text-field>
+					@keypress="onKeypressPrecio"></v-text-field>
 				<div v-if="editData.articulo">
 					<div class="inputGroup">
 						<v-text-field
@@ -73,8 +70,7 @@
 							variant="underlined"
 							:hide-spin-buttons="true"
 							v-model="unidad.valor"
-							max-width="100"
-						></v-text-field>
+							max-width="100"></v-text-field>
 					</div>
 				</div>
 			</div>
@@ -84,10 +80,10 @@
 
 <script lang="ts">
 	import { DetalleToolbar } from '@/components/index'
-	import { required, requiredIf } from 'vuelidate/lib/validators'
+	import { required, requiredIf } from '@vuelidate/validators'
 	import { useVuelidate } from '@vuelidate/core'
 	import { useRoute } from 'vue-router'
-	import { defineComponent, onMounted, ref, watch } from 'vue'
+	import { defineComponent, onMounted, reactive, ref, watch, defineExpose } from 'vue'
 	import { computed } from 'vue'
 	import router from '@/router'
 	import getPrecioById from '@/services/precio/getPrecioById.service'
@@ -101,7 +97,7 @@
 	import { TipoDato } from '@/services/desplegables/models/TipoDato'
 
 	export default defineComponent({
-		name: 'PrecioEdicion',
+		name: 'PrecioEdicion'
 	})
 </script>
 <script setup lang="ts">
@@ -109,30 +105,34 @@
 	const fileUpload = ref(null)
 	// Computed
 	const canSave = computed(() => {
-		return !v$.value.editData.$invalid
+		return !v$.value.$invalid
 	})
 	const getFechaCompra = computed(() => {
-		return editData?.value?.fechaCompra ? new Intl.DateTimeFormat('es-ES', {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    }).format(editData.value.fechaCompra) : ''
+		return editData?.value?.fechaCompra
+			? new Intl.DateTimeFormat('es-ES', {
+					day: '2-digit',
+					month: '2-digit',
+					year: 'numeric'
+			  }).format(editData.value.fechaCompra)
+			: ''
 	})
 	// Data
+	const cboArticulos = ref(null)
 	const inputPrecio = ref()
 	const adding = ref(false)
 	const route = useRoute()
-	let editData = ref<any>({
-				id: '',
-				precio: 0,
-				marca: '',
-				articulo: null,
-				establcimiento: null,
-				unidadesMedida: [],
-				fechaCreacion: '',
-				notas: '',
-				borrable: true,
-			})
+	const from = history.state.back
+	const editData = ref<any>({
+		id: '',
+		precio: 0,
+		marca: '',
+		articulo: null,
+		establecimiento: null,
+		unidadesMedida: [],
+		fechaCreacion: '',
+		notas: '',
+		borrable: true
+	})
 
 	if (route.params['id']) {
 		getPrecioById(route.params['id'].toString()).then((response) => {
@@ -142,10 +142,13 @@
 		})
 	} else {
 		adding.value = true
+		if (from.includes('articulo-detalle')) {
+			editData.value.articulo = { id: from.substring(from.lastIndexOf('/') + 1) }
+		}
 	}
-		
+
 	// Watch
-	watch (
+	watch(
 		async () => editData.value?.articulo,
 		async (newValue, oldValue) => {
 			if (!editData.value?.id) {
@@ -182,27 +185,27 @@
 	})
 
 	// Methods
-	const onKeypressPrecio = (evt) => {
-		if (evt.charCode == 46) { 
-			evt.preventDefault() 
+	const onKeypressPrecio = (evt: any) => {
+		if (evt.charCode == 46) {
+			evt.preventDefault()
 			evt.target.value = evt.target.value + ','
 		}
 	}
 
-	const onChangeArticulo = (event) => {
-		editData.value!.articulo = event
+	const onChangeArticulo = (event: any) => {
+		editData.value.articulo = event
 	}
 
-	const onChangeEstablecimiento = (event) => {
-		editData.value!.establecimiento = event
+	const onChangeEstablecimiento = (event: any) => {
+		editData.value.establecimiento = event
 	}
 
 	const getArrayUnidadesMedida = () => {
-		return getArticuloById(editData.value!.articulo!.id).then(response => {
+		return getArticuloById(editData.value!.articulo!.id).then((response) => {
 			const articulo = response.data as Articulo
 			const tmpArray: any = []
-			articulo.tiposUnidad.forEach(element => {
-				const tmp:any = {...element}
+			articulo.tiposUnidad.forEach((element) => {
+				const tmp: any = { ...element }
 				tmp.valor = null
 				tmpArray.push(tmp)
 			})
@@ -211,22 +214,20 @@
 	}
 
 	const setFechaCompra = (event: any) => {
-		editData.value!.fechaCompra = event.target.value ? new Date(event.target.value.split('/').reverse().join('-')) : null
+		editData.value!.fechaCompra = event.target.value
+			? new Date(event.target.value.split('/').reverse().join('-'))
+			: null
 	}
 
 	const onBack = () => {
-		if (adding.value) {
-			router.push('/precios')
-		} else {
-			router.push(`/precios`)
-		}
+		router.push(from)
 	}
 
 	const save = async () => {
 		if (adding.value) {
 			createPrecio(editData.value)
-			} else {
-				updateCompra(editData.value)
+		} else {
+			updateCompra(editData.value)
 		}
 	}
 

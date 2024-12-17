@@ -32,7 +32,7 @@
 					label="Nombre*"
 					required
 					v-model="editData.nombre"
-					:error-messages="v$.editData.nombre.$errors.map((e) => e.$message)"
+					:error-messages="v$.editData.nombre.$errors.map((e) => e.$message.toString())"
 					@blur="v$.editData.nombre.$touch"
 					@input="v$.editData.nombre.$touch"
 				></v-text-field>
@@ -58,168 +58,168 @@
 </template>
 
 <script lang="ts">
-	import ComboComponent from '@/components/combos/ComboComponent.vue'
-  import DireccionEdicion from '@/components/DireccionEdicion.vue'
-	import DetalleToolbar from '@/components/DetalleToolbar.vue'
-	import { required, requiredIf } from 'vuelidate/lib/validators'
-	import { useVuelidate } from '@vuelidate/core'
-	import { TipoDato } from '@/services/desplegables/models/TipoDato'
-	import { useRoute } from 'vue-router'
-	import { noLogoUrl } from '@/main'
-	import { defineComponent, reactive, ref } from 'vue'
-	import { computed } from 'vue'
-	import router from '@/router'
-	import getById from '@/services/establecimiento/getEstablecimientoById.service'
-	import create from '@/services/establecimiento/createEstablecimiento.service'
-	import update from '@/services/establecimiento/updateEstablecimiento.service'
-	import { fileToBase64 } from '@/utils/utils'
-	import type Direccion from '@/services/establecimiento/models/Direccion'
-	import type Establecimiento from '@/services/establecimiento/models/Establecimiento'
-	export default defineComponent({
-		name: 'EstablecimientoEdicion',
-	})
+import ComboComponent from '@/components/combos/ComboComponent.vue'
+import DireccionEdicion from '@/components/DireccionEdicion.vue'
+import DetalleToolbar from '@/components/DetalleToolbar.vue'
+import { required, requiredIf } from '@vuelidate/validators'
+import { useVuelidate } from '@vuelidate/core'
+import { TipoDato } from '@/services/desplegables/models/TipoDato'
+import { useRoute } from 'vue-router'
+import { noLogoUrl } from '@/main'
+import { defineComponent, reactive, ref } from 'vue'
+import { computed } from 'vue'
+import router from '@/router'
+import getById from '@/services/establecimiento/getEstablecimientoById.service'
+import create from '@/services/establecimiento/createEstablecimiento.service'
+import update from '@/services/establecimiento/updateEstablecimiento.service'
+import { fileToBase64 } from '@/utils/utils'
+import type Direccion from '@/services/establecimiento/models/Direccion'
+import type Establecimiento from '@/services/establecimiento/models/Establecimiento'
+export default defineComponent({
+	name: 'EstablecimientoEdicion',
+})
 </script>
 <script setup lang="ts">
-	// Refs
-	const fileUpload = ref(null)
-	// Computed
-	const canSave = computed(() => {
-		return !v$.value.editData.$invalid
-	})
+// Refs
+const fileUpload = ref(null)
+// Computed
+const canSave = computed(() => {
+	return !v$.value.$invalid
+})
 
-	const mostrarDirecciones = computed(() => {
-		return editData && editData.value.direcciones ? editData.value.direcciones.length !== 0 : false
-	})
-	const getImageSrc = computed(() => {
-		return editData.value.logo ? editData.value.logo.content : noLogoUrl
-	})
+const mostrarDirecciones = computed(() => {
+	return editData.value && editData.value.direcciones ? editData.value.direcciones.length !== 0 : false
+})
+const getImageSrc = computed(() => {
+	return editData.value.logo ? editData.value.logo.content : noLogoUrl
+})
 
-	// Data
-	const adding = ref(false)
-	const route = useRoute()
-	let editData = ref<any>({ borrable: true, direcciones: [] })
-	if (route.params['id']) {
-		getById(route.params['id'].toString()).then((response) => {
-			editData.value = response.data
-		})
+// Data
+const adding = ref(false)
+const route = useRoute()
+const editData = ref<any>({ borrable: true, direcciones: [] })
+if (route.params['id']) {
+	getById(route.params['id'].toString()).then((response) => {
+		editData.value = response.data
+	})
+} else {
+	adding.value = true
+}
+
+const typeFile = 'image/png, image/gif, image/jpeg, image/svg'
+const upload = ''
+let selectedFile = reactive<any>('')
+
+// Validations
+const validations = computed(() => {
+	return {
+		editData: {
+			id: { required: requiredIf(!adding.value) },
+			nombre: { required },
+			tipoEstablecimiento: { required },
+			borrable: { required },
+		}
+	}
+})
+// Use the "useVuelidate" function to perform form validation
+const v$ = useVuelidate(validations, { editData })
+
+// Methods
+const onChange = (event: any) => {
+	editData.value.tipoEstablecimiento = event
+}
+
+const onBack = () => {
+	if (adding.value) {
+		router.push('/establecimientos')
 	} else {
-		adding.value = true
+		router.push(`/establecimiento-detalle/${editData.value.id}`)
 	}
+}
 
-	const typeFile = 'image/png, image/gif, image/jpeg, image/svg'
-	const upload = ''
-	let selectedFile = reactive<any>('')
+const onSaveDireccion = (dir: any) => {
+	editData.value.direcciones.push(dir)
+}
 
-	// Validations
-	const validations = computed(() => {
-		return {
-			editData: {
-				id: { required: requiredIf(!adding.value) },
-				nombre: { required },
-				tipoEstablecimiento: { required },
-				borrable: { required },
-			}
+const onUpdateDireccion = (data: Direccion) => {
+	editData.value.direcciones = editData.value.direcciones.map((item: any) => {      
+		if ((data.id && item.id === data.id) ||
+        (data.tmpId && data.tmpId === item.tmpId)) {
+			return data
+		} else {
+			return item
 		}
 	})
-	// Use the "useVuelidate" function to perform form validation
-	const v$ = useVuelidate(validations, { editData })
+}
 
-	// Methods
-	const onChange = (event) => {
-		editData.value.tipoEstablecimiento = event
-	}
-
-	const onBack = () => {
-		if (adding.value) {
-			router.push('/establecimientos')
+const onDeleteDireccion = (dir: Direccion) => {
+	editData.value.direcciones = editData.value.direcciones.filter((item: Direccion) => {
+		if (dir.tmpId) {
+			return item.tmpId !== dir.tmpId
 		} else {
-			router.push(`/establecimiento-detalle/${editData.value.id}`)
+			return item.id !== dir.id
+		}
+	})
+}
+
+const save = async () => {
+	if (selectedFile) {
+		const imgBase64 = await fileToBase64(selectedFile)
+		editData.value.logo = {
+			type: selectedFile.type,
+			content: imgBase64,
 		}
 	}
+	delete editData.value.tmpId
+	editData.value.direcciones = editData.value.direcciones.map((item: Direccion) => {
+		delete item.tmpId
+		return item
+	})
+	if (adding.value) {
+		createEstablecimiento(editData.value)
+	} else {
+		updateEstablecimiento(editData.value)
+	}
+}
 
-  const onSaveDireccion = (dir: any) => {
-    editData.value.direcciones.push(dir)
-  }
+const createEstablecimiento = (data: any) => {
+	create(data).then((response) => {
+		onBack()
+	})
+}
 
-  const onUpdateDireccion = (data: Direccion) => {
-    editData.value.direcciones = editData.value.direcciones.map((item: any) => {      
-      if ((data.id && item.id === data.id) ||
-        (data.tmpId && data.tmpId === item.tmpId)) {
-        return data
-      } else {
-        return item
-      }
-    })
-  }
+const updateEstablecimiento = (data: any) => {
+	update(data).then((response) => {
+		onBack()
+	})
+}
 
-	const onDeleteDireccion = (dir: Direccion) => {
-		editData.value.direcciones = editData.value.direcciones.filter((item) => {
-			if (dir.tmpId) {
-				return item.tmpId !== dir.tmpId
-			} else {
-				return item.id !== dir.id
+const getFile = () => {
+	document.getElementById('upfile')?.click()
+}
+
+const onSelectLogo = (evt: any) => {
+	selectedFile = evt.target.files[0]
+	if (selectedFile) {
+		const reader = new FileReader()
+
+		reader.onload = function (e) {
+			if (!editData.value.logo) {
+				editData.value.logo = {}
 			}
-		})
-	}
-
-	const save = async () => {
-		if (selectedFile) {
-			const imgBase64 = await fileToBase64(selectedFile)
-			editData.value.logo = {
-				type: selectedFile.type,
-				content: imgBase64,
-			}
+			editData.value.logo.type = selectedFile.type
+			editData.value.logo.content = URL.createObjectURL(selectedFile)
 		}
-    delete editData.value.tmpId
-    editData.value.direcciones = editData.value.direcciones.map((item: Direccion) => {
-      delete item.tmpId
-      return item
-    })
-		if (adding.value) {
-			createEstablecimiento(editData.value)
-		} else {
-			updateEstablecimiento(editData.value)
-		}
+
+		reader.readAsDataURL(selectedFile)
 	}
+}
 
-	const createEstablecimiento = (data: any) => {
-		create(data).then((response) => {
-			onBack()
-		})
-	}
-
-	const updateEstablecimiento = (data: any) => {
-		update(data).then((response) => {
-			onBack()
-		})
-	}
-
-	const getFile = () => {
-		document.getElementById('upfile')?.click()
-	}
-
-	const onSelectLogo = (evt: any) => {
-		selectedFile = evt.target.files[0]
-		if (selectedFile) {
-			var reader = new FileReader()
-
-			reader.onload = function (e) {
-				if (!editData.value.logo) {
-					editData.value.logo = {}
-				}
-				editData.value.logo.type = selectedFile.type
-				editData.value.logo.content = URL.createObjectURL(selectedFile)
-			}
-
-			reader.readAsDataURL(selectedFile)
-		}
-	}
-
-	const resetLogo = () => {
-		selectedFile = null
-		fileUpload.value = null
-		editData.value.logo = null
-	}
+const resetLogo = () => {
+	selectedFile = null
+	fileUpload.value = null
+	editData.value.logo = null
+}
 </script>
 <style lang="scss" scoped>
 	.wrapper-logo {

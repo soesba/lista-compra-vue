@@ -35,7 +35,7 @@ import type EstablecimientoRequest from '@/services/establecimiento/models/Estab
 import type EstablecimientoResponse from '@/services/establecimiento/models/EstablecimientoResponse'
 import { sort } from '@/utils/utils'
 export default defineComponent({
-  name: 'Establecimientos'
+	name: 'Establecimientos'
 })
 </script>
 
@@ -43,84 +43,84 @@ export default defineComponent({
 const emit = defineEmits(['close-dialog'])
 
 const suscribe = eventCardStore.$onAction(({args, name}) => {
-  switch(name) {
-    case 'saveCard': 
-      onSaveCard(args[0])
-      break
-    case 'deleteCard':
-      onDeleteCard(args[0])
-      break
-  }
+	switch(name) {
+		case 'saveCard': 
+			onSaveCard(args[0])
+			break
+		case 'deleteCard':
+			onDeleteCard(args[0])
+			break
+	}
 })
 // Data
 const titulo = ref('Establecimientos')
 const list = ref()
 const itemsMenu = ref([
-  { title: 'Ordenar por nombre ascendente', click: () =>  list.value = list.value.sort(sort('nombre'))},
-  { title: 'Ordenar por nombre descendente', click: () =>  list.value = list.value.sort(sort('-nombre'))},
+	{ title: 'Ordenar por nombre ascendente', click: () => list.value = list.value.sort(sort('nombre'))},
+	{ title: 'Ordenar por nombre descendente', click: () => list.value = list.value.sort(sort('-nombre'))},
 ])
 
 onMounted(() => {
-  getAllData()
+	getAllData()
 })
 
 // Methods
 const handleClick = (index: number) => {
-  itemsMenu.value[index].click.call(this)
+	itemsMenu.value[index].click.call(this)
 }
 
 const getAllData = () => {
-  get().then((response: EstablecimientoResponse) => {
-    list.value = response.data
-    handleClick(0)
-  })
+	get().then((response: EstablecimientoResponse) => {
+		list.value = response.data
+		handleClick(0)
+	})
 }
 
 const onDeleteCard = (cardData: any) => {
-  if (cardData.borrable) {
-    deleteItem(cardData.id).then(response => {
-      if (response.respuesta === 200) {
-        getAllData()
-      }
-    })
-  }
+	if (cardData.borrable) {
+		deleteItem(cardData.id).then(response => {
+			if (response.respuesta === 200) {
+				getAllData()
+			}
+		})
+	}
 }
 
 const onSaveCard = (cardData: any) => {
-  if (cardData.adding) {
-    createCard(cardData.data)
-  } else {
-    updateCard(cardData.data)
-  }
+	if (cardData.adding) {
+		createCard(cardData.data)
+	} else {
+		updateCard(cardData.data)
+	}
 }
 
 const createCard = (card: EstablecimientoRequest) => {
-  card.borrable = true
-  create(card).then(response => {
-    if (response.respuesta === 200) {
-      getAllData()
-    }
+	card.borrable = true
+	create(card).then(response => {
+		if (response.respuesta === 200) {
+			getAllData()
+		}
     
-  })
+	})
 }
 
 const updateCard = (card: EstablecimientoRequest) => {
-  update(card).then(response => {
-    if (response.respuesta === 200) {
-      getAllData()
-    }
+	update(card).then(response => {
+		if (response.respuesta === 200) {
+			getAllData()
+		}
     
-  })
+	})
 }
 
 const onSearch = (evt: any) => {
-  if (evt) {
-    getByAny(evt).then((response:EstablecimientoResponse) => {
-      list.value = response.data
-    })
-  } else {
-    getAllData()
-  }
+	if (evt) {
+		getByAny(evt).then((response:EstablecimientoResponse) => {
+			list.value = response.data
+		})
+	} else {
+		getAllData()
+	}
 }
 
 </script>

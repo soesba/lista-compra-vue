@@ -15,7 +15,7 @@
 			<div class="inputGroup">
 				<v-text-field
 						variant="underlined" label="Nombre*" required v-model="editData.nombre"
-						:error-messages="v$.editData.nombre.$errors.map(e => e.$message)"
+						:error-messages="v$.editData.nombre.$errors.map(e => e.$message.toString())"
 						@blur="v$.editData.nombre.$touch"
 						@input="v$.editData.nombre.$touch">
         </v-text-field>
@@ -23,7 +23,7 @@
 			<div class="inputGroup">
 				<v-text-field
 						variant="underlined" label="Abreviatura*" required v-model="editData.abreviatura"
-						:error-messages="v$.editData.abreviatura.$errors.map(e => e.$message)"
+						:error-messages="v$.editData.abreviatura.$errors.map(e => e.$message.toString())"
 						@blur="v$.editData.abreviatura.$touch"
 						@input="v$.editData.abreviatura.$touch">
         </v-text-field>
@@ -53,111 +53,111 @@
 </template>
 
 <script lang="ts">
-	import { defineComponent, ref } from 'vue'
-	import { computed } from 'vue'
-  import router from '@/router'
-  import DetalleToolbar from '@/components/DetalleToolbar.vue'
-	import EquivalenciaComponent from '@/components/EquivalenciaComponent.vue'
-	import type Equivalencia from '@/services/equivalencia/models/Equivalencia'
-  import { required, requiredIf } from 'vuelidate/lib/validators'
-	import { useVuelidate } from '@vuelidate/core'
-	import { eventCardStore, uiStore } from '@/main'
-  import { useRoute } from 'vue-router'
+import { defineComponent, ref } from 'vue'
+import { computed } from 'vue'
+import router from '@/router'
+import DetalleToolbar from '@/components/DetalleToolbar.vue'
+import EquivalenciaComponent from '@/components/EquivalenciaComponent.vue'
+import type Equivalencia from '@/services/equivalencia/models/Equivalencia'
+import { required, requiredIf } from '@vuelidate/validators'
+import { useVuelidate } from '@vuelidate/core'
+import { eventCardStore, uiStore } from '@/main'
+import { useRoute } from 'vue-router'
 import getById from '@/services/tipoUnidad/getTipoUnidadById.service'
 import deleteItem from '@/services/tipoUnidad/deleteTipoUnidad.service'
 	
-	export default defineComponent({
-		name: 'TipoUnidadEdicion',
-	})
+export default defineComponent({
+	name: 'TipoUnidadEdicion',
+})
 </script>
 <script setup lang="ts">
 	
-	// Computed
-	const canSave = computed(() => {
-		return !v$.value.editData.$invalid
-	})
+// Computed
+const canSave = computed(() => {
+	return !v$.value.$invalid
+})
 
-  const canDelete = computed(() => {
-    return editData.value.borrable
-  })
-	// Data
-	const route = useRoute()
-  const adding = ref(false);
-	let editData = ref<any>({ borrable: true })
-	if (route.params['id']) {
-		getById(route.params['id'].toString()).then((response) => {
-			editData.value = response.data
-		})
-	} else {
-		adding.value = true
-	}
-	
-	const from = ref({
-		id: editData.value.id,
-		nombre: editData.value.nombre
+const canDelete = computed(() => {
+	return editData.value.borrable
+})
+// Data
+const route = useRoute()
+const adding = ref(false);
+const editData = ref<any>({ borrable: true })
+if (route.params['id']) {
+	getById(route.params['id'].toString()).then((response) => {
+		editData.value = response.data
 	})
-	// Validations
-	const validations = computed(() => {
-		return {
-			editData: {
-				id: { required: requiredIf(!adding.value) },
-				nombre: { required },
-				abreviatura: { required },
-				borrable: { required }
-			}
+} else {
+	adding.value = true
+}
+	
+const from = ref({
+	id: editData.value.id,
+	nombre: editData.value.nombre
+})
+// Validations
+const validations = computed(() => {
+	return {
+		editData: {
+			id: { required: requiredIf(!adding.value) },
+			nombre: { required },
+			abreviatura: { required },
+			borrable: { required }
+		}
+	}
+})
+// Use the "useVuelidate" function to perform form validation
+const v$ = useVuelidate(validations, { editData })
+
+// Methods
+
+const onUpdateEquivalencia = (data: Equivalencia) => {
+	console.log("LOG ~ onUpdateEquivalencia ~ data:", data)
+	editData.value.equivalencias = editData.value.equivalencias.map((item: any) => {      
+		if ((data.id && item.id === data.id) ||
+        (data.tmpId && data.tmpId === item.tmpId)) {
+			return data
+		} else {
+			return item
 		}
 	})
-	// Use the "useVuelidate" function to perform form validation
-	const v$ = useVuelidate(validations, { editData })
-
-	// Methods
-
-	const onUpdateEquivalencia = (data: Equivalencia) => {
-		console.log("LOG ~ onUpdateEquivalencia ~ data:", data)
-		editData.value.equivalencias = editData.value.equivalencias.map((item: any) => {      
-      if ((data.id && item.id === data.id) ||
-        (data.tmpId && data.tmpId === item.tmpId)) {
-        return data
-      } else {
-        return item
-      }
-    })
-	}
+}
 	
-	const onSaveEquivalencia = (data) => {
-		console.log("LOG ~ onSaveEquivalencia ~ data:", data)
-		editData.value.equivalencias.push(data)
-	}
+const onSaveEquivalencia = (data: Equivalencia[]) => {
+	console.log("LOG ~ onSaveEquivalencia ~ data:", data)
+	editData.value.equivalencias.push(data)
+}
 
-	const save = () => {
-		eventCardStore.saveCard({ adding: adding.value, data: editData.value })
-		uiStore.hideCustomDialog()
-	}
+const save = () => {
+	eventCardStore.saveCard({ adding: adding.value, data: editData.value })
+	uiStore.hideCustomDialog()
+}
 
-  const confirmDelete = () => {
-		uiStore.showConfirmDialog({
-			props: {
-				text: '¿Desea eliminar el elemento?',
-				title: 'Confirmación',
-			},
-			aceptarFn: deleteRecord,
+const confirmDelete = () => {
+	uiStore.showConfirmDialog({
+		props: {
+			text: '¿Desea eliminar el elemento?',
+			title: 'Confirmación',
+		},
+		aceptarFn: deleteRecord,
+	})
+}
+
+const deleteRecord = () => {
+	// eventCardStore.deleteCard(data)
+	if (editData.value.borrable) {
+		deleteItem(editData.value.id).then(response => {
+			if (response.respuesta === 200) {
+				onBack()
+			}
 		})
 	}
-
-	const deleteRecord = () => {
-		// eventCardStore.deleteCard(data)
-    if (editData.value.borrable) {
-      deleteItem(editData.value.id).then(response => {
-        if (response.respuesta === 200) {
-            onBack()
-        }
-      })
-    }
-	}
+}
   
-  const onBack = () => {
-		router.push('/tiposUnidades')
-	}
+const onBack = () => {
+	router.push('/tiposUnidades')
+}
 		
 </script><style lang="scss" scoped>
 </style>

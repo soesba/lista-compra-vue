@@ -1,7 +1,7 @@
 import PrecioRepositoryImpl from "./PrecioRepositoryImpl"
 
 export default {
-  getInstance () {
-    return new PrecioRepositoryImpl()
-  }
+	getInstance () {
+		return new PrecioRepositoryImpl()
+	}
 }

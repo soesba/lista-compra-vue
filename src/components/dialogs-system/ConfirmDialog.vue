@@ -10,31 +10,31 @@
 </template>
 
 <script lang="ts">
-	import { useUiStore } from '@/store';
-	import { computed, defineComponent } from 'vue'
-	export default defineComponent({
-		name: 'ConfirmDialog',
-	})
+import { useUiStore } from '@/store';
+import { computed, defineComponent } from 'vue'
+export default defineComponent({
+	name: 'ConfirmDialog',
+})
 </script>
 <script setup lang="ts">
-	const uiStore = useUiStore()
-	// Computed
-	const show = computed(() => {
-		return uiStore.getConfirmDialog?.show
-	})
-	const title = computed(() => {
-		return uiStore.getConfirmDialog?.props.title
-	})
-	const text = computed(() => {
-		return uiStore.getConfirmDialog?.props.text
-	})
+const uiStore = useUiStore()
+// Computed
+const show = computed(() => {
+	return uiStore.getConfirmDialog?.show
+})
+const title = computed(() => {
+	return uiStore.getConfirmDialog?.props.title
+})
+const text = computed(() => {
+	return uiStore.getConfirmDialog?.props.text
+})
 
-	// Methods 
-	const onCloseDialog = (accept: boolean) => {
-		uiStore.hideConfirmDialog()
-		if (accept) {
-			uiStore.getConfirmDialog?.aceptarFn()
-		}
+// Methods 
+const onCloseDialog = (accept: boolean) => {
+	uiStore.hideConfirmDialog()
+	if (accept) {
+		uiStore.getConfirmDialog?.aceptarFn()
 	}
+}
 </script>
 <style lang="scss" scoped></style>

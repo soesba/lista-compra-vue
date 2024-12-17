@@ -31,48 +31,48 @@
 import { ref, watch } from 'vue'
 import { defineComponent } from 'vue'
 export default defineComponent({
-  name: 'NavigationComponent'
+	name: 'NavigationComponent'
 })
 </script>
 <script setup lang="ts">
 
 const drawer = ref(false)
 const items = ref([
-  {
-    title: 'Articulos',
-    props: {
-      to: '/articulos',
-      link: true
-    }
-  }, 
-  {
-    title: 'Tipo de unidades',
-    props: {
-      to: '/tiposUnidades',
-      link: true
-    }
-  },
-  {
-    title: 'Categorías de establecimientos',
-    props: {
-      to: '/tiposEstablecimientos',
-      link: true
-    }
-  },
-  {
-    title: 'Establecimientos',
-    props: {
-      to: '/establecimientos',
-      link: true
-    }
-  },
-  {
-    title: 'Precios',
-    props: {
-      to: '/precios',
-      link: true
-    }
-  }
+	{
+		title: 'Articulos',
+		props: {
+			to: '/articulos',
+			link: true
+		}
+	}, 
+	{
+		title: 'Tipo de unidades',
+		props: {
+			to: '/tiposUnidades',
+			link: true
+		}
+	},
+	{
+		title: 'Categorías de establecimientos',
+		props: {
+			to: '/tiposEstablecimientos',
+			link: true
+		}
+	},
+	{
+		title: 'Establecimientos',
+		props: {
+			to: '/establecimientos',
+			link: true
+		}
+	},
+	{
+		title: 'Precios',
+		props: {
+			to: '/precios',
+			link: true
+		}
+	}
 ])
 
 watch(drawer, async (newDrawer, oldDrawer) => {

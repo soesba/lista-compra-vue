@@ -11,56 +11,56 @@
 </template>
 
 <script lang="ts">
-	import { eventCardStore, uiStore } from '@/main'
-	import { defineComponent } from 'vue'
-	export default defineComponent({
-		name: 'TipoEstablecimientoCard',
-	})
+import { eventCardStore, uiStore } from '@/main'
+import { defineComponent } from 'vue'
+export default defineComponent({
+	name: 'TipoEstablecimientoCard',
+})
 </script>
 <script setup lang="ts">
-	import TipoEstablecimientoCardDialog from './TipoEstablecimientoCardDialog.vue'
-	import type TipoEstablecimiento from '@/services/tipoEstablecimiento/models/TipoEstablecimiento'
-	import type { PropType } from 'vue'
-	import { computed, ref, markRaw } from 'vue'
+import TipoEstablecimientoCardDialog from './TipoEstablecimientoCardDialog.vue'
+import type TipoEstablecimiento from '@/services/tipoEstablecimiento/models/TipoEstablecimiento'
+import type { PropType } from 'vue'
+import { computed, ref, markRaw } from 'vue'
 	
-	// Props
-	const props = defineProps({
-		cardData: {
-			type: Object as PropType<TipoEstablecimiento>,
-			default() {
-				return {}
-			}
-		},
-	})	
-	// Data
-	let data = ref(props.cardData)
-	// Computed
-	const canDelete = computed(() => {
-		return props.cardData.borrable
+// Props
+const props = defineProps({
+	cardData: {
+		type: Object as PropType<TipoEstablecimiento>,
+		default() {
+			return {}
+		}
+	},
+})	
+// Data
+const data = ref(props.cardData)
+// Computed
+const canDelete = computed(() => {
+	return props.cardData.borrable
+})
+// Methods
+const editCard = () => {
+	uiStore.showCustomDialog({
+		component: markRaw(TipoEstablecimientoCardDialog),
+		props: {
+			data: data					
+		}
 	})
-	// Methods
-	const editCard = () => {
-		uiStore.showCustomDialog({
-			component: markRaw(TipoEstablecimientoCardDialog),
-			props: {
-				data: data					
-			}
-		})
-	}
+}
 
-	const deleteCard = () => {
-		uiStore.showConfirmDialog({
-			props: {
-				text: '¿Desea eliminar el elemento?',
-				title: 'Confirmación'
-			},
-			aceptarFn: onCloseConfirmDialog
-		})
-	}
+const deleteCard = () => {
+	uiStore.showConfirmDialog({
+		props: {
+			text: '¿Desea eliminar el elemento?',
+			title: 'Confirmación'
+		},
+		aceptarFn: onCloseConfirmDialog
+	})
+}
 
-	const onCloseConfirmDialog = () => {
-		eventCardStore.deleteCard(data.value)
-	}
+const onCloseConfirmDialog = () => {
+	eventCardStore.deleteCard(data.value)
+}
 </script>
 <style lang="scss" scoped>
 .v-card {

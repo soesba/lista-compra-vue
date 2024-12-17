@@ -1,5 +1,5 @@
 export default interface UnidadMedida {
-  id: string;
-  nombre: string;
-  valor: number;
+	id: string;
+	nombre: string;
+	valor: number;
 }

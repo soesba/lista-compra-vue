@@ -35,12 +35,12 @@ const rawDialogComponent = markRaw(DialogComponent)
 const rawConfirmDialog = markRaw(ConfirmDialog)
 
 onMounted (() => {
-  // getAllArticulos()
+	// getAllArticulos()
 })
 // Methods
 const getAllArticulos = () => {
-  get().then((response: ArticuloResponse) => {
-    modelStore.setArticulos(response.data as Articulo[])
-  })
+	get().then((response: ArticuloResponse) => {
+		modelStore.setArticulos(response.data as Articulo[])
+	})
 }
 </script>
