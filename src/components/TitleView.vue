@@ -1,19 +1,42 @@
 <template>
 	<div class="title-container">
 		<label>{{ titulo }}</label>
-		<slot name="menu"></slot>
+		<v-menu>
+        <template v-slot:activator="{ props }">
+          <v-btn icon="mdi-dots-vertical" v-bind="props" variant="text"></v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item
+            v-for="(item, i) in menu"
+            :key="i" :value="i" @click="handleClick(i)"
+          >
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
 	</div>
 </template>
-<script lang="ts">
-import { defineComponent } from 'vue'
-export default defineComponent({
-	name: 'TitleView'
-})
-</script>
 <script setup lang="ts">
-defineProps({
-	titulo: String
-})
+  interface itemMenu {
+    title: string,
+    click: Function
+  }
+
+  const props = defineProps({
+    titulo: String,
+    menu: {
+      type: Array<itemMenu>,
+      required: true
+    }
+  })
+
+  const emit = defineEmits(['menu-click'])
+
+  // Methods
+  const handleClick = (index: number) => {
+    emit('menu-click', index)
+  }
 </script>
 <style lang="scss" scoped>
 	.title-container {

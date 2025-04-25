@@ -1,24 +1,7 @@
 <template>
-  <TitleView :titulo="titulo">
-    <template v-slot:menu>
-      <v-menu>
-        <template v-slot:activator="{ props }">
-          <v-btn icon="mdi-dots-vertical" v-bind="props" variant="text"></v-btn>
-        </template>
-
-        <v-list>
-          <v-list-item
-            v-for="(item, i) in itemsMenu"
-            :key="i" :value="i" @click="handleClick(i)"
-          >
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </template>
-  </TitleView>
+  <TitleView :titulo="titulo" :menu="menu"  @menuClick="menuClick"/>
   <SearchBox @search="onSearch"></SearchBox>
-  <CardList :items="list" component="ArticuloCard" class="list"/>
+  <CardList :items="list" @click="(evt) => verDetalle(evt)" size="medium" />
 </template>
 
 <script lang="ts">
@@ -33,6 +16,7 @@ import { eventCardStore } from '@/main';
 import type ArticuloRequest from '@/services/articulo/models/ArticuloRequest'
 import type ArticuloResponse from '@/services/articulo/models/ArticuloResponse'
 import { sort } from '@/utils/utils'
+import router from '@/router'
 export default defineComponent({
 	name: 'Articulos'
 })
@@ -51,23 +35,38 @@ eventCardStore.$onAction(({args, name}) => {
 // Data
 const titulo = ref('Articulos')
 const list = ref()
-const itemsMenu = ref([
+const menu = ref([
 	{ title: 'Ordenar por nombre ascendente', click: () => list.value = list.value.sort(sort('nombre'))},
 	{ title: 'Ordenar por nombre descendente', click: () => list.value = list.value.sort(sort('-nombre'))},
 ])
+
 onMounted(() => {
 	getAllData()
 })
 
 // Methods
-const handleClick = (index: number) => {
-	itemsMenu.value[index].click.call(this)
+const menuClick = (index: number) => {
+  menu.value[index].click.call(this)
+}
+
+const verDetalle = (id: any) => {
+  router.push(`/articulo-detalle/${id}`)
+}
+
+const dataToCard = (list: any) => {
+  return list.map((item: any) => {
+    return {
+      id: item.id,
+      title: item.nombre,
+      subtitle: item.descripcion,
+      text: item.tienePrecios ? 'Se han introducido precios' : 'No se han introducido precios'
+    }
+  })
 }
 
 const getAllData = () => {
 	get().then((response: ArticuloResponse) => {
-		list.value = response.data
-		handleClick(0)
+		list.value = dataToCard(response.data)
 	})
 }
 
@@ -101,7 +100,7 @@ const updateCard = (card: ArticuloRequest) => {
 const onSearch = (evt: any) => {
 	if (evt) {
 		getByAny(evt).then((response:ArticuloResponse) => {
-			list.value = response.data
+			list.value = dataToCard(response.data)
 		})
 	} else {
 		getAllData()

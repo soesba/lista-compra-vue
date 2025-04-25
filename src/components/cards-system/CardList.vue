@@ -1,7 +1,7 @@
 <template>
-	<div class="wrapper-list-container" :class="props.class">
+	<div class="wrapper-list" :class="getClasses">
 		<div class="list-container" v-if="items && items?.length > 0">
-			<component :is="getComponent()" v-for="item in items" :key="item.id" :cardData="item" />
+			<Card :logo="logo" v-for="item in items" :key="item.id" :card-data="item" @click="onClick"/>
 		</div>
 		<div v-else>
 			<empty-card></empty-card>
@@ -16,39 +16,28 @@
 				color="primary"
 				@click="addCard()"
 			></v-fab>
-			<!-- <v-btn
-				v-if="props.addButton"
-				class="add-button"
-				icon="mdi-plus"
-				color="primary"
-				@click="addCard()"
-			></v-btn> -->
-			
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, markRaw } from 'vue'
-import TipoUnidadCard from './TipoUnidadCard.vue'
-import { EmptyCard } from '@/components/index'
-import { uiStore } from '@/main'
-import TipoUnidadCardDialog from './TipoUnidadCardDialog.vue'
-import ArticuloCard from './ArticuloCard.vue'
-import ArticuloCardDialog from './ArticuloCardDialog.vue'
-import TipoEstablecimientoCard from './TipoEstablecimientoCard.vue'
-import TipoEstablecimientoCardDialog from './TipoEstablecimientoCardDialog.vue'
-import EstablecimientoCard from './EstablecimientoCard.vue'
-import router from '@/router'
-import PrecioCard from './PrecioCard.vue'
+import { computed, defineComponent } from 'vue'
 export default defineComponent({
 	name: 'CardList',
 })
 </script>
 <script setup lang="ts">
+import { EmptyCard, Card } from '@/components/index'
+defineOptions({
+  inheritAttrs: false
+})
+const emit = defineEmits(['click'])
 const props = defineProps({
 	items: Array<any>,
-	component: String,
+	logo: {
+    type: Boolean,
+    default: false,
+  },
 	addButton: {
 		type: Boolean,
 		default: true,
@@ -57,53 +46,44 @@ const props = defineProps({
 		type: String,
 		default: 'card',
 	},
+  size: String
 })
-const getComponent = () => {
-	switch (props.component) {
-		case 'TipoUnidadCard':
-			return TipoUnidadCard
-		case 'ArticuloCard':
-			return ArticuloCard
-		case 'TipoEstablecimientoCard':
-			return TipoEstablecimientoCard
-		case 'EstablecimientoCard':
-			return EstablecimientoCard
-		case 'PrecioCard': 
-			return PrecioCard
-	}
+
+	// Computed
+	const getClasses = computed(() => {
+		if (props.class === 'card') {
+      return ['card', props.size]
+    }
+    return props.class
+	})
+
+// Methods
+const onClick = (evt: string) => {
+	// TODO
+  console.log('Card clicked en CardList', evt)
+  emit('click', evt)
 }
 
-const getComponentDialog = () => {
-	switch (props.component) {
-		case 'TipoUnidadCard':
-			return TipoUnidadCardDialog
-		case 'ArticuloCard':
-			return ArticuloCardDialog
-		case 'TipoEstablecimientoCard':
-			return TipoEstablecimientoCardDialog
-	}
-}
-
-const addCard = () => {
-	if (props.component === 'EstablecimientoCard') {
-		router.push('/establecimiento-edicion')
-	} else if (props.component === 'PrecioCard') {
-		router.push('/precio-edicion')
-	} else {
-		uiStore.showCustomDialog({
-			component: markRaw(getComponentDialog() as object),
-			props: {
-				adding: true,
-				data: {
-					borrable: true,
-				},
-			},
-		})
-	}
-}
+// const addCard = () => {
+// 	if (props.component === 'EstablecimientoCard') {
+// 		router.push('/establecimiento-edicion')
+// 	} else if (props.component === 'PrecioCard') {
+// 		router.push('/precio-edicion')
+// 	} else {
+// 		uiStore.showCustomDialog({
+// 			component: markRaw(getComponentDialog() as object),
+// 			props: {
+// 				adding: true,
+// 				data: {
+// 					borrable: true,
+// 				},
+// 			},
+// 		})
+// 	}
+// }
 </script>
 <style lang="scss" scoped>
-	.wrapper-list-container {
+	.wrapper-list {
 		.wrapper-add-button {
 			position: fixed;
 			width: 100%;
@@ -118,9 +98,13 @@ const addCard = () => {
 				margin: 0 auto;
 				margin-bottom: 60px; // salvar boton de añadir
 			}
-			
 		}
-		&.list {
+    &.medium {
+      .list-container {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+    }
+		&.column-list {
       display: flex;
 			justify-content: center;
 			.list-container {
@@ -133,6 +117,6 @@ const addCard = () => {
 			}
 		}
 	}
-	
-	
+
+
 </style>
