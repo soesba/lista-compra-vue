@@ -55,7 +55,7 @@ export default defineComponent({
 <script setup lang="ts">
 import DetalleToolbar from '@/components/DetalleToolbar.vue'
 import type Establecimiento from '@/services/establecimiento/models/Establecimiento'
-import { eventCardStore, noLogoUrl, uiStore } from '@/main'
+import { eventCardStore, noLogoUrl, uiStore, modelStore } from '@/main'
 
 // Props
 defineProps({
@@ -88,7 +88,8 @@ const onBack = () => {
 }
 
 const setEdicion = () => {
-	router.push(`/establecimiento-edicion/${data.id}`)
+  modelStore.establecimiento = data
+	router.push('/establecimiento-edicion')
 }
 
 const deleteCard = () => {

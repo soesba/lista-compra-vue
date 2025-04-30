@@ -1,11 +1,11 @@
 <template>
-  <TitleView :titulo="titulo" :menu="menu" @menuClick="menuClick"/>
+  <TitleView :titulo="titulo" />
   <SearchBox @search="onSearch"></SearchBox>
-  <CardList :logo="true" :items="list" @click="(evt) => verDetalle(evt)" />
+  <CardList :logo="true" :items="list" @click-card="(evt: any) => verDetalle(evt)" :class="getClasses" :mapping="mapping"/>
 </template>
 
 <script lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { CardList, TitleView, SearchBox } from '@/components'
 import get from '@/services/establecimiento/getEstablecimiento.service'
 import getByAny from '@/services/establecimiento/getEstablecimientoByAny.service'
@@ -13,7 +13,7 @@ import create from '@/services/establecimiento/createEstablecimiento.service'
 import update from '@/services/establecimiento/updateEstablecimiento.service'
 import deleteItem from '@/services/establecimiento/deleteEstablecimiento.service'
 import { defineComponent } from 'vue'
-import { eventCardStore } from '@/main';
+import { eventCardStore } from '@/main'
 import router from '@/router'
 import type EstablecimientoRequest from '@/services/establecimiento/models/EstablecimientoRequest'
 import type EstablecimientoResponse from '@/services/establecimiento/models/EstablecimientoResponse'
@@ -33,40 +33,44 @@ eventCardStore.$onAction(({args, name}) => {
 		case 'deleteCard':
 			onDeleteCard(args[0])
 			break
+    case 'sortCards':
+			onSortCards(args[0])
+			break
+		case 'showCards':
+			onShowCards(args[0])
+			break
 	}
 })
 // Data
+let cardClass = ref()
 const titulo = ref('Establecimientos')
 const list = ref()
-const menu = ref([
-	{ title: 'Ordenar por nombre ascendente', click: () => list.value = list.value.sort(sort('title'))},
-	{ title: 'Ordenar por nombre descendente', click: () => list.value = list.value.sort(sort('-title'))},
-])
+const sortBy = ref({ field: 'nombre', order: 'ASC' })
+const show = ref({ show: 0 })
+const mapping = {
+  id: 'id',
+  logo: 'logo',
+  title: 'nombre',
+  subtitle: 'tipoEstablecimientoNombre',
+  text: 'fechaCreacion'
+}
+
+// Computed
+const getClasses = computed(() => {
+  return cardClass.value ? cardClass.value.join(' ') : ''
+})
 
 onMounted(() => {
+  onShowCards(show.value)
 	getAllData()
 })
 
 // Methods
-const menuClick = (index: number) => {
-  menu.value[index].click.call(this)
-}
-
-const dataToCard = (list: any) => {
-  return list.map((item: any) => {
-    return {
-      id: item.id,
-      logo: item.logo,
-      title: item.nombre,
-      subtitle: item.tipoEstablecimiento.nombre,
-      text: `Creado: ${item.fechaCreacion}`
-    }
-  })
-}
 
 const getAllData = () => {
 	get().then((response: EstablecimientoResponse) => {
-		list.value = dataToCard(response.data)
+    const order = sortBy.value.order === 'ASC' ? '' : '-'
+		list.value = (response.data as []).sort(sort(`${order}${sortBy.value.field}`))
 	})
 }
 
@@ -92,6 +96,30 @@ const onSaveCard = (cardData: any) => {
 	}
 }
 
+const onSortCards = (evt: any) => {
+  sortBy.value.order = evt.order === 0 ? 'ASC' : 'DESC'
+  if (evt.order === 0) {
+    list.value = list.value.sort(sort(sortBy.value.field))
+  } else {
+    list.value = list.value.sort(sort(`-${sortBy.value.field}`))
+  }
+}
+
+const onShowCards = (evt: any) => {
+  show.value = evt
+  switch (evt.show) {
+    case 0:
+      cardClass.value = ['card', 'small']
+      break
+    case 1:
+      cardClass.value = ['card', 'large']
+      break
+    case 2:
+      cardClass.value = ['list']
+      break
+  }
+}
+
 const createCard = (card: EstablecimientoRequest) => {
 	card.borrable = true
 	create(card).then(response => {
@@ -114,7 +142,7 @@ const updateCard = (card: EstablecimientoRequest) => {
 const onSearch = (evt: any) => {
 	if (evt) {
 		getByAny(evt).then((response:EstablecimientoResponse) => {
-			list.value = dataToCard(response.data)
+			list.value = response.data
 		})
 	} else {
 		getAllData()

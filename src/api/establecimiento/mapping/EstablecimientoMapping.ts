@@ -11,6 +11,8 @@ export const DTOtoModel = (origin: EstablecimientoDTO): Establecimiento => {
 			id: origin.tipoEstablecimiento.id,
 			nombre: origin.tipoEstablecimiento.nombre
 		},
+    tipoEstablecimientoId: origin.tipoEstablecimiento.id,
+		tipoEstablecimientoNombre: origin.tipoEstablecimiento.nombre,
 		notas: origin.notas,
 		logo: origin.logo,
 		direcciones: origin.direcciones || [],

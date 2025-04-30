@@ -3,5 +3,6 @@ import type Establecimiento from "@/services/establecimiento/models/Establecimie
 
 export default interface ModelState {
 	establecimiento: Establecimiento,
+  articulo: Articulo | null,
 	articulos: Articulo[]
 }

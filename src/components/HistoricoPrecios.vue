@@ -1,27 +1,30 @@
 <template>
   <div class="wrapper">
-    <v-card v-for="precio in precios" :key="precio.id">
-      <v-card-text>
-        <div class="inputGroup">
-          <div class="labelFor">Fecha de compra:</div>
-          <div> {{ getFechaCompra(precio.fechaCompra) }} </div>
-        </div>
-        <div class="inputGroup">
-          <div class="labelFor">Establecimiento:</div>
-          <div> {{ precio.establecimiento?.nombre }} </div>
-        </div>
-        <div class="inputGroup">
-          <div class="labelFor">Precio:</div>
-          <div>{{  formatDecimal(precio.precio) }}</div>
-        </div>
-        <div class="inputGroup">
-          <div class="labelFor">Cantidad:</div>
-          <div v-for="medida in precio.unidadesMedida">
+    <table>
+      <thead>
+        <tr>
+          <th>Fecha de compra</th>
+          <th>Establecimiento</th>
+          <th>Precio</th>
+          <th>Cantidad</th>
+          <th v-if="editable"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="precio in precios" :key="precio.id">
+          <td data-titulo="Fecha compra">{{ getFechaCompra(precio.fechaCompra) }}</td>
+          <td data-titulo="Establecimiento">{{ precio.establecimiento?.nombre }}</td>
+          <td data-titulo="Precio">{{ formatDecimal(precio.precio) }}</td>
+          <td data-titulo="Cantidad" v-for="medida in precio.unidadesMedida" :key="medida.id">
             {{ medida.valor }} {{ pluralize(medida.nombre, medida.valor) }}
-          </div>
-        </div>
-      </v-card-text>
-    </v-card>
+          </td>
+          <td v-if="editable">
+            <v-btn icon="mdi-pencil" variant="text" color="primary" @click="$emit('edit', precio)"></v-btn>
+            <v-btn icon="mdi-delete" variant="text" color="primary" @click="$emit('delete', precio)"></v-btn>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
@@ -35,6 +38,10 @@ export default defineComponent({
 </script>
 <script setup lang="ts">
 defineProps({
+  editable: {
+    type: Boolean,
+    default: false
+  },
 	precios: {
 		type: Array<Precio>,
 		default: {},
@@ -62,4 +69,53 @@ const getFechaCompra = (value: any) => {
       align-items: center;
    }
 	}
+  table {
+    width: 100%;
+    border-collapse: none;
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  }
+@media (max-width: 30em) { /* 30 x 16px = 480px */
+  table {
+    width: 100%;
+    border-collapse: none;
+    td {
+      padding: 0.3em 1em;
+    }
+  }
+  table thead {
+    display: none;
+  }
+  table tr {
+    display: flex;
+    flex-direction: column;
+    margin: 0.5em 0;
+    margin-bottom: 1em;
+    border-radius: 4px;
+    border-color: rgba(var(--v-border-color), var(--v-border-opacity));
+    border-style: solid;
+    border-width: 0;
+    box-shadow: 0px 2px 1px -1px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)), 0px 1px 1px 0px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.14)), 0px 1px 3px 0px var(--v-shadow-key-ambient-opacity, rgba(0, 0, 0, 0.12));
+  }
+  table td[data-titulo] {
+    display: flex;
+    justify-content: space-between;
+    // padding: 0.3em 1em;
+  }
+  table td:not([data-titulo]) {
+    display: flex;
+    justify-content: center;
+    // padding: 0.3em 1em;
+  }
+  table td[data-titulo]::before {
+    content: attr(data-titulo) ":";
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+}
 </style>

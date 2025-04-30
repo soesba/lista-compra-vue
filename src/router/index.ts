@@ -29,6 +29,11 @@ const router = createRouter({
 			name: 'articuloDetalle',
 			component: () => import('@/views/articulos/ArticuloDetalle.vue')
 		},
+    {
+			path: '/articulo-edicion',
+			name: 'articuloEdicion',
+			component: () => import('@/views/articulos/ArticuloEdicion.vue')
+		},
 		{
 			path: '/tiposEstablecimientos',
 			name: 'tiposEstablecimientos',
@@ -45,7 +50,7 @@ const router = createRouter({
 			component: () => import('@/views/establecimientos/EstablecimientoDetalle.vue')
 		},
 		{
-			path: '/establecimiento-edicion/:id?',
+			path: '/establecimiento-edicion',
 			name: 'establecimientoEdicion',
 			component: () => import('@/views/establecimientos/EstablecimientoEdicion.vue')
 		},

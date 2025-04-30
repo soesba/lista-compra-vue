@@ -65,7 +65,7 @@ import { required, requiredIf } from '@vuelidate/validators'
 import { useVuelidate } from '@vuelidate/core'
 import { TipoDato } from '@/services/desplegables/models/TipoDato'
 import { useRoute } from 'vue-router'
-import { noLogoUrl } from '@/main'
+import { noLogoUrl, modelStore } from '@/main'
 import { defineComponent, reactive, ref } from 'vue'
 import { computed } from 'vue'
 import router from '@/router'
@@ -96,12 +96,8 @@ const getImageSrc = computed(() => {
 // Data
 const adding = ref(false)
 const route = useRoute()
-const editData = ref<any>({ borrable: true, direcciones: [] })
-if (route.params['id']) {
-	getById(route.params['id'].toString()).then((response) => {
-		editData.value = response.data
-	})
-} else {
+const editData = ref<any>(modelStore.getEstablecimiento ? modelStore.getEstablecimiento : { borrable: true, direcciones: [] })
+if (!editData.value.id) {
 	adding.value = true
 }
 

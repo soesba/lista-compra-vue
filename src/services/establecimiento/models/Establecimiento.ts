@@ -6,6 +6,8 @@ export default interface Establecimiento {
 	tmpId?: string;
 	nombre: string;
 	tipoEstablecimiento: Item;
+  tipoEstablecimientoId: string;
+  tipoEstablecimientoNombre: string;
 	logo: {
 		type: string,
 		content: string

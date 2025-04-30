@@ -1,12 +1,12 @@
 <template>
-	<div class="wrapper-list" :class="getClasses">
-		<div class="list-container" v-if="items && items?.length > 0">
-			<Card :logo="logo" v-for="item in items" :key="item.id" :card-data="item" @click="onClick"/>
+	<div class="wrapper-list">
+		<div class="list-container" v-if="items && items?.length > 0" :class="getClasses">
+			<Card :logo="logo" :mapping="mapping" v-for="item in items" :key="item.id" :card-data="item" @click-card="onClick"/>
 		</div>
 		<div v-else>
 			<empty-card></empty-card>
 		</div>
-		<div class="wrapper-add-button">
+		<div v-if="addButton" class="wrapper-add-button">
 			<v-fab
 				icon="mdi-plus"
 				class="ms-4"
@@ -28,10 +28,7 @@ export default defineComponent({
 </script>
 <script setup lang="ts">
 import { EmptyCard, Card } from '@/components/index'
-defineOptions({
-  inheritAttrs: false
-})
-const emit = defineEmits(['click'])
+const emit = defineEmits(['click-card'])
 const props = defineProps({
 	items: Array<any>,
 	logo: {
@@ -46,25 +43,25 @@ const props = defineProps({
 		type: String,
 		default: 'card',
 	},
-  size: String
+  mapping: {
+    type: Object,
+    default: () => ({}),
+  }
 })
 
 	// Computed
 	const getClasses = computed(() => {
-		if (props.class === 'card') {
-      return ['card', props.size]
-    }
     return props.class
 	})
 
 // Methods
 const onClick = (evt: string) => {
 	// TODO
-  console.log('Card clicked en CardList', evt)
-  emit('click', evt)
+  emit('click-card', evt)
 }
 
-// const addCard = () => {
+const addCard = () => {
+  // TODO
 // 	if (props.component === 'EstablecimientoCard') {
 // 		router.push('/establecimiento-edicion')
 // 	} else if (props.component === 'PrecioCard') {
@@ -80,7 +77,7 @@ const onClick = (evt: string) => {
 // 			},
 // 		})
 // 	}
-// }
+}
 </script>
 <style lang="scss" scoped>
 	.wrapper-list {
@@ -90,32 +87,31 @@ const onClick = (evt: string) => {
 			bottom: 40px;
 			right: 20px;
 		}
-		&.card {
-			.list-container {
+    .list-container {
+      &.card {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-				flex-wrap: wrap;
-				margin: 0 auto;
-				margin-bottom: 60px; // salvar boton de añadir
-			}
-		}
-    &.medium {
-      .list-container {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        flex-wrap: wrap;
+        margin: 0 auto;
+        margin-bottom: 60px; // salvar boton de añadir
+      }
+
+      &.large {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      }
+      &.list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 0 auto;
+        margin-bottom: 60px; // salvar boton de añadir
+        .v-card {
+          max-width: 70%;
+          width: 50%;
+        }
       }
     }
-		&.column-list {
-      display: flex;
-			justify-content: center;
-			.list-container {
-				display: flex;
-				flex-direction: column;
-				justify-content: flex-start;
-				flex-wrap: wrap;
-				margin: 0 auto;
-				margin-bottom: 60px; // salvar boton de añadir
-			}
-		}
 	}
 
 

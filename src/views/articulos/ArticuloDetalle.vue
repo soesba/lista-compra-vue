@@ -4,6 +4,7 @@
 			<v-btn icon="mdi-arrow-left" @click="onBack" variant="text" color="primary"></v-btn>
 		</template>
 		<template v-slot:right>
+      <v-btn icon="mdi-pencil" variant="text" color="primary" @click="setEdicion()"></v-btn>
 			<v-btn icon="mdi-delete" variant="text" color="primary" @click="confirmDeleteCard()" v-if="canDelete"></v-btn>
 		</template>
 	</detalle-toolbar>
@@ -22,10 +23,10 @@
 				<div v-for="tipoUnidad in data.tiposUnidad">{{ tipoUnidad.nombre }}</div>
 			</div>
 			<div class="inputGroup">
-				<label class="labelFor">Histórico</label>
+				<label class="labelFor">Histórico de precios</label>
 			</div>
-			<v-btn variant="text" color="primary" @click="introducirPrecio()">Introducir precio de compra</v-btn>
-			<HistoricoPrecios :precios="precios"></HistoricoPrecios>
+			<!-- <v-btn variant="text" color="primary" @click="introducirPrecio()">Introducir precio de compra</v-btn> -->
+			<HistoricoPrecios :precios="data.precios"></HistoricoPrecios>
 		</div>
 	</div>
 </template>
@@ -37,7 +38,7 @@ import router from '@/router'
 import getArticuloById from '@/services/articulo/getArticuloById.service'
 import { useRoute } from 'vue-router'
 import DetalleToolbar from '@/components/DetalleToolbar.vue'
-import { uiStore } from '@/main'
+import { uiStore, modelStore } from '@/main'
 import type Articulo from '@/services/articulo/models/Articulo'
 import type Precio from '@/services/precio/models/Precio'
 import getByArticuloId from '@/services/precio/getPrecioByArticuloId.service'
@@ -61,6 +62,7 @@ const route = useRoute()
 // Data
 const data: Articulo = (await getArticuloById(route.params['id'].toString())).data as Articulo
 const precios: Precio[] = (((await getByArticuloId(data.id)).data) as Precio[]).sort(sort('fechaCompra'))
+data.precios = precios
 
 // Computed
 const canDelete = computed(() => {
@@ -70,6 +72,11 @@ const canDelete = computed(() => {
 // Methods
 const onBack = () => {
 	router.push('/articulos')
+}
+
+const setEdicion = () => {
+  modelStore.articulo = data
+	router.push('/articulo-edicion')
 }
 
 const confirmDeleteCard = () => {

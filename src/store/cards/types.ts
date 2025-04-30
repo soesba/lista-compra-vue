@@ -1,6 +1,8 @@
 export default interface EventCardState {
 	eventCard: {
 		adding: boolean,
-		data: object
+		data: object,
+    order: number | null,
+    show: number | null
 	}
 }

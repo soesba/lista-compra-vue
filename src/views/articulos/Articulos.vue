@@ -1,11 +1,11 @@
 <template>
-  <TitleView :titulo="titulo" :menu="menu"  @menuClick="menuClick"/>
+  <TitleView :titulo="titulo" />
   <SearchBox @search="onSearch"></SearchBox>
-  <CardList :items="list" @click="(evt) => verDetalle(evt)" size="medium" />
+  <CardList :items="list" @click-card="(evt) => verDetalle(evt)" :class="getClasses" :mapping="mapping" />
 </template>
 
 <script lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { CardList, TitleView, SearchBox } from '@/components'
 import get from '@/services/articulo/getArticulo.service'
 import getByAny from '@/services/articulo/getArticuloByAny.service'
@@ -30,43 +30,46 @@ eventCardStore.$onAction(({args, name}) => {
 		case 'saveCard':
 			onSaveCard(args[0])
 			break
+    case 'sortCards':
+			onSortCards(args[0])
+			break
+		case 'showCards':
+			onShowCards(args[0])
+			break
 	}
 })
 // Data
+let cardClass = ref()
 const titulo = ref('Articulos')
 const list = ref()
-const menu = ref([
-	{ title: 'Ordenar por nombre ascendente', click: () => list.value = list.value.sort(sort('nombre'))},
-	{ title: 'Ordenar por nombre descendente', click: () => list.value = list.value.sort(sort('-nombre'))},
-])
+const sortBy = ref({ field: 'title', order: 'ASC' })
+const show = ref({ show: 0 })
+const mapping = {
+  id: 'id',
+  title: 'nombre',
+  subtitle: 'descripcion',
+  text: (item: any) => item.tienePrecios ? 'Se han introducido precios' : 'No se han introducido precios'
+}
+
+// Computed
+const getClasses = computed(() => {
+  return cardClass.value ? cardClass.value.join(' ') : ''
+})
 
 onMounted(() => {
+  onShowCards(show.value)
 	getAllData()
 })
 
 // Methods
-const menuClick = (index: number) => {
-  menu.value[index].click.call(this)
-}
-
 const verDetalle = (id: any) => {
   router.push(`/articulo-detalle/${id}`)
 }
 
-const dataToCard = (list: any) => {
-  return list.map((item: any) => {
-    return {
-      id: item.id,
-      title: item.nombre,
-      subtitle: item.descripcion,
-      text: item.tienePrecios ? 'Se han introducido precios' : 'No se han introducido precios'
-    }
-  })
-}
-
 const getAllData = () => {
 	get().then((response: ArticuloResponse) => {
-		list.value = dataToCard(response.data)
+    const order = sortBy.value.order === 'ASC' ? '' : '-'
+		list.value = (response.data as []).sort(sort(`${order}${sortBy.value.field}`))
 	})
 }
 
@@ -76,6 +79,30 @@ const onSaveCard = (cardData: any) => {
 	} else {
 		updateCard(cardData.data)
 	}
+}
+
+const onSortCards = (evt: any) => {
+  sortBy.value.order = evt.order === 0 ? 'ASC' : 'DESC'
+  if (evt.order === 0) {
+    list.value = list.value.sort(sort(sortBy.value.field))
+  } else {
+    list.value = list.value.sort(sort(`-${sortBy.value.field}`))
+  }
+}
+
+const onShowCards = (evt: any) => {
+  show.value = evt
+  switch (evt.show) {
+    case 0:
+      cardClass.value = ['card', 'small']
+      break
+    case 1:
+      cardClass.value = ['card', 'large']
+      break
+    case 2:
+      cardClass.value = ['list']
+      break
+  }
 }
 
 const createCard = (card: ArticuloRequest) => {
@@ -100,7 +127,7 @@ const updateCard = (card: ArticuloRequest) => {
 const onSearch = (evt: any) => {
 	if (evt) {
 		getByAny(evt).then((response:ArticuloResponse) => {
-			list.value = dataToCard(response.data)
+			list.value = response.data
 		})
 	} else {
 		getAllData()

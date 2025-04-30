@@ -5,7 +5,9 @@ import type EventCardState from "./types";
 const getDefaultSaveCard = () => {
 	return {
 		adding: false,
-		data: {}
+		data: {},
+    order: null,
+    show: null
 	}
 }
 export const useEventCardStore = defineStore('eventCardStore', {
@@ -27,6 +29,12 @@ export const useEventCardStore = defineStore('eventCardStore', {
 		},
 		deleteCard (eventData: any) {
 			this.eventCard = { ...eventData }
-		}
+		},
+    sortCards (eventData: any) {
+      this.eventCard = { ...eventData }
+    },
+    showCards (eventData: any) {
+      this.eventCard = { ...eventData }
+    }
 	}
 })
