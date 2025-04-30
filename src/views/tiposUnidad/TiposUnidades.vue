@@ -1,28 +1,12 @@
 <template>
-  <TitleView :titulo="titulo">
-    <template v-slot:menu>
-      <v-menu>
-        <template v-slot:activator="{ props }">
-          <v-btn icon="mdi-dots-vertical" v-bind="props" variant="text"></v-btn>
-        </template>
-
-        <v-list>
-          <v-list-item
-            v-for="(item, i) in itemsMenu"
-            :key="i" :value="i" @click="handleClick(i)"
-          >
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </template>
-  </TitleView>
+  <TitleView :titulo="titulo" />
   <SearchBox @search="onSearch"></SearchBox>
-  <CardList :items="list" component="TipoUnidadCard"/>
+  <CardList :items="list" @click-card="(evt: any) => verDetalle(evt)" :class="getClasses" :mapping="mapping"/>
 </template>
 
 <script lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
+import router from '@/router'
 import { CardList, TitleView, SearchBox } from '@/components'
 import get from '@/services/tipoUnidad/getTipoUnidad.service'
 import getByAny from '@/services/tipoUnidad/getTipoUnidadByAny.service'
@@ -51,30 +35,46 @@ eventCardStore.$onAction(({args, name}) => {
 		case 'deleteCard':
 			onDeleteCard(args[0])
 			break
+    case 'sortCards':
+			onSortCards(args[0])
+			break
+		case 'showCards':
+			onShowCards(args[0])
+			break
 	}
 })
 // Data
+let cardClass = ref()
 const titulo = ref('Tipos de unidades')
 const list = ref()
-const itemsMenu = ref([
-	{ title: 'Ordenar por nombre ascendente', click: () => list.value = list.value.sort(sort('nombre'))},
-	{ title: 'Ordenar por nombre descendente', click: () => list.value = list.value.sort(sort('-nombre'))},
-])
+const sortBy = ref({ field: 'nombre', order: 'ASC' })
+const show = ref({ show: 0 })
+const mapping = {
+  id: 'id',
+  title: 'nombre',
+  subtitle: 'abreviatura',
+  text: 'fechaCreacion'
+}
+
+// Computed
+const getClasses = computed(() => {
+  return cardClass.value ? cardClass.value.join(' ') : ''
+})
 
 onMounted(() => {
+  onShowCards(show.value)
 	getAllData()
 })
 
-// Methods
-const handleClick = (index: number) => {
-	itemsMenu.value[index].click.call(this)
-}
-
 const getAllData = () => {
 	get().then((response: TipoUnidadResponse) => {
-		list.value = response.data
-		handleClick(0)
+    const order = sortBy.value.order === 'ASC' ? '' : '-'
+		list.value = (response.data as []).sort(sort(`${order}${sortBy.value.field}`))
 	})
+}
+
+const verDetalle = (id: any) => {
+  router.push(`/tiposUnidades-detalle/${id}`)
 }
 
 const onDeleteCard = (cardData: any) => {
@@ -99,6 +99,30 @@ const onSaveCard = (cardData: any) => {
 	} else {
 		updateCard(tipoUnidad)
 	}
+}
+
+const onSortCards = (evt: any) => {
+  sortBy.value.order = evt.order === 0 ? 'ASC' : 'DESC'
+  if (evt.order === 0) {
+    list.value = list.value.sort(sort(sortBy.value.field))
+  } else {
+    list.value = list.value.sort(sort(`-${sortBy.value.field}`))
+  }
+}
+
+const onShowCards = (evt: any) => {
+  show.value = evt
+  switch (evt.show) {
+    case 0:
+      cardClass.value = ['card', 'small']
+      break
+    case 1:
+      cardClass.value = ['card', 'large']
+      break
+    case 2:
+      cardClass.value = ['list']
+      break
+  }
 }
 
 const createCard = (card: TipoUnidadRequest) => {
