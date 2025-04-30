@@ -46,7 +46,7 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 	}
 
 	async getByFromMultiple (request: Array<string>): Promise<EquivalenciaResponse> {
-		const endpoint = `/tipoUnidadEquivalencia/getByFrom/${request}`
+		const endpoint = `/tipoUnidadEquivalencia/getByFromMultiple/${request}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
