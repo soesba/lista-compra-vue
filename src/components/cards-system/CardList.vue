@@ -28,7 +28,7 @@ export default defineComponent({
 </script>
 <script setup lang="ts">
 import { EmptyCard, Card } from '@/components/index'
-const emit = defineEmits(['click-card'])
+const emit = defineEmits(['click-card', 'addCard'])
 const props = defineProps({
 	items: Array<any>,
 	logo: {
@@ -56,11 +56,12 @@ const props = defineProps({
 
 // Methods
 const onClick = (evt: string) => {
-	// TODO
   emit('click-card', evt)
 }
 
 const addCard = () => {
+  console.log('addCard')
+  emit('addCard')
   // TODO
 // 	if (props.component === 'EstablecimientoCard') {
 // 		router.push('/establecimiento-edicion')

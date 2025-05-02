@@ -20,6 +20,9 @@ export const useEventCardStore = defineStore('eventCardStore', {
 		, },
 	actions: {
 		// no context as first argument, use `this` instead
+    addCard (eventData: any) {
+      this.eventCard = { ...eventData }
+    },
 		saveCard (eventData: any) {
 			this.eventCard = { ...eventData }
 		},

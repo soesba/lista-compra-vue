@@ -1,7 +1,7 @@
 <template>
   <TitleView :titulo="titulo" />
   <SearchBox @search="onSearch"></SearchBox>
-  <CardList :items="list" @click-card="(evt) => verDetalle(evt)" :class="getClasses" :mapping="mapping" />
+  <CardList :items="list" @click-card="(evt) => verDetalle(evt)" @addCard="onAddCard" :class="getClasses" :mapping="mapping" />
 </template>
 
 <script lang="ts">
@@ -26,6 +26,9 @@ const emit = defineEmits(['close-dialog'])
 
 eventCardStore.$onAction(({args, name}) => {
 	switch(name) {
+    case 'addCard':
+      onAddCard()
+      break
 		case 'saveCard':
 			onSaveCard(args[0])
 			break
@@ -63,6 +66,10 @@ onMounted(() => {
 // Methods
 const verDetalle = (id: any) => {
   router.push(`/articulo-detalle/${id}`)
+}
+
+const onAddCard = () => {
+  router.push('/articulo-edicion')
 }
 
 const getAllData = () => {
