@@ -83,7 +83,7 @@
 	import { required, requiredIf } from '@vuelidate/validators'
 	import { useVuelidate } from '@vuelidate/core'
 	import { useRoute } from 'vue-router'
-	import { defineComponent, onMounted, ref, watch } from 'vue'
+	import { defineComponent, onMounted, reactive, ref, watch } from 'vue'
 	import { computed } from 'vue'
 	import router from '@/router'
 	import getPrecioById from '@/services/precio/getPrecioById.service'
@@ -95,6 +95,7 @@
 	import { pluralize } from '@/utils/utils'
 	import ComboComponent from '@/components/combos/ComboComponent.vue'
 	import { TipoDato } from '@/services/desplegables/models/TipoDato'
+import { modelStore } from '@/main'
 
 	export default defineComponent({
 		name: 'PrecioEdicion'
@@ -106,43 +107,38 @@
 		return !v$.value.$invalid
 	})
 	const getFechaCompra = computed(() => {
-		return editData?.value?.fechaCompra
+		return editData?.fechaCompra
 			? new Intl.DateTimeFormat('es-ES', {
 					day: '2-digit',
 					month: '2-digit',
 					year: 'numeric'
-			  }).format(editData.value.fechaCompra)
+			  }).format(editData.fechaCompra)
 			: ''
 	})
 	// Data
 	const cboArticulos = ref(null)
 	const inputPrecio = ref()
 	const adding = ref(false)
-	const route = useRoute()
 	const from = history.state.back
-	const editData = ref<any>({
-		id: '',
-		precio: 0,
-		marca: '',
-		articulo: null,
-		establecimiento: null,
-		unidadesMedida: [],
-		fechaCreacion: '',
-		notas: '',
-		borrable: true
-	})
+  const editData = reactive<any>(modelStore.precio ? modelStore.getPrecio : { borrable: true })
+  console.log('LOG~ ~ :124 ~ editData:', editData)
+  if (!editData.id) {
+    adding.value = true
+  }
+	// const editData = ref<any>({
+	// 	id: '',
+	// 	precio: 0,
+	// 	marca: '',
+	// 	articulo: null,
+	// 	establecimiento: null,
+	// 	unidadesMedida: [],
+	// 	fechaCreacion: '',
+	// 	notas: '',
+	// 	borrable: true
+	// })
 
-	if (route.params['id']) {
-		getPrecioById(route.params['id'].toString()).then((response) => {
-			if (response.respuesta === 200) {
-				editData.value = response.data as Precio
-			}
-		})
-	} else {
-		adding.value = true
-		if (from.includes('articulo-detalle')) {
-			editData.value.articulo = { id: from.substring(from.lastIndexOf('/') + 1) }
-		}
+	if (from.includes('articulo-detalle')) {
+    editData.value.articulo = { id: from.substring(from.lastIndexOf('/') + 1) }
 	}
 
 	// Watch

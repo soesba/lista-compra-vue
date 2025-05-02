@@ -4,7 +4,7 @@
 			<v-btn icon="mdi-arrow-left" @click="onBack" variant="text" color="primary"></v-btn>
 		</template>
 		<template v-slot:right>
-			<!-- <v-btn icon="mdi-pencil" variant="text" color="primary" @click="setEdicion()"></v-btn> -->
+			<v-btn icon="mdi-pencil" variant="text" color="primary" @click="setEdicion()"></v-btn>
 			<v-btn
 				icon="mdi-delete"
 				variant="text"
@@ -40,13 +40,14 @@
 </template>
 
 <script lang="ts">
-	import { defineComponent, reactive } from 'vue'
-	import { computed } from 'vue'
+	import { defineComponent, reactive, computed } from 'vue'
 	import router from '@/router'
 	import getPrecioById from '@/services/precio/getPrecioById.service'
 	import { useRoute } from 'vue-router'
 	import { formatDecimal, pluralize } from '@/utils/utils'
 	import PrecioEquivalenciaComponent from '@/components/PrecioEquivalenciaComponent.vue'
+  import { modelStore } from '@/main'
+
 	export default defineComponent({
 		name: 'CompraDetalle'
 	})
@@ -75,6 +76,11 @@
 	const onBack = () => {
 		router.push('/precios')
 	}
+
+  const setEdicion = () => {
+    modelStore.precio = data
+    router.push('/precio-edicion')
+  }
 
 	const deleteCard = () => {
 		uiStore.showConfirmDialog({

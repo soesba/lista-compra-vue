@@ -5,13 +5,12 @@
 </template>
 
 <script lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, defineComponent } from 'vue'
 import { CardList, TitleView, SearchBox } from '@/components'
 import get from '@/services/articulo/getArticulo.service'
 import getByAny from '@/services/articulo/getArticuloByAny.service'
 import create from '@/services/articulo/createArticulo.service'
 import update from '@/services/articulo/updateArticulo.service'
-import { defineComponent } from 'vue'
 import { eventCardStore } from '@/main';
 import type ArticuloRequest from '@/services/articulo/models/ArticuloRequest'
 import type ArticuloResponse from '@/services/articulo/models/ArticuloResponse'

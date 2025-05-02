@@ -71,7 +71,6 @@ const canSave = computed(() => {
 
 // Data
 const adding = ref(false)
-const route = useRoute()
 const editData = reactive<any>(modelStore.getArticulo ? modelStore.getArticulo : { borrable: true })
 if (!editData.id) {
 	adding.value = true

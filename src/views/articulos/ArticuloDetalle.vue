@@ -22,11 +22,13 @@
 				<div class="labelFor">Unidades de medida: </div>
 				<div v-for="tipoUnidad in data.tiposUnidad">{{ tipoUnidad.nombre }}</div>
 			</div>
-			<div class="inputGroup">
-				<label class="labelFor">Histórico de precios</label>
-			</div>
-			<!-- <v-btn variant="text" color="primary" @click="introducirPrecio()">Introducir precio de compra</v-btn> -->
-			<HistoricoPrecios :precios="data.precios"></HistoricoPrecios>
+      <div v-if="data.tienePrecios">
+        <div class="inputGroup">
+          <label class="labelFor">Histórico de precios</label>
+        </div>
+        <!-- <v-btn variant="text" color="primary" @click="introducirPrecio()">Introducir precio de compra</v-btn> -->
+        <HistoricoPrecios :precios="data.precios"></HistoricoPrecios>
+      </div>
 		</div>
 	</div>
 </template>

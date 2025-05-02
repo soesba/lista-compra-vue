@@ -43,8 +43,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { computed } from 'vue'
+import { defineComponent, computed } from 'vue'
 import router from '@/router'
 import getById from '@/services/establecimiento/getEstablecimientoById.service'
 import { useRoute } from 'vue-router'

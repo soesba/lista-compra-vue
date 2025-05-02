@@ -69,7 +69,7 @@ onMounted(() => {
 })
 
 // Methods
-const getFechaCompra = (item) => {
+const getFechaCompra = (item: any) => {
 	return item.fechaCompra ? new Intl.DateTimeFormat('es-ES', {
 		day: "2-digit",
 		month: "2-digit",
