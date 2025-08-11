@@ -8,9 +8,9 @@
       <v-container>
         <router-view v-slot="{ Component }">
           <suspense timeout="0">
-            <template #default>
+            <div>
               <component :is="Component" :key="$route.path"></component>
-            </template>
+            </div>
             <template #fallback>
               <div>Loading...</div>
             </template>

@@ -13,10 +13,10 @@
       <div class="inputGroup">
         <label class="labelFor">Equivalencias</label>
       </div>
-      <div class="inputGroup">
-        <label v-if="data.equivalencias?.length === 0"> No hay equivalencias </label>
+      <div v-if="data.equivalencias?.length === 0" class="inputGroup">
+        <label> No hay equivalencias </label>
       </div>
-      <div class="inputGroup margin-top-bottom">
+      <div v-else class="inputGroup margin-top-bottom">
         <label>1 {{data.nombre}} equivale a </label>
       </div>
       <div v-for="equivalencia in equivalencias">
