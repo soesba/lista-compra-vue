@@ -7,16 +7,16 @@
 	</v-card>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
 export default defineComponent({
 	name: 'Card',
 })
 </script>
 <script setup lang="ts">
+import { defineComponent } from 'vue'
 import { noLogoUrl } from '@/main'
 import { computed, ref } from 'vue'
 
-const emit = defineEmits(['click-card'])
+const emit = defineEmits(['click'])
 
 // Props
 const props = defineProps({
@@ -72,8 +72,7 @@ const getText = computed(() => {
 
 // Methods
 const onClick = () => {
-	// TODO
-  emit('click-card', data.value.id)
+  emit('click', data.value.id)
 }
 </script>
 <style lang="scss" scoped>

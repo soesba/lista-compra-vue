@@ -1,9 +1,10 @@
+import Item from '@/services/desplegables/models/Item';
 import type Direccion from "./Direccion";
 
 export default interface EstablecimientoRequest {
 	id?: string;
 	nombre: string;
-	tipoEstablecimiento: string;
+	tipoEstablecimiento: Item;
 	logo: {
 		type: string,
 		content: string

@@ -1,15 +1,5 @@
 <template>
-	<detalle-toolbar>
-		<template v-slot:left>
-			<v-btn icon="mdi-close" @click="onBack" variant="text" color="primary"></v-btn>
-		</template>
-    <template v-slot:center>
-			<v-btn variant="text" color="error" @click="confirmDelete()" :disabled="!canDelete">Eliminar</v-btn>
-		</template>
-		<template v-slot:right>
-			<v-btn variant="text" color="primary" @click="save()" :disabled="!canSave">Guardar</v-btn>
-		</template>
-	</detalle-toolbar>
+  <edition-toolbar @onSave="save" :saveDisabled="!canSave" />
 	<div class="form" v-if="editData">
 		<div class="body">
 			<div class="inputGroup">
@@ -35,7 +25,7 @@
         <label v-if="editData.equivalencias?.length === 0"> No hay equivalencias </label>
       </div>
       <div class="inputGroup margin-top-bottom">
-        <label>1 {{editData.nombre}} equivale a </label>  
+        <label>1 {{editData.nombre}} equivale a </label>
       </div>
       <equivalencia-component
         v-for="equivalencia in editData.equivalencias"
@@ -53,48 +43,37 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import { computed } from 'vue'
-import router from '@/router'
-import DetalleToolbar from '@/components/DetalleToolbar.vue'
-import EquivalenciaComponent from '@/components/EquivalenciaComponent.vue'
-import type Equivalencia from '@/services/equivalencia/models/Equivalencia'
-import { required, requiredIf } from '@vuelidate/validators'
-import { useVuelidate } from '@vuelidate/core'
-import { eventCardStore, uiStore } from '@/main'
-import { useRoute } from 'vue-router'
-import getById from '@/services/tipoUnidad/getTipoUnidadById.service'
-import deleteItem from '@/services/tipoUnidad/deleteTipoUnidad.service'
-	
 export default defineComponent({
 	name: 'TipoUnidadEdicion',
 })
 </script>
 <script setup lang="ts">
-	
+import { defineComponent, reactive, ref } from 'vue'
+import { computed } from 'vue'
+import router from '@/router'
+import EditionToolbar from '@/components/EditionToolbar.vue'
+import EquivalenciaComponent from '@/components/EquivalenciaComponent.vue'
+import type Equivalencia from '@/services/equivalencia/models/Equivalencia'
+import { required, requiredIf } from '@vuelidate/validators'
+import { useVuelidate } from '@vuelidate/core'
+import { modelStore } from '@/main'
+import create from '@/services/tipoUnidad/createTipoUnidad.service'
+import TipoUnidad from '@/services/tipoUnidad/models/TipoUnidad'
+import update from '@/services/tipoUnidad/updateTipoUnidad.service'
 // Computed
 const canSave = computed(() => {
 	return !v$.value.$invalid
 })
-
-const canDelete = computed(() => {
-	return editData.value.borrable
-})
 // Data
-const route = useRoute()
 const adding = ref(false);
-const editData = ref<any>({ borrable: true })
-if (route.params['id']) {
-	getById(route.params['id'].toString()).then((response) => {
-		editData.value = response.data
-	})
-} else {
+const editData = reactive<any>(modelStore.getTipoUnidad ? modelStore.getTipoUnidad : { borrable: true })
+  if (!editData.id) {
 	adding.value = true
 }
-	
+
 const from = ref({
-	id: editData.value.id,
-	nombre: editData.value.nombre
+	id: editData.id,
+	nombre: editData.nombre
 })
 // Validations
 const validations = computed(() => {
@@ -114,7 +93,7 @@ const v$ = useVuelidate(validations, { editData })
 
 const onUpdateEquivalencia = (data: Equivalencia) => {
 	console.log("LOG ~ onUpdateEquivalencia ~ data:", data)
-	editData.value.equivalencias = editData.value.equivalencias.map((item: any) => {      
+	editData.equivalencias = editData.equivalencias.map((item: any) => {
 		if ((data.id && item.id === data.id) ||
         (data.tmpId && data.tmpId === item.tmpId)) {
 			return data
@@ -123,41 +102,35 @@ const onUpdateEquivalencia = (data: Equivalencia) => {
 		}
 	})
 }
-	
+
 const onSaveEquivalencia = (data: Equivalencia[]) => {
 	console.log("LOG ~ onSaveEquivalencia ~ data:", data)
-	editData.value.equivalencias.push(data)
+	editData.equivalencias.push(data)
 }
 
 const save = () => {
-	eventCardStore.saveCard({ adding: adding.value, data: editData.value })
-	uiStore.hideCustomDialog()
-}
-
-const confirmDelete = () => {
-	uiStore.showConfirmDialog({
-		props: {
-			text: '¿Desea eliminar el elemento?',
-			title: 'Confirmación',
-		},
-		aceptarFn: deleteRecord,
-	})
-}
-
-const deleteRecord = () => {
-	// eventCardStore.deleteCard(data)
-	if (editData.value.borrable) {
-		deleteItem(editData.value.id).then(response => {
-			if (response.respuesta === 200) {
-				onBack()
-			}
-		})
+  if (adding.value) {
+		createTipoUnidad(editData)
+	} else {
+		updateTipoUnidad(editData)
 	}
 }
-  
-const onBack = () => {
-	router.push('/tiposUnidades')
+
+const createTipoUnidad = (data: TipoUnidad) => {
+  create(data).then(response => {
+    onBack()
+  })
 }
-		
+
+const updateTipoUnidad = (data: TipoUnidad) => {
+  update(data).then(response => {
+    onBack()
+  })
+}
+
+const onBack = () => {
+	router.back()
+}
+
 </script><style lang="scss" scoped>
 </style>

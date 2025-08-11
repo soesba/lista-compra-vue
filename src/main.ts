@@ -4,7 +4,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import { pinia, useModelStore } from './store'
-import { useUiStore, useEventCardStore } from './store'
+import { useUiStore, useEventStore } from './store'
 import { xhr } from '@/api/config/Repository'
 // Vuetify
 import { es } from 'vuetify/locale'
@@ -34,6 +34,6 @@ createApp(App).
 export const interceptorMsg = new InterceptorMessages(xhr)
 interceptorMsg.execute()
 export const uiStore = useUiStore()
-export const eventCardStore = useEventCardStore()
+export const eventStore = useEventStore()
 export const modelStore = useModelStore()
 export const noLogoUrl = new URL('@/assets/images/no-image.svg', import.meta.url).href

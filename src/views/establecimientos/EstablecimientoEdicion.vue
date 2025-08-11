@@ -1,12 +1,5 @@
 <template>
-	<detalle-toolbar>
-		<template v-slot:left>
-			<v-btn icon="mdi-close" @click="onBack" variant="text" color="primary"></v-btn>
-		</template>
-		<template v-slot:right>
-			<v-btn variant="text" color="primary" @click="save()" :disabled="!canSave">Guardar</v-btn>
-		</template>
-	</detalle-toolbar>
+	<edition-toolbar @onSave="save" :saveDisabled="!canSave" />
 	<div class="form" v-if="editData">
 		<div class="wrapper-logo">
 			<v-img class="logo" :src="getImageSrc"></v-img>
@@ -60,16 +53,14 @@
 <script lang="ts">
 import ComboComponent from '@/components/combos/ComboComponent.vue'
 import DireccionEdicion from '@/components/DireccionEdicion.vue'
-import DetalleToolbar from '@/components/DetalleToolbar.vue'
+import EditionToolbar from '@/components/EditionToolbar.vue'
 import { required, requiredIf } from '@vuelidate/validators'
 import { useVuelidate } from '@vuelidate/core'
 import { TipoDato } from '@/services/desplegables/models/TipoDato'
-import { useRoute } from 'vue-router'
 import { noLogoUrl, modelStore } from '@/main'
 import { defineComponent, reactive, ref } from 'vue'
 import { computed } from 'vue'
 import router from '@/router'
-import getById from '@/services/establecimiento/getEstablecimientoById.service'
 import create from '@/services/establecimiento/createEstablecimiento.service'
 import update from '@/services/establecimiento/updateEstablecimiento.service'
 import { fileToBase64 } from '@/utils/utils'
@@ -83,21 +74,20 @@ export default defineComponent({
 const fileUpload = ref(null)
 // Computed
 const canSave = computed(() => {
-	return !v$.value.$invalid
+	return !v$.value.editData.$invalid
 })
 
 const mostrarDirecciones = computed(() => {
-	return editData.value && editData.value.direcciones ? editData.value.direcciones.length !== 0 : false
+	return editData && editData.direcciones ? editData.direcciones.length !== 0 : false
 })
 const getImageSrc = computed(() => {
-	return editData.value.logo ? editData.value.logo.content : noLogoUrl
+	return editData.logo ? editData.logo.content : noLogoUrl
 })
 
 // Data
 const adding = ref(false)
-const route = useRoute()
-const editData = ref<any>(modelStore.getEstablecimiento ? modelStore.getEstablecimiento : { borrable: true, direcciones: [] })
-if (!editData.value.id) {
+const editData = reactive<any>(modelStore.getEstablecimiento ? modelStore.getEstablecimiento : { borrable: true, direcciones: [] })
+if (!editData.id) {
 	adding.value = true
 }
 
@@ -121,23 +111,24 @@ const v$ = useVuelidate(validations, { editData })
 
 // Methods
 const onChange = (event: any) => {
-	editData.value.tipoEstablecimiento = event
+	editData.tipoEstablecimiento = event
+  v$.value.editData.tipoEstablecimiento.$touch()
 }
 
 const onBack = () => {
 	if (adding.value) {
 		router.push('/establecimientos')
 	} else {
-		router.push(`/establecimiento-detalle/${editData.value.id}`)
+		router.push(`/establecimiento-detalle/${editData.id}`)
 	}
 }
 
 const onSaveDireccion = (dir: any) => {
-	editData.value.direcciones.push(dir)
+	editData.direcciones.push(dir)
 }
 
 const onUpdateDireccion = (data: Direccion) => {
-	editData.value.direcciones = editData.value.direcciones.map((item: any) => {
+	editData.direcciones = editData.direcciones.map((item: any) => {
 		if ((data.id && item.id === data.id) ||
         (data.tmpId && data.tmpId === item.tmpId)) {
 			return data
@@ -148,7 +139,7 @@ const onUpdateDireccion = (data: Direccion) => {
 }
 
 const onDeleteDireccion = (dir: Direccion) => {
-	editData.value.direcciones = editData.value.direcciones.filter((item: Direccion) => {
+	editData.direcciones = editData.direcciones.filter((item: Direccion) => {
 		if (dir.tmpId) {
 			return item.tmpId !== dir.tmpId
 		} else {
@@ -160,20 +151,20 @@ const onDeleteDireccion = (dir: Direccion) => {
 const save = async () => {
 	if (selectedFile) {
 		const imgBase64 = await fileToBase64(selectedFile)
-		editData.value.logo = {
+		editData.logo = {
 			type: selectedFile.type,
 			content: imgBase64,
 		}
 	}
-	delete editData.value.tmpId
-	editData.value.direcciones = editData.value.direcciones.map((item: Direccion) => {
+	delete editData.tmpId
+	editData.direcciones = editData.direcciones.map((item: Direccion) => {
 		delete item.tmpId
 		return item
 	})
 	if (adding.value) {
-		createEstablecimiento(editData.value)
+		createEstablecimiento(editData)
 	} else {
-		updateEstablecimiento(editData.value)
+		updateEstablecimiento(editData)
 	}
 }
 
@@ -199,11 +190,11 @@ const onSelectLogo = (evt: any) => {
 		const reader = new FileReader()
 
 		reader.onload = function () {
-			if (!editData.value.logo) {
-				editData.value.logo = {}
+			if (!editData.logo) {
+				editData.logo = {}
 			}
-			editData.value.logo.type = selectedFile.type
-			editData.value.logo.content = URL.createObjectURL(selectedFile)
+			editData.logo.type = selectedFile.type
+			editData.logo.content = URL.createObjectURL(selectedFile)
 		}
 
 		reader.readAsDataURL(selectedFile)
@@ -213,7 +204,7 @@ const onSelectLogo = (evt: any) => {
 const resetLogo = () => {
 	selectedFile = null
 	fileUpload.value = null
-	editData.value.logo = null
+	editData.logo = null
 }
 </script>
 <style lang="scss" scoped>

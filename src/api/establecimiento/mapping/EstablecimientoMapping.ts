@@ -22,10 +22,11 @@ export const DTOtoModel = (origin: EstablecimientoDTO): Establecimiento => {
 	return model
 }
 
-export const requestDTOtoModel = (origin: EstablecimientoRequestDTO): EstablecimientoRequest => {
-	return {...origin}
-}
-
 export const requestModelToDTO = (origin: EstablecimientoRequest): EstablecimientoRequestDTO => {
-	return { ...origin }
+  const dto: EstablecimientoRequestDTO = {
+    ...origin,
+    tipoEstablecimiento: origin.tipoEstablecimiento.id
+  }
+
+	return dto
 }

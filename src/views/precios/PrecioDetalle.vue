@@ -1,5 +1,5 @@
 <template>
-	<detalle-toolbar>
+	<detail-toolbar>
 		<template v-slot:left>
 			<v-btn icon="mdi-arrow-left" @click="onBack" variant="text" color="primary"></v-btn>
 		</template>
@@ -12,7 +12,7 @@
 				@click="deleteCard()"
 				v-if="canDelete"></v-btn>
 		</template>
-	</detalle-toolbar>
+	</detail-toolbar>
 	<div class="form">
 		<div class="header">
 			<div class="text-h6">{{ data.articulo?.nombre }}</div>
@@ -53,9 +53,9 @@
 	})
 </script>
 <script setup lang="ts">
-	import DetalleToolbar from '@/components/DetalleToolbar.vue'
+	import DetailToolbar from '@/components/DetailToolbar.vue'
 	import type Precio from '@/services/precio/models/Precio'
-	import { eventCardStore, uiStore } from '@/main'
+	import { eventStore, uiStore } from '@/main'
 
 	// Props
 	defineProps({
@@ -93,7 +93,7 @@
 	}
 
 	const onCloseConfirmDialog = () => {
-		eventCardStore.deleteCard(data)
+		eventStore.deleteCard(data)
 	}
 </script>
 <style lang="scss" scoped>
@@ -104,7 +104,4 @@
 		margin-left: 20px;
 	}
 
-	.inputGroup {
-		align-items: center;
-	}
 </style>

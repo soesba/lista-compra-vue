@@ -1,7 +1,11 @@
 <template>
   <TitleView :titulo="titulo" />
   <SearchBox @search="onSearch"></SearchBox>
-  <CardList :items="list" @click-card="(evt: any) => verDetalle(evt)" @addCard="onAddCard" :class="getClasses" :mapping="mapping"/>
+  <CardList
+    :items="list"
+
+    :class="getClasses"
+    :mapping="mapping"/>
 </template>
 
 <script lang="ts">
@@ -14,7 +18,7 @@ import update from '@/services/precio/updatePrecio.service'
 import deleteItem from '@/services/precio/deletePrecio.service'
 import { defineComponent } from 'vue'
 import router from '@/router'
-import { eventCardStore } from '@/main';
+import { eventStore } from '@/main';
 import type PrecioRequest from '@/services/precio/models/PrecioRequest'
 import type PrecioResponse from '@/services/precio/models/PrecioResponse'
 import { sort, formatDecimal } from '@/utils/utils'
@@ -26,7 +30,7 @@ export default defineComponent({
 <script setup lang="ts">
 const emit = defineEmits(['close-dialog'])
 
-eventCardStore.$onAction(({args, name}) => {
+eventStore.$onAction(({args, name}) => {
 	switch(name) {
     case 'addCard':
       onAddCard()
@@ -60,7 +64,13 @@ const mapping = {
     Precio: ${formatDecimal(item.precio)}`
   }
 }
-
+const routes = {
+  detail: '/precio-detalle',
+  edit: '/precio-edicion',
+  add: '/precio-edicion',
+  save: '/precios'
+}
+eventStore.setRoutes(routes)
 // Computed
 const getClasses = computed(() => {
   return cardClass.value ? cardClass.value.join(' ') : ''
@@ -85,10 +95,6 @@ const getAllData = () => {
     const order = sortBy.value.order === 'ASC' ? '' : '-'
 		list.value = (response.data as []).sort(sort(`${order}${sortBy.value.field}`))
 	})
-}
-
-const verDetalle = (id: any) => {
-  router.push(`/precio-detalle/${id}`)
 }
 
 const onAddCard = () => {

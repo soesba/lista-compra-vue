@@ -1,20 +1,28 @@
 {
-  "$schema": "https://json.schemastore.org/prettierrc",
-  "semi": false,
-  "tabWidth": 2,
-  "useTabs": true,
-  "singleQuote": true,
-  "printWidth": 100,
-  "trailingComma": "none",
-  "bracketSpacing": true,
-  "bracketSameLine": true,
-  "parser": "vue",
-  "vueIndentScriptAndStyle": true,
-  "endOfLine": "lf",
-  "insertFinalNewLine": "true",
-  "proseWrap": "always",
-  "spaceBeforeFunctionParen": "always",
-  "json": {
-	"tabWidth": 4
-  }
+	"$schema": "https://json.schemastore.org/prettierrc",
+	"arrowParens": "always",
+	"semi": false,
+	"tabWidth": 2,
+	"useTabs": true,
+	"singleQuote": true,
+	"jsxSingleQuote": true,
+	"printWidth": 100,
+	"trailingComma": "none",
+	"bracketSpacing": true,
+	"bracketSameLine": true,
+	"parser": "vue",
+	"vueIndentScriptAndStyle": true,
+	"endOfLine": "lf",
+	"insertFinalNewLine": "true",
+	"spaceBeforeFunctionParen": "always",
+	"singleAttributePerLine": false,
+	"htmlWhitespaceSensitivity": "css",
+	"proseWrap": "preserve",
+	"insertPragma": false,
+	"requirePragma": false,
+	"embeddedLanguageFormatting": "auto",
+	"spaceInParens": false,
+	"json": {
+		"tabWidth": 4
+	}
 }

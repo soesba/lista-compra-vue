@@ -12,17 +12,17 @@ const router = createRouter({
 		{
 			path: '/tiposUnidades',
 			name: 'tiposUnidades',
-			component: () => import('@/views/tiposUnidad/TiposUnidades.vue')
+			component: () => import('@/views/tiposUnidad/TipoUnidades.vue')
 		},
 		{
-			path: '/tiposUnidades-edicion/:id',
+			path: '/tiposUnidades-edicion',
 			name: 'tiposUnidades-edicion',
 			component: () => import('@/views/tiposUnidad/TipoUnidadEdicion.vue')
 		},
     {
 			path: '/tiposUnidades-detalle/:id',
 			name: 'tiposUnidades-detalle',
-			component: () => import('@/views/tiposUnidad/TipoUnidadEdicion.vue')
+			component: () => import('@/views/tiposUnidad/TipoUnidadDetalle.vue')
 		},
 		{
 			path: '/articulos',
@@ -42,8 +42,18 @@ const router = createRouter({
 		{
 			path: '/tiposEstablecimientos',
 			name: 'tiposEstablecimientos',
-			component: () => import('@/views/TiposEstablecimientos.vue')
+			component: () => import('@/views/tiposEstablecimientos/TiposEstablecimientos.vue')
 		},
+    {
+      path: '/tipoEstablecimiento-detalle/:id',
+      name: 'tipoEstablecimiento-detalle',
+      component: () => import('@/views/tiposEstablecimientos/TipoEstablecimientoDetalle.vue')
+    },
+    {
+      path: '/tipoEstablecimiento-edicion',
+      name: 'tipoEstablecimiento-edicion',
+      component: () => import('@/views/tiposEstablecimientos/TipoEstablecimientoEdicion.vue')
+    },
 		{
 			path: '/establecimientos',
 			name: 'establecimientos',

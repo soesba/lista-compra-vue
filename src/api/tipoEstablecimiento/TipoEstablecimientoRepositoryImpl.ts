@@ -19,6 +19,19 @@ export default class TipoEstablecimientoRepositoryImpl implements TipoEstablecim
 		return result
 	}
 
+  async getById (id: string): Promise<TipoEstablecimientoResponse> {
+      const endpoint = `/tipoEstablecimiento/getById/${id}`
+      const headers = {
+        'Content-Type': 'application/json;charset=UTF-8'
+      }
+      const response = await xhr.get(endpoint, { headers})
+      const result = {
+        data: DTOtoModel(response.data),
+        respuesta: response.status
+      }
+      return result
+    }
+
 	async getByAny (request: string): Promise<TipoEstablecimientoResponse> {
 		const endpoint = `/tipoEstablecimiento/getByAny/${request}`
 		const headers = {

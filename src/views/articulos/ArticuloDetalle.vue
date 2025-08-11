@@ -1,13 +1,5 @@
 <template>
-	<detalle-toolbar>
-		<template v-slot:left>
-			<v-btn icon="mdi-arrow-left" @click="onBack" variant="text" color="primary"></v-btn>
-		</template>
-		<template v-slot:right>
-      <v-btn icon="mdi-pencil" variant="text" color="primary" @click="setEdicion()"></v-btn>
-			<v-btn icon="mdi-delete" variant="text" color="primary" @click="confirmDeleteCard()" v-if="canDelete"></v-btn>
-		</template>
-	</detalle-toolbar>
+	<detail-toolbar @onEdit="setEdicion" @onDelete="runDelete" />
 	<div class="form">
 		<div class="header">
 			<div>
@@ -35,12 +27,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { computed } from 'vue'
 import router from '@/router'
 import getArticuloById from '@/services/articulo/getArticuloById.service'
 import { useRoute } from 'vue-router'
-import DetalleToolbar from '@/components/DetalleToolbar.vue'
-import { uiStore, modelStore } from '@/main'
+import DetailToolbar from '@/components/DetailToolbar.vue'
+import { modelStore } from '@/main'
 import type Articulo from '@/services/articulo/models/Articulo'
 import type Precio from '@/services/precio/models/Precio'
 import getByArticuloId from '@/services/precio/getPrecioByArticuloId.service'
@@ -66,11 +57,6 @@ const data: Articulo = (await getArticuloById(route.params['id'].toString())).da
 const precios: Precio[] = (((await getByArticuloId(data.id)).data) as Precio[]).sort(sort('fechaCompra'))
 data.precios = precios
 
-// Computed
-const canDelete = computed(() => {
-	return data.borrable
-})
-
 // Methods
 const onBack = () => {
 	router.push('/articulos')
@@ -81,21 +67,7 @@ const setEdicion = () => {
 	router.push('/articulo-edicion')
 }
 
-const confirmDeleteCard = () => {
-	uiStore.showConfirmDialog({
-		props: {
-			text: '¿Desea eliminar el elemento?',
-			title: 'Confirmación',
-		},
-		aceptarFn: onCloseConfirmDialog,
-	})
-}
-
-const onCloseConfirmDialog = () => {
-	deleteCard(data)
-}
-
-const deleteCard = (cardData: any) => {
+const runDelete = (cardData: any) => {
 	if (cardData.borrable) {
 		deleteItem(cardData.id).then(response => {
 			if (response.respuesta === 200) {
@@ -104,10 +76,6 @@ const deleteCard = (cardData: any) => {
 			}
 		})
 	}
-}
-
-const introducirPrecio = () => {
-	router.push('/precio-edicion')
 }
 
 </script>
@@ -119,10 +87,6 @@ const introducirPrecio = () => {
 
 	.indent {
 		margin-left: 20px;
-	}
-
-	.inputGroup {
-		align-items: center;
 	}
 
 	.tabla-historico {

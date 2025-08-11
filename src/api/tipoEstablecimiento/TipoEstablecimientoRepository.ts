@@ -3,6 +3,7 @@ import type TipoEstablecimientoResponse from "@/services/tipoEstablecimiento/mod
 
 export default interface TipoEstablecimientoRepository {
 	get(): Promise<TipoEstablecimientoResponse>;
+  getById (id: string): Promise<TipoEstablecimientoResponse>;
 	getByAny(request: string): Promise<TipoEstablecimientoResponse>;
 	insert(request: TipoEstablecimientoRequest): Promise<TipoEstablecimientoResponse>;
 	update(request: TipoEstablecimientoRequest): Promise<TipoEstablecimientoResponse>;

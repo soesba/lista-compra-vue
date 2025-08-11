@@ -1,7 +1,12 @@
 <template>
   <TitleView :titulo="titulo" />
   <SearchBox @search="onSearch"></SearchBox>
-  <CardList :logo="true" :items="list" @click-card="(evt: any) => verDetalle(evt)" @addCard="onAddCard" :class="getClasses" :mapping="mapping"/>
+  <CardList
+    :logo="true"
+    :items="list"
+
+    :class="getClasses"
+    :mapping="mapping"/>
 </template>
 
 <script lang="ts">
@@ -11,9 +16,8 @@ import get from '@/services/establecimiento/getEstablecimiento.service'
 import getByAny from '@/services/establecimiento/getEstablecimientoByAny.service'
 import create from '@/services/establecimiento/createEstablecimiento.service'
 import update from '@/services/establecimiento/updateEstablecimiento.service'
-import deleteItem from '@/services/establecimiento/deleteEstablecimiento.service'
 import { defineComponent } from 'vue'
-import { eventCardStore } from '@/main'
+import { eventStore } from '@/main'
 import router from '@/router'
 import type EstablecimientoRequest from '@/services/establecimiento/models/EstablecimientoRequest'
 import type EstablecimientoResponse from '@/services/establecimiento/models/EstablecimientoResponse'
@@ -25,16 +29,13 @@ export default defineComponent({
 
 <script setup lang="ts">
 
-eventCardStore.$onAction(({args, name}) => {
+eventStore.$onAction(({args, name}) => {
 	switch(name) {
     case 'addCard':
       onAddCard()
       break
 		case 'saveCard':
 			onSaveCard(args[0])
-			break
-		case 'deleteCard':
-			onDeleteCard(args[0])
 			break
     case 'sortCards':
 			onSortCards(args[0])
@@ -57,7 +58,13 @@ const mapping = {
   subtitle: 'tipoEstablecimientoNombre',
   text: 'fechaCreacion'
 }
-
+const routes = {
+  detail: '/establecimiento-detalle',
+  edit: '/establecimiento-edicion',
+  add: '/establecimiento-edicion',
+  save: '/establecimientos'
+}
+eventStore.setRoutes(routes)
 // Computed
 const getClasses = computed(() => {
   return cardClass.value ? cardClass.value.join(' ') : ''
@@ -77,22 +84,9 @@ const getAllData = () => {
 	})
 }
 
-const verDetalle = (id: any) => {
-  router.push(`/establecimiento-detalle/${id}`)
-}
 
 const onAddCard = () => {
   router.push('/establecimiento-edicion')
-}
-
-const onDeleteCard = (cardData: any) => {
-	if (cardData.borrable) {
-		deleteItem(cardData.id).then(response => {
-			if (response.respuesta === 200) {
-				getAllData()
-			}
-		})
-	}
 }
 
 const onSaveCard = (cardData: any) => {

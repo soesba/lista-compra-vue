@@ -1,25 +1,43 @@
 <template>
   <div class="wrapper">
     <div class="left">
-      <slot name="left"></slot>
+      <v-btn icon="mdi-close" @click="onBack" variant="text" color="primary"></v-btn>
     </div>
     <div class="center">
       <slot name="center"></slot>
     </div>
     <div class="right">
-      <slot name="right"></slot>
+      <v-btn variant="text" color="primary" @click="save()" :disabled="saveDisabled">Guardar</v-btn>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
 export default defineComponent({
-	name: 'DetalleToolbar',
+	name: 'EditionToolbar',
 })
 </script>
 <script setup lang="ts">
+import { defineComponent } from 'vue'
+import router from '@/router'
 
+defineProps({
+  saveDisabled: {
+    type: Boolean,
+    default: false,
+  },
+})
+
+const emit = defineEmits(['onSave'])
+
+// Methods
+const onBack = () => {
+  router.back()
+}
+
+const save = () => {
+  emit('onSave')
+}
 </script>
 <style lang="scss" scoped>
 .wrapper {

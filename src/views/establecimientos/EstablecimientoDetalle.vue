@@ -1,19 +1,5 @@
 <template>
-	<detalle-toolbar>
-		<template v-slot:left>
-			<v-btn icon="mdi-arrow-left" @click="onBack" variant="text" color="primary"></v-btn>
-		</template>
-		<template v-slot:right>
-			<v-btn icon="mdi-pencil" variant="text" color="primary" @click="setEdicion()"></v-btn>
-			<v-btn
-				icon="mdi-delete"
-				variant="text"
-				color="primary"
-				@click="deleteCard()"
-				v-if="canDelete"
-			></v-btn>
-		</template>
-	</detalle-toolbar>
+	<detail-toolbar @onEdit="setEdicion" @onDelete="runDelete" :deleteDisabled="!canDelete"/>
 	<div class="form">
 		<div class="header">
 			<v-img class="logo" :src="getImageSrc"></v-img>
@@ -52,9 +38,9 @@ export default defineComponent({
 })
 </script>
 <script setup lang="ts">
-import DetalleToolbar from '@/components/DetalleToolbar.vue'
+import DetailToolbar from '@/components/DetailToolbar.vue'
 import type Establecimiento from '@/services/establecimiento/models/Establecimiento'
-import { eventCardStore, noLogoUrl, uiStore, modelStore } from '@/main'
+import { eventStore, noLogoUrl, modelStore } from '@/main'
 
 // Props
 defineProps({
@@ -82,27 +68,13 @@ const canDelete = computed(() => {
 })
 
 // Methods
-const onBack = () => {
-	router.push('/establecimientos')
-}
-
 const setEdicion = () => {
   modelStore.establecimiento = data
 	router.push('/establecimiento-edicion')
 }
 
-const deleteCard = () => {
-	uiStore.showConfirmDialog({
-		props: {
-			text: '¿Desea eliminar el elemento?',
-			title: 'Confirmación',
-		},
-		aceptarFn: onCloseConfirmDialog,
-	})
-}
-
-const onCloseConfirmDialog = () => {
-	eventCardStore.deleteCard(data)
+const runDelete = () => {
+	eventStore.deleteCard(data)
 }
 </script>
 <style lang="scss" scoped>
@@ -111,9 +83,5 @@ const onCloseConfirmDialog = () => {
 	}
   .indent {
     margin-left: 20px;
-  }
-
-  .inputGroup {
-		align-items: center;
   }
 </style>

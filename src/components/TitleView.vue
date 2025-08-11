@@ -20,7 +20,7 @@
 <script setup lang="ts">
   import { markRaw, ref } from 'vue'
   import MenuDialog from '@/components/MenuDialog.vue'
-  import { uiStore, eventCardStore } from '@/main'
+  import { uiStore, eventStore } from '@/main'
 
   interface itemMenu {
     name: string,
@@ -86,9 +86,9 @@
       item.valorActual = index
     }
     if (submenu === 'ordenar') {
-      eventCardStore.sortCards({ order: index})
+      eventStore.sortCards({ order: index})
     } else {
-      eventCardStore.showCards({ show: index })
+      eventStore.showCards({ show: index })
     }
   }
 </script>

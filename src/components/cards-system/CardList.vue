@@ -1,7 +1,14 @@
 <template>
 	<div class="wrapper-list">
 		<div class="list-container" v-if="items && items?.length > 0" :class="getClasses">
-			<Card :logo="logo" :mapping="mapping" v-for="item in items" :key="item.id" :card-data="item" @click-card="onClick"/>
+			<Card
+        :logo="logo"
+        :mapping="mapping"
+        v-for="item in items"
+        :key="item.id"
+        :card-data="item"
+
+        @click="onClick"/>
 		</div>
 		<div v-else>
 			<empty-card></empty-card>
@@ -21,13 +28,15 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
 export default defineComponent({
 	name: 'CardList',
 })
 </script>
 <script setup lang="ts">
 import { EmptyCard, Card } from '@/components/index'
+import { eventStore } from '@/main'
+import router from '@/router'
+import { computed, defineComponent } from 'vue'
 const emit = defineEmits(['click-card', 'addCard'])
 const props = defineProps({
 	items: Array<any>,
@@ -49,36 +58,22 @@ const props = defineProps({
   }
 })
 
-	// Computed
-	const getClasses = computed(() => {
-    return props.class
-	})
+const routes = eventStore.getRoutes
+console.log('LOG~ ~ :62 ~ routes:', routes)
+// Computed
+const getClasses = computed(() => {
+  return props.class
+})
 
 // Methods
 const onClick = (evt: string) => {
-  emit('click-card', evt)
+  router.push(`${routes.detail}/${evt}`)
 }
 
 const addCard = () => {
-  console.log('addCard')
-  emit('addCard')
-  // TODO
-// 	if (props.component === 'EstablecimientoCard') {
-// 		router.push('/establecimiento-edicion')
-// 	} else if (props.component === 'PrecioCard') {
-// 		router.push('/precio-edicion')
-// 	} else {
-// 		uiStore.showCustomDialog({
-// 			component: markRaw(getComponentDialog() as object),
-// 			props: {
-// 				adding: true,
-// 				data: {
-// 					borrable: true,
-// 				},
-// 			},
-// 		})
-// 	}
+  router.push(routes.add)
 }
+
 </script>
 <style lang="scss" scoped>
 	.wrapper-list {

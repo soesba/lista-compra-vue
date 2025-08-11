@@ -1,12 +1,12 @@
 <template>
-	<detalle-toolbar>
+	<detail-toolbar>
 		<template v-slot:left>
 			<v-btn icon="mdi-close" @click="onBack" variant="text" color="primary"></v-btn>
 		</template>
 		<template v-slot:right>
 			<v-btn variant="text" color="primary" @click="save()" :disabled="!canSave">Guardar</v-btn>
 		</template>
-	</detalle-toolbar>
+	</detail-toolbar>
 	<div class="form" v-if="editData">
 		<div class="body">
 			<div class="inputGroup">
@@ -79,29 +79,25 @@
 </template>
 
 <script lang="ts">
-	import { DetalleToolbar } from '@/components/index'
-	import { required, requiredIf } from '@vuelidate/validators'
-	import { useVuelidate } from '@vuelidate/core'
-	import { useRoute } from 'vue-router'
-	import { defineComponent, onMounted, reactive, ref, watch } from 'vue'
-	import { computed } from 'vue'
-	import router from '@/router'
-	import getPrecioById from '@/services/precio/getPrecioById.service'
-	import create from '@/services/precio/createPrecio.service'
-	import update from '@/services/precio/updatePrecio.service'
-	import type Precio from '@/services/precio/models/Precio'
-	import getArticuloById from '@/services/articulo/getArticuloById.service'
-	import type Articulo from '@/services/articulo/models/Articulo'
-	import { pluralize } from '@/utils/utils'
-	import ComboComponent from '@/components/combos/ComboComponent.vue'
-	import { TipoDato } from '@/services/desplegables/models/TipoDato'
-import { modelStore } from '@/main'
-
 	export default defineComponent({
 		name: 'PrecioEdicion'
 	})
 </script>
 <script setup lang="ts">
+  import { DetailToolbar } from '@/components/index'
+	import { required, requiredIf } from '@vuelidate/validators'
+	import { useVuelidate } from '@vuelidate/core'
+	import { defineComponent, onMounted, reactive, ref, watch } from 'vue'
+	import { computed } from 'vue'
+	import router from '@/router'
+	import create from '@/services/precio/createPrecio.service'
+	import update from '@/services/precio/updatePrecio.service'
+	import getArticuloById from '@/services/articulo/getArticuloById.service'
+	import type Articulo from '@/services/articulo/models/Articulo'
+	import { pluralize } from '@/utils/utils'
+	import ComboComponent from '@/components/combos/ComboComponent.vue'
+	import { TipoDato } from '@/services/desplegables/models/TipoDato'
+  import { modelStore } from '@/main'
 	// Computed
 	const canSave = computed(() => {
 		return !v$.value.$invalid

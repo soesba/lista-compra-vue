@@ -1,7 +1,11 @@
 <template>
   <TitleView :titulo="titulo" />
   <SearchBox @search="onSearch"></SearchBox>
-  <CardList :items="list" @click-card="(evt: any) => verDetalle(evt)"  @addCard="onAddCard" :class="getClasses" :mapping="mapping"/>
+  <CardList
+    :items="list"
+
+    :class="getClasses"
+    :mapping="mapping"/>
 </template>
 
 <script lang="ts">
@@ -14,20 +18,20 @@ import create from '@/services/tipoUnidad/createTipoUnidad.service'
 import update from '@/services/tipoUnidad/updateTipoUnidad.service'
 import deleteItem from '@/services/tipoUnidad/deleteTipoUnidad.service'
 import { defineComponent } from 'vue'
-import { eventCardStore } from '@/main';
+import { eventStore } from '@/main';
 import type TipoUnidadRequest from '@/services/tipoUnidad/models/TipoUnidadRequest'
 import type TipoUnidadResponse from '@/services/tipoUnidad/models/TipoUnidadResponse'
 import { sort } from '@/utils/utils'
 import type Equivalencia from '@/services/equivalencia/models/Equivalencia'
 export default defineComponent({
-	name: 'TiposUnidades'
+	name: 'TipoUnidades'
 })
 </script>
 
 <script setup lang="ts">
 const emit = defineEmits(['close-dialog'])
 
-eventCardStore.$onAction(({args, name}) => {
+eventStore.$onAction(({args, name}) => {
 	switch(name) {
     case 'addCard':
       onAddCard()
@@ -59,6 +63,14 @@ const mapping = {
   text: 'fechaCreacion'
 }
 
+const routes = {
+  detail: '/tiposUnidades-detalle',
+  edit: '/tiposUnidades-edicion',
+  add: '/tiposUnidades-edicion',
+  save: '/tiposUnidades'
+}
+eventStore.setRoutes(routes)
+
 // Computed
 const getClasses = computed(() => {
   return cardClass.value ? cardClass.value.join(' ') : ''
@@ -74,10 +86,6 @@ const getAllData = () => {
     const order = sortBy.value.order === 'ASC' ? '' : '-'
 		list.value = (response.data as []).sort(sort(`${order}${sortBy.value.field}`))
 	})
-}
-
-const verDetalle = (id: any) => {
-  router.push(`/tiposUnidades-detalle/${id}`)
 }
 
 const onAddCard = () => {

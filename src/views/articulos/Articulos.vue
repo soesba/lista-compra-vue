@@ -1,7 +1,7 @@
 <template>
   <TitleView :titulo="titulo" />
   <SearchBox @search="onSearch"></SearchBox>
-  <CardList :items="list" @click-card="(evt) => verDetalle(evt)" @addCard="onAddCard" :class="getClasses" :mapping="mapping" />
+  <CardList :items="list" :class="getClasses" :mapping="mapping" />
 </template>
 
 <script lang="ts">
@@ -11,7 +11,7 @@ import get from '@/services/articulo/getArticulo.service'
 import getByAny from '@/services/articulo/getArticuloByAny.service'
 import create from '@/services/articulo/createArticulo.service'
 import update from '@/services/articulo/updateArticulo.service'
-import { eventCardStore } from '@/main';
+import { eventStore } from '@/main';
 import type ArticuloRequest from '@/services/articulo/models/ArticuloRequest'
 import type ArticuloResponse from '@/services/articulo/models/ArticuloResponse'
 import { sort } from '@/utils/utils'
@@ -24,7 +24,7 @@ export default defineComponent({
 <script setup lang="ts">
 const emit = defineEmits(['close-dialog'])
 
-eventCardStore.$onAction(({args, name}) => {
+eventStore.$onAction(({args, name}) => {
 	switch(name) {
     case 'addCard':
       onAddCard()
@@ -52,7 +52,13 @@ const mapping = {
   subtitle: 'descripcion',
   text: (item: any) => item.tienePrecios ? 'Se han introducido precios' : 'No se han introducido precios'
 }
-
+const routes = {
+  detail: '/articulo-detalle',
+  edit: '/articulo-edicion',
+  add: '/articulo-edicion',
+  save: '/articulos'
+}
+eventStore.setRoutes(routes)
 // Computed
 const getClasses = computed(() => {
   return cardClass.value ? cardClass.value.join(' ') : ''
@@ -64,9 +70,6 @@ onMounted(() => {
 })
 
 // Methods
-const verDetalle = (id: any) => {
-  router.push(`/articulo-detalle/${id}`)
-}
 
 const onAddCard = () => {
   router.push('/articulo-edicion')

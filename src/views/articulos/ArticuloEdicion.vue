@@ -1,12 +1,5 @@
 <template>
-	<detalle-toolbar>
-		<template v-slot:left>
-			<v-btn icon="mdi-close" @click="onBack" variant="text" color="primary"></v-btn>
-		</template>
-		<template v-slot:right>
-			<v-btn variant="text" color="primary" @click="save()" :disabled="!canSave">Guardar</v-btn>
-		</template>
-	</detalle-toolbar>
+	<edition-toolbar @onSave="save" :saveDisabled="!canSave" />
 	<div class="form" v-if="editData">
 		<div class="body">
 			<div class="inputGroup">
@@ -45,19 +38,16 @@
 
 <script lang="ts">
 import ComboComponent from '@/components/combos/ComboComponent.vue'
-import DetalleToolbar from '@/components/DetalleToolbar.vue'
+import EditionToolbar from '@/components/EditionToolbar.vue'
 import { required, requiredIf } from '@vuelidate/validators'
 import { useVuelidate } from '@vuelidate/core'
 import { TipoDato } from '@/services/desplegables/models/TipoDato'
-import { useRoute } from 'vue-router'
 import { defineComponent, reactive, ref } from 'vue'
 import { computed } from 'vue'
 import router from '@/router'
 import { modelStore } from '@/main'
-import getArticuloById from '@/services/articulo/getArticuloById.service'
 import create from '@/services/articulo/createArticulo.service'
 import update from '@/services/articulo/updateArticulo.service'
-import ArticuloResponse from '@/services/articulo/models/ArticuloResponse'
 import HistoricoPrecios from '@/components/HistoricoPrecios.vue'
 export default defineComponent({
 	name: 'ArticuloEdicion',
@@ -109,11 +99,11 @@ const onBack = () => {
 }
 
 const save = async () => {
-	delete editData.value.tmpId
+	delete editData.tmpId
 	if (adding.value) {
-		createArticulo(editData.value)
+		createArticulo(editData)
 	} else {
-		updateArticulo(editData.value)
+		updateArticulo(editData)
 	}
 }
 
