@@ -18,18 +18,32 @@ import InterceptorMessages from './services/interceptors/InterceptorMessages'
 
 loadFonts()
 const vuetify = createVuetify({
-	components,
-	directives,
-	locale: {
-		locale: 'es',
-		messages: { es }
-	}
+  components,
+  directives,
+  locale: {
+    locale: 'es',
+    messages: { es }
+  }
 })
-createApp(App).
-	use(pinia).
-	use(router).
-	use(vuetify).
-	mount('#app')
+
+let app;
+let containerSelector = "#app";
+
+// check if app has been mounted already
+const mountPoint = document.querySelector(containerSelector);
+
+if (mountPoint && mountPoint.__vue_app__ !== undefined) {
+
+  // Set the existing mount point to 'app'.
+  app = mountPoint.__vue_app__._instance.proxy;
+}
+else {
+  app = createApp(App).
+    use(pinia).
+    use(router).
+    use(vuetify).
+    mount('#app')
+}
 
 export const interceptorMsg = new InterceptorMessages(xhr)
 interceptorMsg.execute()
