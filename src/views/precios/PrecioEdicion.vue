@@ -128,16 +128,16 @@
 	// })
 
 	if (from.includes('articulo-detalle')) {
-    editData.value.articulo = { id: from.substring(from.lastIndexOf('/') + 1) }
+    editData.articulo = { id: from.substring(from.lastIndexOf('/') + 1) }
 	}
 
 	// Watch
 	watch(
-		async () => editData.value?.articulo,
+		async () => editData?.articulo,
 		async () => {
-			if (!editData.value?.id) {
+			if (!editData?.id) {
 				const response = await getArrayUnidadesMedida()
-				editData.value!.unidadesMedida = response
+				editData!.unidadesMedida = response
 			}
 		}
 	)
@@ -177,15 +177,15 @@
 	}
 
 	const onChangeArticulo = (event: any) => {
-		editData.value.articulo = event
+		editData.articulo = event
 	}
 
 	const onChangeEstablecimiento = (event: any) => {
-		editData.value.establecimiento = event
+		editData.establecimiento = event
 	}
 
 	const getArrayUnidadesMedida = () => {
-		return getArticuloById(editData.value!.articulo!.id).then((response) => {
+		return getArticuloById(editData!.articulo!.id).then((response) => {
 			const articulo = response.data as Articulo
 			const tmpArray: any = []
 			articulo.tiposUnidad.forEach((element) => {
@@ -198,7 +198,7 @@
 	}
 
 	const setFechaCompra = (event: any) => {
-		editData.value!.fechaCompra = event.target.value
+		editData!.fechaCompra = event.target.value
 			? new Date(event.target.value.split('/').reverse().join('-'))
 			: null
 	}
@@ -214,9 +214,9 @@
 
 	const save = async () => {
 		if (adding.value) {
-			createPrecio(editData.value)
+			createPrecio(editData)
 		} else {
-			updateCompra(editData.value)
+			updateCompra(editData)
 		}
 	}
 

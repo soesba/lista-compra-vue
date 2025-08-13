@@ -34,6 +34,7 @@
 				<combo-component
 					:tipo-dato="TipoDato.TipoEstablecimientos"
 					:model-value="editData.tipoEstablecimiento"
+          :return-object="true"
 					required
 					:error-messages="v$.editData.tipoEstablecimiento.$errors.map((e) => e.$message)"
 					@blur="v$.editData.tipoEstablecimiento.$touch"
@@ -81,12 +82,12 @@ const mostrarDirecciones = computed(() => {
 	return editData && editData.direcciones ? editData.direcciones.length !== 0 : false
 })
 const getImageSrc = computed(() => {
-	return editData.logo ? editData.logo.content : noLogoUrl
+	return editData.logo && editData.logo.content ? editData.logo.content : noLogoUrl
 })
 
 // Data
 const adding = ref(false)
-const editData = reactive<any>(modelStore.getEstablecimiento ? modelStore.getEstablecimiento : { borrable: true, direcciones: [] })
+const editData = reactive<any>(modelStore.getEstablecimiento || { borrable: true, direcciones: [] })
 if (!editData.id) {
 	adding.value = true
 }
@@ -157,6 +158,9 @@ const save = async () => {
 			content: imgBase64,
 		}
 	}
+  if (!editData.logo.content) {
+    editData.logo = null
+  }
 	delete editData.tmpId
 	editData.direcciones = editData.direcciones.map((item: Direccion) => {
 		delete item.tmpId
