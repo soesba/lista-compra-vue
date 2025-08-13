@@ -1,5 +1,5 @@
 <template>
-	<edition-toolbar @onSave="save" :saveDisabled="!canSave" />
+	<edition-toolbar @onBack="onBack" @onSave="save" :saveDisabled="!canSave" />
 	<div class="form" v-if="editData">
 		<div class="body">
 			<div class="inputGroup">
@@ -91,11 +91,13 @@ const onChange = (event: any) => {
 }
 
 const onBack = () => {
-	if (adding.value) {
-		router.push('/articulos')
-	} else {
-		router.push(`/articulo-detalle/${editData.id}`)
-	}
+  modelStore.setArticulo(null)
+	// if (adding.value) {
+	// 	router.push('/articulos')
+	// } else {
+	// 	router.push(`/articulo-detalle/${editData.id}`)
+	// }
+  router.push(history.state.back)
 }
 
 const save = async () => {

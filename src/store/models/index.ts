@@ -3,6 +3,8 @@ import type ModelState from "./types"
 import type Articulo from "@/services/articulo/models/Articulo"
 import Precio from '@/services/precio/models/Precio'
 import TipoEstablecimiento from '@/services/tipoEstablecimiento/models/TipoEstablecimiento'
+import Establecimiento from '@/services/establecimiento/models/Establecimiento'
+import TipoUnidad from '@/services/tipoUnidad/models/TipoUnidad'
 
 const getDefaultEstablecimiento = (): any => {
   return {
@@ -94,23 +96,23 @@ export const useModelStore = defineStore('ModelStore', {
     getTipoUnidad: (state) => state.tipoUnidad
   },
 	actions: {
-		setEstablecimiento (establecimiento: any) {
-			this.establecimiento = establecimiento
+		setEstablecimiento (establecimiento: Establecimiento | null) {
+			this.establecimiento = establecimiento || getDefaultEstablecimiento()
 		},
-    setArticulo (articulo: Articulo) {
-      this.articulo = articulo
+    setArticulo (articulo: Articulo | null) {
+      this.articulo = articulo || getDefaultArticulo()
     },
 		setArticulos (articulos: Articulo[]) {
 			this.articulos = articulos
 		},
-    setPrecio (precio: Precio) {
-      this.precio = precio
+    setPrecio (precio: Precio | null) {
+      this.precio = precio || getDefaultPrecio()
     },
-    setTipoEstablecimiento (tipoEstablecimiento: TipoEstablecimiento) {
-      this.tipoEstablecimiento = tipoEstablecimiento
+    setTipoEstablecimiento (tipoEstablecimiento: TipoEstablecimiento | null) {
+      this.tipoEstablecimiento = tipoEstablecimiento || getDefaultTipoEstablecimiento()
     },
-    setTipoUnidad (tipoUnidad: any) {
-      this.tipoUnidad = tipoUnidad
+    setTipoUnidad (tipoUnidad: TipoUnidad | null) {
+      this.tipoUnidad = tipoUnidad || getDefaultTipounidad()
     }
 	}
 })

@@ -1,5 +1,5 @@
 <template>
-	<detail-toolbar @onEdit="setEdicion" @onDelete="runDelete" />
+	<detail-toolbar @onBack="onBack" @onEdit="setEdicion" @onDelete="runDelete" />
 	<div class="form">
 		<div class="header">
 			<div>

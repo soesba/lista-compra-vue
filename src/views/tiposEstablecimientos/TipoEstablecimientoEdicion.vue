@@ -1,5 +1,5 @@
 <template>
-  <edition-toolbar @onSave="save" :saveDisabled="!canSave" />
+  <edition-toolbar @onBack="onBack" @onSave="save" :saveDisabled="!canSave" />
 	<div class="form" v-if="editData">
 		<div class="body">
 			<div class="inputGroup">
@@ -80,6 +80,7 @@ const save = () => {
 }
 
 const onBack = () => {
+  modelStore.setTipoEstablecimiento(null)
 	if (adding.value) {
 		router.push('/tiposEstablecimientos')
 	} else {

@@ -1,17 +1,5 @@
 <template>
-	<detail-toolbar>
-		<template v-slot:left>
-			<v-btn icon="mdi-arrow-left" @click="onBack" variant="text" color="primary"></v-btn>
-		</template>
-		<template v-slot:right>
-			<v-btn icon="mdi-pencil" variant="text" color="primary" @click="setEdicion()"></v-btn>
-			<v-btn
-				icon="mdi-delete"
-				variant="text"
-				color="primary"
-				@click="deleteCard()"
-				v-if="canDelete"></v-btn>
-		</template>
+	<detail-toolbar @onBack="onBack" @onEdit="setEdicion" @onDelete="runDelete" >
 	</detail-toolbar>
 	<div class="form">
 		<div class="header">
@@ -40,13 +28,14 @@
 </template>
 
 <script lang="ts">
-	import { defineComponent, reactive, computed } from 'vue'
+	import { defineComponent, reactive } from 'vue'
 	import router from '@/router'
 	import getPrecioById from '@/services/precio/getPrecioById.service'
 	import { useRoute } from 'vue-router'
 	import { formatDecimal, pluralize } from '@/utils/utils'
 	import PrecioEquivalenciaComponent from '@/components/PrecioEquivalenciaComponent.vue'
   import { modelStore } from '@/main'
+import deleteItem from '@/services/precio/deletePrecio.service'
 
 	export default defineComponent({
 		name: 'CompraDetalle'
@@ -55,7 +44,6 @@
 <script setup lang="ts">
 	import DetailToolbar from '@/components/DetailToolbar.vue'
 	import type Precio from '@/services/precio/models/Precio'
-	import { eventStore, uiStore } from '@/main'
 
 	// Props
 	defineProps({
@@ -67,10 +55,6 @@
 	const route = useRoute()
 	// Data
 	const data: Precio = reactive((await getPrecioById(route.params['id'].toString())).data as Precio)
-	// Computed
-	const canDelete = computed(() => {
-		return data.borrable
-	})
 
 	// Methods
 	const onBack = () => {
@@ -82,19 +66,16 @@
     router.push('/precio-edicion')
   }
 
-	const deleteCard = () => {
-		uiStore.showConfirmDialog({
-			props: {
-				text: '¿Desea eliminar el elemento?',
-				title: 'Confirmación'
-			},
-			aceptarFn: onCloseConfirmDialog
+  const runDelete = (cardData: any) => {
+	if (cardData.borrable) {
+		deleteItem(cardData.id).then(response => {
+			if (response.respuesta === 200) {
+				console.log("🚀 ~ deleteItem ~ response:", response)
+				onBack()
+			}
 		})
 	}
-
-	const onCloseConfirmDialog = () => {
-		eventStore.deleteCard(data)
-	}
+}
 </script>
 <style lang="scss" scoped>
 	.logo {

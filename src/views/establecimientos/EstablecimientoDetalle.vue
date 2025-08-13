@@ -1,5 +1,5 @@
 <template>
-	<detail-toolbar @onEdit="setEdicion" @onDelete="runDelete" :deleteDisabled="!canDelete"/>
+	<detail-toolbar @onBack="onBack" @onEdit="setEdicion" @onDelete="runDelete" :deleteDisabled="!canDelete"/>
 	<div class="form">
 		<div class="header">
 			<v-img class="logo" :src="getImageSrc"></v-img>
@@ -68,6 +68,10 @@ const canDelete = computed(() => {
 })
 
 // Methods
+const onBack = () => {
+	router.push(history.state.back)
+}
+
 const setEdicion = () => {
   modelStore.establecimiento = data
 	router.push('/establecimiento-edicion')

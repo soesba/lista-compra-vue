@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="left">
-      <v-btn icon="mdi-arrow-left" @click="onBack" variant="text" color="primary"></v-btn>
+      <v-btn icon="mdi-arrow-left" @click="back" variant="text" color="primary"></v-btn>
     </div>
     <div class="center">
       <slot name="center"></slot>
@@ -21,7 +21,6 @@ export default defineComponent({
 <script setup lang="ts">
 import { defineComponent } from 'vue'
 import { uiStore } from '@/main'
-import router from '@/router'
 
 defineProps({
   deleteDisabled: {
@@ -30,11 +29,11 @@ defineProps({
   },
 })
 
-const emit = defineEmits(['onDelete', 'onEdit'])
+const emit = defineEmits(['onBack', 'onDelete', 'onEdit'])
 
 // Methods
-const onBack = () => {
-  router.back()
+const back = () => {
+  emit('onBack')
 }
 
 const confirmDelete = () => {

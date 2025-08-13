@@ -75,7 +75,7 @@ const router = createRouter({
 			component: () => import('@/views/precios/Precios.vue')
 		},
 		{
-			path: '/precio-edicion/:id?',
+			path: '/precio-edicion',
 			name: 'precioEdicion',
 			component: () => import('@/views/precios/PrecioEdicion.vue')
 		},

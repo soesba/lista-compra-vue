@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="left">
-      <v-btn icon="mdi-close" @click="onBack" variant="text" color="primary"></v-btn>
+      <v-btn icon="mdi-close" @click="back" variant="text" color="primary"></v-btn>
     </div>
     <div class="center">
       <slot name="center"></slot>
@@ -19,7 +19,6 @@ export default defineComponent({
 </script>
 <script setup lang="ts">
 import { defineComponent } from 'vue'
-import router from '@/router'
 
 defineProps({
   saveDisabled: {
@@ -28,11 +27,11 @@ defineProps({
   },
 })
 
-const emit = defineEmits(['onSave'])
+const emit = defineEmits(['onBack', 'onSave'])
 
 // Methods
-const onBack = () => {
-  router.back()
+const back = () => {
+  emit('onBack')
 }
 
 const save = () => {

@@ -1,5 +1,5 @@
 <template>
-	<detail-toolbar @onEdit="setEdicion" @onDelete="runDelete" :deleteDisabled="!canDelete"/>
+	<detail-toolbar @onBack="onBack" @onEdit="setEdicion" @onDelete="runDelete" :deleteDisabled="!canDelete"/>
 	<div class="form" v-if="data">
 		<div class="body">
 			<div class="inputGroup">
