@@ -33,6 +33,7 @@ import { defineComponent, computed } from 'vue'
 import router from '@/router'
 import getById from '@/services/establecimiento/getEstablecimientoById.service'
 import { useRoute } from 'vue-router'
+import deleteItem from '@/services/establecimiento/deleteEstablecimiento.service'
 export default defineComponent({
 	name: 'EstablecimientoDetalle',
 })
@@ -69,16 +70,22 @@ const canDelete = computed(() => {
 
 // Methods
 const onBack = () => {
-	router.push(history.state.back)
+	router.push(eventStore.getRoutes.list)
 }
 
 const setEdicion = () => {
   modelStore.establecimiento = data
-	router.push('/establecimiento-edicion')
+	router.push(eventStore.getRoutes.edit)
 }
 
-const runDelete = () => {
-	eventStore.deleteCard(data)
+const runDelete = (cardData: any) => {
+	if (cardData.borrable) {
+		deleteItem(cardData.id).then(response => {
+			if (response.respuesta === 200) {
+        router.push(eventStore.getRoutes.list)
+			}
+		})
+	}
 }
 </script>
 <style lang="scss" scoped>

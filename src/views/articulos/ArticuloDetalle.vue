@@ -31,7 +31,7 @@ import router from '@/router'
 import getArticuloById from '@/services/articulo/getArticuloById.service'
 import { useRoute } from 'vue-router'
 import DetailToolbar from '@/components/DetailToolbar.vue'
-import { modelStore } from '@/main'
+import { eventStore, modelStore } from '@/main'
 import type Articulo from '@/services/articulo/models/Articulo'
 import type Precio from '@/services/precio/models/Precio'
 import getByArticuloId from '@/services/precio/getPrecioByArticuloId.service'
@@ -59,12 +59,12 @@ data.precios = precios
 
 // Methods
 const onBack = () => {
-	router.push('/articulos')
+	router.push(eventStore.getRoutes.list)
 }
 
 const setEdicion = () => {
   modelStore.articulo = data
-	router.push('/articulo-edicion')
+	router.push(eventStore.getRoutes.edit)
 }
 
 const runDelete = (cardData: any) => {

@@ -16,7 +16,7 @@ const getDefaultRoutes = () => {
     detail: '',
     edit: '',
     add: '',
-    save: ''
+    list: ''
   }
 }
 

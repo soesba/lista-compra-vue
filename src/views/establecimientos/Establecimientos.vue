@@ -62,7 +62,7 @@ const routes = {
   detail: '/establecimiento-detalle',
   edit: '/establecimiento-edicion',
   add: '/establecimiento-edicion',
-  save: '/establecimientos'
+  list: '/establecimientos'
 }
 eventStore.setRoutes(routes)
 // Computed
@@ -86,7 +86,7 @@ const getAllData = () => {
 
 
 const onAddCard = () => {
-  router.push('/establecimiento-edicion')
+  router.push(routes.add)
 }
 
 const onSaveCard = (cardData: any) => {

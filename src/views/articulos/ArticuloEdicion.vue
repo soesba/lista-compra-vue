@@ -92,11 +92,6 @@ const onChange = (event: any) => {
 
 const onBack = () => {
   modelStore.setArticulo(null)
-	// if (adding.value) {
-	// 	router.push('/articulos')
-	// } else {
-	// 	router.push(`/articulo-detalle/${editData.id}`)
-	// }
   router.push(history.state.back)
 }
 

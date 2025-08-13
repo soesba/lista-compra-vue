@@ -58,7 +58,7 @@ import EditionToolbar from '@/components/EditionToolbar.vue'
 import { required, requiredIf } from '@vuelidate/validators'
 import { useVuelidate } from '@vuelidate/core'
 import { TipoDato } from '@/services/desplegables/models/TipoDato'
-import { noLogoUrl, modelStore } from '@/main'
+import { noLogoUrl, modelStore, eventStore } from '@/main'
 import { defineComponent, reactive, ref } from 'vue'
 import { computed } from 'vue'
 import router from '@/router'
@@ -119,9 +119,9 @@ const onChange = (event: any) => {
 const onBack = () => {
   modelStore.setEstablecimiento(null)
 	if (adding.value) {
-		router.push('/establecimientos')
+		router.push(eventStore.getRoutes.list)
 	} else {
-		router.push(`/establecimiento-detalle/${editData.id}`)
+		router.push(`${eventStore.getRoutes.detail}/${editData.id}`)
 	}
 }
 
@@ -158,7 +158,7 @@ const save = async () => {
 			content: imgBase64,
 		}
 	}
-  if (!editData.logo.content) {
+  if (!editData.logo?.content) {
     editData.logo = null
   }
 	delete editData.tmpId

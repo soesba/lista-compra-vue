@@ -9,6 +9,6 @@ export default interface EventState {
     detail: string,
     edit: string,
     add: string,
-    save: string
+    list: string
   }
 }

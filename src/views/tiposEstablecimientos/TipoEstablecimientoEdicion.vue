@@ -35,7 +35,7 @@ import EditionToolbar from '@/components/EditionToolbar.vue'
 import router from '@/router'
 import { required, requiredIf } from '@vuelidate/validators'
 import { useVuelidate } from '@vuelidate/core'
-import {  modelStore } from '@/main'
+import {  eventStore, modelStore } from '@/main'
 import create from '@/services/tipoEstablecimiento/createTipoEstablecimiento.service'
 import update from '@/services/tipoEstablecimiento/updateTipoEstablecimiento.service'
 
@@ -82,9 +82,9 @@ const save = () => {
 const onBack = () => {
   modelStore.setTipoEstablecimiento(null)
 	if (adding.value) {
-		router.push('/tiposEstablecimientos')
+		router.push(eventStore.getRoutes.list)
 	} else {
-		router.push(`/tipoEstablecimiento-detalle/${editData.id}`)
+		router.push(`${eventStore.getRoutes.detail}/${editData.id}`)
 	}
 }
 

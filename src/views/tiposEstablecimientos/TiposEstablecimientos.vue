@@ -36,9 +36,6 @@ eventStore.$onAction(({args, name}) => {
 		case 'saveCard':
 			onSaveCard(args[0])
 			break
-		case 'deleteCard':
-			onDeleteCard(args[0])
-			break
     case 'sortCards':
 			onSortCards(args[0])
 			break
@@ -64,7 +61,7 @@ const routes = {
   detail: '/tipoEstablecimiento-detalle',
   edit: '/tipoEstablecimiento-edicion',
   add: '/tipoEstablecimiento-edicion',
-  save: '/tiposEstablecimientos'
+  list: '/tiposEstablecimientos'
 }
 eventStore.setRoutes(routes)
 
@@ -88,17 +85,7 @@ const getAllData = () => {
 }
 
 const onAddCard = () => {
-  router.push('/tipoEstablecimiento-edicion')
-}
-
-const onDeleteCard = (cardData: any) => {
-	if (cardData.borrable) {
-		deleteItem(cardData.id).then(response => {
-			if (response.respuesta === 200) {
-				getAllData()
-			}
-		})
-	}
+  router.push(routes.add)
 }
 
 const onSaveCard = (cardData: any) => {

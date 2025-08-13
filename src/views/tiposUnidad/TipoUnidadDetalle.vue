@@ -36,7 +36,7 @@ import { defineComponent } from 'vue'
 import { computed } from 'vue'
 import router from '@/router'
 import DetailToolbar from '@/components/DetailToolbar.vue'
-import { modelStore } from '@/main'
+import { eventStore, modelStore } from '@/main'
 import { useRoute } from 'vue-router'
 import getById from '@/services/tipoUnidad/getTipoUnidadById.service'
 import deleteItem from '@/services/tipoUnidad/deleteTipoUnidad.service'
@@ -61,22 +61,21 @@ const equivalencias = data.equivalencias.map((equivalencia) => {
 
 const setEdicion = () => {
   modelStore.setTipoUnidad(data)
-	router.push('/tiposUnidades-edicion')
+	router.push(eventStore.getRoutes.edit)
 }
 
 const runDelete = () => {
-	// eventStore.deleteCard(data)
 	if (data.borrable) {
 		deleteItem(data.id).then(response => {
 			if (response.respuesta === 200) {
-				onBack()
+				router.push(eventStore.getRoutes.list)
 			}
 		})
 	}
 }
 
 const onBack = () => {
-	router.back
+	router.push(eventStore.getRoutes.list)
 }
 
 </script><style lang="scss" scoped>

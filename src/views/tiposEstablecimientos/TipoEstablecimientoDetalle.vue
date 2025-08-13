@@ -23,7 +23,7 @@ import DetailToolbar from '@/components/DetailToolbar.vue'
 import deleteItem from '@/services/tipoEstablecimiento/deleteTipoEstablecimiento.service'
 import type TipoEstablecimiento from '@/services/tipoEstablecimiento/models/TipoEstablecimiento'
 import getTipoEstablecimientoById from '@/services/tipoEstablecimiento/getTipoEstablecimientoById.service'
-import { modelStore } from '@/main'
+import { eventStore, modelStore } from '@/main'
 
 export default defineComponent({
 	name: 'TipoEstablecimientoDetalle',
@@ -49,7 +49,7 @@ const canDelete = computed(() => {
 // Methods
 const setEdicion = () => {
   modelStore.tipoEstablecimiento = data
-	router.push('/tipoEstablecimiento-edicion')
+	router.push(eventStore.getRoutes.edit)
 }
 
 const runDelete = () => {
@@ -63,7 +63,7 @@ const runDelete = () => {
 }
 
 const onBack = () => {
-	router.back()
+	router.push(eventStore.getRoutes.list)
 }
 
 </script><style lang="scss" scoped>

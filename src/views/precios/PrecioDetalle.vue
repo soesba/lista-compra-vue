@@ -34,7 +34,7 @@
 	import { useRoute } from 'vue-router'
 	import { formatDecimal, pluralize } from '@/utils/utils'
 	import PrecioEquivalenciaComponent from '@/components/PrecioEquivalenciaComponent.vue'
-  import { modelStore } from '@/main'
+  import { eventStore, modelStore } from '@/main'
 import deleteItem from '@/services/precio/deletePrecio.service'
 
 	export default defineComponent({
@@ -58,12 +58,12 @@ import deleteItem from '@/services/precio/deletePrecio.service'
 
 	// Methods
 	const onBack = () => {
-		router.push('/precios')
+		router.push(eventStore.getRoutes.list)
 	}
 
   const setEdicion = () => {
     modelStore.precio = data
-    router.push('/precio-edicion')
+    router.push(eventStore.getRoutes.edit)
   }
 
   const runDelete = (cardData: any) => {
