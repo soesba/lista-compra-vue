@@ -1,13 +1,15 @@
 <template>
 	<div v-for="eq in equivalencias" class="inputGroup">
 		<label class="labelFor">Precio por {{ eq.to.nombre }}:</label> <label class="labelData">{{ formatDecimal(getPrecio(eq)) }}</label>
+    <div v-html="getBloquePrecioUnidad()"></div>
 	</div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, reactive } from 'vue'
 import getByFromMultiple from '@/services/equivalencia/getEquivalenciaByFromMultiple.service'
 import type UnidadMedida from '@/services/precio/models/UnidadMedida'
 import { formatDecimal } from '@/utils/utils'
+import Equivalencia from '@/services/equivalencia/models/Equivalencia';
 
 export default defineComponent({
 	name: 'PrecioEquivalenciaComponent',
@@ -25,12 +27,10 @@ const props = defineProps({
 	},
 })
 
-console.log(props.precio)
+console.log(props)
 
-const equivalencias = ref()
-getByFromMultiple(props.unidadesMedida.map((x) => x.id)).then((response) => {
-	equivalencias.value = response.data
-})
+let equivalencias = reactive(await (await getByFromMultiple(props.unidadesMedida.map((x) => x.id))).data) as Equivalencia[]
+console.log('LOG~ ~ :33 ~ equivalencias:', equivalencias)
 
 const getPrecio = (eq: any) => {
 	console.log('LOG~ ~ file: PrecioEquivalenciaComponent.vue:37 ~ getPrecio ~ eq:', eq)
@@ -39,6 +39,15 @@ const getPrecio = (eq: any) => {
 		return props.precio / (valor['valor'] * eq.factor)
 	}
 	return 0
+}
+
+const getBloquePrecioUnidad = () => {
+  const unidad = props.unidadesMedida.find((x) => x.nombre.includes('unidad'))
+  if (unidad) {
+    return `<label class="labelFor">Precio por unidad:</label> <label class="labelData">${formatDecimal(props.precio / unidad.valor)}</label>`
+  } else {
+    return null
+  }
 }
 </script>
 <style lang="scss" scoped></style>

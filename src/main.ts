@@ -26,20 +26,19 @@ const vuetify = createVuetify({
   }
 })
 
-let app;
-let containerSelector = "#app";
+let app
+let containerSelector = "#app"
 
 // check if app has been mounted already
-const mountPoint = document.querySelector(containerSelector);
+const mountPoint = document.querySelector(containerSelector)
 
-if (mountPoint && mountPoint.__vue_app__ !== undefined) {
-
+if (mountPoint && (mountPoint as any).__vue_app__ !== undefined) {
   // Set the existing mount point to 'app'.
-  app = mountPoint.__vue_app__._instance.proxy;
+  app = (mountPoint as any).__vue_app__._instance.proxy;
 }
 else {
-  app = createApp(App).
-    use(pinia).
+  app = createApp(App)
+  app.use(pinia).
     use(router).
     use(vuetify).
     mount('#app')
