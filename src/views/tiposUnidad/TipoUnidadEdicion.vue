@@ -28,9 +28,11 @@
         <label>1 {{editData.nombre}} equivale a </label>
       </div>
       <equivalencia-component
-        v-for="equivalencia in equivalencias"
+        v-for="equivalencia in equivalenciasListado"
+        v-bind:key="equivalencia.id || equivalencia.tmpId"
         :equivalencia="equivalencia"
-        @update-equivalencia="onUpdateEquivalencia">
+        @update-equivalencia="onUpdateEquivalencia"
+        @delete-equivalencia="onDeleteEquivalencia">
       </equivalencia-component>
       <equivalencia-component
         :from="from"
@@ -78,6 +80,12 @@ const from = ref({
 	id: editData.id,
 	nombre: editData.nombre
 })
+
+// Computed
+const equivalenciasListado = computed(() => {
+  return equivalencias.filter(eq => eq.markedForDeletion === false)
+})
+
 // Validations
 const validations = computed(() => {
 	return {
@@ -97,7 +105,7 @@ const v$ = useVuelidate(validations, { editData })
 const onUpdateEquivalencia = (data: Equivalencia) => {
 	console.log("LOG ~ onUpdateEquivalencia ~ data:", data)
   equivalencias.forEach((eq: Equivalencia, index: number) => {
-    if ((eq.id && eq.id === data.id) || (eq.tmpId && eq.tmpId === data.tmpId)) {
+    if ((data.id && eq.id === data.id) || (data.tmpId && eq.tmpId === data.tmpId)) {
       equivalencias[index] = data
     }
   })
@@ -105,7 +113,26 @@ const onUpdateEquivalencia = (data: Equivalencia) => {
 
 const onSaveEquivalencia = (data: Equivalencia) => {
 	console.log("LOG ~ onSaveEquivalencia ~ data:", data)
+  if (!data.tmpId) {
+    data.tmpId = Date.now()
+  }
+  console.log("LOG ~ onSaveEquivalencia ~ equivalencias:", equivalencias)
 	equivalencias.push(data)
+}
+
+const onDeleteEquivalencia = (data: Equivalencia) => {
+  console.log("LOG ~ onDeleteEquivalencia ~ data:", data)
+  if (data.tmpId) {
+    equivalencias.splice(equivalencias.findIndex((eq: Equivalencia) => eq.tmpId === data.tmpId, 1))
+  } else {
+    equivalencias.forEach((eq: Equivalencia, index: number) => {
+      if ((data.id && eq.id === data.id) || (data.tmpId && eq.tmpId === data.tmpId)) {
+        console.log(index, equivalencias[index])
+        equivalencias[index].markedForDeletion = true
+      }
+    })
+  }
+  console.log('LOG~ ~ :122 ~ onDeleteEquivalencia ~ equivalencias:', equivalencias)
 }
 
 const saveAll = () => {

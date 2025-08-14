@@ -14,7 +14,8 @@
       required
       :variant="props.equivalencia ? 'outlined' : 'underlined'"
       step="any"
-      v-model.number="nuevaEquivalencia.factor"
+      type="number"
+      v-model="nuevaEquivalencia.factor"
       :error-messages="v$.nuevaEquivalencia.factor.$errors.map((e: any) => e.$message)"
       @blur="txtFactorOnBlur"
       @keypress="txtFactorOnKeyPress"
@@ -59,7 +60,7 @@ export default defineComponent({
 })
 </script>
 <script setup lang="ts">
-const emitter = defineEmits(['saveEquivalencia', 'updateEquivalencia'])
+const emitter = defineEmits(['saveEquivalencia', 'updateEquivalencia', 'deleteEquivalencia'])
 const props = defineProps({
 	equivalencia: {
 		type: Object as PropType<Equivalencia>,
@@ -75,7 +76,7 @@ const props = defineProps({
 
 console.log(props.from)
 const nuevaEquivalencia = props.equivalencia ? ref({ ...props.equivalencia}) : ref({
-	tmpId: Date.now(),
+	tmpId: 0,
   from: props.from,
 	to: null,
 	factor: null
@@ -90,7 +91,7 @@ const validations = computed(() => {
 	return {
 		nuevaEquivalencia: {
       from: { required: requiredIf(props.equivalencia) },
-      tmpId: { required: requiredIf(props.equivalencia) },
+      tmpId: { required: requiredIf(!props.equivalencia) },
 			to: { required: requiredIf(props.equivalencia) },
 			factor: { required: requiredIf(props.equivalencia) }
 		}
@@ -109,8 +110,11 @@ const onChangeCboTo = (value: any)=> {
 	v$.value.nuevaEquivalencia.to.$touch()
 }
 
-const txtFactorOnBlur = () => {
-	if (props.equivalencia && nuevaEquivalencia.value.factor !== props.equivalencia.factor) {
+const txtFactorOnBlur = (value: any) => {
+  const numberValue = value.target.valueAsNumber
+	console.log('LOG~ ~ :114 ~ txtFactorOnBlur ~ value:', value)
+	if (props.equivalencia && numberValue !== props.equivalencia.factor) {
+    nuevaEquivalencia.value.factor = numberValue
 		emitter('updateEquivalencia', nuevaEquivalencia.value)
 	}
 	v$.value.nuevaEquivalencia.factor.$touch
@@ -131,7 +135,7 @@ const onClickCancel = () => {
 }
 
 const onClickDelete = () => {
-
+  emitter('deleteEquivalencia', nuevaEquivalencia.value)
 }
 
 const resetForm = () => {

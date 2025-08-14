@@ -10,7 +10,8 @@ export const DTOtoModel = (origin: EquivalenciaDTO): Equivalencia => {
 		to: origin.to,
 		factor: origin.factor,
 		fechaCreacion: origin.fechaCreacion,
-		borrable: origin.borrable
+		borrable: origin.borrable,
+    markedForDeletion: false
 	}
 	return model
 }

@@ -7,4 +7,5 @@ export default interface EquivalenciaDTO {
 	factor: number;
 	fechaCreacion: string;
 	borrable: boolean;
+  markedForDeletion?: boolean;
 }
