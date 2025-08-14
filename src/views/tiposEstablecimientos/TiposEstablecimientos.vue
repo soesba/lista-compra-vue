@@ -15,7 +15,6 @@ import get from '@/services/tipoEstablecimiento/getTipoEstablecimiento.service'
 import getByAny from '@/services/tipoEstablecimiento/getTipoEstablecimientoByAny.service'
 import create from '@/services/tipoEstablecimiento/createTipoEstablecimiento.service'
 import update from '@/services/tipoEstablecimiento/updateTipoEstablecimiento.service'
-import deleteItem from '@/services/tipoEstablecimiento/deleteTipoEstablecimiento.service'
 import { eventStore } from '@/main';
 import type TipoEstablecimientoRequest from '@/services/tipoEstablecimiento/models/TipoEstablecimientoRequest'
 import type TipoEstablecimientoResponse from '@/services/tipoEstablecimiento/models/TipoEstablecimientoResponse'

@@ -4,6 +4,7 @@
       :tipo-dato="TipoDato.TipoUnidad"
       :model-value="nuevaEquivalencia.to"
       :variant="props.equivalencia ? 'outlined' : 'underlined'"
+      :return-object="false"
       required
       :error-messages="v$.nuevaEquivalencia.to.$errors.map((e) => e.$message)"
       @change="onChangeCboTo">
@@ -12,7 +13,8 @@
       label="Factor*"
       required
       :variant="props.equivalencia ? 'outlined' : 'underlined'"
-      v-model="nuevaEquivalencia.factor"
+      step="any"
+      v-model.number="nuevaEquivalencia.factor"
       :error-messages="v$.nuevaEquivalencia.factor.$errors.map((e: any) => e.$message)"
       @blur="txtFactorOnBlur"
       @keypress="txtFactorOnKeyPress"
@@ -45,12 +47,12 @@
 </template>
 <script lang="ts">
 import useVuelidate from '@vuelidate/core'
-import { required } from '@vuelidate/validators'
 import ComboComponent from './combos/ComboComponent.vue'
 import { computed, defineComponent, ref, type PropType } from 'vue'
 import type Equivalencia from '@/services/equivalencia/models/Equivalencia'
 import { TipoDato } from '@/services/desplegables/models/TipoDato'
 import type Item from '@/services/desplegables/models/Item'
+import { requiredIf } from '@vuelidate/validators'
 
 export default defineComponent({
 	name: 'EquivalenciaComponent',
@@ -74,9 +76,9 @@ const props = defineProps({
 console.log(props.from)
 const nuevaEquivalencia = props.equivalencia ? ref({ ...props.equivalencia}) : ref({
 	tmpId: Date.now(),
+  from: props.from,
 	to: null,
-	factor: null,
-	borrable: true
+	factor: null
 })
 
 // Computed
@@ -87,35 +89,38 @@ const canSave = computed(() => {
 const validations = computed(() => {
 	return {
 		nuevaEquivalencia: {
-			to: { required },
-			factor: { required }
+      from: { required: requiredIf(props.equivalencia) },
+      tmpId: { required: requiredIf(props.equivalencia) },
+			to: { required: requiredIf(props.equivalencia) },
+			factor: { required: requiredIf(props.equivalencia) }
 		}
 	}
 })
 const v$ = useVuelidate(validations, { nuevaEquivalencia })
 // Methods
-  
+
 const onChangeCboTo = (value: any)=> {
 	console.log("LOG ~ onChangeCboTo ~ value:", value)
 	nuevaEquivalencia.value.to = value
+	console.log('LOG~ ~ :101 ~ onChangeCboTo ~ nuevaEquivalencia.value:', nuevaEquivalencia.value)
 	if (props.equivalencia && nuevaEquivalencia.value.to !== props.equivalencia.to) {
 		emitter('updateEquivalencia', nuevaEquivalencia.value)
 	}
-	v$.value.nuevaEquivalencia.value.to.$touch()
+	v$.value.nuevaEquivalencia.to.$touch()
 }
 
 const txtFactorOnBlur = () => {
 	if (props.equivalencia && nuevaEquivalencia.value.factor !== props.equivalencia.factor) {
 		emitter('updateEquivalencia', nuevaEquivalencia.value)
 	}
-	v$.value.nuevaEquivalencia.value.factor.$touch
+	v$.value.nuevaEquivalencia.factor.$touch
 }
 
 
 const txtFactorOnKeyPress = (evt: any) => {
-	console.log("LOG ~ txtFactorOnKeyPress ~ evt:", evt)
+	// console.log("LOG ~ txtFactorOnKeyPress ~ evt:", evt)
 }
-  
+
 const onClickSave = () => {
 	emitter('saveEquivalencia', nuevaEquivalencia.value)
 	resetForm()
@@ -132,9 +137,9 @@ const onClickDelete = () => {
 const resetForm = () => {
 	nuevaEquivalencia.value = {
 		tmpId: 0,
+    from: props.from,
 		to: null,
-		factor: null,
-		borrable: true
+		factor: null
 	}
 	v$.value.$reset()
 }

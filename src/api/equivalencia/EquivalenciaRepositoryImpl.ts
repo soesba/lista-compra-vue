@@ -1,9 +1,10 @@
 import type EquivalenciaResponse from "@/services/equivalencia/models/EquivalenciaResponse"
 import { xhr } from "../config/Repository"
 import type EquivalenciaRepository from "./EquivalenciaRepository"
-import { DTOtoModel, requestModelToDTO } from "./mapping/EquivalenciaMapping"
+import { DTOtoModel, modelToDTO, requestModelToDTO } from "./mapping/EquivalenciaMapping"
 import type EquivalenciaDTO from "./dto/EquivalenciaDTO"
 import type EquivalenciaRequest from "@/services/equivalencia/models/EquivalenciaRequest"
+import Equivalencia from '@/services/equivalencia/models/Equivalencia'
 
 export default class EquivalenciaRepositoryImpl implements EquivalenciaRepository {
 	async get (): Promise<EquivalenciaResponse> {
@@ -70,6 +71,20 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 		}
 		return result
 	}
+
+  async save(request: Equivalencia[]): Promise<EquivalenciaResponse> {
+    const endpoint = `/tipoUnidadEquivalencia/save/`
+		const headers = {
+			'Content-Type': 'application/json;charset=UTF-8'
+		}
+		const requestDTO = request.map((item: Equivalencia) => modelToDTO(item))
+		const response = await xhr.post(endpoint, requestDTO, { headers})
+		const result = {
+			data: DTOtoModel(response.data),
+			respuesta: response.status
+		}
+		return result
+  }
 
 	async insert(request: EquivalenciaRequest): Promise<EquivalenciaResponse> {
 		const endpoint = `/tipoUnidadEquivalencia/insert/`

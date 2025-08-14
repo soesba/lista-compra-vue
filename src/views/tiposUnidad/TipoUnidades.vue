@@ -16,7 +16,6 @@ import get from '@/services/tipoUnidad/getTipoUnidad.service'
 import getByAny from '@/services/tipoUnidad/getTipoUnidadByAny.service'
 import create from '@/services/tipoUnidad/createTipoUnidad.service'
 import update from '@/services/tipoUnidad/updateTipoUnidad.service'
-import deleteItem from '@/services/tipoUnidad/deleteTipoUnidad.service'
 import { defineComponent } from 'vue'
 import { eventStore } from '@/main';
 import type TipoUnidadRequest from '@/services/tipoUnidad/models/TipoUnidadRequest'

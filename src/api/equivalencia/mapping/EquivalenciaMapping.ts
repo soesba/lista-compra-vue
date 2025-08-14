@@ -15,6 +15,13 @@ export const DTOtoModel = (origin: EquivalenciaDTO): Equivalencia => {
 	return model
 }
 
+export const modelToDTO = (origin: Equivalencia): EquivalenciaDTO => {
+  const dto: EquivalenciaDTO = {
+    ...origin
+  }
+  return dto
+}
+
 export const requestDTOtoModel = (origin: EquivalenciaRequestDTO): EquivalenciaRequest => {
 	return {...origin}
 }

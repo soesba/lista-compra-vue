@@ -15,7 +15,6 @@ import get from '@/services/precio/getPrecio.service'
 import getByAny from '@/services/precio/getPrecioByAny.service'
 import create from '@/services/precio/createPrecio.service'
 import update from '@/services/precio/updatePrecio.service'
-import deleteItem from '@/services/precio/deletePrecio.service'
 import { defineComponent } from 'vue'
 import router from '@/router'
 import { eventStore } from '@/main';

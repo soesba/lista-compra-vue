@@ -59,7 +59,7 @@ const props = defineProps({
 	},
 	returnObject: {
 		type: Boolean,
-		default: false
+		default: true
 	},
 	maxWidth: {
 		type: String,

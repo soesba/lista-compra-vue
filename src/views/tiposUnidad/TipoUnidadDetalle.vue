@@ -13,14 +13,14 @@
       <div class="inputGroup">
         <label class="labelFor">Equivalencias</label>
       </div>
-      <div v-if="data.equivalencias?.length === 0" class="inputGroup">
+      <div v-if="equivalencias?.length === 0" class="inputGroup">
         <label> No hay equivalencias </label>
       </div>
       <div v-else class="inputGroup margin-top-bottom">
         <label>1 {{data.nombre}} equivale a </label>
       </div>
       <div v-for="equivalencia in equivalencias">
-        <label>{{equivalencia.factor}} {{ pluralize(equivalencia.nombreTo, equivalencia.factor) }}</label>
+        <label>{{equivalencia.factor}} {{ pluralize(equivalencia.to.nombre, equivalencia.factor) }}</label>
       </div>
 		</div>
 	</div>
@@ -32,7 +32,7 @@ export default defineComponent({
 })
 </script>
 <script setup lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, reactive } from 'vue'
 import { computed } from 'vue'
 import router from '@/router'
 import DetailToolbar from '@/components/DetailToolbar.vue'
@@ -41,10 +41,9 @@ import { useRoute } from 'vue-router'
 import getById from '@/services/tipoUnidad/getTipoUnidadById.service'
 import deleteItem from '@/services/tipoUnidad/deleteTipoUnidad.service'
 import TipoUnidad from '@/services/tipoUnidad/models/TipoUnidad'
-import getDesplegable from '@/services/desplegables/getDesplegable.service'
-import { TipoDato } from '@/services/desplegables/models/TipoDato'
-import Item from '@/services/desplegables/models/Item'
 import { pluralize } from '@/utils/utils'
+import Equivalencia from '@/services/equivalencia/models/Equivalencia'
+import getByFrom from '@/services/equivalencia/getEquivalenciaByFrom.service'
 // Computed
 const canDelete = computed(() => {
 	return data.borrable
@@ -52,12 +51,7 @@ const canDelete = computed(() => {
 // Data
 const route = useRoute()
 const data: TipoUnidad = (await getById(route.params['id'].toString())).data as TipoUnidad
-const unidades = (await (await getDesplegable(TipoDato.TipoUnidad))).data as Item[]
-const equivalencias = data.equivalencias.map((equivalencia) => {
-  const eq: any = { ...equivalencia }
-  eq.nombreTo = unidades.find((unidad) => unidad.id === equivalencia.to.toString())?.nombre
-  return eq
-})
+const equivalencias = reactive<Equivalencia[]>(await (await(getByFrom(data.id))).data as Equivalencia[])
 
 const setEdicion = () => {
   modelStore.setTipoUnidad(data)
