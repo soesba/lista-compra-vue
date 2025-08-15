@@ -22,31 +22,32 @@
       @input="v$.nuevaEquivalencia.factor.$touch"
     ></v-text-field>
     <div class="wrapper-icons" v-if="props.equivalencia">
-      <v-btn
+      <Button
         icon="mdi-delete"
         variant="text"
         color="red"
         @click="onClickDelete"
-      ></v-btn>
+      ></Button>
     </div>
     <div class="wrapper-icons" v-else>
-      <v-btn
+      <Button
         icon="mdi-check"
         variant="text"
         color="primary"
         :disabled="!canSave"
         @click="onClickSave"
-      ></v-btn>
-      <v-btn
+      ></Button>
+      <Button
         icon="mdi-close"
         variant="text"
         color="primary"
         @click="onClickCancel">
-      </v-btn>
+      </Button>
     </div>
   </div>
 </template>
 <script lang="ts">
+import { Button } from 'primevue';
 import useVuelidate from '@vuelidate/core'
 import ComboComponent from './combos/ComboComponent.vue'
 import { computed, defineComponent, ref, type PropType } from 'vue'

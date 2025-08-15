@@ -19,8 +19,8 @@
             {{ medida.valor }} {{ pluralize(medida.nombre, medida.valor) }}
           </td>
           <td v-if="editable">
-            <v-btn icon="mdi-pencil" variant="text" color="primary" @click="$emit('edit', precio)"></v-btn>
-            <v-btn icon="mdi-delete" variant="text" color="primary" @click="$emit('delete', precio)"></v-btn>
+            <Button icon="mdi-pencil" variant="text" color="primary" @click="$emit('edit', precio)"></Button>
+            <Button icon="mdi-delete" variant="text" color="primary" @click="$emit('delete', precio)"></Button>
           </td>
         </tr>
       </tbody>
@@ -29,6 +29,7 @@
 </template>
 
 <script lang="ts">
+import { Button } from 'primevue';
 import { defineComponent } from 'vue'
 import type Precio from '@/services/precio/models/Precio'
 import { formatDecimal, pluralize } from '@/utils/utils'
@@ -57,7 +58,7 @@ const getFechaCompra = (value: any) => {
 }
 </script>
 <style lang="scss" scoped>
-  .v-card-text {
+  .p-card-content {
     font-size: inherit;
   }
 	.wrapper {

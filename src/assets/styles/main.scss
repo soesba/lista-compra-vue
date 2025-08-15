@@ -7,6 +7,7 @@
 }
 
 body {
+	font-family: 'Roboto', sans-serif;
   min-width: 360px;
 }
 
@@ -16,7 +17,7 @@ html {
 	overflow-y: auto;
 }
 
-a.no-link {
+.no-link {
 	text-decoration: none;
 	color: inherit;
 }
@@ -25,21 +26,21 @@ a.no-link {
 	font-size: 0.6rem;
 }
 
-.v-main {
+.main {
   min-width: 360px;
 }
 
-.v-dialog {
+.dialog {
   max-width: 400px;
 }
 
-.v-card-text {
+.p-card-text {
 	&.text-small {
 		font-size: 0.6rem;
 	}
 }
 
-.v-card {
+.p-card {
 	margin: 10px;
   text-align: center;
 	&.screen-center {
@@ -53,7 +54,7 @@ a.no-link {
 		justify-self: center;
 	}
 
-	.v-card-actions {
+	.p-card-actions {
 		button {
 			margin-left: 10px !important;
 		}

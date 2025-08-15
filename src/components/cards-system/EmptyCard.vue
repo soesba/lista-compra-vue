@@ -1,14 +1,17 @@
 <template>
-	<v-card class="cursor">
-		<v-card-title>
-			<div>
-				No hay datos
-			</div>
-		</v-card-title>
-	</v-card>
+	<Card class="card cursor">
+    <template #title>
+      <div class="card-title">
+        <div>
+          No hay datos
+        </div>
+      </div>
+    </template>
+	</Card>
 </template>
 
 <script lang="ts">
+import Card from 'primevue/card';
 import { defineComponent } from 'vue'
 export default defineComponent({
 	name: 'EmptyCard',
@@ -18,9 +21,9 @@ export default defineComponent({
 
 </script>
 <style lang="scss" scoped>
-	.v-card {
+	.p-card {
 		margin: 10px;
-		.v-card-title {
+		.p-card-title {
 			display: flex;
 			flex-direction: row;
 			div:first-of-type {

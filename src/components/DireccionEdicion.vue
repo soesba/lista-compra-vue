@@ -11,28 +11,28 @@
 				@input="v$.nuevaDireccion.direccion.$touch"
 			></v-text-field>
       <div class="wrapper-icons" v-if="props.direccion">
-        <v-btn
+        <Button
           :icon="nuevaDireccion.favorita ? 'mdi-star' : 'mdi-star-outline'"
           variant="text"
           color="primary"
           @click="setFavorita"
-        ></v-btn>
-        <v-btn
+        ></Button>
+        <Button
           icon="mdi-delete"
           variant="text"
           color="red"
           @click="onClickDelete"
-        ></v-btn>
+        ></Button>
       </div>
       <div class="wrapper-icons" v-if="!props.direccion">
-        <v-btn
+        <Button
           icon="mdi-check"
           variant="text"
           color="primary"
           :disabled="!canSave"
           @click="onClickSave"
-        ></v-btn>
-        <v-btn icon="mdi-close" variant="text" color="primary" @click="onClickCancel"></v-btn>
+        ></Button>
+        <Button icon="mdi-close" variant="text" color="primary" @click="onClickCancel"></Button>
       </div>
 		</div>
 		<div class="inputGroup">
@@ -56,6 +56,7 @@
 	</div>
 </template>
 <script lang="ts">
+import { Button } from 'primevue';
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import type { PropType } from 'vue'

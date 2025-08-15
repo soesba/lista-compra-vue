@@ -3,7 +3,6 @@
   <SearchBox @search="onSearch"></SearchBox>
   <CardList
     :items="list"
-
     :class="getClasses"
     :mapping="mapping"/>
 </template>

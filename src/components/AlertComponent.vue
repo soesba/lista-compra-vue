@@ -12,7 +12,7 @@ export default defineComponent({
 const uiStore = useUiStore()
 // Computed
 const show = computed(() => {
-	return uiStore.getAlertComponent?.show
+	return uiStore.getAlertComponent?.visible
 })
 const text = computed(() => {
 	return uiStore.getAlertComponent?.props.text

@@ -1,11 +1,12 @@
 <template>
-  <v-app>
+  <div class="app">
     <navigation />
-    <v-main>
+    <div class="main">
       <alert-component></alert-component>
       <raw-confirm-dialog v-if="rawConfirmDialog"></raw-confirm-dialog>
-      <raw-dialog-component v-if="rawDialogComponent"></raw-dialog-component>
-      <v-container>
+      <DynamicDialog />
+      <!-- <raw-dialog-component v-if="rawDialogComponent"></raw-dialog-component> -->
+      <div class="container">
         <router-view v-slot="{ Component }">
           <suspense timeout="0">
             <template #default>
@@ -18,11 +19,12 @@
             </template>
           </suspense>
         </router-view>
-      </v-container>
-    </v-main>
-  </v-app>
+      </div>
+    </div>
+  </div>
 </template>
 <script setup lang="ts">
+import DynamicDialog from 'primevue/dynamicdialog';
 import { Navigation } from '@/components/index'
 import { markRaw } from 'vue'
 import DialogComponent from '@/components/DialogComponent.vue'

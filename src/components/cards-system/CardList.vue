@@ -7,36 +7,33 @@
         v-for="item in items"
         :key="item.id"
         :card-data="item"
-
         @click="onClick"/>
 		</div>
 		<div v-else>
 			<empty-card></empty-card>
 		</div>
 		<div v-if="addButton" class="wrapper-add-button">
-			<v-fab
-				icon="mdi-plus"
-				class="ms-4"
-				location="bottom end"
-				absolute
-				offset
+			<Button
+				icon="pi pi-plus"
+        rounded
 				color="primary"
 				@click="addCard()"
-			></v-fab>
+			></Button>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
+import Button from 'primevue/button';
+import { EmptyCard, Card } from '@/components/index'
+import { eventStore } from '@/main'
+import router from '@/router'
+import { computed, defineComponent } from 'vue'
 export default defineComponent({
 	name: 'CardList',
 })
 </script>
 <script setup lang="ts">
-import { EmptyCard, Card } from '@/components/index'
-import { eventStore } from '@/main'
-import router from '@/router'
-import { computed, defineComponent } from 'vue'
 const emit = defineEmits(['click-card', 'addCard'])
 const props = defineProps({
 	items: Array<any>,
@@ -82,6 +79,8 @@ const addCard = () => {
 			width: 100%;
 			bottom: 40px;
 			right: 20px;
+      display: flex;
+      justify-content: flex-end;
 		}
     .list-container {
       &.card {
@@ -102,7 +101,7 @@ const addCard = () => {
         flex-wrap: wrap;
         margin: 0 auto;
         margin-bottom: 60px; // salvar boton de añadir
-        .v-card {
+        .p-card {
           max-width: 70%;
           width: 50%;
         }

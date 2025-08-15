@@ -1,17 +1,18 @@
 <template>
-  <v-card :title="getTitle">
-    <template v-slot:prepend>
+  <Card :title="getTitle">
+    <template #title>
       <v-icon color="primary" icon="mdi-arrow-left" @click="cancel"></v-icon>
     </template>
-    <v-card-text>
+    <template #content>
       <v-radio-group v-model="data" @update:model-value="onChange">
         <v-radio v-for="item in items" :label="item.title" :value="item.value"></v-radio>
       </v-radio-group>
-    </v-card-text>
-  </v-card>
+    </template>
+  </Card>
 </template>
 
 <script setup lang="ts">
+import Card from 'primevue/card';
 import { uiStore } from '@/main'
 import { computed, ref } from 'vue'
 

@@ -2,7 +2,7 @@
 	<detail-toolbar @onBack="onBack" @onEdit="setEdicion" @onDelete="runDelete" :deleteDisabled="!canDelete"/>
 	<div class="form">
 		<div class="header">
-			<v-img class="logo" :src="getImageSrc"></v-img>
+			<Image class="logo" :src="getImageSrc"></Image>
 			<label class="text-h6">{{ data.nombre }}</label>
 		</div>
 		<div class="body">
@@ -18,17 +18,19 @@
         <label>{{direcccion.direccion}}</label>
         <label>{{direcccion.poblacion}}</label>
         <label>{{direcccion.codPostal}}</label>
-        <v-btn v-if="direcccion.favorita"
+        <Button v-if="direcccion.favorita"
           icon="mdi-star"
           variant="text"
           color="primary"
-        ></v-btn>
+        ></Button>
       </div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
+import Image from 'primevue/image';
+import { Button } from 'primevue';
 import { defineComponent, computed } from 'vue'
 import router from '@/router'
 import getById from '@/services/establecimiento/getEstablecimientoById.service'

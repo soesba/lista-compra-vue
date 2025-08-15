@@ -2,10 +2,10 @@
 	<edition-toolbar @onBack="onBack" @onSave="save" :saveDisabled="!canSave" />
 	<div class="form" v-if="editData">
 		<div class="wrapper-logo">
-			<v-img class="logo" :src="getImageSrc"></v-img>
+			<Image class="logo" :src="getImageSrc"></Image>
 			<div class="controles-logo">
-				<v-btn variant="text" color="primary" @click="getFile()">Cambiar imagen</v-btn>
-				<v-btn variant="text" color="primary" @click="resetLogo()">Quitar imagen</v-btn>
+				<Button variant="text" color="primary" @click="getFile()">Cambiar imagen</Button>
+				<Button variant="text" color="primary" @click="resetLogo()">Quitar imagen</Button>
 			</div>
 			<div class="input-file">
 				<input
@@ -52,6 +52,8 @@
 </template>
 
 <script lang="ts">
+import Image from 'primevue/image';
+import { Button } from 'primevue';
 import ComboComponent from '@/components/combos/ComboComponent.vue'
 import DireccionEdicion from '@/components/DireccionEdicion.vue'
 import EditionToolbar from '@/components/EditionToolbar.vue'

@@ -1,12 +1,15 @@
 <template>
   <div class="wrapper-search-box">
-    <v-text-field class="max-width" append-inner-icon="mdi-magnify" label="Buscar" variant="solo"
-      v-model="textoBusqueda">
-
-    </v-text-field>
+    <IconField>
+      <InputText class="max-width" placeholder="Buscar" v-model="textoBusqueda"/>
+      <InputIcon class="pi pi-search" />
+  </IconField>
   </div>
 </template>
 <script lang="ts">
+import InputText from 'primevue/inputtext';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
 import { defineComponent, ref, watch } from 'vue'
 export default defineComponent({
 	name: 'SearchBox'

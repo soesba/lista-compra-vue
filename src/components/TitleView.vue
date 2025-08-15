@@ -1,23 +1,13 @@
 <template>
 	<div class="title-container">
 		<label>{{ titulo }}</label>
-		<v-menu>
-        <template v-slot:activator="{ props }">
-          <v-btn icon="mdi-dots-vertical" v-bind="props" variant="text"></v-btn>
-        </template>
-
-        <v-list>
-          <v-list-item
-            v-for="(item, i) in menu"
-            :key="i" :value="i" @click="item.click(i)"
-          >
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+    <Button rounded severity="secondary" icon="pi pi-ellipsis-v" @click="toggle" aria-haspopup="true" aria-controls="overlay_menu" />
+		<Menu ref="menu" id="overlay_menu" :model="menuItems" :popup="true" />
 	</div>
 </template>
 <script setup lang="ts">
+  import { Button } from 'primevue';
+  import Menu from 'primevue/menu';
   import { markRaw, ref } from 'vue'
   import MenuDialog from '@/components/MenuDialog.vue'
   import { uiStore, eventStore } from '@/main'
@@ -36,30 +26,44 @@
       type: Array<itemMenu>
     }
   })
+  const menu = ref();
 
   const defaultMenu: Array<any> = [
-  { name: 'ordenar', title: 'Ordenar por', click: (i: any) => menuClick(i), valorActual: 0, subitems: [
+  // { name: 'ordenar', label: 'Ordenar por', click: (i: any) => menuClick(i), valorActual: 0, subitems: [
+  //   { title: 'Nombre ascendente', value: 0 },
+  //   { title: 'Nombre descendente', value: 1 }
+  // ]},
+	// { name: 'ver', label: 'Ver', click: (i: any) => menuClick(i), valorActual: 0, subitems: [
+  //   { title: 'Tarjetas pequeñas', value: 0 },
+  //   { title: 'Tarjetas grandes', value: 1 },
+  //   { title: 'Lista', value: 2 }
+  // ]}
+    { name: 'ordenar', label: 'Ordenar por', command: () => menuClick(0), valorActual: 0, subitems: [
     { title: 'Nombre ascendente', value: 0 },
     { title: 'Nombre descendente', value: 1 }
   ]},
-	{ name: 'ver', title: 'Ver', click: (i: any) => menuClick(i), valorActual: 0, subitems: [
+	{ name: 'ver', label: 'Ver', command: () => menuClick(1), valorActual: 0, subitems: [
     { title: 'Tarjetas pequeñas', value: 0 },
     { title: 'Tarjetas grandes', value: 1 },
     { title: 'Lista', value: 2 }
   ]}
 ]
 
-  const menu = ref(props.menu || defaultMenu)
+  const menuItems = ref(props.menu || defaultMenu)
 
   // Methods
+  const toggle = (event: any) => {
+    menu.value.toggle(event);
+};
+
   const menuClick = (index: number) => {
     if (index === 0) {
       uiStore.showCustomDialog({
         component: markRaw(MenuDialog),
         props: {
           menu: 'ordenar',
-          value: menu.value.find(item => item.name === 'ordenar')?.valorActual,
-          items: menu.value.find(item => item.name === 'ordenar')?.subitems
+          value: menuItems.value.find((item: itemMenu) => item.name === 'ordenar')?.valorActual,
+          items: menuItems.value.find((item: itemMenu) => item.name === 'ordenar')?.subitems
         },
         events: {
           click: (menu: string, value: number) => submenuClick(menu, value)
@@ -70,8 +74,8 @@
         component: markRaw(MenuDialog),
         props: {
           menu: 'ver',
-          value: menu.value.find(item => item.name === 'ver')?.valorActual,
-          items: menu.value.find(item => item.name === 'ver')?.subitems
+          value: menuItems.value.find((item: itemMenu) => item.name === 'ver')?.valorActual,
+          items: menuItems.value.find((item: itemMenu) => item.name === 'ver')?.subitems
         },
         events: {
           click: (menu: string, value: number) => submenuClick(menu, value)
@@ -81,7 +85,7 @@
   }
 
   const submenuClick = (submenu: string, index: number) => {
-    const item = menu.value.find(item => item.name === submenu)
+    const item = menu.value.find((item: itemMenu) => item.name === submenu)
     if (item) {
       item.valorActual = index
     }
@@ -93,6 +97,10 @@
   }
 </script>
 <style lang="scss" scoped>
+  button {
+    background-color: inherit;
+    border-color: transparent;
+  }
 	.title-container {
 		padding: 10px;
 		text-align: center;

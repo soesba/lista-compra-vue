@@ -1,35 +1,26 @@
 <template>
-   <v-app-bar
-    color="primary"
-    prominent
-  >
-    <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-    <router-link class="no-link" to="/">
-      <v-toolbar-title>Precios compra</v-toolbar-title>
-    </router-link>
-    <v-spacer></v-spacer>
-
-    <!-- <template v-if="$vuetify.display.mdAndUp">
-      <v-btn icon="mdi-magnify" variant="text"></v-btn>
-
-      <v-btn icon="mdi-filter" variant="text"></v-btn>
-    </template> -->
-
-    <!-- <v-btn icon="mdi-dots-vertical" variant="text"></v-btn> -->
-  </v-app-bar>
-  <v-navigation-drawer
-      v-model="drawer"
-      :location="$vuetify.display.mobile ? 'bottom' : undefined"
-      temporary
-    >
-      <v-list
-        :items="items"
-      ></v-list>
-    </v-navigation-drawer>
+   <div class="navigation-component">
+    <div class="nav-icon">
+      <Button rounded icon="pi pi-bars" class="button-drawer" @click="drawer = true" />
+    </div>
+    <div class="nav-title">
+      <router-link class="no-link title" to="/">
+        Precios compra
+      </router-link>
+    </div>
+    <div class="nav-others"></div>
+  </div>
+  <drawer-component
+      :visible="drawer"
+      :items="items"
+      @update:visible="drawer = $event"
+    />
 </template>
 <script lang="ts">
 import { ref } from 'vue'
 import { defineComponent } from 'vue'
+import Button from 'primevue/button'
+import DrawerComponent from './DrawerComponent.vue'
 export default defineComponent({
 	name: 'NavigationComponent'
 })
@@ -76,3 +67,22 @@ const items = ref([
 ])
 
 </script>
+
+<style lang="scss" scoped>
+.navigation-component {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  padding: 0.5rem;
+  background-color: var(--p-primary-color);
+  color: white;
+
+  .title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+}
+</style>

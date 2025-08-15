@@ -1,18 +1,19 @@
 <template>
   <div class="wrapper">
     <div class="left">
-      <v-btn icon="mdi-close" @click="back" variant="text" color="primary"></v-btn>
+      <Button icon="mdi-close" @click="back" variant="text" color="primary"></Button>
     </div>
     <div class="center">
       <slot name="center"></slot>
     </div>
     <div class="right">
-      <v-btn variant="text" color="primary" @click="save()" :disabled="saveDisabled">Guardar</v-btn>
+      <Button variant="text" color="primary" @click="save()" :disabled="saveDisabled">Guardar</Button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import { Button } from 'primevue';
 export default defineComponent({
 	name: 'EditionToolbar',
 })

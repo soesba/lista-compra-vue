@@ -6,26 +6,21 @@ import router from './router'
 import { pinia, useModelStore } from './store'
 import { useUiStore, useEventStore } from './store'
 import { xhr } from '@/api/config/Repository'
-// Vuetify
-import { es } from 'vuetify/locale'
-import 'vuetify/styles'
+// FontAwesome
+import { FontAwesomeIcon, dom, library } from "./plugins/fontawesome";
+// MDI
 import '@mdi/font/css/materialdesignicons.css'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
+// PrimeVue
+import PrimeVue from 'primevue/config'
+import Aura from '@primeuix/themes/aura'
+import DialogService from 'primevue/dialogservice';
+// PrimeIcons
+import 'primeicons/primeicons.css'
+
 import { loadFonts } from './plugins/webfontloader'
 import InterceptorMessages from './services/interceptors/InterceptorMessages'
 
 loadFonts()
-const vuetify = createVuetify({
-  components,
-  directives,
-  locale: {
-    locale: 'es',
-    messages: { es }
-  }
-})
-
 let app
 let containerSelector = "#app"
 
@@ -38,9 +33,17 @@ if (mountPoint && (mountPoint as any).__vue_app__ !== undefined) {
 }
 else {
   app = createApp(App)
+  app.component('CrfIcon', FontAwesomeIcon)
   app.use(pinia).
+    use(PrimeVue, { theme: {
+      preset: Aura,
+      options: {
+        prefix: 'p',
+        darkModeSelector: false || 'none'
+      }
+    }}).
+    use(DialogService).
     use(router).
-    use(vuetify).
     mount('#app')
 }
 

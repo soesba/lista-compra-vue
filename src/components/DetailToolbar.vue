@@ -1,19 +1,20 @@
 <template>
   <div class="wrapper">
     <div class="left">
-      <v-btn icon="mdi-arrow-left" @click="back" variant="text" color="primary"></v-btn>
+      <Button icon="mdi-arrow-left" @click="back" variant="text" color="primary"></Button>
     </div>
     <div class="center">
       <slot name="center"></slot>
     </div>
     <div class="right">
-      <v-btn variant="text" color="primary" @click="setEdicion()">Editar</v-btn>
-      <v-btn :disabled="deleteDisabled" variant="text" color="error" @click="confirmDelete()" >Eliminar</v-btn>
+      <Button variant="text" color="primary" @click="setEdicion()">Editar</Button>
+      <Button :disabled="deleteDisabled" variant="text" color="error" @click="confirmDelete()" >Eliminar</Button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import { Button } from 'primevue';
 export default defineComponent({
 	name: 'DetailToolbar',
 })

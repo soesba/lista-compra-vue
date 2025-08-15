@@ -1,12 +1,7 @@
 export default interface UiState {
-	customDialog: {
-		show: boolean,
-		component: object,
-		props: object,
-		events: object
-	},
+	customDialog: any,
 	confirmDialog: {
-		show: boolean,
+		visible: boolean,
 		props: {
 			title: string;
 			text: string;
@@ -14,12 +9,12 @@ export default interface UiState {
 		aceptarFn: Function;
 	},
 	alertComponent: {
-		show: boolean,
+		visible: boolean,
 		props: {
 			title: string,
 			text: string,
 			variant: 'flat' | 'text' | 'elevated' | 'tonal' | 'outlined' | 'plain',
 			type: any
 		}
-	} 
+	}
 }

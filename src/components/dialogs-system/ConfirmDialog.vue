@@ -1,15 +1,18 @@
 <template>
-	<v-dialog v-model="show" persistent max-width="340">
-		<v-card max-width="400" prepend-icon="mdi-help" :text="text" :title="title" color="primary">
-			<template v-slot:actions>
-				<v-btn class="ms-auto" text="Aceptar" @click="onCloseDialog(true)"></v-btn>
-				<v-btn class="ms-auto" text="Cancelar" @click="onCloseDialog"></v-btn>
+	<Dialog v-model="show" persistent max-width="340">
+		<Card max-width="400" prepend-icon="mdi-help" :text="text" :title="title" color="primary">
+			<template #footer>
+				<Button class="ms-auto" label="Aceptar" @click="onCloseDialog(true)"></Button>
+				<Button class="ms-auto" label="Cancelar" @click="onCloseDialog(false)"></Button>
 			</template>
-		</v-card>
-	</v-dialog>
+		</Card>
+	</Dialog>
 </template>
 
 <script lang="ts">
+import Card from 'primevue/card';
+import Dialog from 'primevue/dialog';
+import { Button } from 'primevue';
 import { useUiStore } from '@/store';
 import { computed, defineComponent } from 'vue'
 export default defineComponent({
@@ -20,7 +23,7 @@ export default defineComponent({
 const uiStore = useUiStore()
 // Computed
 const show = computed(() => {
-	return uiStore.getConfirmDialog?.show
+	return uiStore.getConfirmDialog?.visible
 })
 const title = computed(() => {
 	return uiStore.getConfirmDialog?.props.title
@@ -29,7 +32,7 @@ const text = computed(() => {
 	return uiStore.getConfirmDialog?.props.text
 })
 
-// Methods 
+// Methods
 const onCloseDialog = (accept: boolean) => {
 	uiStore.hideConfirmDialog()
 	if (accept) {

@@ -1,20 +1,32 @@
 <template>
-	<v-card class="cursor" @click="onClick()">
-		<v-img v-if="logo" class="logo" :src="getImageSrc"></v-img>
-		<v-card-title>{{ getTitle }}</v-card-title>
-		<v-card-subtitle v-if="showSubtitle">{{ getSubtitle }}</v-card-subtitle>
-		<v-card-text class="text-small">{{ getText }}</v-card-text>
-	</v-card>
+	<Card class="cursor" @click="onClick()">
+     <template #header>
+      <Image v-if="logo" class="logo" :src="getImageSrc"></Image>
+    </template>
+    <template #title>
+      <div class="card-title">{{ getTitle }}</div>
+    </template>
+    <template #subtitle>
+		  <div class="card-subtitle" v-if="showSubtitle">{{ getSubtitle }}</div>
+    </template>
+    <template #content>
+		  <div class="card-text text-small">{{ getText }}</div>
+    </template>
+	</Card>
 </template>
 <script lang="ts">
+
+import Image from 'primevue/image';
+import Card from 'primevue/card';
+import { defineComponent } from 'vue'
+import { noLogoUrl } from '@/main'
+import { computed, ref } from 'vue'
+
 export default defineComponent({
 	name: 'Card',
 })
 </script>
 <script setup lang="ts">
-import { defineComponent } from 'vue'
-import { noLogoUrl } from '@/main'
-import { computed, ref } from 'vue'
 
 const emit = defineEmits(['click'])
 
@@ -76,7 +88,7 @@ const onClick = () => {
 }
 </script>
 <style lang="scss" scoped>
-.v-card-subtitle {
+.p-card-subtitle {
   min-height: 19.94px;
 }
 </style>

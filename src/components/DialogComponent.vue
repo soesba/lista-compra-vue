@@ -1,10 +1,11 @@
 <template>
-	<v-dialog v-model="show" persistent>
+	<DynamicDialog v-model="show" modal>
 		<component :is="component" v-bind="props" v-on="events" @close-dialog="$emit('close-dialog')"></component>
-	</v-dialog>
+	</DynamicDialog>
 </template>
 
 <script lang="ts">
+import DynamicDialog from 'primevue/dynamicdialog';
 import { useUiStore } from '@/store';
 import { computed, defineComponent } from 'vue'
 export default defineComponent({
@@ -15,7 +16,7 @@ export default defineComponent({
 const uiStore = useUiStore()
 // Computed
 const show = computed(() => {
-	return uiStore.getCustomDialog?.show
+	return uiStore.getCustomDialog?.visible
 })
 const component = computed(() => {
 	return uiStore.getCustomDialog?.component
@@ -26,6 +27,6 @@ const props = computed(() => {
 const events = computed(() => {
 	return uiStore.getCustomDialog?.events || {}
 })
-	
+
 </script>
 <style lang="scss" scoped></style>

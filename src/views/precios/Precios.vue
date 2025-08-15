@@ -160,7 +160,7 @@ const onSearch = (evt: any) => {
 
 </script>
 <style lang="scss" scoped>
-:deep(.v-card-text) {
+:deep(.p-card-content) {
   white-space: pre-line;
   font-size: 0.7rem;
   font-weight: 400;
