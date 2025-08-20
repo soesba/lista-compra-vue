@@ -4,7 +4,7 @@ import type PrecioRequestDTO from "../dto/PrecioRequestDTO"
 import type PrecioRequest from "@/services/precio/models/PrecioRequest"
 
 export const DTOtoModel = (origin: PrecioDTO): Precio => {
-	const model: Precio = { 
+	const model: Precio = {
 		id: origin.id,
 		articulo: origin.articulo,
 		precio: origin.precio,
@@ -21,7 +21,7 @@ export const DTOtoModel = (origin: PrecioDTO): Precio => {
 }
 
 export const requestModelToDTO = (origin: PrecioRequest): PrecioRequestDTO => {
-	const dto: PrecioRequestDTO = { 
+	const dto: PrecioRequestDTO = {
 		id: origin.id,
 		articulo: origin.articulo.id,
 		precio: origin.precio,

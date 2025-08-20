@@ -24,7 +24,6 @@
 					ref="cboArticulos"
 					:tipo-dato="TipoDato.Articulos"
 					:model-value="editData.articulo"
-					:return-object="true"
 					required
 					:error-messages="v$.editData.articulo.$errors.map((e) => e.$message)"
 					@blur="v$.editData.articulo.$touch()"
@@ -34,6 +33,7 @@
 				<combo-component
 					:tipo-dato="TipoDato.Establecimientos"
 					:model-value="editData.establecimiento"
+          :return-object="false"
 					required
 					:error-messages="v$.editData.establecimiento.$errors.map((e) => e.$message)"
 					:validations="v$.editData.establecimiento"
@@ -137,6 +137,7 @@
 		async () => {
 			if (!editData?.id) {
 				const response = await getArrayUnidadesMedida()
+				console.log('LOG~ ~ :140 ~ response:', response)
 				editData!.unidadesMedida = response
 			}
 		}
