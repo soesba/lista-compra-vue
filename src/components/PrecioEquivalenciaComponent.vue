@@ -1,6 +1,6 @@
 <template>
 	<div v-for="eq in equivalencias" class="inputGroup">
-		<label class="labelFor">Precio por {{ eq.to.nombre }}:</label> <label class="labelData">{{ formatDecimal(getPrecio(eq)) }}</label>
+		<label class="labelFor">Precio por {{ eq.to.nombre }}:</label> <label class="labelData">{{ formatCurrency(getPrecio(eq)) }}</label>
     <div v-html="getBloquePrecioUnidad()"></div>
 	</div>
 </template>
@@ -8,7 +8,7 @@
 import { defineComponent, reactive } from 'vue'
 import getByFromMultiple from '@/services/equivalencia/getEquivalenciaByFromMultiple.service'
 import type UnidadMedida from '@/services/precio/models/UnidadMedida'
-import { formatDecimal } from '@/utils/utils'
+import { formatCurrency } from '@/utils/utils'
 import Equivalencia from '@/services/equivalencia/models/Equivalencia';
 
 export default defineComponent({
@@ -44,7 +44,7 @@ const getPrecio = (eq: any) => {
 const getBloquePrecioUnidad = () => {
   const unidad = props.unidadesMedida.find((x) => x.nombre.includes('unidad'))
   if (unidad) {
-    return `<label class="labelFor">Precio por unidad:</label> <label class="labelData">${formatDecimal(props.precio / unidad.valor)}</label>`
+    return `<label class="labelFor">Precio por unidad:</label> <label class="labelData">${formatCurrency(props.precio / unidad.valor)}</label>`
   } else {
     return null
   }

@@ -39,16 +39,25 @@ export const sort = (property: any) => {
 		if (arrayProperties.length > 1) {
 			for(let i = 0; i < arrayProperties.length - 1; i++) {
 				a = a[arrayProperties[i]]
-				b = b[arrayProperties[i]]        
+				b = b[arrayProperties[i]]
 			}
 			property = arrayProperties[arrayProperties.length-1]
-		} 
+		}
 		const result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0
 		return result * sortOrder
 	}
 }
 
-export const formatDecimal = (value: number, currency = true) => {
+export const formatCurrency = (value: number, currency = true) => {
 	const result = value ? value.toLocaleString('es-ES', {minimumFractionDigits: 2}).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') : ''
 	return currency && result ? result.concat(' €') : result
+}
+export const stringToNumber = (value: string): number => {
+  const result = parseFloat(value.replace('.', '').replace(',', '.'))
+  return isNaN(result) ? 0 : result
+}
+
+export const isNumber = (str: string) => {
+  const pattern = /^\d+\.?\d*$/
+  return pattern.test(str) // returns a boolean
 }

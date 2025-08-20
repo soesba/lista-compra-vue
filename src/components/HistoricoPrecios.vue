@@ -14,7 +14,7 @@
         <tr v-for="precio in precios" :key="precio.id">
           <td data-titulo="Fecha compra">{{ getFechaCompra(precio.fechaCompra) }}</td>
           <td data-titulo="Establecimiento">{{ precio.establecimiento?.nombre }}</td>
-          <td data-titulo="Precio">{{ formatDecimal(precio.precio) }}</td>
+          <td data-titulo="Precio">{{ formatCurrency(precio.precio) }}</td>
           <td data-titulo="Cantidad" v-for="medida in precio.unidadesMedida" :key="medida.id">
             {{ medida.valor }} {{ pluralize(medida.nombre, medida.valor) }}
           </td>
@@ -31,7 +31,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import type Precio from '@/services/precio/models/Precio'
-import { formatDecimal, pluralize } from '@/utils/utils'
+import { formatCurrency, pluralize } from '@/utils/utils'
 export default defineComponent({
 	name: 'HistoricoPrecios',
 })

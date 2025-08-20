@@ -20,7 +20,7 @@ import router from '@/router'
 import { eventStore } from '@/main';
 import type PrecioRequest from '@/services/precio/models/PrecioRequest'
 import type PrecioResponse from '@/services/precio/models/PrecioResponse'
-import { sort, formatDecimal } from '@/utils/utils'
+import { sort, formatCurrency } from '@/utils/utils'
 export default defineComponent({
 	name: 'Precios'
 })
@@ -57,7 +57,7 @@ const mapping = {
   text: (item: any) => {
     return `Establecimiento: ${item.establecimiento?.nombre}\n
     Última fecha compra: ${getFechaCompra(item)}\n
-    Precio: ${formatDecimal(item.precio)}`
+    Precio: ${formatCurrency(item.precio)}`
   }
 }
 const routes = {

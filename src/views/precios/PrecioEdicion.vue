@@ -47,9 +47,8 @@
 				<v-text-field
 					ref="inputPrecio"
 					variant="underlined"
-					type="number"
 					label="Precio*"
-					v-model.number="editData.precio"
+					v-model="editData.precio"
 					:hide-spin-buttons="true"
 					max-width="120"
 					@keypress="onKeypressPrecio"></v-text-field>
@@ -82,7 +81,7 @@
 	import update from '@/services/precio/updatePrecio.service'
 	import getArticuloById from '@/services/articulo/getArticuloById.service'
 	import type Articulo from '@/services/articulo/models/Articulo'
-	import { pluralize } from '@/utils/utils'
+	import { isNumber, pluralize } from '@/utils/utils'
 	import ComboComponent from '@/components/combos/ComboComponent.vue'
 	import { TipoDato } from '@/services/desplegables/models/TipoDato'
   import { modelStore } from '@/main'
@@ -137,7 +136,6 @@
 		async () => {
 			if (!editData?.id) {
 				const response = await getArrayUnidadesMedida()
-				console.log('LOG~ ~ :140 ~ response:', response)
 				editData!.unidadesMedida = response
 			}
 		}
@@ -171,10 +169,20 @@
 
 	// Methods
 	const onKeypressPrecio = (evt: any) => {
-		if (evt.charCode == 46) {
-			evt.preventDefault()
-			evt.target.value = evt.target.value + ','
-		}
+    if (!isNumber(evt.key)) {
+      if (evt.charCode === 46) {
+        evt.preventDefault()
+        if (!evt.target.value.includes(',')) {
+          evt.target.value = evt.target.value + ','
+        }
+      } else if (evt.charCode === 44) {
+        if (evt.target.value.includes(',')) {
+          evt.preventDefault()
+        }
+      } else {
+        evt.preventDefault()
+      }
+    }
 	}
 
 	const onChangeArticulo = (event: any) => {

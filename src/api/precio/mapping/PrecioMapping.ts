@@ -2,6 +2,7 @@ import type Precio from "@/services/precio/models/Precio"
 import type PrecioDTO from "../dto/PrecioDTO"
 import type PrecioRequestDTO from "../dto/PrecioRequestDTO"
 import type PrecioRequest from "@/services/precio/models/PrecioRequest"
+import { stringToNumber } from '@/utils/utils'
 
 export const DTOtoModel = (origin: PrecioDTO): Precio => {
 	const model: Precio = {
@@ -24,7 +25,7 @@ export const requestModelToDTO = (origin: PrecioRequest): PrecioRequestDTO => {
 	const dto: PrecioRequestDTO = {
 		id: origin.id,
 		articulo: origin.articulo.id,
-		precio: origin.precio,
+		precio: stringToNumber(origin.precio!.toString()),
 		marca: origin.marca,
 		establecimiento: origin.establecimiento,
 		unidadesMedida: origin.unidadesMedida,

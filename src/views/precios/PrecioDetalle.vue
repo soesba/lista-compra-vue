@@ -19,7 +19,7 @@
 			</div>
 			<div class="inputGroup">
 				<div class="labelFor">Precio:</div>
-				<label>{{ formatDecimal(data.precio) }}</label>
+				<label>{{ formatCurrency(data.precio) }}</label>
 			</div>
 			<PrecioEquivalenciaComponent :unidades-medida="data.unidadesMedida" :precio="data.precio" />
 		</div>
@@ -32,7 +32,7 @@
 	import router from '@/router'
 	import getPrecioById from '@/services/precio/getPrecioById.service'
 	import { useRoute } from 'vue-router'
-	import { formatDecimal, pluralize } from '@/utils/utils'
+	import { formatCurrency, pluralize } from '@/utils/utils'
 	import PrecioEquivalenciaComponent from '@/components/PrecioEquivalenciaComponent.vue'
   import { eventStore, modelStore } from '@/main'
 import deleteItem from '@/services/precio/deletePrecio.service'
