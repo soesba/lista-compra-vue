@@ -60,7 +60,6 @@ import { required, requiredIf } from '@vuelidate/validators'
 import { useVuelidate } from '@vuelidate/core'
 import { modelStore } from '@/main'
 import create from '@/services/tipoUnidad/createTipoUnidad.service'
-import TipoUnidad from '@/services/tipoUnidad/models/TipoUnidad'
 import update from '@/services/tipoUnidad/updateTipoUnidad.service'
 import getByFrom from '@/services/equivalencia/getEquivalenciaByFrom.service'
 import save from '@/services/equivalencia/saveEquivalencias.service'
@@ -155,18 +154,6 @@ const saveAll = () => {
     }
   }).catch((error) => {
     console.error("Error al guardar los tipos de unidades y equivalencias:", error)
-  })
-}
-
-const createTipoUnidad = (data: TipoUnidad) => {
-  create(data).then(response => {
-    onBack()
-  })
-}
-
-const updateTipoUnidad = (data: TipoUnidad) => {
-  update(data).then(response => {
-    onBack()
   })
 }
 

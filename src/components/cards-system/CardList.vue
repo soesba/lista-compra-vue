@@ -1,6 +1,6 @@
 <template>
 	<div class="wrapper-list">
-		<div class="list-container" v-if="items && items?.length > 0" :class="getClasses">
+		<div class="list-container" v-if="items && items?.length > 0" :class="cardClass">
 			<Card
         :logo="logo"
         :mapping="mapping"
@@ -36,10 +36,27 @@ export default defineComponent({
 import { EmptyCard, Card } from '@/components/index'
 import { eventStore } from '@/main'
 import router from '@/router'
-import { computed, defineComponent } from 'vue'
+import { sort } from '@/utils/utils';
+import { defineComponent, onMounted, ref } from 'vue'
+
 const emit = defineEmits(['click-card', 'addCard'])
+
+eventStore.$onAction(({args, name}) => {
+	switch(name) {
+    case 'sortCards':
+			onSortCards(args[0])
+			break
+		case 'showCards':
+			onShowCards(args[0])
+			break
+	}
+})
+
 const props = defineProps({
-	items: Array<any>,
+	items: {
+    type: Array<any>,
+    default: () => []
+  },
 	logo: {
     type: Boolean,
     default: false,
@@ -55,14 +72,25 @@ const props = defineProps({
   mapping: {
     type: Object,
     default: () => ({}),
+  },
+  sortBy: {
+    type: Object,
+    default: () => ({ field: 'nombre', order: 'ASC' })
+  },
+  show: {
+    type: Object,
+    default: () => ({ show: 0 })
   }
 })
 
+const list = ref(props.items || [])
+const sortBy = ref(props.sortBy)
+const show = ref(props.show)
+const cardClass = ref([props.class])
 const routes = eventStore.getRoutes
-console.log('LOG~ ~ :62 ~ routes:', routes)
-// Computed
-const getClasses = computed(() => {
-  return props.class
+
+onMounted(() => {
+  onShowCards(show.value)
 })
 
 // Methods
@@ -72,6 +100,30 @@ const onClick = (evt: string) => {
 
 const addCard = () => {
   router.push(routes.add)
+}
+
+const onSortCards = (evt: any) => {
+  sortBy.value.order = evt.order === 0 ? 'ASC' : 'DESC'
+  if (evt.order === 0) {
+    list.value = props.items.sort(sort(sortBy.value.field))
+  } else {
+    list.value = props.items.sort(sort(`-${sortBy.value.field}`))
+  }
+}
+
+const onShowCards = (evt: any) => {
+  show.value = evt
+  switch (evt.show) {
+    case 0:
+      cardClass.value = ['card', 'small']
+      break
+    case 1:
+      cardClass.value = ['card', 'large']
+      break
+    case 2:
+      cardClass.value = ['list']
+      break
+  }
 }
 
 </script>

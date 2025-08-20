@@ -1,7 +1,7 @@
 <template>
   <TitleView :titulo="titulo" />
   <SearchBox @search="onSearch"></SearchBox>
-  <CardList :items="list" :class="getClasses" :mapping="mapping" />
+  <CardList :items="list" :class="getClasses" :mapping="mapping" :sort-by="sortBy" :show="show" />
 </template>
 
 <script lang="ts">
@@ -32,19 +32,13 @@ eventStore.$onAction(({args, name}) => {
 		case 'saveCard':
 			onSaveCard(args[0])
 			break
-    case 'sortCards':
-			onSortCards(args[0])
-			break
-		case 'showCards':
-			onShowCards(args[0])
-			break
 	}
 })
 // Data
 let cardClass = ref()
 const titulo = ref('Articulos')
 const list = ref()
-const sortBy = ref({ field: 'title', order: 'ASC' })
+const sortBy = ref({ field: 'nombre', order: 'ASC' })
 const show = ref({ show: 0 })
 const mapping = {
   id: 'id',
@@ -65,7 +59,6 @@ const getClasses = computed(() => {
 })
 
 onMounted(() => {
-  onShowCards(show.value)
 	getAllData()
 })
 
@@ -90,29 +83,6 @@ const onSaveCard = (cardData: any) => {
 	}
 }
 
-const onSortCards = (evt: any) => {
-  sortBy.value.order = evt.order === 0 ? 'ASC' : 'DESC'
-  if (evt.order === 0) {
-    list.value = list.value.sort(sort(sortBy.value.field))
-  } else {
-    list.value = list.value.sort(sort(`-${sortBy.value.field}`))
-  }
-}
-
-const onShowCards = (evt: any) => {
-  show.value = evt
-  switch (evt.show) {
-    case 0:
-      cardClass.value = ['card', 'small']
-      break
-    case 1:
-      cardClass.value = ['card', 'large']
-      break
-    case 2:
-      cardClass.value = ['list']
-      break
-  }
-}
 
 const createCard = (card: ArticuloRequest) => {
 	card.borrable = true
