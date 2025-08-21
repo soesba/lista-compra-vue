@@ -23,8 +23,8 @@
             </div>
           </td>
           <td v-if="editable">
-            <v-btn icon="mdi-pencil" variant="text" color="primary" @click="$emit('edit', precio)"></v-btn>
-            <v-btn icon="mdi-delete" variant="text" color="primary" @click="$emit('delete', precio)"></v-btn>
+            <v-btn icon="mdi-pencil" variant="text" color="primary" @click="onClickEdit(precio)"></v-btn>
+            <v-btn icon="mdi-delete" variant="text" color="primary" @click="onClickDelete(precio)"></v-btn>
           </td>
         </tr>
       </tbody>
@@ -36,6 +36,8 @@
 import { defineComponent } from 'vue'
 import type Precio from '@/services/precio/models/Precio'
 import { formatCurrency, pluralize } from '@/utils/utils'
+import router from '@/router';
+import { modelStore } from '@/main';
 export default defineComponent({
 	name: 'HistoricoPrecios',
 })
@@ -58,6 +60,15 @@ const getFechaCompra = (value: any) => {
 		month: "2-digit",
 		year: "numeric",
 	}).format(value) : ''
+}
+
+const onClickEdit = (precio: Precio) => {
+  modelStore.setPrecio(precio)
+  router.push('/precio-edicion')
+}
+
+const onClickDelete = (precio: Precio) => {
+  console.log('LOG~ ~ :68 ~ onClickDelete ~ precio:', precio)
 }
 </script>
 <style lang="scss" scoped>

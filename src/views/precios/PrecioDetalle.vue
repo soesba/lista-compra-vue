@@ -62,7 +62,7 @@ import deleteItem from '@/services/precio/deletePrecio.service'
 	}
 
   const setEdicion = () => {
-    modelStore.precio = data
+    modelStore.setPrecio(data)
     router.push(eventStore.getRoutes.edit)
   }
 

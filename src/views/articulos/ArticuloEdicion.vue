@@ -45,7 +45,7 @@ import { TipoDato } from '@/services/desplegables/models/TipoDato'
 import { defineComponent, reactive, ref } from 'vue'
 import { computed } from 'vue'
 import router from '@/router'
-import { modelStore } from '@/main'
+import { eventStore, modelStore } from '@/main'
 import create from '@/services/articulo/createArticulo.service'
 import update from '@/services/articulo/updateArticulo.service'
 import HistoricoPrecios from '@/components/HistoricoPrecios.vue'
@@ -92,7 +92,7 @@ const onChange = (event: any) => {
 
 const onBack = () => {
   modelStore.setArticulo(null)
-  router.push(history.state.back)
+  router.push(`${eventStore.routes.detail}/${editData.id}`)
 }
 
 const save = async () => {

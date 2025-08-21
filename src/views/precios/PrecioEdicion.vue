@@ -126,10 +126,6 @@
 	// 	borrable: true
 	// })
 
-	if (from.includes('articulo-detalle')) {
-    editData.articulo = { id: from.substring(from.lastIndexOf('/') + 1) }
-	}
-
 	// Watch
 	watch(
 		async () => editData?.articulo,
@@ -214,7 +210,7 @@
 
 	const onBack = () => {
     if (from.includes('articulo')) {
-      modelStore.setArticulo(null)
+      // modelStore.setArticulo(null)
     } else {
       modelStore.setPrecio(null)
     }
