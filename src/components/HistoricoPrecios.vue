@@ -16,8 +16,10 @@
           <td data-titulo="Establecimiento">{{ precio.establecimiento?.nombre }}</td>
           <td data-titulo="Precio">{{ formatCurrency(precio.precio) }}</td>
           <td data-titulo="Cantidad">
-            <div v-for="medida in precio.unidadesMedida" :key="medida.id">
-              {{ medida.valor }} {{ pluralize(medida.nombre, medida.valor) }}
+            <div class="cantidad-container">
+              <div v-for="medida in precio.unidadesMedida" :key="medida.id">
+                {{ medida.valor }} {{ pluralize(medida.nombre, medida.valor) }}
+              </div>
             </div>
           </td>
           <td v-if="editable">
