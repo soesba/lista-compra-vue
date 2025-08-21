@@ -1,5 +1,5 @@
 <template>
-  <v-alert v-if="show" :icon="icon" closable :text="text" :variant="variant" :type="type"></v-alert>
+  <v-alert v-model="show" :icon="icon" closable :text="text" :variant="variant" :type="type"></v-alert>
 </template>
 <script lang="ts">
 import { computed, defineComponent, onMounted } from 'vue'
@@ -11,12 +11,20 @@ export default defineComponent({
 <script setup lang="ts">
 const uiStore = useUiStore()
 // Computed
-const show = computed(() => {
-	return uiStore.getAlertComponent?.show
+const show = computed({
+  get () {
+	  return uiStore.getAlertComponent?.show
+  },
+  set (newValue) {
+    if (newValue === false) {
+      uiStore.hideAlertComponent()
+    }
+  }
 })
 const text = computed(() => {
 	return uiStore.getAlertComponent?.props.text
 })
+// success, info, warning, error
 const type = computed(() => {
 	return uiStore.getAlertComponent?.props.type
 })
@@ -37,6 +45,7 @@ onMounted(() => {
 </script>
 <style lang="scss" scoped>
   .v-alert {
+    --v-theme-error: 229, 115, 115;
     position: fixed;
     z-index: 100;
     width: 100%;
