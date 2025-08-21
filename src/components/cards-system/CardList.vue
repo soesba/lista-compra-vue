@@ -85,7 +85,8 @@ const props = defineProps({
 
 const list = ref(props.items || [])
 const sortBy = ref(props.sortBy)
-const show = ref(props.show)
+const show = ref(parseInt(import.meta.env.VITE_SHOW_CARDS))
+console.log('LOG~ ~ :90 ~ show:', show.value)
 const cardClass = ref([props.class])
 const routes = eventStore.getRoutes
 
@@ -113,7 +114,7 @@ const onSortCards = (evt: any) => {
 
 const onShowCards = (evt: any) => {
   show.value = evt
-  switch (evt.show) {
+  switch (show.value) {
     case 0:
       cardClass.value = ['card', 'small']
       break

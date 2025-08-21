@@ -6,8 +6,7 @@
     :items="list"
     :class="getClasses"
     :mapping="mapping"
-    :sort-by="sortBy"
-    :show="show"/>
+    :sort-by="sortBy" />
 </template>
 
 <script lang="ts">
@@ -45,7 +44,6 @@ let cardClass = ref()
 const titulo = ref('Establecimientos')
 const list = ref()
 const sortBy = ref({ field: 'nombre', order: 'ASC' })
-const show = ref({ show: 0 })
 const mapping = {
   id: 'id',
   logo: 'logo',

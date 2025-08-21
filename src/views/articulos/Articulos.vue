@@ -1,7 +1,7 @@
 <template>
   <TitleView :titulo="titulo" />
   <SearchBox @search="onSearch"></SearchBox>
-  <CardList :items="list" :class="getClasses" :mapping="mapping" :sort-by="sortBy" :show="show" />
+  <CardList :items="list" :class="getClasses" :mapping="mapping" :sort-by="sortBy" />
 </template>
 
 <script lang="ts">
@@ -39,7 +39,6 @@ let cardClass = ref()
 const titulo = ref('Articulos')
 const list = ref()
 const sortBy = ref({ field: 'nombre', order: 'ASC' })
-const show = ref({ show: 0 })
 const mapping = {
   id: 'id',
   title: 'nombre',
