@@ -7,7 +7,7 @@
       <raw-dialog-component v-if="rawDialogComponent"></raw-dialog-component>
       <v-container>
         <router-view v-slot="{ Component }">
-          <suspense timeout="0">
+          <Suspense timeout="0">
             <template #default>
               <div>
                 <component :is="Component" :key="$route.path"></component>
@@ -16,7 +16,7 @@
             <template #fallback>
               <div>Loading...</div>
             </template>
-          </suspense>
+          </Suspense>
         </router-view>
       </v-container>
     </v-main>
@@ -24,7 +24,7 @@
 </template>
 <script setup lang="ts">
 import { Navigation } from '@/components/index'
-import { markRaw } from 'vue'
+import { markRaw, Suspense } from 'vue'
 import DialogComponent from '@/components/DialogComponent.vue'
 import ConfirmDialog from '@/components/dialogs-system/ConfirmDialog.vue'
 import AlertComponent from './components/AlertComponent.vue'

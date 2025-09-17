@@ -67,7 +67,6 @@ const equivalencias = (await getEquivalencias()).data as Equivalencia[]
 const getPrecioEquivalencias = computed(() => {
    return (medida: any, precio: any) => {
      const equivalencia = equivalencias.find((eq: any) => eq.from.id === medida.id)
-     console.log('LOG~ ~ :63 ~ getEquivalencias ~ equivalencia:', equivalencia)
      if (equivalencia) {
        return `${formatCurrency(precio.precio / (medida.valor * equivalencia.factor))} ${pluralize(equivalencia.to.nombre, medida.valor * equivalencia.factor)}`
      }
