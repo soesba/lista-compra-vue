@@ -48,7 +48,7 @@
 					ref="inputPrecio"
 					variant="underlined"
 					label="Precio*"
-					v-model="editData.precio"
+					v-model="getCurrencyPrice"
 					:hide-spin-buttons="true"
 					max-width="120"
 					@keypress="onKeypressPrecio"></v-text-field>
@@ -104,13 +104,15 @@
 			  }).format(editData.fechaCompra)
 			: ''
 	})
+  const getCurrencyPrice = computed(() => {
+		return editData?.precio ? editData?.precio.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }): ''
+	})
 	// Data
 	const cboArticulos = ref(null)
 	const inputPrecio = ref()
 	const adding = ref(false)
 	const from = history.state.back
   const editData = reactive<any>(modelStore.precio ? modelStore.getPrecio : { borrable: true })
-  console.log('LOG~ ~ :124 ~ editData:', editData)
   if (!editData.id) {
     adding.value = true
   }
