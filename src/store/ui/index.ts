@@ -28,9 +28,9 @@ const getDefaultAlertComponent = () => {
 			title: '',
 			text: '',
 			variant: 'flat' as const,
-			type: ''
+			type: 'success' as const
 		}
-	} 
+	}
 }
 
 export const useUiStore = defineStore('uiStore', {
@@ -44,7 +44,7 @@ export const useUiStore = defineStore('uiStore', {
 		getCustomDialog: (state) => state.customDialog,
 		getConfirmDialog: (state) => state.confirmDialog,
 		getAlertComponent: (state) => state.alertComponent
-		, },
+  },
 	actions: {
 		// no context as first argument, use `this` instead
 		showCustomDialog ({ component, props, events }: any) {

@@ -7,6 +7,7 @@
           <th>Establecimiento</th>
           <th>Precio</th>
           <th>Cantidad</th>
+          <th>Precio ud ref.</th>
           <th v-if="editable"></th>
         </tr>
       </thead>
@@ -22,6 +23,11 @@
               </div>
             </div>
           </td>
+          <td data-titulo="Precio">
+            <div v-for="medida in precio.unidadesMedida" :key="medida.id">
+              {{ getPrecioEquivalencias(medida, precio) }}
+            </div>
+          </td>
           <td v-if="editable">
             <v-btn icon="mdi-pencil" variant="text" color="primary" @click="onClickEdit(precio)"></v-btn>
             <v-btn icon="mdi-delete" variant="text" color="primary" @click="onClickDelete(precio)"></v-btn>
@@ -33,11 +39,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
 import type Precio from '@/services/precio/models/Precio'
 import { formatCurrency, pluralize } from '@/utils/utils'
-import router from '@/router';
-import { modelStore } from '@/main';
+import router from '@/router'
+import { modelStore } from '@/main'
+import Equivalencia from '@/services/equivalencia/models/Equivalencia'
+import getEquivalencias from '@/services/equivalencia/getEquivalencias.service'
 export default defineComponent({
 	name: 'HistoricoPrecios',
 })
@@ -52,6 +60,19 @@ defineProps({
 		type: Array<Precio>,
 		default: {},
 	},
+})
+
+const equivalencias = (await getEquivalencias()).data as Equivalencia[]
+
+const getPrecioEquivalencias = computed(() => {
+   return (medida: any, precio: any) => {
+     const equivalencia = equivalencias.find((eq: any) => eq.from.id === medida.id)
+     console.log('LOG~ ~ :63 ~ getEquivalencias ~ equivalencia:', equivalencia)
+     if (equivalencia) {
+       return `${formatCurrency(precio.precio / (medida.valor * equivalencia.factor))} ${pluralize(equivalencia.to.nombre, medida.valor * equivalencia.factor)}`
+     }
+     return ''
+   }
 })
 
 const getFechaCompra = (value: any) => {

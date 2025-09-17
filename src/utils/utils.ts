@@ -49,7 +49,7 @@ export const sort = (property: any) => {
 }
 
 export const formatCurrency = (value: number, currency = true) => {
-	const result = value ? value.toLocaleString('es-ES', {minimumFractionDigits: 2}).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') : ''
+	const result = value ? value.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : ''
 	return currency && result ? result.concat(' €') : result
 }
 export const stringToNumber = (value: string): number => {
