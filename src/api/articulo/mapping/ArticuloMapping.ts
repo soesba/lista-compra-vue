@@ -21,10 +21,14 @@ export const DTOtoModel = (origin: ArticuloDTO): Articulo => {
 	return model
 }
 
-export const requestDTOtoModel = (origin: ArticuloRequestDTO): ArticuloRequest => {
-	return {...origin}
-}
-
 export const requestModelToDTO = (origin: ArticuloRequest): ArticuloRequestDTO => {
-	return { ...origin }
+	console.log('LOG~ ~ :29 ~ requestModelToDTO ~ origin:', origin)
+  const dto: ArticuloRequestDTO = {
+    id: origin.id,
+    nombre: origin.nombre,
+    descripcion: origin.descripcion,
+    tiposUnidad: origin.tiposUnidad ? origin.tiposUnidad.map(item => item.id) : [],
+    borrable: origin.borrable
+  }
+	return dto
 }

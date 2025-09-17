@@ -49,6 +49,8 @@ import { eventStore, modelStore } from '@/main'
 import create from '@/services/articulo/createArticulo.service'
 import update from '@/services/articulo/updateArticulo.service'
 import HistoricoPrecios from '@/components/HistoricoPrecios.vue'
+import Articulo from '@/services/articulo/models/Articulo'
+import ArticuloResponse from '@/services/articulo/models/ArticuloResponse'
 export default defineComponent({
 	name: 'ArticuloEdicion',
 })
@@ -105,7 +107,8 @@ const save = async () => {
 }
 
 const createArticulo = (data: any) => {
-	create(data).then(() => {
+	create(data).then((response) => {
+    editData.id = (response.data as Articulo).id
 		onBack()
 	})
 }
