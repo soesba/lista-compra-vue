@@ -22,7 +22,8 @@ const router = createRouter({
     {
 			path: '/tiposUnidades-detalle/:id',
 			name: 'tiposUnidades-detalle',
-			component: () => import('@/views/tiposUnidad/TipoUnidadDetalle.vue')
+			component: () => import('@/views/tiposUnidad/TipoUnidadDetalle.vue'),
+      props: true
 		},
 		{
 			path: '/articulos',
@@ -32,7 +33,8 @@ const router = createRouter({
 		{
 			path: '/articulo-detalle/:id',
 			name: 'articuloDetalle',
-			component: () => import('@/views/articulos/ArticuloDetalle.vue')
+			component: () => import('@/views/articulos/ArticuloDetalle.vue'),
+      props: true
 		},
     {
 			path: '/articulo-edicion',
@@ -47,7 +49,8 @@ const router = createRouter({
     {
       path: '/tipoEstablecimiento-detalle/:id',
       name: 'tipoEstablecimiento-detalle',
-      component: () => import('@/views/tiposEstablecimientos/TipoEstablecimientoDetalle.vue')
+      component: () => import('@/views/tiposEstablecimientos/TipoEstablecimientoDetalle.vue'),
+      props: true
     },
     {
       path: '/tipoEstablecimiento-edicion',
@@ -62,7 +65,8 @@ const router = createRouter({
 		{
 			path: '/establecimiento-detalle/:id',
 			name: 'establecimientoDetalle',
-			component: () => import('@/views/establecimientos/EstablecimientoDetalle.vue')
+			component: () => import('@/views/establecimientos/EstablecimientoDetalle.vue'),
+      props: true
 		},
 		{
 			path: '/establecimiento-edicion',
@@ -82,7 +86,8 @@ const router = createRouter({
 		{
 			path: '/precio-detalle/:id?',
 			name: 'precioDetalle',
-			component: () => import('@/views/precios/PrecioDetalle.vue')
+			component: () => import('@/views/precios/PrecioDetalle.vue'),
+      props: true
 		}
 	]
 })
