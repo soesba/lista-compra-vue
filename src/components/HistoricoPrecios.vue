@@ -86,7 +86,7 @@ const onClickDelete = (precio: Precio) => {
 	}
   table {
     width: 100%;
-    border-collapse: none;
+    border-collapse: collapse;
     th, td {
       padding: 8px;
       text-align: left;

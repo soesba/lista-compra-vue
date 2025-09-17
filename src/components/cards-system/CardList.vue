@@ -6,9 +6,7 @@
         :mapping="mapping"
         v-for="item in items"
         :key="item.id"
-        :card-data="item"
-
-        @click="onClick"/>
+        :card-data="item"/>
 		</div>
 		<div v-else>
 			<empty-card></empty-card>
@@ -39,7 +37,7 @@ import router from '@/router'
 import { sort } from '@/utils/utils';
 import { defineComponent, onMounted, ref } from 'vue'
 
-const emit = defineEmits(['click-card', 'addCard'])
+const emit = defineEmits(['addCard'])
 
 eventStore.$onAction(({args, name}) => {
 	switch(name) {
@@ -86,7 +84,6 @@ const props = defineProps({
 const list = ref(props.items || [])
 const sortBy = ref(props.sortBy)
 const show = ref(parseInt(import.meta.env.VITE_SHOW_CARDS))
-console.log('LOG~ ~ :90 ~ show:', show.value)
 const cardClass = ref([props.class])
 const routes = eventStore.getRoutes
 
@@ -95,9 +92,6 @@ onMounted(() => {
 })
 
 // Methods
-const onClick = (evt: string) => {
-  router.push(`${routes.detail}/${evt}`)
-}
 
 const addCard = () => {
   router.push(routes.add)
@@ -144,7 +138,6 @@ const onShowCards = (evt: any) => {
         margin: 0 auto;
         margin-bottom: 60px; // salvar boton de añadir
       }
-
       &.large {
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       }

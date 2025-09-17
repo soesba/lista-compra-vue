@@ -1,10 +1,12 @@
 <template>
-	<v-card class="cursor" @click="onClick()">
-		<v-img v-if="logo" class="logo" :src="getImageSrc"></v-img>
-		<v-card-title>{{ getTitle }}</v-card-title>
-		<v-card-subtitle v-if="showSubtitle">{{ getSubtitle }}</v-card-subtitle>
-		<v-card-text class="text-small">{{ getText }}</v-card-text>
-	</v-card>
+  <router-link :to="getRoute" class="no-link">
+    <v-card>
+      <v-img v-if="logo" class="logo" :src="getImageSrc"></v-img>
+      <v-card-title>{{ getTitle }}</v-card-title>
+      <v-card-subtitle v-if="showSubtitle">{{ getSubtitle }}</v-card-subtitle>
+      <v-card-text class="text-small">{{ getText }}</v-card-text>
+    </v-card>
+</router-link>
 </template>
 <script lang="ts">
 export default defineComponent({
@@ -13,10 +15,8 @@ export default defineComponent({
 </script>
 <script setup lang="ts">
 import { defineComponent } from 'vue'
-import { noLogoUrl } from '@/main'
+import { noLogoUrl, eventStore } from '@/main'
 import { computed, ref } from 'vue'
-
-const emit = defineEmits(['click'])
 
 // Props
 const props = defineProps({
@@ -39,9 +39,17 @@ const props = defineProps({
     default: () => ({}),
   }
 })
+
 // Data
 const data = ref(props.cardData)
+
+const routes = eventStore.getRoutes
+
 // Computed
+const getRoute = computed(() => {
+	return `${routes.detail}/${data.value.id}`
+})
+
 const getImageSrc = computed(() => {
 	return props.cardData[props.mapping.logo] ? props.cardData[props.mapping.logo].content : noLogoUrl
 })
@@ -70,10 +78,6 @@ const getText = computed(() => {
   }
 })
 
-// Methods
-const onClick = () => {
-  emit('click', data.value.id)
-}
 </script>
 <style lang="scss" scoped>
 .v-card-subtitle {
