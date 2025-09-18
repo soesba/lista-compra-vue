@@ -1,8 +1,7 @@
-import env from '@/services/environment'
 import Xhr from './Xhr'
 
-const baseUrl = env.getEnvVariable('BASE_URL') + ':' + env.getEnvVariable('PORT')
-console.log('LOG~ ~ :5 ~ baseUrl:', baseUrl)
+// const baseUrl = import.meta.env.VITE_BASE_URL + ':' + import.meta.env.VITE_PORT
+const baseUrl = import.meta.env.VITE_BASE_URL
 
 const xhr = Xhr.builder()
 	.setBaseUrl(baseUrl)

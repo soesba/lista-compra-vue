@@ -15,12 +15,12 @@ export default defineConfig({
 			'@': fileURLToPath(new URL('./src', import.meta.url))
 		}
 	},
-	define: {
-		'process.env': {
-			"BASE_URL": "http://localhost",
-			"PORT": 3030 // puerto de lista-compra-server env\dev.js
-		}
-	},
+	// define: {
+	// 	'process.env': {
+	// 		"BASE_URL": "http://localhost",
+	// 		"PORT": 3030 // puerto de lista-compra-server env\dev.js
+	// 	}
+	// },
 	css: {
 		preprocessorOptions: {
 			scss: {
