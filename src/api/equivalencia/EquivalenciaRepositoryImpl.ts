@@ -8,7 +8,7 @@ import Equivalencia from '@/services/equivalencia/models/Equivalencia'
 
 export default class EquivalenciaRepositoryImpl implements EquivalenciaRepository {
 	async get (): Promise<EquivalenciaResponse> {
-		const endpoint = '/tipoUnidadEquivalencia/get'
+		const endpoint = '/api/tipos-unidad-equivalencia'
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -21,7 +21,7 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 	}
 
 	async getById (id: string): Promise<EquivalenciaResponse> {
-		const endpoint = `/tipoUnidadEquivalencia/getById/${id}`
+		const endpoint = `/api/tipos-unidad-equivalencia/${id}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -34,7 +34,7 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 	}
 
 	async getByFrom (request: string): Promise<EquivalenciaResponse> {
-		const endpoint = `/tipoUnidadEquivalencia/getByFrom/${request}`
+		const endpoint = `/api/tipos-unidad-equivalencia/from/${request}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -47,7 +47,7 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 	}
 
 	async getByFromMultiple (request: Array<string>): Promise<EquivalenciaResponse> {
-		const endpoint = `/tipoUnidadEquivalencia/getByFromMultiple/${request}`
+		const endpoint = `/api/tipos-unidad-equivalencia/from-multiple/${request}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -60,7 +60,7 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 	}
 
 	async getByAny (request: string): Promise<EquivalenciaResponse> {
-		const endpoint = `/tipoUnidadEquivalencia/getByAny/${request}`
+		const endpoint = `/api/tipos-unidad-equivalencia/search/${request}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -73,7 +73,7 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 	}
 
   async save(request: Equivalencia[]): Promise<EquivalenciaResponse> {
-    const endpoint = `/tipoUnidadEquivalencia/save/`
+    const endpoint = `/api/tipos-unidad-equivalencia/save/`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -87,7 +87,7 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
   }
 
 	async insert(request: EquivalenciaRequest): Promise<EquivalenciaResponse> {
-		const endpoint = `/tipoUnidadEquivalencia/insert/`
+		const endpoint = `/api/tipos-unidad-equivalencia/`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -101,7 +101,7 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 	}
 
 	async update(request: EquivalenciaRequest): Promise<EquivalenciaResponse> {
-		const endpoint = `/tipoUnidadEquivalencia/update`
+		const endpoint = `/api/tipos-unidad-equivalencia/${request.id}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -115,7 +115,7 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 	}
 
 	async delete(id: string): Promise<EquivalenciaResponse> {
-		const endpoint = `/tipoUnidadEquivalencia/delete/${id}`
+		const endpoint = `/api/tipos-unidad-equivalencia/${id}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}

@@ -7,7 +7,7 @@ import type TipoUnidadRequest from "@/services/tipoUnidad/models/TipoUnidadReque
 
 export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
 	async get (): Promise<TipoUnidadResponse> {
-		const endpoint = '/tipoUnidad/get'
+		const endpoint = '/api/tipos-unidad'
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -20,7 +20,7 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
 	}
 
 	async getById (id: string): Promise<TipoUnidadResponse> {
-		const endpoint = `/tipoUnidad/getById/${id}`
+		const endpoint = `/api/tipos-unidad/${id}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -33,7 +33,7 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
 	}
 
 	async getByAny (id: string): Promise<TipoUnidadResponse> {
-		const endpoint = `/tipoUnidad/getByAny/${id}`
+		const endpoint = `/api/tipos-unidad/search/${id}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -46,7 +46,7 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
 	}
 
 	async insert(request: TipoUnidadRequest): Promise<TipoUnidadResponse> {
-		const endpoint = `/tipoUnidad/insert/`
+		const endpoint = `/api/tipos-unidad/`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -60,8 +60,7 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
 	}
 
 	async update(request: TipoUnidadRequest): Promise<TipoUnidadResponse> {
-		console.log("LOG ~ TipoUnidadRepositoryImpl ~ update ~ request:", request)
-		const endpoint = `/tipoUnidad/update`
+		const endpoint = `/api/tipos-unidad/${request.id}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -75,7 +74,7 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
 	}
 
 	async delete(id: string): Promise<TipoUnidadResponse> {
-		const endpoint = `/tipoUnidad/delete/${id}`
+		const endpoint = `/api/tipos-unidad/${id}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}

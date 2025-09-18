@@ -4,7 +4,7 @@ import { xhr } from "../config/Repository"
 
 export default class DesplegableRepositoryImpl implements DesplegableRepository {
 	async get (tipoDato: string): Promise<ItemResponse> {
-		const endpoint = `/${tipoDato}/getDesplegable`
+		const endpoint = `/api/${tipoDato}/desplegable`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}

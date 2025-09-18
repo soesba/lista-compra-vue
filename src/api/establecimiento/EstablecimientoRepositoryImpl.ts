@@ -7,7 +7,7 @@ import type EstablecimientoRequest from "@/services/establecimiento/models/Estab
 
 export default class EstablecimientoRepositoryImpl implements EstablecimientoRepository {
 	async get (): Promise<EstablecimientoResponse> {
-		const endpoint = '/establecimiento/get'
+		const endpoint = '/api/establecimientos'
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -20,7 +20,7 @@ export default class EstablecimientoRepositoryImpl implements EstablecimientoRep
 	}
 
 	async getById (id: string): Promise<EstablecimientoResponse> {
-		const endpoint = `/establecimiento/getById/${id}`
+		const endpoint = `/api/establecimientos/${id}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -34,7 +34,7 @@ export default class EstablecimientoRepositoryImpl implements EstablecimientoRep
 
 
 	async getByAny (request: string): Promise<EstablecimientoResponse> {
-		const endpoint = `/establecimiento/getByAny/${request}`
+		const endpoint = `/api/establecimientos/search/${request}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -47,7 +47,7 @@ export default class EstablecimientoRepositoryImpl implements EstablecimientoRep
 	}
 
 	async insert(request: EstablecimientoRequest): Promise<EstablecimientoResponse> {
-		const endpoint = `/establecimiento/insert/`
+		const endpoint = `/api/establecimientos`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -61,7 +61,7 @@ export default class EstablecimientoRepositoryImpl implements EstablecimientoRep
 	}
 
 	async update(request: EstablecimientoRequest): Promise<EstablecimientoResponse> {
-		const endpoint = `/establecimiento/update`
+		const endpoint = `/api/establecimientos/${request.id}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -75,7 +75,7 @@ export default class EstablecimientoRepositoryImpl implements EstablecimientoRep
 	}
 
 	async delete(id: string): Promise<EstablecimientoResponse> {
-		const endpoint = `/establecimiento/delete/${id}`
+		const endpoint = `/api/establecimientos/${id}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}

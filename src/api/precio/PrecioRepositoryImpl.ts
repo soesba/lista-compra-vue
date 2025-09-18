@@ -7,7 +7,7 @@ import type PrecioRequest from "@/services/precio/models/PrecioRequest"
 
 export default class PrecioRepositoryImpl implements PrecioRepository {
 	async get (): Promise<PrecioResponse> {
-		const endpoint = '/precio/get'
+		const endpoint = '/api/precios'
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -20,7 +20,7 @@ export default class PrecioRepositoryImpl implements PrecioRepository {
 	}
 
 	async getById (id: string): Promise<PrecioResponse> {
-		const endpoint = `/precio/getById/${id}`
+		const endpoint = `/api/precios/${id}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -33,7 +33,7 @@ export default class PrecioRepositoryImpl implements PrecioRepository {
 	}
 
 	async getByArticuloId (id: string): Promise<PrecioResponse> {
-		const endpoint = `/precio/getByArticuloId/${id}`
+		const endpoint = `/api/precios/articulo/${id}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -46,7 +46,7 @@ export default class PrecioRepositoryImpl implements PrecioRepository {
 	}
 
 	async getByAny (request: string): Promise<PrecioResponse> {
-		const endpoint = `/precio/getByAny/${request}`
+		const endpoint = `/api/precios/search/${request}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -59,7 +59,7 @@ export default class PrecioRepositoryImpl implements PrecioRepository {
 	}
 
 	async insert(request: PrecioRequest): Promise<PrecioResponse> {
-		const endpoint = `/precio/insert/`
+		const endpoint = `/api/precios/`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -73,7 +73,7 @@ export default class PrecioRepositoryImpl implements PrecioRepository {
 	}
 
 	async update(request: PrecioRequest): Promise<PrecioResponse> {
-		const endpoint = `/precio/update`
+		const endpoint = `/api/precios/${request.id}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -87,7 +87,7 @@ export default class PrecioRepositoryImpl implements PrecioRepository {
 	}
 
 	async delete(id: string): Promise<PrecioResponse> {
-		const endpoint = `/precio/delete/${id}`
+		const endpoint = `/api/precios/${id}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}

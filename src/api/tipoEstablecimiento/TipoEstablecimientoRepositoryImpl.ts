@@ -7,7 +7,7 @@ import type TipoEstablecimientoRequest from "@/services/tipoEstablecimiento/mode
 
 export default class TipoEstablecimientoRepositoryImpl implements TipoEstablecimientoRepository {
 	async get (): Promise<TipoEstablecimientoResponse> {
-		const endpoint = '/tipoEstablecimiento/get'
+		const endpoint = '/api/tipo-establecimientos'
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -20,7 +20,7 @@ export default class TipoEstablecimientoRepositoryImpl implements TipoEstablecim
 	}
 
   async getById (id: string): Promise<TipoEstablecimientoResponse> {
-      const endpoint = `/tipoEstablecimiento/getById/${id}`
+      const endpoint = `/api/tipo-establecimientos/${id}`
       const headers = {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -33,7 +33,7 @@ export default class TipoEstablecimientoRepositoryImpl implements TipoEstablecim
     }
 
 	async getByAny (request: string): Promise<TipoEstablecimientoResponse> {
-		const endpoint = `/tipoEstablecimiento/getByAny/${request}`
+		const endpoint = `/api/tipo-establecimientos/search/${request}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -46,7 +46,7 @@ export default class TipoEstablecimientoRepositoryImpl implements TipoEstablecim
 	}
 
 	async insert(request: TipoEstablecimientoRequest): Promise<TipoEstablecimientoResponse> {
-		const endpoint = `/tipoEstablecimiento/insert/`
+		const endpoint = `/api/tipo-establecimientos/`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -60,7 +60,7 @@ export default class TipoEstablecimientoRepositoryImpl implements TipoEstablecim
 	}
 
 	async update(request: TipoEstablecimientoRequest): Promise<TipoEstablecimientoResponse> {
-		const endpoint = `/tipoEstablecimiento/update`
+		const endpoint = `/api/tipo-establecimientos/${request.id}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -74,7 +74,7 @@ export default class TipoEstablecimientoRepositoryImpl implements TipoEstablecim
 	}
 
 	async delete(id: string): Promise<TipoEstablecimientoResponse> {
-		const endpoint = `/tipoEstablecimiento/delete/${id}`
+		const endpoint = `/api/tipo-establecimientos/${id}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}

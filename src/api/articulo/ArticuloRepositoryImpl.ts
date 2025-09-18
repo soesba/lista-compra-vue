@@ -7,7 +7,7 @@ import type ArticuloRequest from "@/services/articulo/models/ArticuloRequest"
 
 export default class ArticuloRepositoryImpl implements ArticuloRepository {
 	async get (): Promise<ArticuloResponse> {
-		const endpoint = '/articulo/get'
+		const endpoint = '/api/articulos'
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -20,7 +20,7 @@ export default class ArticuloRepositoryImpl implements ArticuloRepository {
 	}
 
 	async getById (id: string): Promise<ArticuloResponse> {
-		const endpoint = `/articulo/getById/${id}`
+		const endpoint = `/api/articulos/${id}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -33,7 +33,7 @@ export default class ArticuloRepositoryImpl implements ArticuloRepository {
 	}
 
 	async getByAny (request: string): Promise<ArticuloResponse> {
-		const endpoint = `/articulo/getByAny/${request}`
+		const endpoint = `/api/articulos/search/${request}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -46,7 +46,7 @@ export default class ArticuloRepositoryImpl implements ArticuloRepository {
 	}
 
 	async insert(request: ArticuloRequest): Promise<ArticuloResponse> {
-		const endpoint = `/articulo/insert/`
+		const endpoint = `/api/articulos`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -60,7 +60,7 @@ export default class ArticuloRepositoryImpl implements ArticuloRepository {
 	}
 
 	async update(request: ArticuloRequest): Promise<ArticuloResponse> {
-		const endpoint = `/articulo/update`
+		const endpoint = `/api/articulos/${request.id}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -74,7 +74,7 @@ export default class ArticuloRepositoryImpl implements ArticuloRepository {
 	}
 
 	async delete(id: string): Promise<ArticuloResponse> {
-		const endpoint = `/articulo/delete/${id}`
+		const endpoint = `/api/articulos/${id}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}

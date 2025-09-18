@@ -1,6 +1,6 @@
 export enum TipoDato {
-	Articulos = "Articulo",
-	Establecimientos = "Establecimiento",
-	TipoEstablecimientos = "TipoEstablecimiento",
-	TipoUnidad ="TipoUnidad"
+	Articulos = "articulos",
+	Establecimientos = "establecimientos",
+	TipoEstablecimientos = "tipo-establecimientos",
+	TipoUnidad ="tipos-unidad"
 }
