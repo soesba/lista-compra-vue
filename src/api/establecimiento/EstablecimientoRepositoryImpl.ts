@@ -33,7 +33,7 @@ export default class EstablecimientoRepositoryImpl implements EstablecimientoRep
 	}
 
 
-	async getByAny (request: string): Promise<EstablecimientoResponse> {
+	async search (request: string): Promise<EstablecimientoResponse> {
 		const endpoint = `/api/establecimientos/search/${request}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'

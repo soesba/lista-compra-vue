@@ -12,7 +12,7 @@
 import { onMounted, ref, computed } from 'vue'
 import { CardList, TitleView, SearchBox } from '@/components'
 import get from '@/services/precio/getPrecio.service'
-import getByAny from '@/services/precio/getPrecioByAny.service'
+import searchPrecio from '@/services/precio/searchPrecio.service'
 import create from '@/services/precio/createPrecio.service'
 import update from '@/services/precio/updatePrecio.service'
 import { defineComponent } from 'vue'
@@ -118,7 +118,7 @@ const updateCard = (card: PrecioRequest) => {
 
 const onSearch = (evt: any) => {
 	if (evt) {
-		getByAny(evt).then((response:PrecioResponse) => {
+		searchPrecio(evt).then((response:PrecioResponse) => {
 			list.value = response.data
 		})
 	} else {

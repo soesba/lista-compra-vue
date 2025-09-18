@@ -32,7 +32,7 @@ export default class ArticuloRepositoryImpl implements ArticuloRepository {
 		return result
 	}
 
-	async getByAny (request: string): Promise<ArticuloResponse> {
+	async search (request: string): Promise<ArticuloResponse> {
 		const endpoint = `/api/articulos/search/${request}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'

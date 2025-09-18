@@ -5,6 +5,7 @@ import type EquivalenciaResponse from "@/services/equivalencia/models/Equivalenc
 export default interface EquivalenciaRepository {
 	get(): Promise<EquivalenciaResponse>;
 	getById(id: string): Promise<EquivalenciaResponse>;
+  search (request: string): Promise<EquivalenciaResponse>;
 	getByFrom(id: string): Promise<EquivalenciaResponse>;
 	getByFromMultiple(id: Array<string>): Promise<EquivalenciaResponse>;
   save(request: Equivalencia[]): Promise<EquivalenciaResponse>;

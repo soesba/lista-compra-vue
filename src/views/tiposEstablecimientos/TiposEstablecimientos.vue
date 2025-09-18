@@ -12,7 +12,7 @@ import { onMounted, ref, computed, defineComponent } from 'vue'
 import router from '@/router'
 import { CardList, TitleView, SearchBox } from '@/components'
 import get from '@/services/tipoEstablecimiento/getTipoEstablecimiento.service'
-import getByAny from '@/services/tipoEstablecimiento/getTipoEstablecimientoByAny.service'
+import searchTipoEstablecimiento from '@/services/tipoEstablecimiento/searchTipoEstablecimiento.service'
 import create from '@/services/tipoEstablecimiento/createTipoEstablecimiento.service'
 import update from '@/services/tipoEstablecimiento/updateTipoEstablecimiento.service'
 import { eventStore } from '@/main';
@@ -108,7 +108,7 @@ const updateCard = (card: TipoEstablecimientoRequest) => {
 
 const onSearch = (evt: any) => {
 	if (evt) {
-		getByAny(evt).then((response:TipoEstablecimientoResponse) => {
+		searchTipoEstablecimiento(evt).then((response:TipoEstablecimientoResponse) => {
 			list.value = response.data
 		})
 	} else {

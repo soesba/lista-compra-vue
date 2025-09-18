@@ -8,7 +8,7 @@
 import { computed, onMounted, ref, defineComponent } from 'vue'
 import { CardList, TitleView, SearchBox } from '@/components'
 import get from '@/services/articulo/getArticulo.service'
-import getByAny from '@/services/articulo/getArticuloByAny.service'
+import searchArticulo from '@/services/articulo/searchArticulo.service'
 import create from '@/services/articulo/createArticulo.service'
 import update from '@/services/articulo/updateArticulo.service'
 import { eventStore } from '@/main';
@@ -104,7 +104,7 @@ const updateCard = (card: ArticuloRequest) => {
 
 const onSearch = (evt: any) => {
 	if (evt) {
-		getByAny(evt).then((response:ArticuloResponse) => {
+		searchArticulo(evt).then((response:ArticuloResponse) => {
 			list.value = response.data
 		})
 	} else {

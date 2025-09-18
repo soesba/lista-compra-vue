@@ -32,7 +32,7 @@ export default class TipoEstablecimientoRepositoryImpl implements TipoEstablecim
       return result
     }
 
-	async getByAny (request: string): Promise<TipoEstablecimientoResponse> {
+	async search (request: string): Promise<TipoEstablecimientoResponse> {
 		const endpoint = `/api/tipo-establecimientos/search/${request}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'

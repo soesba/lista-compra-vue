@@ -59,7 +59,7 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 		return result
 	}
 
-	async getByAny (request: string): Promise<EquivalenciaResponse> {
+	async search (request: string): Promise<EquivalenciaResponse> {
 		const endpoint = `/api/tipos-unidad-equivalencia/search/${request}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'

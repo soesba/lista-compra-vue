@@ -32,7 +32,7 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
 		return result
 	}
 
-	async getByAny (id: string): Promise<TipoUnidadResponse> {
+	async search (id: string): Promise<TipoUnidadResponse> {
 		const endpoint = `/api/tipos-unidad/search/${id}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'

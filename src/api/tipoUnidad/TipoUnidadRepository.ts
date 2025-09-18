@@ -3,7 +3,7 @@ import type TipoUnidadResponse from "@/services/tipoUnidad/models/TipoUnidadResp
 
 export default interface TipoUnidadRepository {
 	get(): Promise<TipoUnidadResponse>;
-	getByAny(request: string): Promise<TipoUnidadResponse>;
+	search(request: string): Promise<TipoUnidadResponse>;
 	getById(id: string): Promise<TipoUnidadResponse>;
 	insert(request: TipoUnidadRequest): Promise<TipoUnidadResponse>;
 	update(request: TipoUnidadRequest): Promise<TipoUnidadResponse>;

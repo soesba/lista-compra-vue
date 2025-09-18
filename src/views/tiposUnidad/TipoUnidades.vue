@@ -13,7 +13,7 @@ import { onMounted, ref, computed } from 'vue'
 import router from '@/router'
 import { CardList, TitleView, SearchBox } from '@/components'
 import get from '@/services/tipoUnidad/getTipoUnidad.service'
-import getByAny from '@/services/tipoUnidad/getTipoUnidadByAny.service'
+import searchTipoUnidad from '@/services/tipoUnidad/searchTipoUnidad.service'
 import create from '@/services/tipoUnidad/createTipoUnidad.service'
 import update from '@/services/tipoUnidad/updateTipoUnidad.service'
 import { defineComponent } from 'vue'
@@ -115,7 +115,7 @@ const updateCard = (card: TipoUnidadRequest) => {
 
 const onSearch = (evt: any) => {
 	if (evt) {
-		getByAny(evt).then((response:TipoUnidadResponse) => {
+		searchTipoUnidad(evt).then((response:TipoUnidadResponse) => {
 			list.value = response.data
 		})
 	} else {

@@ -45,7 +45,7 @@ export default class PrecioRepositoryImpl implements PrecioRepository {
 		return result
 	}
 
-	async getByAny (request: string): Promise<PrecioResponse> {
+	async search (request: string): Promise<PrecioResponse> {
 		const endpoint = `/api/precios/search/${request}`
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
