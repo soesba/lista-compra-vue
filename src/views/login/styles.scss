@@ -1,0 +1,25 @@
+.auth {
+		color: rgb(var(--v-theme-primary));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    &_box {
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 2px 3px rgba(24, 103, 192, 0.55);
+      border: 1px solid rgba(24, 103, 192, 0.4);
+      padding: 36px;
+			width: 450px;
+			max-width: 450px;
+
+      &-content {
+        margin: 0 2.5em 0 2.5em;
+      }
+
+			@media (max-width: 640px) {
+				width: 90vw;
+			}
+    }
+  }

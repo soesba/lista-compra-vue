@@ -4,6 +4,9 @@ import type TipoEstablecimientoRepository from "./TipoEstablecimientoRepository"
 import { DTOtoModel, requestModelToDTO } from "./mapping/TipoEstablecimientoMapping"
 import type TipoEstablecimientoDTO from "./dto/TipoEstablecimientoDTO"
 import type TipoEstablecimientoRequest from "@/services/tipoEstablecimiento/models/TipoEstablecimientoRequest"
+import TiposEstablecimientoResponseDTO from './dto/TiposEstablecimientoResponseDTO'
+import TipoEstablecimientoResponseDTO from './dto/TipoEstablecimientoResponseDTO'
+import TipoEstablecimientoRequestDTO from './dto/TipoEstablecimientoRequestDTO'
 
 export default class TipoEstablecimientoRepositoryImpl implements TipoEstablecimientoRepository {
 	async get (): Promise<TipoEstablecimientoResponse> {
@@ -11,9 +14,9 @@ export default class TipoEstablecimientoRepositoryImpl implements TipoEstablecim
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
-		const response = await xhr.get(endpoint, { headers})
+		const response = await xhr.get<TiposEstablecimientoResponseDTO>(endpoint, { headers})
 		const result = {
-			data: response.data.map((item:TipoEstablecimientoDTO) => DTOtoModel(item)),
+			data: response.data.data.map((item:TipoEstablecimientoDTO) => DTOtoModel(item)),
 			respuesta: response.status
 		}
 		return result
@@ -24,9 +27,9 @@ export default class TipoEstablecimientoRepositoryImpl implements TipoEstablecim
       const headers = {
         'Content-Type': 'application/json;charset=UTF-8'
       }
-      const response = await xhr.get(endpoint, { headers})
+      const response = await xhr.get<TipoEstablecimientoResponseDTO>(endpoint, { headers})
       const result = {
-        data: DTOtoModel(response.data),
+        data: DTOtoModel(response.data.data),
         respuesta: response.status
       }
       return result
@@ -37,9 +40,9 @@ export default class TipoEstablecimientoRepositoryImpl implements TipoEstablecim
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
-		const response = await xhr.get(endpoint, { headers})
+		const response = await xhr.get<TiposEstablecimientoResponseDTO>(endpoint, { headers})
 		const result = {
-			data: response.data.map((item:TipoEstablecimientoDTO) => DTOtoModel(item)),
+			data: response.data.data.map((item:TipoEstablecimientoDTO) => DTOtoModel(item)),
 			respuesta: response.status
 		}
 		return result
@@ -51,9 +54,9 @@ export default class TipoEstablecimientoRepositoryImpl implements TipoEstablecim
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
 		const requestDTO = requestModelToDTO(request)
-		const response = await xhr.post(endpoint, requestDTO, { headers})
+		const response = await xhr.post<TipoEstablecimientoRequestDTO, TipoEstablecimientoResponseDTO>(endpoint, requestDTO, { headers})
 		const result = {
-			data: DTOtoModel(response.data),
+			data: DTOtoModel(response.data.data),
 			respuesta: response.status
 		}
 		return result
@@ -65,9 +68,9 @@ export default class TipoEstablecimientoRepositoryImpl implements TipoEstablecim
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
 		const requestDTO = requestModelToDTO(request)
-		const response = await xhr.put(endpoint, requestDTO, { headers})
+		const response = await xhr.put<TipoEstablecimientoRequestDTO, TipoEstablecimientoResponseDTO>(endpoint, requestDTO, { headers})
 		const result = {
-			data: DTOtoModel(response.data),
+			data: DTOtoModel(response.data.data),
 			respuesta: response.status
 		}
 		return result
@@ -78,9 +81,9 @@ export default class TipoEstablecimientoRepositoryImpl implements TipoEstablecim
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
-		const response = await xhr.delete(endpoint, { headers})
+		const response = await xhr.delete<TipoEstablecimientoResponseDTO>(endpoint, { headers})
 		const result = {
-			data: DTOtoModel(response.data),
+			data: DTOtoModel(response.data.data),
 			respuesta: response.status
 		}
 		return result

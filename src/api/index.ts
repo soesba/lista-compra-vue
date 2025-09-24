@@ -1,3 +1,4 @@
+import AuthFactory from './auth/AuthFactory'
 import ArticuloFactory from "./articulo/ArticuloFactory"
 import PrecioFactory from "./precio/PrecioFactory"
 import EstablecimientoFactory from "./establecimiento/EstablecimientoFactory"
@@ -7,6 +8,7 @@ import DesplegableFactory from "./desplegables/DesplegableFactory"
 import EquivalenciaFactory from "./equivalencia/EquivalenciaFactory"
 
 const API = {
+  AuthRepository: AuthFactory.getInstance(),
 	TipoUnidadRepository: TipoUnidadFactory.getInstance(),
 	ArticuloRepository: ArticuloFactory.getInstance(),
 	TipoEstablecimientoRepository: TipoEstablecimientoFactory.getInstance(),

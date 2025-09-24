@@ -1,13 +1,20 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import { isAuth } from './validations/AuthGuard'
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
 	routes: [
+     {
+      path: '/login',
+      name: 'Login',
+      component: () => import('@/views/login/index.vue')
+    },
 		{
 			path: '/',
 			name: 'home',
-			component: HomeView
+			component: HomeView,
+      beforeEnter: (to, from, next) => { isAuth(to, from, next) }
 		},
 		{
 			path: '/tiposUnidades',

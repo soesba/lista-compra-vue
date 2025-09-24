@@ -3,8 +3,8 @@
     color="primary"
     prominent
   >
-    <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-    <router-link class="no-link" to="/">
+    <v-app-bar-nav-icon v-show="showNavigation" variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+    <router-link class="no-link" :class="{ 'padding': !showNavigation }" to="/">
       <v-toolbar-title>Precios compra</v-toolbar-title>
     </router-link>
     <v-spacer></v-spacer>
@@ -28,7 +28,8 @@
     </v-navigation-drawer>
 </template>
 <script lang="ts">
-import { ref } from 'vue'
+import { useAuthStore } from '@/store'
+import { computed, ref } from 'vue'
 import { defineComponent } from 'vue'
 export default defineComponent({
 	name: 'NavigationComponent'
@@ -75,4 +76,14 @@ const items = ref([
 	}
 ])
 
+const showNavigation = computed(() => {
+  const authStore = useAuthStore()
+  return authStore?.isAuthenticated || false
+})
+
 </script>
+<style lang="scss" scoped>
+.padding {
+  padding-left: 64px;
+}
+</style>
