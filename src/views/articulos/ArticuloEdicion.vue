@@ -50,7 +50,6 @@ import create from '@/services/articulo/createArticulo.service'
 import update from '@/services/articulo/updateArticulo.service'
 import HistoricoPrecios from '@/components/HistoricoPrecios.vue'
 import Articulo from '@/services/articulo/models/Articulo'
-import ArticuloResponse from '@/services/articulo/models/ArticuloResponse'
 export default defineComponent({
 	name: 'ArticuloEdicion',
 })

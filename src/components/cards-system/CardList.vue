@@ -107,7 +107,7 @@ const onSortCards = (evt: any) => {
 }
 
 const onShowCards = (evt: any) => {
-  show.value = evt
+  show.value = evt.show
   switch (show.value) {
     case 0:
       cardClass.value = ['card', 'small']

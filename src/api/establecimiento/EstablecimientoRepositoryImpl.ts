@@ -5,7 +5,6 @@ import { DTOtoModel, requestModelToDTO } from "./mapping/EstablecimientoMapping"
 import type EstablecimientoDTO from "./dto/EstablecimientoDTO"
 import type EstablecimientoRequest from "@/services/establecimiento/models/EstablecimientoRequest"
 import EstablecimientoResponseDTO from './dto/EstablecimientoResponseDTO'
-import Establecimiento from '@/services/establecimiento/models/Establecimiento'
 import EstablecimientosResponseDTO from './dto/EstablecimientosResponseDTO'
 import EstablecimientoRequestDTO from './dto/EstablecimientoRequestDTO'
 

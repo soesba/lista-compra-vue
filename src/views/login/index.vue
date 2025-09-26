@@ -1,22 +1,22 @@
 <template>
   <div class="auth">
-      <div class="auth_box">
-        <div class="auth_box-content">
-          <login-form
-            v-if="mode === 'login'"
-            :auth-error="isLoginError"
-            @login="onLogin"
-            @resetPassword="onViewResetPassword" />
-          <reset-password
-            v-else-if="mode === 'resetPassword'"
-            @send="onResetPassword"
-            @back="onBackToLogin" />
-          <change-password
-            v-else-if="mode === 'changePassword'"
-            @send="onChangePassword"
-            @back="onBackToResetPassword" />
-        </div>
+    <div class="auth_box">
+      <div class="auth_box-content">
+        <login-form
+          v-if="mode === 'login'"
+          :auth-error="isLoginError"
+          @login="onLogin"
+          @resetPassword="onViewResetPassword" />
+        <reset-password
+          v-else-if="mode === 'resetPassword'"
+          @send="onResetPassword"
+          @back="onBackToLogin" />
+        <change-password
+          v-else-if="mode === 'changePassword'"
+          @send="onChangePassword"
+          @back="onBackToResetPassword" />
       </div>
+    </div>
   </div>
 </template>
 
@@ -24,12 +24,10 @@
   import LoginForm from './components/LoginForm.vue';
   import ResetPassword from './components/ResetPassword.vue';
   import ChangePassword from './components/ChangePassword.vue';
-  import RedirectLogin from './components/RedirectLogin.vue';
 
   import { defineComponent, onMounted, ref } from 'vue';
   import router from '@/router';
-import { authStore } from '@/main';
-import { debug } from 'console';
+  import { authStore } from '@/main';
 
   export default defineComponent({
     name: 'LoginTemplate',
@@ -44,7 +42,6 @@ import { debug } from 'console';
     // if (authService.login.isAuth()) {
     //   authService.logout.logout();
     // }
-
     // if (!authService.login.isLoginApp()) {
     //   mode.value = 'sso';
     //   authService.login.login();
@@ -55,7 +52,7 @@ import { debug } from 'console';
     try {
       const login = await authStore.login(username, password);
       if (login) {
-        router.push('/')
+        router.push('/');
       } else {
         isLoginError.value = true;
       }
@@ -77,8 +74,18 @@ import { debug } from 'console';
     //   });
   };
 
-  const onChangePassword = ({ currentPassword, newPassword}: { currentPassword: string; newPassword: string; }) => {
-    console.log('LOG~ ~ :82 ~ onChangePassword ~ currentPassword, newPassword:', currentPassword, newPassword)
+  const onChangePassword = ({
+    currentPassword,
+    newPassword,
+  }: {
+    currentPassword: string;
+    newPassword: string;
+  }) => {
+    console.log(
+      'LOG~ ~ :82 ~ onChangePassword ~ currentPassword, newPassword:',
+      currentPassword,
+      newPassword
+    );
     // changePasswordService.execute(userName.value, currentPassword, newPassword).then(() => {
     //   alert('Contraseña cambiada');
     //   mode.value = 'login';

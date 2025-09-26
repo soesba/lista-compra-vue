@@ -44,7 +44,7 @@ else {
     mount('#app')
 }
 
-export const interceptorMsg = new InterceptorMessages(xhr)
+export const interceptorMsg = new InterceptorMessages(xhr, useAuthStore().token)
 interceptorMsg.execute()
 export const uiStore = useUiStore()
 export const eventStore = useEventStore()
