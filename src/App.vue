@@ -1,11 +1,11 @@
 <template>
   <v-app>
-    <navigation />
+    <navigation v-if="showNavigation" />
     <v-main>
       <alert-component></alert-component>
       <raw-confirm-dialog v-if="rawConfirmDialog"></raw-confirm-dialog>
       <raw-dialog-component v-if="rawDialogComponent"></raw-dialog-component>
-      <v-container>
+      <v-container :class="{ login: !showNavigation }" fluid>
         <router-view v-slot="{ Component }">
           <Suspense timeout="0">
             <template #default>
@@ -24,17 +24,22 @@
 </template>
 <script setup lang="ts">
 import { Navigation } from '@/components/index'
-import { markRaw, Suspense } from 'vue'
+import { computed, markRaw, Suspense } from 'vue'
 import DialogComponent from '@/components/DialogComponent.vue'
 import ConfirmDialog from '@/components/dialogs-system/ConfirmDialog.vue'
 import AlertComponent from './components/AlertComponent.vue'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from './store'
 
 const router = useRouter()
 
 const rawDialogComponent = markRaw(DialogComponent)
 const rawConfirmDialog = markRaw(ConfirmDialog)
 
+const showNavigation = computed(() => {
+  const authStore = useAuthStore()
+  return authStore?.isAuthenticated || false
+})
 
 // Navegar a "/"" al recargar la página
 const navigationEntries = performance.getEntriesByType('navigation');

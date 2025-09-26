@@ -1,4 +1,6 @@
 import API from '@/api'
+import router from '@/router'
+import axios from 'axios'
 import Cookies from 'js-cookie'
 import { defineStore } from 'pinia'
 
@@ -38,14 +40,20 @@ const removeAll = (): void => {
 }
 
 export const useAuthStore = defineStore('auth', {
-  persist: true,
   state: () => ({
     token: '',
-    user: ''
+    refresh_token: '',
+    user: '',
+    isRefreshing: false,
+    failedQueue: [] as any[]
   }),
   actions: {
     setToken(newToken: any) {
       this.token = newToken
+    },
+
+    setRefreshToken(newRefreshToken: any) {
+      this.refreshToken = newRefreshToken
     },
 
     setUser(newUser: any) {
@@ -56,19 +64,67 @@ export const useAuthStore = defineStore('auth', {
       const response = await API.AuthRepository.login(username, password)
       if (response.status === 200) {
         this.setToken(response.data.access_token)
+        this.setRefreshToken(response.data.refresh_token)
         this.setUser(username)
-        // Guardar token en local storage para persistencia
+        // Guardar tokens en local storage para persistencia
         Cookies.set(config.appAccessToken, this.token, { domain: window.location.hostname, secure: true })
+        Cookies.set(config.appRefreshToken, this.refresh_token, { domain: window.location.hostname, secure: true })
         return true
       } else {
         throw new Error('Error al iniciar sesión')
       }
     },
 
+    async refreshToken() {
+      const response = await API.AuthRepository.refresh(this.getRefreshTokenSaved)
+      if (response.status === 200) {
+        this.setToken(response.data.access_token)
+        // Guardar token en local storage para persistencia
+        Cookies.set(config.appAccessToken, this.token, { domain: window.location.hostname, secure: true })
+        return true
+      } else {
+        throw new Error('Error al refrescar el token')
+      }
+    },
+
+    async handle401Error(error: any) {
+      const originalRequest = error.config;
+
+      if (originalRequest._retry) return Promise.reject(error);
+      originalRequest._retry = true;
+
+      if (this.isRefreshing) {
+        return new Promise((resolve, reject) => {
+          this.failedQueue.push({ resolve, reject });
+        }).then((token: any) => {
+          originalRequest.headers['Authorization'] = `Bearer ${token}`;
+          return axios(originalRequest);
+        });
+      }
+
+      this.isRefreshing = true;
+
+      try {
+        const newToken = await this.refreshToken();
+        this.failedQueue.forEach(prom => prom.resolve(newToken));
+        this.failedQueue = [];
+        originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
+        return axios(originalRequest);
+      } catch (err) {
+        this.failedQueue.forEach(prom => prom.reject(err));
+        this.failedQueue = [];
+        throw err;
+      } finally {
+        this.isRefreshing = false;
+      }
+    },
+
     logout() {
         this.token = ''
+        this.refresh_token = ''
         this.user = ''
         removeAll()
+        router.push('/login')
     }
   },
   getters: {

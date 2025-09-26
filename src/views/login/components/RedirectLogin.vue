@@ -1,7 +1,7 @@
 <template>
   <div id="loading">
     <div class="content">
-      <i class="pi pi-spin pi-spinner" style="font-size: 5em"></i>
+      <i class="mdi-reload" style="font-size: 5em"></i>
       <h4 class="text">
         {{ text }}
       </h4>

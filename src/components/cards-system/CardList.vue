@@ -148,9 +148,9 @@ const onShowCards = (evt: any) => {
         flex-wrap: wrap;
         margin: 0 auto;
         margin-bottom: 60px; // salvar boton de añadir
-        .v-card {
-          max-width: 70%;
-          width: 50%;
+        :deep(.v-card) {
+          // box-shadow: none;
+          // margin: 0px;
         }
       }
     }

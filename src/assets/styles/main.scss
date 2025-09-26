@@ -29,15 +29,15 @@ a.no-link {
   min-width: 360px;
 }
 
-// .v-container {
-// 	display: flex;
-// 	justify-content: center;
-// 	align-items: center;
-// 	min-height: 90vh;
-// 	@media (min-width: 1280px) {
-//   	min-height: 90vh;
-//   }
-// }
+.v-container.login {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 90vh;
+	@media (min-width: 1280px) {
+  	min-height: 90vh;
+  }
+}
 
 .v-dialog {
   max-width: 400px;
