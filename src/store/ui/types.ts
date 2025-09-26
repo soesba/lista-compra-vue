@@ -1,4 +1,6 @@
 export default interface UiState {
+  menuSortCards: number | null,
+  menuShowCards: number | null,
 	customDialog: {
 		show: boolean,
 		component: object,
@@ -21,5 +23,5 @@ export default interface UiState {
 			variant: 'flat' | 'text' | 'elevated' | 'tonal' | 'outlined' | 'plain',
 			type: any
 		}
-	} 
+	}
 }

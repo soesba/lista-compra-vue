@@ -38,11 +38,11 @@
   })
 
   const defaultMenu: Array<any> = [
-  { name: 'ordenar', title: 'Ordenar por', click: (i: any) => menuClick(i), valorActual: 0, subitems: [
+  { name: 'ordenar', title: 'Ordenar por', click: (i: any) => menuClick(i), valorActual: uiStore.getMenuSortCards, subitems: [
     { title: 'Nombre ascendente', value: 0 },
     { title: 'Nombre descendente', value: 1 }
   ]},
-	{ name: 'ver', title: 'Ver', click: (i: any) => menuClick(i), valorActual: 0, subitems: [
+	{ name: 'ver', title: 'Ver', click: (i: any) => menuClick(i), valorActual: uiStore.getMenuShowCards, subitems: [
     { title: 'Tarjetas pequeñas', value: 0 },
     { title: 'Tarjetas grandes', value: 1 },
     { title: 'Lista', value: 2 }
@@ -87,8 +87,10 @@
     }
     if (submenu === 'ordenar') {
       eventStore.sortCards({ order: index})
+      uiStore.setMenuSortCards(index)
     } else {
       eventStore.showCards({ show: index })
+      uiStore.setMenuShowCards(index)
     }
   }
 </script>

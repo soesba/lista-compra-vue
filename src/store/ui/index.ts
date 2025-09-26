@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import type UiState from "./types";
+import { get } from 'http';
 
 const getDefaultCustomDialog = () => {
 	return {
@@ -38,15 +39,18 @@ export const useUiStore = defineStore('uiStore', {
 	state: (): UiState => ({
 		customDialog: getDefaultCustomDialog(),
 		confirmDialog: getDefaultConfirmDialog(),
-		alertComponent: getDefaultAlertComponent()
+		alertComponent: getDefaultAlertComponent(),
+    menuSortCards: null,
+    menuShowCards: null
 	}),
 	getters: {
 		getCustomDialog: (state) => state.customDialog,
 		getConfirmDialog: (state) => state.confirmDialog,
-		getAlertComponent: (state) => state.alertComponent
+		getAlertComponent: (state) => state.alertComponent,
+    getMenuSortCards: (state) => state.menuSortCards || parseInt(import.meta.env.VITE_SORT_CARDS),
+    getMenuShowCards: (state) => state.menuShowCards || parseInt(import.meta.env.VITE_SHOW_CARDS)
   },
 	actions: {
-		// no context as first argument, use `this` instead
 		showCustomDialog ({ component, props, events }: any) {
 			this.customDialog.show = true
 			this.customDialog.component = component
@@ -70,6 +74,12 @@ export const useUiStore = defineStore('uiStore', {
 		},
 		hideAlertComponent () {
 			this.alertComponent.show = false
-		}
+		},
+    setMenuSortCards(value: number) {
+      this.menuSortCards = value
+    },
+    setMenuShowCards(value: number) {
+      this.menuShowCards = value
+    }
 	}
 })
