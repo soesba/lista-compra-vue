@@ -40,9 +40,9 @@ export default class PrecioRepositoryImpl implements PrecioRepository {
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
-		const response = await xhr.get<PrecioResponseDTO>(endpoint, { headers})
+		const response = await xhr.get<PreciosResponseDTO>(endpoint, { headers})
 		const result = {
-			data: DTOtoModel(response.data.data),
+			data: response.data.data.map((item:PrecioDTO) => DTOtoModel(item)),
 			respuesta: response.status
 		}
 		return result

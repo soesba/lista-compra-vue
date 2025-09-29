@@ -27,9 +27,9 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import router from '@/router'
 import getArticuloById from '@/services/articulo/getArticuloById.service'
 import { useRoute } from 'vue-router'
+import router from '@/router'
 import DetailToolbar from '@/components/DetailToolbar.vue'
 import { eventStore, modelStore } from '@/main'
 import type Articulo from '@/services/articulo/models/Articulo'

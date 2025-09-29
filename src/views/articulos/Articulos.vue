@@ -45,7 +45,7 @@
     subtitle: 'descripcion',
     text: (item: any) =>
       // item.tienePrecios ? 'Se han introducido precios' : 'No se han introducido precios',
-      item.tienePrecios ? '<v-icon color="primary" icon="mdi-euro"></v-icon>' : ''
+      item.tienePrecios ? '<i class="mdi mdi-currency-eur"></i>' : '<div>&nbsp</div>',
   };
   const routes = {
     detail: '/articulo-detalle',

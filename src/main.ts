@@ -44,10 +44,10 @@ else {
     mount('#app')
 }
 
-export const interceptorMsg = new InterceptorMessages(xhr, useAuthStore().token)
-interceptorMsg.execute()
 export const uiStore = useUiStore()
 export const eventStore = useEventStore()
 export const modelStore = useModelStore()
 export const authStore = useAuthStore()
+export const interceptorMsg = new InterceptorMessages(xhr)
+interceptorMsg.execute()
 export const noLogoUrl = new URL('@/assets/images/no-image.svg', import.meta.url).href

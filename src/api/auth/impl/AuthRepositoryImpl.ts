@@ -27,7 +27,7 @@ export default class AuthRepositoryImpl implements AuthRepository {
       status: response.status,
       data: {
         access_token: response.data.token,
-        refresh_token: response.data.refresh_token,
+        refresh_token: response.data.refreshToken,
         username: response.data.username
       }
     }
@@ -50,7 +50,7 @@ export default class AuthRepositoryImpl implements AuthRepository {
       status: response.status,
       data: {
         access_token: response.data.token,
-        refresh_token: response.data.refresh_token,
+        refresh_token: response.data.refreshToken,
         username: response.data.username
       }
     }

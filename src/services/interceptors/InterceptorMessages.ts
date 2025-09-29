@@ -1,14 +1,12 @@
 import type Xhr from "@/api/config/Xhr"
 import type Interceptor from "./Interceptor"
-import { uiStore } from "@/main"
-import { useAuthStore } from '@/store/auth'
+import { authStore, uiStore } from "@/main"
 
 export default class InterceptorMessages implements Interceptor {
   private _token: string = ''
 
-  constructor(private xhrs: Xhr, private token: string) {
+  constructor(private xhrs: Xhr) {
     console.log('Se ha creado el interceptor de mensajes')
-    this._token = token
   }
 
   execute(): void {
@@ -17,6 +15,7 @@ export default class InterceptorMessages implements Interceptor {
     // Request interceptor
     axiosInstance.interceptors.request.use(config => {
       // Modify the request config here
+      this._token = authStore.getAccesTokenSaved
       if (this._token) {
         config.headers.Authorization = 'Bearer ' + this._token
       }
@@ -40,7 +39,6 @@ export default class InterceptorMessages implements Interceptor {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
 
-      const authStore = useAuthStore();
       if (error.response?.status === 401) {
         return authStore.handle401Error(error);
       } else {

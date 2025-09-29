@@ -1,5 +1,5 @@
 export default interface LoginResponseDTO {
   token: string;
-  refresh_token: string;
+  refreshToken: string;
   username: string;
 }

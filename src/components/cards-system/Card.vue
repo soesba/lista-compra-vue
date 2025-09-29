@@ -4,7 +4,7 @@
       <v-img v-if="logo" class="logo" :src="getImageSrc"></v-img>
       <v-card-title>{{ getTitle }}</v-card-title>
       <v-card-subtitle v-if="showSubtitle">{{ getSubtitle }}</v-card-subtitle>
-      <v-card-text class="text-small">{{ getText }}</v-card-text>
+      <v-card-text class="text-small" v-html="getText"></v-card-text>
     </v-card>
 </router-link>
 </template>

@@ -1,5 +1,6 @@
 import API from '@/api'
 import router from '@/router'
+import LoginResponse from '@/services/auth/models/LoginResponse'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { defineStore } from 'pinia'
@@ -40,6 +41,7 @@ const removeAll = (): void => {
 }
 
 export const useAuthStore = defineStore('auth', {
+  persist: true,
   state: () => ({
     token: '',
     refresh_token: '',
@@ -48,20 +50,20 @@ export const useAuthStore = defineStore('auth', {
     failedQueue: [] as any[]
   }),
   actions: {
-    setToken(newToken: any) {
+    setToken(newToken: string) {
       this.token = newToken
     },
 
-    setRefreshToken(newRefreshToken: any) {
-      this.refreshToken = newRefreshToken
+    setRefreshToken(newRefreshToken: string) {
+      this.refresh_token = newRefreshToken
     },
 
-    setUser(newUser: any) {
+    setUser(newUser: string) {
       this.user = newUser
     },
 
     async login(username: string, password: string) {
-      const response = await API.AuthRepository.login(username, password)
+      const response: LoginResponse = await API.AuthRepository.login(username, password)
       if (response.status === 200) {
         this.setToken(response.data.access_token)
         this.setRefreshToken(response.data.refresh_token)
@@ -69,6 +71,7 @@ export const useAuthStore = defineStore('auth', {
         // Guardar tokens en local storage para persistencia
         Cookies.set(config.appAccessToken, this.token, { domain: window.location.hostname, secure: true })
         Cookies.set(config.appRefreshToken, this.refresh_token, { domain: window.location.hostname, secure: true })
+        console.log(this.getAccesTokenSaved, this.getRefreshTokenSaved)
         return true
       } else {
         throw new Error('Error al iniciar sesión')
@@ -76,12 +79,15 @@ export const useAuthStore = defineStore('auth', {
     },
 
     async refreshToken() {
-      const response = await API.AuthRepository.refresh(this.getRefreshTokenSaved)
+      const response: LoginResponse = await API.AuthRepository.refresh(this.getRefreshTokenSaved)
       if (response.status === 200) {
         this.setToken(response.data.access_token)
+        this.setRefreshToken(response.data.refresh_token)
         // Guardar token en local storage para persistencia
         Cookies.set(config.appAccessToken, this.token, { domain: window.location.hostname, secure: true })
-        return true
+        Cookies.set(config.appRefreshToken, this.refresh_token, { domain: window.location.hostname, secure: true })
+        console.log(this.getAccesTokenSaved, this.getRefreshTokenSaved)
+        return this.getAccesTokenSaved
       } else {
         throw new Error('Error al refrescar el token')
       }
@@ -105,7 +111,7 @@ export const useAuthStore = defineStore('auth', {
       this.isRefreshing = true;
 
       try {
-        const newToken = await this.refreshToken();
+        const newToken = await this.refreshToken()
         this.failedQueue.forEach(prom => prom.resolve(newToken));
         this.failedQueue = [];
         originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
@@ -129,9 +135,9 @@ export const useAuthStore = defineStore('auth', {
   },
   getters: {
     isAuthenticated: (state) => !!state.token,
-    getAccesTokenSaved: () => Cookies.get(config.appAccessToken) || '',
-    getRefreshTokenSaved: () => Cookies.get(config.appRefreshToken) || '',
-    getExpiredTokenSaved: () => buildExpirationDate(Cookies.get(config.appAccessToken) || '') || null,
+    getAccesTokenSaved: (state) => state.token || Cookies.get(config.appAccessToken) || '',
+    getRefreshTokenSaved: (state) => state.refresh_token || Cookies.get(config.appRefreshToken) || '',
+    getExpiredTokenSaved: (state) => buildExpirationDate(state.token || Cookies.get(config.appAccessToken) || '') || null,
     isAuthenticatedUser: (state) => state.user !== undefined && state.user !== null && state.user !== ''
   }
 })

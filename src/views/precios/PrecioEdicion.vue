@@ -48,7 +48,7 @@
 					ref="inputPrecio"
 					variant="underlined"
 					label="Precio*"
-					v-model="getCurrencyPrice"
+					v-model="editData.precio"
 					:hide-spin-buttons="true"
 					max-width="120"
 					@keypress="onKeypressPrecio"></v-text-field>
@@ -90,7 +90,17 @@
 	})
 </script>
 <script setup lang="ts">
-
+	// Data
+	const cboArticulos = ref(null)
+	const inputPrecio = ref()
+	const adding = ref(false)
+	const from = history.state.back
+  const editData = reactive<any>(modelStore.precio ? modelStore.getPrecio : { borrable: true })
+  if (!editData.id) {
+    adding.value = true
+  } else {
+    editData.precio = editData.precio ? editData?.precio.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }): ''
+  }
 	// Computed
 	const canSave = computed(() => {
 		return !v$.value.$invalid
@@ -104,18 +114,7 @@
 			  }).format(editData.fechaCompra)
 			: ''
 	})
-  const getCurrencyPrice = computed(() => {
-		return editData?.precio ? editData?.precio.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }): ''
-	})
-	// Data
-	const cboArticulos = ref(null)
-	const inputPrecio = ref()
-	const adding = ref(false)
-	const from = history.state.back
-  const editData = reactive<any>(modelStore.precio ? modelStore.getPrecio : { borrable: true })
-  if (!editData.id) {
-    adding.value = true
-  }
+
 	// const editData = ref<any>({
 	// 	id: '',
 	// 	precio: 0,
