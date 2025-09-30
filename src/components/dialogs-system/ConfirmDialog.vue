@@ -3,7 +3,7 @@
 		<v-card max-width="400" prepend-icon="mdi-help" :text="text" :title="title" color="primary">
 			<template v-slot:actions>
 				<v-btn class="ms-auto" text="Aceptar" @click="onCloseDialog(true)"></v-btn>
-				<v-btn class="ms-auto" text="Cancelar" @click="onCloseDialog"></v-btn>
+				<v-btn class="ms-auto" text="Cancelar" @click="onCloseDialog(false)"></v-btn>
 			</template>
 		</v-card>
 	</v-dialog>
@@ -29,7 +29,7 @@ const text = computed(() => {
 	return uiStore.getConfirmDialog?.props.text
 })
 
-// Methods 
+// Methods
 const onCloseDialog = (accept: boolean) => {
 	uiStore.hideConfirmDialog()
 	if (accept) {

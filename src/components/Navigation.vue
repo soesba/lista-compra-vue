@@ -35,7 +35,7 @@
   </v-navigation-drawer>
 </template>
 <script lang="ts">
-import { authStore } from '@/main';
+import { authStore, uiStore } from '@/main';
 import { ref } from 'vue'
   import { defineComponent } from 'vue'
   export default defineComponent({
@@ -87,8 +87,13 @@ import { ref } from 'vue'
     {
         title: 'Logout',
         click: () => {
-          // Lógica de logout
-          authStore.logout()
+          uiStore.showConfirmDialog({
+            props: {
+              text: '¿Desea cerrar la sesión?',
+              title: 'Confirmación',
+            },
+            aceptarFn: authStore.logout,
+          })
         }
     }
   ]
