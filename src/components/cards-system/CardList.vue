@@ -151,6 +151,23 @@ const onShowCards = (evt: any) => {
         :deep(.v-card) {
           // box-shadow: none;
           // margin: 0px;
+          display: flex;
+          flex-direction: row;
+          width: 80vw;
+          max-width: 90vm;
+          text-align: left;
+          .v-card-title {
+            flex: 1.5;
+          }
+          .v-card-subtitle {
+            flex: 1;
+            align-self: center;
+            font-size: 1rem;
+          }
+          .text-small {
+            flex: 1;
+            text-align: right;
+          }
         }
       }
     }
