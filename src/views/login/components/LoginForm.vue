@@ -34,9 +34,9 @@
       <div class="button_submit">
         <v-btn color="primary" raised @click="onLogin()">Login</v-btn>
       </div>
-      <div class="password_recovery">
-        <label raised color="primary" @click="onResetPassword()" href=""
-          >Restaurar contraseña</label
+      <div class="password_recovery" v-if="false">
+        <label raised color="primary" @click="onChangePassword()" href=""
+          >Cambiar contraseña</label
         >
       </div>
     </div>
@@ -52,7 +52,7 @@
   });
 </script>
 <script setup lang="ts">
-  const emitter = defineEmits(['login', 'resetPassword']);
+  const emitter = defineEmits(['login', 'changePassword']);
   defineProps({
     authError: Boolean,
   });
@@ -90,8 +90,8 @@
     });
   };
 
-  const onResetPassword = () => {
-    emitter('resetPassword');
+  const onChangePassword = () => {
+    emitter('changePassword');
   };
 </script>
 

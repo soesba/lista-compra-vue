@@ -13,7 +13,7 @@ export default class AuthRepositoryImpl implements AuthRepository {
    * @reject Promise<Error>: Retorna error cuando la autenticación no es correcta
    */
   async login (username: string, password: string): Promise<LoginResponse> {
-    const endpoint = '/login'
+    const endpoint = '/auth/login'
     const params: LoginRequestDTO = {
       username,
       password
@@ -39,7 +39,7 @@ export default class AuthRepositoryImpl implements AuthRepository {
    * @reject Promise<error>: Retorna error cuando la actualización no es correcta
    */
   async refresh (refreshToken: string): Promise<LoginResponse> {
-    const endpoint = '/refresh'
+    const endpoint = '/auth/refresh'
     const headers = {
       'Content-Type': 'application/json;charset=UTF-8',
       'x-refresh-token': refreshToken

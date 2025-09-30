@@ -6,15 +6,15 @@
           v-if="mode === 'login'"
           :auth-error="isLoginError"
           @login="onLogin"
-          @resetPassword="onViewResetPassword" />
-        <reset-password
+          @change-password="onViewChangePassword" />
+        <!-- <reset-password
           v-else-if="mode === 'resetPassword'"
           @send="onResetPassword"
-          @back="onBackToLogin" />
+          @back="onBackToLogin" /> -->
         <change-password
           v-else-if="mode === 'changePassword'"
           @send="onChangePassword"
-          @back="onBackToResetPassword" />
+          @back="onBackToLogin" />
       </div>
     </div>
   </div>
@@ -22,7 +22,6 @@
 
 <script lang="ts">
   import LoginForm from './components/LoginForm.vue';
-  import ResetPassword from './components/ResetPassword.vue';
   import ChangePassword from './components/ChangePassword.vue';
 
   import { defineComponent, onMounted, ref } from 'vue';
@@ -62,22 +61,24 @@
     }
   };
 
-  const onResetPassword = ({ username }: { username: string }): void => {
-    userName.value = username;
+  // const onResetPassword = ({ username }: { username: string }): void => {
+  //   userName.value = username;
 
-    // resetPasswordService.execute(username).then(() => {
-    //     mode.value = 'changePassword';
-    //   })
-    //   .catch(() => {
-    //     // INCLUIR ACCIÓN DE FALLO
-    //     alert('Error en el reseteo de password');
-    //   });
-  };
+  //   resetPasswordService.execute(username).then(() => {
+  //       mode.value = 'changePassword';
+  //     })
+  //     .catch(() => {
+  //       // INCLUIR ACCIÓN DE FALLO
+  //       alert('Error en el reseteo de password');
+  //     });
+  // };
 
   const onChangePassword = ({
+    username,
     currentPassword,
     newPassword,
   }: {
+    username: string;
     currentPassword: string;
     newPassword: string;
   }) => {
@@ -95,16 +96,16 @@
     // });
   };
 
-  const onViewResetPassword = () => {
-    mode.value = 'resetPassword';
+  const onViewChangePassword = () => {
+    mode.value = 'changePassword';
   };
 
   const onBackToLogin = (): void => {
     mode.value = 'login';
   };
 
-  const onBackToResetPassword = (): void => {
-    mode.value = 'resetPassword';
+  const onBackToChangePassword = (): void => {
+    mode.value = 'changePassword';
   };
 </script>
 
