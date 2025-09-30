@@ -32,7 +32,6 @@ const decodeJwt = (token: string) =>{
 const removeAll = (): void => {
   Object.keys(Cookies.get()).forEach(function (cookieName) {
     const neededAttributes = {
-      path: '',
       domain: window.location.hostname
     }
 
@@ -126,11 +125,12 @@ export const useAuthStore = defineStore('auth', {
     },
 
     logout() {
-        this.token = ''
-        this.refresh_token = ''
-        this.user = ''
-        removeAll()
-        router.push('/login')
+      console.log('Cerrando sesión')
+      this.token = ''
+      this.refresh_token = ''
+      this.user = ''
+      removeAll()
+      router.push('/login')
     }
   },
   getters: {
