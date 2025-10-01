@@ -35,7 +35,7 @@ import EditionToolbar from '@/components/EditionToolbar.vue'
 import router from '@/router'
 import { required, requiredIf } from '@vuelidate/validators'
 import { useVuelidate } from '@vuelidate/core'
-import {  eventStore, modelStore } from '@/store/instances'
+import {  eventStore, modelStore } from '@/main'
 import create from '@/services/tipoEstablecimiento/createTipoEstablecimiento.service'
 import update from '@/services/tipoEstablecimiento/updateTipoEstablecimiento.service'
 

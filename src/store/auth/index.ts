@@ -40,7 +40,6 @@ const removeAll = (): void => {
 }
 
 export const useAuthStore = defineStore('auth', {
-  persist: true,
   state: () => ({
     token: '',
     refresh_token: '',

@@ -42,7 +42,7 @@ export default defineComponent({
 import DetailToolbar from '@/components/DetailToolbar.vue'
 import type Establecimiento from '@/services/establecimiento/models/Establecimiento'
 import { noLogoUrl } from '@/main'
-import { eventStore, modelStore } from '@/store/instances'
+import { eventStore, modelStore } from '@/main'
 
 // Props
 defineProps({

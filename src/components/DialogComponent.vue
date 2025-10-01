@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { uiStore } from '@/store/instances'
+import { uiStore } from '@/main'
 import { computed, defineComponent } from 'vue'
 export default defineComponent({
 	name: 'DialogComponent',

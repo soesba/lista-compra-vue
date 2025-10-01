@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { uiStore } from '@/store/instances'
+import { uiStore } from '@/main'
 import { computed, ref } from 'vue'
 
 const emit = defineEmits(['click'])

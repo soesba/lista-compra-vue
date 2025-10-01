@@ -2,7 +2,7 @@ import API from "@/api"
 import type ArticuloResponse from "./models/ArticuloResponse"
 import type ArticuloRequest from "./models/ArticuloRequest"
 import type Articulo from "./models/Articulo"
-import { modelStore } from "@/store/instances"
+import { modelStore } from "@/main"
 import getArticuloById from "./getArticuloById.service"
 
 const create = async (request: ArticuloRequest): Promise<ArticuloResponse> => {

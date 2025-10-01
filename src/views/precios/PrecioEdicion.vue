@@ -84,7 +84,7 @@
 	import { isNumber, pluralize } from '@/utils/utils'
 	import ComboComponent from '@/components/combos/ComboComponent.vue'
 	import { TipoDato } from '@/services/desplegables/models/TipoDato'
-  import { modelStore } from '@/store/instances'
+  import { modelStore } from '@/main'
 	export default defineComponent({
 		name: 'PrecioEdicion'
 	})

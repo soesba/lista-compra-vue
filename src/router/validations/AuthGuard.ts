@@ -1,6 +1,6 @@
 import type { Guard, Next } from './Guard'
 import type { RouteLocationNormalized } from 'vue-router'
-import { authStore } from '@/store/instances'
+import { authStore } from '@/main'
 
 export const isAuth: Guard = async (to: RouteLocationNormalized,
   from: RouteLocationNormalized,

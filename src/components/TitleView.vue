@@ -17,7 +17,7 @@
 <script setup lang="ts">
   import { markRaw, ref } from 'vue'
   import MenuDialog from '@/components/MenuDialog.vue'
-  import { uiStore, eventStore } from '@/store/instances'
+  import { uiStore, eventStore } from '@/main'
 
   interface itemMenu {
     name: string

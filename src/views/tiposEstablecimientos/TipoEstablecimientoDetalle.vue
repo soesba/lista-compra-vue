@@ -23,7 +23,7 @@ import DetailToolbar from '@/components/DetailToolbar.vue'
 import deleteItem from '@/services/tipoEstablecimiento/deleteTipoEstablecimiento.service'
 import type TipoEstablecimiento from '@/services/tipoEstablecimiento/models/TipoEstablecimiento'
 import getTipoEstablecimientoById from '@/services/tipoEstablecimiento/getTipoEstablecimientoById.service'
-import { eventStore, modelStore } from '@/store/instances'
+import { eventStore, modelStore } from '@/main'
 
 export default defineComponent({
 	name: 'TipoEstablecimientoDetalle',

@@ -3,7 +3,7 @@ import './assets/styles/main.scss'
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import { pinia } from './store'
+import { pinia, initStores } from '@/store'
 import { xhr } from '@/api/config/Repository'
 // Vuetify
 import { es } from 'vuetify/locale'
@@ -14,6 +14,10 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { loadFonts } from './plugins/webfontloader'
 import InterceptorMessages from './services/interceptors/InterceptorMessages'
+import CardList from '@/components/cards-system/CardList.vue';
+import TitleView from '@/components/TitleView.vue';
+import SearchBox from '@/components/SearchBox.vue';
+
 
 loadFonts()
 const vuetify = createVuetify({
@@ -25,26 +29,19 @@ const vuetify = createVuetify({
   }
 })
 
-let app
-let containerSelector = "#app"
+const app = createApp(App)
+app.use(pinia)
 
-// check if app has been mounted already
-const mountPoint = document.querySelector(containerSelector)
+// Inicializa los stores antes de usar el router
+export const { authStore, uiStore, eventStore, modelStore } = initStores()
 
-if (mountPoint && (mountPoint as any).__vue_app__ !== undefined) {
-  // Set the existing mount point to 'app'.
-  app = (mountPoint as any).__vue_app__._instance.proxy;
-}
-else {
-  app = createApp(App)
-  app.use(pinia).
-    use(router).
-    use(vuetify).
-    component('CardList', require('@/components/cards-system/CardList.vue').default).
-    component('TitleView', require('@/components/TitleView.vue').default).
-    component('SearchBox', require('@/components/SearchBox.vue').default).
-    mount('#app')
-}
+
+app.use(router).
+  use(vuetify).
+  component('CardList', CardList).
+  component('TitleView', TitleView).
+  component('SearchBox', SearchBox).
+  mount('#app')
 
 export const interceptorMsg = new InterceptorMessages(xhr)
 interceptorMsg.execute()

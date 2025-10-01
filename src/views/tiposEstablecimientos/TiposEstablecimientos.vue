@@ -14,7 +14,7 @@ import get from '@/services/tipoEstablecimiento/getTipoEstablecimiento.service'
 import searchTipoEstablecimiento from '@/services/tipoEstablecimiento/searchTipoEstablecimiento.service'
 import create from '@/services/tipoEstablecimiento/createTipoEstablecimiento.service'
 import update from '@/services/tipoEstablecimiento/updateTipoEstablecimiento.service'
-import { eventStore } from '@/store/instances';
+import { eventStore } from '@/main';
 import type TipoEstablecimientoRequest from '@/services/tipoEstablecimiento/models/TipoEstablecimientoRequest'
 import type TipoEstablecimientoResponse from '@/services/tipoEstablecimiento/models/TipoEstablecimientoResponse'
 import { sort } from '@/utils/utils'

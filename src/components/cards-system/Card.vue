@@ -10,7 +10,7 @@
 </template>
 <script setup lang="ts">
 import { noLogoUrl } from '@/main'
-import { eventStore } from '@/store/instances'
+import { eventStore } from '@/main'
 import { computed, ref } from 'vue'
 
 // Props

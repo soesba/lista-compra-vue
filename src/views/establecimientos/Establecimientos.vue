@@ -16,7 +16,7 @@ import searchEstablecimiento from '@/services/establecimiento/searchEstablecimie
 import create from '@/services/establecimiento/createEstablecimiento.service'
 import update from '@/services/establecimiento/updateEstablecimiento.service'
 import { defineComponent } from 'vue'
-import { eventStore } from '@/store/instances'
+import { eventStore } from '@/main'
 import router from '@/router'
 import type EstablecimientoRequest from '@/services/establecimiento/models/EstablecimientoRequest'
 import type EstablecimientoResponse from '@/services/establecimiento/models/EstablecimientoResponse'

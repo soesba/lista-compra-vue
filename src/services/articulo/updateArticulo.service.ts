@@ -1,7 +1,7 @@
 import API from "@/api"
 import type ArticuloResponse from "./models/ArticuloResponse"
 import type ArticuloRequest from "./models/ArticuloRequest"
-import { modelStore } from "@/store/instances"
+import { modelStore } from "@/main"
 import type Articulo from "./models/Articulo"
 import getArticuloById from "./getArticuloById.service"
 

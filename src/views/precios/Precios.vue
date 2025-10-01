@@ -16,7 +16,7 @@ import create from '@/services/precio/createPrecio.service'
 import update from '@/services/precio/updatePrecio.service'
 import { defineComponent } from 'vue'
 import router from '@/router'
-import { eventStore } from '@/store/instances';
+import { eventStore } from '@/main';
 import type PrecioRequest from '@/services/precio/models/PrecioRequest'
 import type PrecioResponse from '@/services/precio/models/PrecioResponse'
 import { sort, formatCurrency } from '@/utils/utils'

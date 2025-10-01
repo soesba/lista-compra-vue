@@ -10,7 +10,7 @@
   import searchArticulo from '@/services/articulo/searchArticulo.service';
   import create from '@/services/articulo/createArticulo.service';
   import update from '@/services/articulo/updateArticulo.service';
-  import { eventStore } from '@/store/instances';
+  import { eventStore } from '@/main';
   import type ArticuloRequest from '@/services/articulo/models/ArticuloRequest';
   import type ArticuloResponse from '@/services/articulo/models/ArticuloResponse';
   import { sort } from '@/utils/utils';

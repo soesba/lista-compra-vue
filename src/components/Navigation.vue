@@ -35,7 +35,7 @@
   </v-navigation-drawer>
 </template>
 <script lang="ts">
-import { authStore, uiStore } from '@/store/instances'
+import { authStore, uiStore } from '@/main'
 import { ref } from 'vue'
   import { defineComponent } from 'vue'
   export default defineComponent({

@@ -34,7 +34,7 @@
 	import { useRoute } from 'vue-router'
 	import { formatCurrency, pluralize } from '@/utils/utils'
 	import PrecioEquivalenciaComponent from '@/components/PrecioEquivalenciaComponent.vue'
-  import { eventStore, modelStore } from '@/store/instances'
+  import { eventStore, modelStore } from '@/main'
 import deleteItem from '@/services/precio/deletePrecio.service'
 
 	export default defineComponent({

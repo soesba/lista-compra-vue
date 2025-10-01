@@ -29,7 +29,7 @@ import DialogComponent from '@/components/DialogComponent.vue'
 import ConfirmDialog from '@/components/dialogs-system/ConfirmDialog.vue'
 import AlertComponent from './components/AlertComponent.vue'
 import { useRouter } from 'vue-router'
-import { authStore } from '@/store/instances'
+import { authStore } from '@/main'
 
 const router = useRouter()
 

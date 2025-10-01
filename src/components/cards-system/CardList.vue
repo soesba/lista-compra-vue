@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import { default as EmptyCard } from '@/components/cards-system/EmptyCard.vue'
 import { default as Card } from '@/components/cards-system/Card.vue'
-import { eventStore } from '@/store/instances'
+import { eventStore } from '@/main'
 import router from '@/router'
 import { sort } from '@/utils/utils';
 import { onMounted, ref } from 'vue'

@@ -15,7 +15,7 @@ import get from '@/services/tipoUnidad/getTipoUnidad.service'
 import searchTipoUnidad from '@/services/tipoUnidad/searchTipoUnidad.service'
 import create from '@/services/tipoUnidad/createTipoUnidad.service'
 import update from '@/services/tipoUnidad/updateTipoUnidad.service'
-import { eventStore } from '@/store/instances';
+import { eventStore } from '@/main';
 import type TipoUnidadRequest from '@/services/tipoUnidad/models/TipoUnidadRequest'
 import type TipoUnidadResponse from '@/services/tipoUnidad/models/TipoUnidadResponse'
 import { sort } from '@/utils/utils'
