@@ -11,9 +11,10 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
 		"paths": {
-      "@/*": ["./src/*"],
+      "@/*": ["/src/*"],
       "@modules/*": ["./src/modules/*"]
     },
+		"include": ["src"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",
