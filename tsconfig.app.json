@@ -1,8 +1,7 @@
 {
-	"extends": "@tsconfig/node20/tsconfig.json",
+  "extends": "@tsconfig/node20/tsconfig.json",
   "include": ["env.d.ts", "src"],
   "exclude": ["src/**/__tests__/*"],
-	  /* Bundler mode */
   "compilerOptions": {
     "baseUrl": ".",
     "target": "ES2020",
@@ -10,21 +9,18 @@
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable", "ESNext"],
     "skipLibCheck": true,
-		"paths": {
-      "@/*": ["src/*"],
+    "paths": {
+      "@/*": ["src/*"]
     },
     "types": ["vite/client"],
-    /* Bundler mode */
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "preserve",
-
-		"resolveJsonModule": true,
-		"esModuleInterop": true,
-    /* Linting */
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
