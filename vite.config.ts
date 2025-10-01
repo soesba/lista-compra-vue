@@ -10,13 +10,14 @@ const __dirname = dirname(__filename);
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  root: '.',
   plugins: [
     vue(),
     vueDevTools()
   ],
   resolve: {
     alias: {
-      '@': path.resolve(process.cwd(), 'src'),
+      '@': path.resolve('.', 'src'),
     }
   },
   // define: {
