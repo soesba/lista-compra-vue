@@ -1,6 +1,6 @@
 import type { Guard, Next } from './Guard'
 import type { RouteLocationNormalized } from 'vue-router'
-import { authStore } from '@/main'
+import { authStore } from '@/store/instances'
 
 export const isAuth: Guard = async (to: RouteLocationNormalized,
   from: RouteLocationNormalized,
@@ -15,6 +15,7 @@ export const isAuth: Guard = async (to: RouteLocationNormalized,
     if (to.path !== '/') {
       next('/')
     } else {
+      console.log('Voy a next desde', from)
       next()
     }
   } else {

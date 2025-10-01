@@ -11,13 +11,12 @@
 
 <script lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { CardList, TitleView, SearchBox } from '@/components'
 import get from '@/services/establecimiento/getEstablecimiento.service'
 import searchEstablecimiento from '@/services/establecimiento/searchEstablecimiento.service'
 import create from '@/services/establecimiento/createEstablecimiento.service'
 import update from '@/services/establecimiento/updateEstablecimiento.service'
 import { defineComponent } from 'vue'
-import { eventStore } from '@/main'
+import { eventStore } from '@/store/instances'
 import router from '@/router'
 import type EstablecimientoRequest from '@/services/establecimiento/models/EstablecimientoRequest'
 import type EstablecimientoResponse from '@/services/establecimiento/models/EstablecimientoResponse'

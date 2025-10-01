@@ -41,7 +41,8 @@ export default defineComponent({
 <script setup lang="ts">
 import DetailToolbar from '@/components/DetailToolbar.vue'
 import type Establecimiento from '@/services/establecimiento/models/Establecimiento'
-import { eventStore, noLogoUrl, modelStore } from '@/main'
+import { noLogoUrl } from '@/main'
+import { eventStore, modelStore } from '@/store/instances'
 
 // Props
 defineProps({

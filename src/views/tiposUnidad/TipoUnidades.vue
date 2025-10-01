@@ -11,20 +11,16 @@
 <script lang="ts">
 import { onMounted, ref, computed } from 'vue'
 import router from '@/router'
-import { CardList, TitleView, SearchBox } from '@/components'
 import get from '@/services/tipoUnidad/getTipoUnidad.service'
 import searchTipoUnidad from '@/services/tipoUnidad/searchTipoUnidad.service'
 import create from '@/services/tipoUnidad/createTipoUnidad.service'
 import update from '@/services/tipoUnidad/updateTipoUnidad.service'
-import { defineComponent } from 'vue'
-import { eventStore } from '@/main';
+import { eventStore } from '@/store/instances';
 import type TipoUnidadRequest from '@/services/tipoUnidad/models/TipoUnidadRequest'
 import type TipoUnidadResponse from '@/services/tipoUnidad/models/TipoUnidadResponse'
 import { sort } from '@/utils/utils'
 import type Equivalencia from '@/services/equivalencia/models/Equivalencia'
-export default defineComponent({
-	name: 'TipoUnidades'
-})
+
 </script>
 
 <script setup lang="ts">

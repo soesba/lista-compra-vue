@@ -3,8 +3,7 @@ import './assets/styles/main.scss'
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import { pinia, useModelStore } from './store'
-import { useUiStore, useEventStore, useAuthStore } from './store'
+import { pinia } from './store'
 import { xhr } from '@/api/config/Repository'
 // Vuetify
 import { es } from 'vuetify/locale'
@@ -41,13 +40,12 @@ else {
   app.use(pinia).
     use(router).
     use(vuetify).
+    component('CardList', require('@/components/cards-system/CardList.vue').default).
+    component('TitleView', require('@/components/TitleView.vue').default).
+    component('SearchBox', require('@/components/SearchBox.vue').default).
     mount('#app')
 }
 
-export const uiStore = useUiStore()
-export const eventStore = useEventStore()
-export const modelStore = useModelStore()
-export const authStore = useAuthStore()
 export const interceptorMsg = new InterceptorMessages(xhr)
 interceptorMsg.execute()
 export const noLogoUrl = new URL('@/assets/images/no-image.svg', import.meta.url).href

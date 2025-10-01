@@ -3,13 +3,12 @@
 </template>
 <script lang="ts">
 import { computed, defineComponent, onMounted } from 'vue'
-import { useUiStore } from '@/store';
+import { uiStore } from '@/store/instances';
 export default defineComponent({
 	name: 'AlertComponent'
 })
 </script>
 <script setup lang="ts">
-const uiStore = useUiStore()
 // Computed
 const show = computed({
   get () {

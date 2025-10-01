@@ -23,13 +23,13 @@
   </v-app>
 </template>
 <script setup lang="ts">
-import { Navigation } from '@/components/index'
-import { computed, markRaw, Suspense } from 'vue'
+import { default as Navigation } from '@/components/Navigation.vue'
+import { computed, markRaw } from 'vue'
 import DialogComponent from '@/components/DialogComponent.vue'
 import ConfirmDialog from '@/components/dialogs-system/ConfirmDialog.vue'
 import AlertComponent from './components/AlertComponent.vue'
 import { useRouter } from 'vue-router'
-import { useAuthStore } from './store'
+import { authStore } from '@/store/instances'
 
 const router = useRouter()
 
@@ -37,7 +37,6 @@ const rawDialogComponent = markRaw(DialogComponent)
 const rawConfirmDialog = markRaw(ConfirmDialog)
 
 const showNavigation = computed(() => {
-  const authStore = useAuthStore()
   return authStore?.isAuthenticated || false
 })
 

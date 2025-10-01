@@ -8,14 +8,9 @@
     </v-card>
 </router-link>
 </template>
-<script lang="ts">
-export default defineComponent({
-	name: 'Card',
-})
-</script>
 <script setup lang="ts">
-import { defineComponent } from 'vue'
-import { noLogoUrl, eventStore } from '@/main'
+import { noLogoUrl } from '@/main'
+import { eventStore } from '@/store/instances'
 import { computed, ref } from 'vue'
 
 // Props

@@ -25,17 +25,13 @@
 	</div>
 </template>
 
-<script lang="ts">
-export default defineComponent({
-	name: 'CardList',
-})
-</script>
 <script setup lang="ts">
-import { EmptyCard, Card } from '@/components/index'
-import { eventStore } from '@/main'
+import { default as EmptyCard } from '@/components/cards-system/EmptyCard.vue'
+import { default as Card } from '@/components/cards-system/Card.vue'
+import { eventStore } from '@/store/instances'
 import router from '@/router'
 import { sort } from '@/utils/utils';
-import { defineComponent, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 const emit = defineEmits(['addCard'])
 

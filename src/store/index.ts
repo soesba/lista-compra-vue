@@ -5,6 +5,7 @@ export const pinia = createPinia()
 pinia.use(createPersistedState({
     storage: localStorage, // O sessionStorage si prefieres
 }));
+
 export { useUiStore } from './ui'
 export { useEventStore } from './events'
 export { useModelStore } from './models'

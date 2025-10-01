@@ -5,20 +5,17 @@
 </template>
 
 <script lang="ts">
-  import { computed, onMounted, ref, defineComponent } from 'vue';
-  import { CardList, TitleView, SearchBox } from '@/components';
+  import { computed, onMounted, ref } from 'vue';
   import get from '@/services/articulo/getArticulo.service';
   import searchArticulo from '@/services/articulo/searchArticulo.service';
   import create from '@/services/articulo/createArticulo.service';
   import update from '@/services/articulo/updateArticulo.service';
-  import { eventStore } from '@/main';
+  import { eventStore } from '@/store/instances';
   import type ArticuloRequest from '@/services/articulo/models/ArticuloRequest';
   import type ArticuloResponse from '@/services/articulo/models/ArticuloResponse';
   import { sort } from '@/utils/utils';
   import router from '@/router';
-  export default defineComponent({
-    name: 'Articulos',
-  });
+
 </script>
 
 <script setup lang="ts">

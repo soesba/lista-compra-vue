@@ -20,7 +20,7 @@ export default defineComponent({
 </script>
 <script setup lang="ts">
 import { defineComponent } from 'vue'
-import { uiStore } from '@/main'
+import { uiStore } from '@/store/instances'
 
 defineProps({
   deleteDisabled: {

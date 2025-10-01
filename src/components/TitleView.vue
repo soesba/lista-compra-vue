@@ -1,32 +1,29 @@
 <template>
-	<div class="title-container">
-		<label>{{ titulo }}</label>
-		<v-menu>
-        <template v-slot:activator="{ props }">
-          <v-btn icon="mdi-dots-vertical" v-bind="props" variant="text"></v-btn>
-        </template>
+  <div class="title-container">
+    <label>{{ titulo }}</label>
+    <v-menu>
+      <template v-slot:activator="{ props }">
+        <v-btn icon="mdi-dots-vertical" v-bind="props" variant="text"></v-btn>
+      </template>
 
-        <v-list>
-          <v-list-item
-            v-for="(item, i) in menu"
-            :key="i" :value="i" @click="item.click(i)"
-          >
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-	</div>
+      <v-list>
+        <v-list-item v-for="(item, i) in menu" :key="i" :value="i" @click="item.click(i)">
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+  </div>
 </template>
 <script setup lang="ts">
   import { markRaw, ref } from 'vue'
   import MenuDialog from '@/components/MenuDialog.vue'
-  import { uiStore, eventStore } from '@/main'
+  import { uiStore, eventStore } from '@/store/instances'
 
   interface itemMenu {
-    name: string,
-    valorActual: number,
-    subitems?: Array<any>,
-    title: string,
+    name: string
+    valorActual: number
+    subitems?: Array<any>
+    title: string
     click: Function
   }
 
@@ -38,16 +35,28 @@
   })
 
   const defaultMenu: Array<any> = [
-  { name: 'ordenar', title: 'Ordenar por', click: (i: any) => menuClick(i), valorActual: uiStore.getMenuSortCards, subitems: [
-    { title: 'Nombre ascendente', value: 0 },
-    { title: 'Nombre descendente', value: 1 }
-  ]},
-	{ name: 'ver', title: 'Ver', click: (i: any) => menuClick(i), valorActual: uiStore.getMenuShowCards, subitems: [
-    { title: 'Tarjetas pequeñas', value: 0 },
-    { title: 'Tarjetas grandes', value: 1 },
-    { title: 'Lista', value: 2 }
-  ]}
-]
+    {
+      name: 'ordenar',
+      title: 'Ordenar por',
+      click: (i: any) => menuClick(i),
+      valorActual: uiStore.getMenuSortCards,
+      subitems: [
+        { title: 'Nombre ascendente', value: 0 },
+        { title: 'Nombre descendente', value: 1 }
+      ]
+    },
+    {
+      name: 'ver',
+      title: 'Ver',
+      click: (i: any) => menuClick(i),
+      valorActual: uiStore.getMenuShowCards,
+      subitems: [
+        { title: 'Tarjetas pequeñas', value: 0 },
+        { title: 'Tarjetas grandes', value: 1 },
+        { title: 'Lista', value: 2 }
+      ]
+    }
+  ]
 
   const menu = ref(props.menu || defaultMenu)
 
@@ -86,7 +95,7 @@
       item.valorActual = index
     }
     if (submenu === 'ordenar') {
-      eventStore.sortCards({ order: index})
+      eventStore.sortCards({ order: index })
       uiStore.setMenuSortCards(index)
     } else {
       eventStore.showCards({ show: index })
@@ -95,10 +104,10 @@
   }
 </script>
 <style lang="scss" scoped>
-	.title-container {
-		padding: 10px;
-		text-align: center;
-		display: flex;
+  .title-container {
+    padding: 10px;
+    text-align: center;
+    display: flex;
     justify-content: center;
     align-items: center;
     font-size: 2rem;
@@ -106,5 +115,5 @@
     @media (max-width: 640px) {
       font-size: 1.5rem;
     }
-	}
+  }
 </style>

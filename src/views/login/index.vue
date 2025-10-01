@@ -26,7 +26,7 @@
 
   import { defineComponent, onMounted, ref } from 'vue';
   import router from '@/router';
-  import { authStore } from '@/main';
+  import { authStore } from '@/store/instances';
 
   export default defineComponent({
     name: 'LoginTemplate',

@@ -6,13 +6,9 @@
     </v-text-field>
   </div>
 </template>
-<script lang="ts">
-import { defineComponent, ref, watch } from 'vue'
-export default defineComponent({
-	name: 'SearchBox'
-})
-</script>
 <script setup lang="ts">
+import { ref, watch } from 'vue'
+
 const emit = defineEmits(['search'])
 const textoBusqueda = ref()
 let timeoutSearchId = 0

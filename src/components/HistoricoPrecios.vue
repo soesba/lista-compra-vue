@@ -43,7 +43,7 @@ import { computed, defineComponent } from 'vue'
 import type Precio from '@/services/precio/models/Precio'
 import { formatCurrency, pluralize } from '@/utils/utils'
 import router from '@/router'
-import { modelStore } from '@/main'
+import { modelStore } from '@/store/instances'
 import Equivalencia from '@/services/equivalencia/models/Equivalencia'
 import getEquivalencias from '@/services/equivalencia/getEquivalencias.service'
 export default defineComponent({

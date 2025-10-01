@@ -1,6 +1,6 @@
 import type Xhr from "@/api/config/Xhr"
 import type Interceptor from "./Interceptor"
-import { authStore, uiStore } from "@/main"
+import { authStore, uiStore } from "@/store/instances"
 
 export default class InterceptorMessages implements Interceptor {
   private _token: string = ''

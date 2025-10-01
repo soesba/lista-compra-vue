@@ -8,20 +8,16 @@
 </template>
 
 <script lang="ts">
-import { onMounted, ref, computed, defineComponent } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import router from '@/router'
-import { CardList, TitleView, SearchBox } from '@/components'
 import get from '@/services/tipoEstablecimiento/getTipoEstablecimiento.service'
 import searchTipoEstablecimiento from '@/services/tipoEstablecimiento/searchTipoEstablecimiento.service'
 import create from '@/services/tipoEstablecimiento/createTipoEstablecimiento.service'
 import update from '@/services/tipoEstablecimiento/updateTipoEstablecimiento.service'
-import { eventStore } from '@/main';
+import { eventStore } from '@/store/instances';
 import type TipoEstablecimientoRequest from '@/services/tipoEstablecimiento/models/TipoEstablecimientoRequest'
 import type TipoEstablecimientoResponse from '@/services/tipoEstablecimiento/models/TipoEstablecimientoResponse'
 import { sort } from '@/utils/utils'
-export default defineComponent({
-	name: 'TiposEstablecimientos'
-})
 </script>
 
 <script setup lang="ts">
