@@ -60,7 +60,7 @@ const setEdicion = () => {
 
 const runDelete = () => {
 	if (data.borrable) {
-		deleteItem(data.id).then(response => {
+		deleteItem(data.id).then((response: any) => {
 			if (response.respuesta === 200) {
 				router.push(eventStore.getRoutes.list)
 			}

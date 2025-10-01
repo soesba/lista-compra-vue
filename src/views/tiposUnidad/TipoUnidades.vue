@@ -92,7 +92,7 @@ const onSaveCard = (cardData: any) => {
 
 const createCard = (card: TipoUnidadRequest) => {
 	card.borrable = true
-	create(card).then(response => {
+	create(card).then((response: any) => {
 		if (response.respuesta === 200) {
 			getAllData()
 		}
@@ -101,7 +101,7 @@ const createCard = (card: TipoUnidadRequest) => {
 }
 
 const updateCard = (card: TipoUnidadRequest) => {
-	update(card).then(response => {
+	update(card).then((response: any) => {
 		if (response.respuesta === 200) {
 			getAllData()
 		}
