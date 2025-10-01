@@ -77,10 +77,10 @@
   const currentPassword = ref('')
   const newPassword = ref('')
   const repeatPassword = ref('')
-  const errorMessages = {
-    required: 'Este campo es obligatorio',
-    sameAsPassword: 'Las contraseñas no coinciden'
-  }
+  // const errorMessages = {
+  //   required: 'Este campo es obligatorio',
+  //   sameAsPassword: 'Las contraseñas no coinciden'
+  // }
   const validations = computed(() => {
     return {
       username: { required },

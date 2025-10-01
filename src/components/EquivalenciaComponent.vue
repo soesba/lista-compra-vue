@@ -18,7 +18,6 @@
       v-model="nuevaEquivalencia.factor"
       :error-messages="v$.nuevaEquivalencia.factor.$errors.map((e: any) => e.$message)"
       @blur="txtFactorOnBlur"
-      @keypress="txtFactorOnKeyPress"
       @input="v$.nuevaEquivalencia.factor.$touch"
     ></v-text-field>
     <div class="wrapper-icons" v-if="props.equivalencia">
@@ -120,10 +119,6 @@ const txtFactorOnBlur = (value: any) => {
 	v$.value.nuevaEquivalencia.factor.$touch
 }
 
-
-const txtFactorOnKeyPress = (evt: any) => {
-	// console.log("LOG ~ txtFactorOnKeyPress ~ evt:", evt)
-}
 
 const onClickSave = () => {
 	emitter('saveEquivalencia', nuevaEquivalencia.value)

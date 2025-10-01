@@ -47,9 +47,9 @@ export default defineComponent({
 
   const emitter = defineEmits(['back', 'send'])
   const username = ref('')
-  const errorMessages = {
-    required: 'Este campo es obligatorio'
-  }
+  // const errorMessages = {
+  //   required: 'Este campo es obligatorio'
+  // }
   const validations = computed(() => {
     username: {
       required

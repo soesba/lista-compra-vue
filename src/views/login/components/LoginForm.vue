@@ -74,9 +74,9 @@
   // Use the "useVuelidate" function to perform form validation
   const v$ = useVuelidate(validations, { username, password });
 
-  const errorMessages = {
-    required: 'Este campo es obligatorio',
-  };
+  // const errorMessages = {
+  //   required: 'Este campo es obligatorio',
+  // };
 
   const onLogin = () => {
     v$.value.$touch();

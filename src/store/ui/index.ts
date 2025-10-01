@@ -1,7 +1,5 @@
 import { defineStore } from "pinia";
 import type UiState from "./types";
-import { get } from 'http';
-
 const getDefaultCustomDialog = () => {
 	return {
 		show: false,

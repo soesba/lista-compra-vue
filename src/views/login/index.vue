@@ -33,7 +33,7 @@
   });
 </script>
 <script setup lang="ts">
-  const userName = ref('');
+  // const userName = ref('');
   const mode = ref('login');
   const isLoginError = ref(false);
 
@@ -74,11 +74,9 @@
   // };
 
   const onChangePassword = ({
-    username,
     currentPassword,
     newPassword,
   }: {
-    username: string;
     currentPassword: string;
     newPassword: string;
   }) => {
@@ -102,10 +100,6 @@
 
   const onBackToLogin = (): void => {
     mode.value = 'login';
-  };
-
-  const onBackToChangePassword = (): void => {
-    mode.value = 'changePassword';
   };
 </script>
 
