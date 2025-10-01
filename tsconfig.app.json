@@ -1,7 +1,7 @@
 {
   "extends": "@tsconfig/node20/tsconfig.json",
-  "include": ["env.d.ts", "src"],
-  "exclude": ["src/**/__tests__/*"],
+  "include": ["env.d.ts", "./src"],
+  "exclude": ["./src/**/__tests__/*"],
   "compilerOptions": {
     "baseUrl": ".",
     "target": "ES2020",
@@ -10,7 +10,7 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable", "ESNext"],
     "skipLibCheck": true,
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     },
     "types": ["vite/client"],
     "moduleResolution": "Node",
