@@ -89,10 +89,10 @@ const canSave = computed(() => {
 const validations = computed(() => {
 	return {
 		nuevaEquivalencia: {
-      from: { required: requiredIf(props.equivalencia) },
+      from: { required: requiredIf(props.equivalencia !== null) },
       tmpId: { required: requiredIf(!props.equivalencia) },
-			to: { required: requiredIf(props.equivalencia) },
-			factor: { required: requiredIf(props.equivalencia) }
+			to: { required: requiredIf(props.equivalencia !== null) },
+			factor: { required: requiredIf(props.equivalencia !== null) }
 		}
 	}
 })
