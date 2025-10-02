@@ -1,10 +1,14 @@
 <template>
   <div class="auth">
+    <div class="auth_title">
+      <h1>Precios de la compra</h1>
+    </div>
     <div class="auth_box">
       <div class="auth_box-content">
         <login-form
           v-if="mode === 'login'"
           :auth-error="isLoginError"
+          :auth-error-message="loginErrorMessage"
           @login="onLogin"
           @change-password="onViewChangePassword" />
         <!-- <reset-password
@@ -36,6 +40,7 @@
   // const userName = ref('');
   const mode = ref('login');
   const isLoginError = ref(false);
+  const loginErrorMessage = ref('');
 
   onMounted(() => {
     // if (authService.login.isAuth()) {
@@ -55,9 +60,10 @@
       } else {
         isLoginError.value = true;
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
       isLoginError.value = true;
+      loginErrorMessage.value = error.response?.data?.message || 'Error en el login';
     }
   };
 
