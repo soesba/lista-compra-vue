@@ -23,5 +23,11 @@ export default interface UiState {
 			variant: 'flat' | 'text' | 'elevated' | 'tonal' | 'outlined' | 'plain',
 			type: any
 		}
-	}
+	},
+  mask: {
+    show: boolean,
+    props: {
+      text: string
+    }
+  }
 }

@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <Mask></Mask>
     <navigation v-if="showNavigation" />
     <v-main>
       <alert-component></alert-component>
@@ -24,6 +25,7 @@
 </template>
 <script setup lang="ts">
 import { default as Navigation } from '@/components/Navigation.vue'
+import { default as Mask } from '@/components/Mask.vue'
 import { computed, markRaw } from 'vue'
 import DialogComponent from '@/components/DialogComponent.vue'
 import ConfirmDialog from '@/components/dialogs-system/ConfirmDialog.vue'

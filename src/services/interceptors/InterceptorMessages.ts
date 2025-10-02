@@ -1,6 +1,8 @@
 import type Xhr from "@/api/config/Xhr"
 import type Interceptor from "./Interceptor"
 import { authStore, uiStore } from "@/main"
+import { HttpStatusCode } from 'axios'
+import { ErrorTypes } from 'vue-router'
 
 export default class InterceptorMessages implements Interceptor {
   private _token: string = ''
@@ -14,6 +16,7 @@ export default class InterceptorMessages implements Interceptor {
 
     // Request interceptor
     axiosInstance.interceptors.request.use(config => {
+      uiStore.showMask()
       // Modify the request config here
       this._token = authStore.getAccesTokenSaved
       if (this._token) {
@@ -24,6 +27,7 @@ export default class InterceptorMessages implements Interceptor {
 
     // Response interceptor
     axiosInstance.interceptors.response.use((response) => {
+      uiStore.hideMask()
       // console.log("🚀 ~ InterceptorMessages ~ axiosInstance.interceptors.response.use ~ response:", response)
       // Handle the response here
       if (response.status !== 200) {
@@ -38,16 +42,18 @@ export default class InterceptorMessages implements Interceptor {
       // Handle errors here
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
+      uiStore.hideMask()
+      if (error.response) {
+        if (!error.response.request.responseURL.includes('login')) {
+          if (error.response?.status === 401) {
+            return authStore.handle401Error(error)
+          } else {
 
-      if (!error.response.request.responseURL.includes('login')) {
-        if (error.response?.status === 401) {
-          return authStore.handle401Error(error)
-        } else {
-
-          uiStore.showAlertComponent({
-            text: error.response.data.message || error.message,
-            type: 'error'
-          })
+            uiStore.showAlertComponent({
+              text: error.response.data.message || error.message,
+              type: 'error'
+            })
+          }
         }
       }
       console.error(error)
