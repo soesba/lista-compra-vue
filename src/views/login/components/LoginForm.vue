@@ -13,26 +13,29 @@
           :dirty="v$.username.$dirty"
           :validations="v$.username"
           error-help-text
+          :error-messages="v$.username.$errors.map((e) => e.$message.toString())"
           @blur="v$.username.$touch"
           @keypress.native.enter="onLogin" />
         <v-text-field
           v-model="password"
           class="input_form text"
           placeholder="Contraseña"
-          password
-          visible-password
+          :append-inner-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="showPass ? 'text' : 'password'"
           :invalid="v$.password.$invalid"
           :dirty="v$.password.$dirty"
           :validations="v$.password"
           error-help-text
+          :error-messages="v$.password.$errors.map((e) => e.$message.toString())"
+          @click:append-inner="showPass = !showPass"
           @blur="v$.password.$touch"
           @keypress.native.enter="onLogin" />
       </form>
-      <span v-if="authError" class="login_error">Autenticación incorrecta</span>
+      <span v-if="authError" class="login_error">{{ authErrorMessage }}</span>
     </div>
     <div class="login_actions">
       <div class="button_submit">
-        <v-btn color="primary" raised @click="onLogin()">Login</v-btn>
+        <v-btn color="primary" raised :disabled="btnLoginDisabled" @click="onLogin()">Login</v-btn>
       </div>
       <div class="password_recovery" v-if="false">
         <label raised color="primary" @click="onChangePassword()" href=""
@@ -55,10 +58,19 @@
   const emitter = defineEmits(['login', 'changePassword']);
   defineProps({
     authError: Boolean,
+    authErrorMessage: {
+      type: String,
+      default: '',
+    },
   });
 
   const username = ref('');
   const password = ref('');
+  const showPass = ref(false);
+
+  const btnLoginDisabled = computed(() => {
+    return v$.value.$invalid;
+  });
 
   // Validations
   const validations = computed(() => {
@@ -73,10 +85,6 @@
   });
   // Use the "useVuelidate" function to perform form validation
   const v$ = useVuelidate(validations, { username, password });
-
-  // const errorMessages = {
-  //   required: 'Este campo es obligatorio',
-  // };
 
   const onLogin = () => {
     v$.value.$touch();
@@ -118,6 +126,7 @@
       }
       .login_error {
         color: red;
+        font-size: 0.8em;
       }
     }
     .password_recovery {

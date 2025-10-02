@@ -30,7 +30,7 @@ export default defineConfig({
   },
   build: {
     reportCompressedSize: true,
-    sourcemap: true,
+    sourcemap: process.env.MODE === 'development'? false : true,
     rollupOptions: {
       output: {
         manualChunks(id) {
