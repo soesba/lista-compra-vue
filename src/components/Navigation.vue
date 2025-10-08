@@ -1,31 +1,47 @@
 <template>
-  <v-app-bar color="primary" prominent>
-    <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-    <router-link class="no-link" to="/">
-      <v-toolbar-title>Precios compra</v-toolbar-title>
-    </router-link>
-    <v-spacer></v-spacer>
+  <v-app-bar color="primary" prominent class="app-bar">
+    <div v-if="$slots.left" class="left-slot">
+      <slot name="left" />
+    </div>
+    <div v-else class="left-slot">
+      <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+    </div>
+    <div v-if="$slots.center" class="center-slot">
+      <slot name="center" />
+    </div>
+    <div v-else class="center-slot">
+      <router-link class="no-link" to="/">
+        <v-toolbar-title>Precios compra</v-toolbar-title>
+      </router-link>
+    </div>
 
     <!-- <template v-if="$vuetify.display.mdAndUp">
       <v-btn icon="mdi-magnify" variant="text"></v-btn>
 
       <v-btn icon="mdi-filter" variant="text"></v-btn>
     </template> -->
-    <v-btn
-      icon="mdi-dots-vertical">
-      <v-icon icon="mdi-dots-vertical"></v-icon>
-      <v-menu activator="parent">
-        <v-list>
-          <v-list-item
-            v-for="(item, index) in dotsMenuItems"
-            :key="index"
-            :value="index"
-          >
-            <v-list-item-title @click="item.click">{{ item.title }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </v-btn>
+     <div v-if="$slots.right" class="right-slot">
+      <slot name="right" />
+    </div>
+    <div v-else class="right-slot">
+      <v-btn
+        append-icon="mdi-menu-down"
+        variant="text"
+        :ripple="false">
+        {{ usuario.username }}
+        <v-menu activator="parent">
+          <v-list>
+            <v-list-item
+              v-for="(item, index) in dotsMenuItems"
+              :key="index"
+              :value="index"
+            >
+              <v-list-item-title @click="item.click">{{ item.title }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-btn>
+    </div>
   </v-app-bar>
   <v-navigation-drawer
     v-model="drawer"
@@ -44,6 +60,7 @@ import { ref } from 'vue'
 </script>
 <script setup lang="ts">
 
+  const usuario = ref(authStore.getUsuarioLogueado)
   const drawer = ref(false)
   const navigationMenuitems = ref([
   	{
@@ -106,3 +123,22 @@ import { ref } from 'vue'
     }
   ]
 </script>
+<style lang="scss" scoped>
+
+:deep(.v-toolbar__content) {
+  justify-content: space-between;
+}
+
+.left-slot {
+  margin-right: 16px;
+}
+
+.center-slot {
+  margin-left: 16px;
+  margin-right: 16px;
+}
+
+.right-slot {
+  margin-left: 16px;
+}
+</style>

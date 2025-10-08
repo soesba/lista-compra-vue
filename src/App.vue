@@ -1,5 +1,5 @@
 <template>
-  <v-app @login="onLogin" @logout="onLogout">
+  <v-app>
     <Mask></Mask>
     <navigation v-if="userLogged" />
     <v-main>

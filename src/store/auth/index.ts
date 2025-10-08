@@ -67,7 +67,7 @@ export const useAuthStore = defineStore('auth', {
         this.setToken(response.data.access_token)
         this.setRefreshToken(response.data.refresh_token)
         this.setUsuario(response.data.usuario)
-        // Guardar tokens en local storage para persistencia
+        // Guardar tokens en cookies
         Cookies.set(config.appAccessToken, response.data.access_token, { domain: window.location.hostname, secure: true })
         Cookies.set(config.appRefreshToken, response.data.refresh_token, { domain: window.location.hostname, secure: true })
         Cookies.set('usuario', JSON.stringify(response.data.usuario), { domain: window.location.hostname, secure: true })
