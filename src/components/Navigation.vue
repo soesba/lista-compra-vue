@@ -17,7 +17,7 @@
       <v-menu activator="parent">
         <v-list>
           <v-list-item
-            v-for="(item, index) in contextMenuItems"
+            v-for="(item, index) in dotsMenuItems"
             :key="index"
             :value="index"
           >
@@ -31,7 +31,7 @@
     v-model="drawer"
     :location="$vuetify.display.mobile ? 'bottom' : undefined"
     temporary>
-    <v-list :items="items"></v-list>
+    <v-list :items="navigationMenuitems.filter((item) => item.visible !== false)"></v-list>
   </v-navigation-drawer>
 </template>
 <script lang="ts">
@@ -45,7 +45,7 @@ import { ref } from 'vue'
 <script setup lang="ts">
 
   const drawer = ref(false)
-  const items = ref([
+  const navigationMenuitems = ref([
   	{
   		title: 'Articulos',
   		props: {
@@ -80,10 +80,18 @@ import { ref } from 'vue'
   			to: '/precios',
   			link: true
   		}
-  	}
+  	},
+    {
+      title: 'Administración',
+      props: {
+        to: '/dashboard',
+        link: true
+      },
+      visible: authStore.getUsuarioLogueado && authStore.getUsuarioLogueado.esAdministrador === true
+    }
   ])
 
-  const contextMenuItems = [
+  const dotsMenuItems = [
     {
         title: 'Logout',
         click: () => {

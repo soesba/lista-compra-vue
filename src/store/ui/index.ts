@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import type UiState from "./types";
-import get from '@/services/tipoUnidad/getTipoUnidad.service';
 
 const getDefaultCustomDialog = () => {
 	return {

@@ -1,8 +1,6 @@
 import type Xhr from "@/api/config/Xhr"
 import type Interceptor from "./Interceptor"
 import { authStore, uiStore } from "@/main"
-import { HttpStatusCode } from 'axios'
-import { ErrorTypes } from 'vue-router'
 
 export default class InterceptorMessages implements Interceptor {
   private _token: string = ''

@@ -18,6 +18,7 @@
           @keypress.native.enter="onLogin" />
         <v-text-field
           v-model="password"
+          autocomplete="current-password"
           class="input_form text"
           placeholder="Contraseña"
           :append-inner-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
