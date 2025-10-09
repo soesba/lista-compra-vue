@@ -72,7 +72,6 @@
 
   const noPhotoUrl = new URL('@/assets/images/no-avatar.png', import.meta.url).href
 
-  console.log(authStore.getUsuarioLogueado.username)
   const usuario = ref((await getByUsername(authStore.getUsuarioLogueado.username)).data as Usuario)
   let originalUsuario = { ...usuario.value }
 
@@ -120,6 +119,10 @@
             if (data && data.imagen) {
               usuario.value.foto = data.imagen
             }
+          },
+          reset: () => {
+            usuario.value.foto = null
+            v$.value.$touch()
           }
         }
       })

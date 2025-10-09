@@ -4,10 +4,10 @@ import PermisoDTO from './PermisoDTO';
 export default interface UsuarioDTO {
     id: string;
     username: string;
-    nombre?: string;
+    nombre: string;
     primerApellido?: string;
     segundoApellido?: string;
-    foto: ImagenDTO;
+    foto?: ImagenDTO | null;
     fechaCreacion: string;
     esAdministrador: boolean;
     permisos: Array<PermisoDTO>;

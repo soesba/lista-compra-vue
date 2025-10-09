@@ -37,7 +37,7 @@ import { getBase64FromImageUrl } from '@/utils/utils'
   const fileUpload = ref()
   let selectedFile = reactive<File>({} as File)
   const imagen = ref<Imagen>({} as Imagen)
-  const emitter = defineEmits(['changed', 'close'])
+  const emitter = defineEmits(['changed', 'reset'])
   const avatares = listaAvatares()
 
   const onSelectImage = () => {
@@ -58,11 +58,16 @@ import { getBase64FromImageUrl } from '@/utils/utils'
   }
 
   const seleccionAvatar = async (avatarUrl: string) => {
-    const imageData = await getBase64FromImageUrl(avatarUrl)
-    imagen.value = {} as Imagen
-    imagen.value.content = imageData as string
-    imagen.value.type = 'image/svg+xml'
-    onAceptarClick()
+    if (avatarUrl.includes('no-avatar')) {
+      emitter('reset')
+      uiStore.hideCustomDialog()
+    } else {
+      const imageData = await getBase64FromImageUrl(avatarUrl)
+      imagen.value = {} as Imagen
+      imagen.value.content = imageData as string
+      imagen.value.type = 'image/svg+xml'
+      onAceptarClick()
+    }
   }
 
   const onAceptarClick = () => {
