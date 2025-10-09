@@ -36,7 +36,6 @@ let containerSelector = "#app";
 const mountPoint = document.querySelector(containerSelector);
 
 if (mountPoint && (mountPoint as any).__vue_app__ !== undefined) {
-
     // Set the existing mount point to 'app'.
     app = mountPoint.__vue_app__._instance.proxy;
 } else {
