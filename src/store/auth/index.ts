@@ -1,6 +1,7 @@
 import API from '@/api'
 import router from '@/router'
 import LoginResponse from '@/services/auth/models/LoginResponse'
+import UserInfo from '@/services/auth/models/UserInfo'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { defineStore } from 'pinia'
@@ -12,7 +13,6 @@ const config = {
   redirectSuccess: window.location.href,
   redirectError:  import.meta.env.VITE_REDIRECT_ERROR || window.location.origin + '/forbidden',
 }
-
 const buildExpirationDate = (token: string) => {
   if (!token) {
     console.warn('Unable to set expiration date due to empty access_token')
@@ -39,59 +39,61 @@ const removeAll = (): void => {
   })
 }
 
-export const useAuthStore = defineStore('auth', {
-  persist: true,
-  state: () => ({
-    token: '',
-    refresh_token: '',
-    user: '',
+const getDefaultState = () => {
+  return {
+    token:  Cookies.get(config.appAccessToken) ||'',
+    refresh_token: Cookies.get(config.appRefreshToken) || '',
+    usuario: JSON.parse(Cookies.get('usuario') || 'null'),
     isRefreshing: false,
     failedQueue: [] as any[]
-  }),
+  }
+}
+
+export const useAuthStore = defineStore('auth', {
+  state: () => getDefaultState(),
   actions: {
     setToken(newToken: string) {
       this.token = newToken
     },
-
     setRefreshToken(newRefreshToken: string) {
       this.refresh_token = newRefreshToken
     },
-
-    setUser(newUser: string) {
-      this.user = newUser
+    setUsuario(newUser: UserInfo) {
+      this.usuario = newUser
     },
-
     async login(username: string, password: string) {
       const response: LoginResponse = await API.AuthRepository.login(username, password)
       if (response.status === 200) {
         this.setToken(response.data.access_token)
         this.setRefreshToken(response.data.refresh_token)
-        this.setUser(username)
-        // Guardar tokens en local storage para persistencia
-        Cookies.set(config.appAccessToken, this.token, { domain: window.location.hostname, secure: true })
-        Cookies.set(config.appRefreshToken, this.refresh_token, { domain: window.location.hostname, secure: true })
-        console.log(this.getAccesTokenSaved, this.getRefreshTokenSaved)
+        this.setUsuario(response.data.usuario)
+        // Guardar tokens en cookies
+        Cookies.set(config.appAccessToken, response.data.access_token, { domain: window.location.hostname, secure: true })
+        Cookies.set(config.appRefreshToken, response.data.refresh_token, { domain: window.location.hostname, secure: true })
+        Cookies.set('usuario', JSON.stringify(response.data.usuario), { domain: window.location.hostname, secure: true })
         return true
       } else {
         throw new Error('Error al iniciar sesión')
       }
     },
-
     async refreshToken() {
-      const response: LoginResponse = await API.AuthRepository.refresh(this.getRefreshTokenSaved)
+      const refreshToken = this.getRefreshTokenSaved
+      if (!refreshToken) {
+        this.logout()
+        throw new Error('No refresh token available')
+      }
+      const response: LoginResponse = await API.AuthRepository.refresh(refreshToken)
       if (response.status === 200) {
         this.setToken(response.data.access_token)
         this.setRefreshToken(response.data.refresh_token)
         // Guardar token en local storage para persistencia
-        Cookies.set(config.appAccessToken, this.token, { domain: window.location.hostname, secure: true })
-        Cookies.set(config.appRefreshToken, this.refresh_token, { domain: window.location.hostname, secure: true })
-        console.log(this.getAccesTokenSaved, this.getRefreshTokenSaved)
-        return this.getAccesTokenSaved
+        Cookies.set(config.appAccessToken, response.data.access_token, { domain: window.location.hostname, secure: true })
+        Cookies.set(config.appRefreshToken, response.data.refresh_token, { domain: window.location.hostname, secure: true })
+        return response.data.access_token
       } else {
         throw new Error('Error al refrescar el token')
       }
     },
-
     async handle401Error(error: any) {
       const originalRequest = error.config;
 
@@ -123,21 +125,22 @@ export const useAuthStore = defineStore('auth', {
         this.isRefreshing = false;
       }
     },
-
+    resetState (state: any) {
+      state = getDefaultState()
+    },
     logout() {
       console.log('Cerrando sesión')
-      this.token = ''
-      this.refresh_token = ''
-      this.user = ''
+      this.resetState(this.$state)
       removeAll()
       router.push('/login')
     }
   },
   getters: {
     isAuthenticated: (state) => !!state.token,
-    getAccesTokenSaved: (state) => state.token || Cookies.get(config.appAccessToken) || '',
-    getRefreshTokenSaved: (state) => state.refresh_token || Cookies.get(config.appRefreshToken) || '',
-    getExpiredTokenSaved: (state) => buildExpirationDate(state.token || Cookies.get(config.appAccessToken) || '') || null,
-    isAuthenticatedUser: (state) => state.user !== undefined && state.user !== null && state.user !== ''
+    getAccesTokenSaved: (state) => state.token,
+    getRefreshTokenSaved: (state) => state.refresh_token,
+    getExpiredTokenSaved: (state) => buildExpirationDate(state.token) || null,
+    isAuthenticatedUser: (state) => state.usuario !== undefined && state.usuario !== null,
+    getUsuarioLogueado: (state) => state.usuario
   }
 })

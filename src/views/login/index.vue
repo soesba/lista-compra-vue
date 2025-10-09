@@ -30,7 +30,7 @@
 
   import { defineComponent, onMounted, ref } from 'vue';
   import router from '@/router';
-  import { authStore } from '@/main';
+  import { authStore, uiStore } from '@/main';
 
   export default defineComponent({
     name: 'LoginTemplate',
@@ -53,6 +53,7 @@
   });
 
   const onLogin = async ({ username, password }: { username: string; password: string }) => {
+    uiStore.setMaskText('Iniciando sesión...');
     try {
       const login = await authStore.login(username, password);
       if (login) {
@@ -63,7 +64,7 @@
     } catch (error: any) {
       console.log(error);
       isLoginError.value = true;
-      loginErrorMessage.value = error.response?.data?.message || 'Error en el login';
+      loginErrorMessage.value = error.response?.data?.message || error.message || 'Error en el login';
     }
   };
 

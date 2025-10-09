@@ -30,10 +30,8 @@ const props = defineProps({
 console.log(props)
 
 let equivalencias = reactive(await (await getByFromMultiple(props.unidadesMedida.map((x) => x.id))).data) as Equivalencia[]
-console.log('LOG~ ~ :33 ~ equivalencias:', equivalencias)
 
 const getPrecio = (eq: any) => {
-	console.log('LOG~ ~ file: PrecioEquivalenciaComponent.vue:37 ~ getPrecio ~ eq:', eq)
 	const valor = props.unidadesMedida.find((x) => x.id === eq.from.id)
 	if (valor) {
 		return props.precio / (valor['valor'] * eq.factor)

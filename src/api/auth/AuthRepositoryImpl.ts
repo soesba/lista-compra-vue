@@ -1,8 +1,8 @@
 import { xhr } from '@/api/config/Repository'
-import AuthRepository from '../AuthRepository'
+import AuthRepository from './AuthRepository'
 import LoginResponse from '@/services/auth/models/LoginResponse'
-import LoginRequestDTO from '../dto/LoginRequestDTO'
-import LoginResponseDTO from '../dto/LoginResponseDTO'
+import LoginRequestDTO from './dto/LoginRequestDTO'
+import LoginResponseDTO from './dto/LoginResponseDTO'
 
 export default class AuthRepositoryImpl implements AuthRepository {
   /**
@@ -28,7 +28,7 @@ export default class AuthRepositoryImpl implements AuthRepository {
       data: {
         access_token: response.data.token,
         refresh_token: response.data.refreshToken,
-        username: response.data.username
+        usuario: response.data.user
       }
     }
   }
@@ -51,7 +51,7 @@ export default class AuthRepositoryImpl implements AuthRepository {
       data: {
         access_token: response.data.token,
         refresh_token: response.data.refreshToken,
-        username: response.data.username
+        usuario: response.data.user
       }
     }
   }

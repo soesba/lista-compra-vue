@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import type UiState from "./types";
+
 const getDefaultCustomDialog = () => {
 	return {
 		show: false,
@@ -32,6 +33,15 @@ const getDefaultAlertComponent = () => {
 	}
 }
 
+const getDefaultMask = () => {
+  return {
+    show: false,
+    props: {
+      text: 'Cargando...'
+    }
+  }
+}
+
 export const useUiStore = defineStore('uiStore', {
 	// convert to a function
 	state: (): UiState => ({
@@ -39,14 +49,17 @@ export const useUiStore = defineStore('uiStore', {
 		confirmDialog: getDefaultConfirmDialog(),
 		alertComponent: getDefaultAlertComponent(),
     menuSortCards: null,
-    menuShowCards: null
+    menuShowCards: null,
+    mask: getDefaultMask()
 	}),
 	getters: {
 		getCustomDialog: (state) => state.customDialog,
 		getConfirmDialog: (state) => state.confirmDialog,
 		getAlertComponent: (state) => state.alertComponent,
     getMenuSortCards: (state) => state.menuSortCards || parseInt(import.meta.env.VITE_SORT_CARDS),
-    getMenuShowCards: (state) => state.menuShowCards || parseInt(import.meta.env.VITE_SHOW_CARDS)
+    getMenuShowCards: (state) => state.menuShowCards || parseInt(import.meta.env.VITE_SHOW_CARDS),
+    getMask: (state) => state.mask,
+    getMaskText: (state) => state.mask.props.text
   },
 	actions: {
 		showCustomDialog ({ component, props, events }: any) {
@@ -78,6 +91,16 @@ export const useUiStore = defineStore('uiStore', {
     },
     setMenuShowCards(value: number) {
       this.menuShowCards = value
+    },
+    showMask() {
+      this.mask.show = true
+    },
+    hideMask() {
+      this.mask.show = false
+      this.mask.props.text = ''
+    },
+    setMaskText(text: string) {
+      this.mask.props.text = text
     }
 	}
 })

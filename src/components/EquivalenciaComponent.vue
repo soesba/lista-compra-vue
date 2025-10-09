@@ -73,7 +73,6 @@ const props = defineProps({
 	}
 })
 
-console.log(props.from)
 const nuevaEquivalencia = props.equivalencia ? ref({ ...props.equivalencia}) : ref({
 	tmpId: 0,
   from: props.from,
@@ -100,9 +99,7 @@ const v$ = useVuelidate(validations, { nuevaEquivalencia })
 // Methods
 
 const onChangeCboTo = (value: any)=> {
-	console.log("LOG ~ onChangeCboTo ~ value:", value)
 	nuevaEquivalencia.value.to = value
-	console.log('LOG~ ~ :101 ~ onChangeCboTo ~ nuevaEquivalencia.value:', nuevaEquivalencia.value)
 	if (props.equivalencia && nuevaEquivalencia.value.to !== props.equivalencia.to) {
 		emitter('updateEquivalencia', nuevaEquivalencia.value)
 	}
@@ -111,7 +108,6 @@ const onChangeCboTo = (value: any)=> {
 
 const txtFactorOnBlur = (value: any) => {
   const numberValue = value.target.valueAsNumber
-	console.log('LOG~ ~ :114 ~ txtFactorOnBlur ~ value:', value)
 	if (props.equivalencia && numberValue !== props.equivalencia.factor) {
     nuevaEquivalencia.value.factor = numberValue
 		emitter('updateEquivalencia', nuevaEquivalencia.value)

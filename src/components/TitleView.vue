@@ -1,7 +1,7 @@
 <template>
   <div class="title-container">
     <label>{{ titulo }}</label>
-    <v-menu>
+    <v-menu v-if="showMenu">
       <template v-slot:activator="{ props }">
         <v-btn icon="mdi-dots-vertical" v-bind="props" variant="text"></v-btn>
       </template>
@@ -29,6 +29,10 @@
 
   const props = defineProps({
     titulo: String,
+    showMenu: {
+      type: Boolean,
+      default: true
+    },
     menu: {
       type: Array<itemMenu>
     }
