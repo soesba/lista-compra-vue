@@ -5,10 +5,12 @@ import Permiso from '@/services/auth/models/Permiso'
 
 export const DTOtoModel = (dto: UsuarioDTO): Usuario => {
   return {
+    id: dto.id,
     username: dto.username,
     nombre: dto.nombre,
     primerApellido: dto.primerApellido,
     segundoApellido: dto.segundoApellido,
+    foto: dto.foto,
     fechaCreacion: dto.fechaCreacion,
     esAdministrador: dto.esAdministrador,
     permisos: dto.permisos ? dto.permisos.map((permisoDTO: PermisoDTO) => ({
@@ -22,10 +24,12 @@ export const DTOtoModel = (dto: UsuarioDTO): Usuario => {
 
 export const modelToDTO = (model: Usuario): UsuarioDTO => {
   return {
+    id: model.id,
     username: model.username,
     nombre: model.nombre,
     primerApellido: model.primerApellido,
     segundoApellido: model.segundoApellido,
+    foto: model.foto,
     fechaCreacion: model.fechaCreacion,
     esAdministrador: model.esAdministrador,
     permisos: model.permisos ? model.permisos.map((permiso: Permiso) => ({

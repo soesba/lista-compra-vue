@@ -22,7 +22,6 @@ export const DTOtoModel = (origin: ArticuloDTO): Articulo => {
 }
 
 export const requestModelToDTO = (origin: ArticuloRequest): ArticuloRequestDTO => {
-	console.log('LOG~ ~ :29 ~ requestModelToDTO ~ origin:', origin)
   const dto: ArticuloRequestDTO = {
     id: origin.id,
     nombre: origin.nombre,

@@ -109,12 +109,10 @@ const getLabel = () => {
 }
 
 const onBlur = () => {
-	console.log("LOG ~ onBlur ~ emit('blur'):")
 	emit('blur')
 }
 
 const onChange = (event: any) => {
-	console.log("LOG ~ onChange ~ emit('change', event):", event)
 	emit('change', event)
 }
 defineExpose({

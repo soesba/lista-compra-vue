@@ -71,7 +71,6 @@ export const useAuthStore = defineStore('auth', {
         Cookies.set(config.appAccessToken, response.data.access_token, { domain: window.location.hostname, secure: true })
         Cookies.set(config.appRefreshToken, response.data.refresh_token, { domain: window.location.hostname, secure: true })
         Cookies.set('usuario', JSON.stringify(response.data.usuario), { domain: window.location.hostname, secure: true })
-        console.log(this.getAccesTokenSaved, this.getRefreshTokenSaved)
         return true
       } else {
         throw new Error('Error al iniciar sesión')
@@ -90,8 +89,7 @@ export const useAuthStore = defineStore('auth', {
         // Guardar token en local storage para persistencia
         Cookies.set(config.appAccessToken, response.data.access_token, { domain: window.location.hostname, secure: true })
         Cookies.set(config.appRefreshToken, response.data.refresh_token, { domain: window.location.hostname, secure: true })
-        console.log(response.data.access_token, response.data.refresh_token)
-        return true
+        return response.data.access_token
       } else {
         throw new Error('Error al refrescar el token')
       }

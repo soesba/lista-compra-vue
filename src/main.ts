@@ -29,7 +29,20 @@ const vuetify = createVuetify({
   }
 })
 
-const app = createApp(App)
+let app
+let containerSelector = "#app";
+
+// check if app has been mounted already
+const mountPoint = document.querySelector(containerSelector);
+
+if (mountPoint && (mountPoint as any).__vue_app__ !== undefined) {
+
+    // Set the existing mount point to 'app'.
+    app = mountPoint.__vue_app__._instance.proxy;
+} else {
+  app = createApp(App)
+}
+
 app.use(pinia)
 
 // Inicializa los stores antes de usar el router
@@ -45,4 +58,13 @@ app.use(router).
 
 export const interceptorMsg = new InterceptorMessages(xhr)
 interceptorMsg.execute()
-export const noLogoUrl = new URL('@/assets/images/no-image.svg', import.meta.url).href
+export const noLogoUrl = new URL('@/assets/images/no-logo.svg', import.meta.url).href
+export const listaAvatares = (() => {
+  const lista = []
+  lista.push(new URL('@/assets/images/no-avatar.png', import.meta.url).href)
+  const nombres = ['cat-avatar', 'dog-avatar']
+  for (let i = 1; i <= nombres.length; i++) {
+    lista.push(new URL('assets/images/' + nombres[i - 1] + '.svg', import.meta.url).href)
+  }
+  return lista
+})

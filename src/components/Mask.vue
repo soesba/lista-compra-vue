@@ -21,7 +21,6 @@ const overlay = computed(() => {
 })
 
 const text = computed(() => {
-  console.log('Mask text:', uiStore.getMaskText)
   return uiStore.getMaskText
 })
 </script>

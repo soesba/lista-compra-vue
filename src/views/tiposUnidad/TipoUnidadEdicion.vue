@@ -102,7 +102,6 @@ const v$ = useVuelidate(validations, { editData })
 // Methods
 
 const onUpdateEquivalencia = (data: Equivalencia) => {
-	console.log("LOG ~ onUpdateEquivalencia ~ data:", data)
   equivalencias.forEach((eq: Equivalencia, index: number) => {
     if ((data.id && eq.id === data.id) || (data.tmpId && eq.tmpId === data.tmpId)) {
       equivalencias[index] = data
@@ -111,27 +110,22 @@ const onUpdateEquivalencia = (data: Equivalencia) => {
 }
 
 const onSaveEquivalencia = (data: Equivalencia) => {
-	console.log("LOG ~ onSaveEquivalencia ~ data:", data)
   if (!data.tmpId) {
     data.tmpId = Date.now()
   }
-  console.log("LOG ~ onSaveEquivalencia ~ equivalencias:", equivalencias)
 	equivalencias.push(data)
 }
 
 const onDeleteEquivalencia = (data: Equivalencia) => {
-  console.log("LOG ~ onDeleteEquivalencia ~ data:", data)
   if (data.tmpId) {
     equivalencias.splice(equivalencias.findIndex((eq: Equivalencia) => eq.tmpId === data.tmpId, 1))
   } else {
     equivalencias.forEach((eq: Equivalencia, index: number) => {
       if ((data.id && eq.id === data.id) || (data.tmpId && eq.tmpId === data.tmpId)) {
-        console.log(index, equivalencias[index])
         equivalencias[index].markedForDeletion = true
       }
     })
   }
-  console.log('LOG~ ~ :122 ~ onDeleteEquivalencia ~ equivalencias:', equivalencias)
 }
 
 const saveAll = () => {
