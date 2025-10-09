@@ -136,6 +136,7 @@
       --v-avatar-height: 128px;
   }
   .avatar {
+    margin-top: 5px;
     cursor: pointer;
   }
 </style>
