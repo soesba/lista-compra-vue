@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-avatar :size="150" @click="onCambiarFotoClick">
+    <v-avatar class="avatar" :size="150" @click="onCambiarFotoClick">
       <v-img :src="getImageSrc" :lazy-src="noPhotoUrl" aspect-ratio="1"></v-img>
     </v-avatar>
     <v-card-title>{{ usuario.username }}</v-card-title>
@@ -77,7 +77,7 @@
   let originalUsuario = { ...usuario.value }
 
   const btnGuardarDisabled = computed(() => {
-    return v$.value.$invalid
+    return v$.value.$invalid || !v$.value.$dirty
   })
 
   const getImageSrc = computed(() => {
@@ -135,7 +135,7 @@
   :deep(.v-avatar.v-avatar--size-x-large) {
       --v-avatar-height: 128px;
   }
-  .foto {
-    height: 128px;
+  .avatar {
+    cursor: pointer;
   }
 </style>
