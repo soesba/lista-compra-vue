@@ -1,4 +1,4 @@
-import PermisoDTO from './PermisoDTO'
+import PermisoDTO from '../../usuario/dto/PermisoDTO'
 
 export default interface UserInfoDTO {
   username: string;

@@ -117,6 +117,12 @@ const router = createRouter({
       name: 'dashboard',
       component: () => import('@/views/dashboard/Dashboard.vue'),
       beforeEnter: (to, from, next) => { isAuth(to, from, next) }
+    },
+     {
+      path: '/perfil',
+      name: 'perfil',
+      component: () => import('@/views/perfil/Perfil.vue'),
+      beforeEnter: (to, from, next) => { isAuth(to, from, next) }
     }
 	]
 })

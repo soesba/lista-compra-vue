@@ -1,4 +1,4 @@
-import AuthRepositoryImpl from './impl/AuthRepositoryImpl'
+import AuthRepositoryImpl from './AuthRepositoryImpl'
 
 export default {
   getInstance () {
