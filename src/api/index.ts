@@ -7,6 +7,7 @@ import TipoUnidadFactory from "./tipoUnidad/TipoUnidadFactory"
 import DesplegableFactory from "./desplegables/DesplegableFactory"
 import EquivalenciaFactory from "./equivalencia/EquivalenciaFactory"
 import UsuarioFactory from './usuario/UsuarioFactory'
+import AvatarFactory from './avatar/AvatarFactory'
 
 const API = {
   AuthRepository: AuthFactory.getInstance(),
@@ -17,6 +18,7 @@ const API = {
 	PrecioRepository: PrecioFactory.getInstance(),
 	DesplegableRepository: DesplegableFactory.getInstance(),
 	EquivalenciaRepository: EquivalenciaFactory.getInstance(),
-  UsuarioRepository: UsuarioFactory.getInstance()
+  UsuarioRepository: UsuarioFactory.getInstance(),
+  AvatarRepository: AvatarFactory.getInstance()
 }
 export default API

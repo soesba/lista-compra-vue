@@ -2,7 +2,7 @@ import UsuarioResponse from '@/services/usuario/models/UsuarioResponse';
 import UsuarioRepository from './UsuarioRepository';
 import UsuariosResponseDTO from './dto/UsuariosResponseDTO';
 import { xhr } from '../config/Repository';
-import { DTOtoModel, modelToDTO } from './mapping/UsuarioMapping';
+import { DtoToModel, ModelToDto } from './mapping/UsuarioMapping';
 import UsuarioDTO from './dto/UsuarioDTO';
 import UsuarioResponseDTO from './dto/UsuarioResponseDTO';
 import Usuario from '@/services/usuario/models/Usuario';
@@ -15,7 +15,7 @@ const endpoint = '/api/usuarios'
 		}
 		const response = await xhr.get<UsuariosResponseDTO>(endpoint, { headers})
 		const result = {
-			data: response.data.data.map((item: UsuarioDTO) => DTOtoModel(item)),
+			data: response.data.data.map((item: UsuarioDTO) => DtoToModel(item)),
 			respuesta: response.status
 		}
 		return result
@@ -28,7 +28,7 @@ const endpoint = '/api/usuarios'
     }
     const response = await xhr.get<UsuarioResponseDTO>(endpoint, { headers})
     const result = {
-      data: DTOtoModel(response.data.data),
+      data: DtoToModel(response.data.data),
       respuesta: response.status
     }
     return result
@@ -41,7 +41,7 @@ const endpoint = '/api/usuarios'
     }
     const response = await xhr.get<UsuarioResponseDTO>(endpoint, { headers})
     const result = {
-      data: DTOtoModel(response.data.data),
+      data: DtoToModel(response.data.data),
       respuesta: response.status
     }
     return result
@@ -52,10 +52,10 @@ const endpoint = '/api/usuarios'
     const headers = {
       'Content-Type': 'application/json;charset=UTF-8'
     }
-    const dataDTO: UsuarioDTO = modelToDTO(data)
+    const dataDTO: UsuarioDTO = ModelToDto(data)
     const response = await xhr.put<UsuarioDTO, UsuarioResponseDTO>(endpoint, dataDTO, { headers})
     const result = {
-      data: DTOtoModel(response.data.data),
+      data: DtoToModel(response.data.data),
       respuesta: response.status
     }
     return result

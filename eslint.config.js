@@ -17,6 +17,10 @@ export default [
         extraFileExtensions: ['.vue']
       }
     },
+    extends: [
+      "eslint:recommended",
+      "prettier" // ¡Asegúrate de que esté al final!
+    ],
     plugins: {
       'prettier': prettierPlugin,
       '@stylistic': stylistic

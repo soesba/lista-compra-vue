@@ -15,38 +15,23 @@
     </v-tabs>
     <v-tabs-window v-model="tabs">
       <v-tabs-window-item
-        v-for="i in 3"
+        v-for="i in components.length"
         :key="i"
         :value="i"
       >
-        <v-card>
-          <v-card-title>{{ cards[i - 1].title }}</v-card-title>
-          <v-card-text>
-            {{ cards[i - 1].text }}
-          </v-card-text>
-        </v-card>
+        <component :is="components[i - 1]" />
       </v-tabs-window-item>
     </v-tabs-window>
   </div>
 </template>
 <script setup lang="ts">
   import { ref } from 'vue'
+import GestionUsuarios from './components/GestionUsuarios.vue';
+import GestionBD from './components/GestionBD.vue';
+import GestionAvatares from './components/GestionAvatares.vue';
 
   const tabs = ref(1)
-  const cards = ref([
-    {
-      title: 'Usuarios',
-      text: 'Gestiona los usuarios de la aplicación'
-    },
-    {
-      title: ' Base de datos',
-      text: 'Utilidades para la base de datos de la aplicación'
-    },
-    {
-      title: 'Avatares',
-      text: 'Gestiona los avatares disponibles para los usuarios'
-    }
-  ])
+  const components = [GestionUsuarios, GestionBD, GestionAvatares]
 </script>
 <style lang="scss" scoped>
 

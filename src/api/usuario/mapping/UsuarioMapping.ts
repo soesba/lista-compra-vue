@@ -3,7 +3,7 @@ import UsuarioDTO from '../dto/UsuarioDTO'
 import PermisoDTO from '../dto/PermisoDTO'
 import Permiso from '@/services/auth/models/Permiso'
 
-export const DTOtoModel = (dto: UsuarioDTO): Usuario => {
+export const DtoToModel = (dto: UsuarioDTO): Usuario => {
   return {
     id: dto.id,
     username: dto.username,
@@ -22,7 +22,7 @@ export const DTOtoModel = (dto: UsuarioDTO): Usuario => {
   }
 }
 
-export const modelToDTO = (model: Usuario): UsuarioDTO => {
+export const ModelToDto = (model: Usuario): UsuarioDTO => {
   return {
     id: model.id,
     username: model.username,

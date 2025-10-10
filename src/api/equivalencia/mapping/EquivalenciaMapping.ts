@@ -3,7 +3,7 @@ import type EquivalenciaDTO from "../dto/EquivalenciaDTO"
 import type EquivalenciaRequestDTO from "../dto/EquivalenciaRequestDTO"
 import type EquivalenciaRequest from "@/services/equivalencia/models/EquivalenciaRequest"
 
-export const DTOtoModel = (origin: EquivalenciaDTO): Equivalencia => {
+export const DtoToModel = (origin: EquivalenciaDTO): Equivalencia => {
 	const model = {
 		id: origin.id,
 		from: origin.from,
@@ -16,17 +16,17 @@ export const DTOtoModel = (origin: EquivalenciaDTO): Equivalencia => {
 	return model
 }
 
-export const modelToDTO = (origin: Equivalencia): EquivalenciaDTO => {
+export const ModelToDto = (origin: Equivalencia): EquivalenciaDTO => {
   const dto: EquivalenciaDTO = {
     ...origin
   }
   return dto
 }
 
-export const requestDTOtoModel = (origin: EquivalenciaRequestDTO): EquivalenciaRequest => {
+export const requestDtoToModel = (origin: EquivalenciaRequestDTO): EquivalenciaRequest => {
 	return {...origin}
 }
 
-export const requestModelToDTO = (origin: EquivalenciaRequest): EquivalenciaRequestDTO => {
+export const requestModelToDto = (origin: EquivalenciaRequest): EquivalenciaRequestDTO => {
 	return { ...origin }
 }
