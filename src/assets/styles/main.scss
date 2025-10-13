@@ -70,6 +70,14 @@ a.no-link {
 	}
 }
 
+.v-avatar {
+	cursor: pointer;
+	border: 2px solid transparent;
+	&:hover {
+		border: 2px solid #1976d2;
+	}
+}
+
 .form {
   .header {
 		display: flex;

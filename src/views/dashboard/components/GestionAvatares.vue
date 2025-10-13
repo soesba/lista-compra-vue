@@ -14,6 +14,7 @@
           v-for="avatar in avatares"
           :key="avatar.id">
         <img
+          class="v-avatar"
           :src="avatar.imagen.content"
           height="64px"
         >

@@ -93,12 +93,5 @@ import Avatar from '@/services/avatar/models/Avatar'
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    .v-avatar {
-      cursor: pointer;
-      border: 2px solid transparent;
-      &:hover {
-        border: 2px solid #1976d2;
-      }
-    }
   }
 </style>
