@@ -94,7 +94,8 @@
         username: { required },
         nombre: { required },
         primerApellido: {},
-        segundoApellido: {}
+        segundoApellido: {},
+        foto: {}
       }
     }
   })
@@ -119,9 +120,13 @@
         component: markRaw(ImageSelect),
         events: {
           changed: (data: any) => {
-            console.log("LOG ~ onCambiarFotoClick ~ data:", data)
+            console.log('LOG~ ~ :123 ~ onCambiarFotoClick ~ data:', data)
             if (data && data.imagen) {
               usuario.value.foto = data.imagen
+              v$.value.usuario.$touch()
+            } else {
+              usuario.value.foto = null
+              v$.value.usuario.$touch()
             }
           }
         }

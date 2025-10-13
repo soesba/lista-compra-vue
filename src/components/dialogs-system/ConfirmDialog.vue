@@ -1,6 +1,6 @@
 <template>
 	<v-dialog v-model="show" persistent max-width="340">
-		<v-card max-width="400" prepend-icon="mdi-help" :text="text" :title="title" color="primary">
+		<v-card max-width="400" prepend-icon="mdi-help" :text="text" :title="title">
 			<template v-slot:actions>
 				<v-btn class="ms-auto" text="Aceptar" @click="onCloseDialog(true)"></v-btn>
 				<v-btn class="ms-auto" text="Cancelar" @click="onCloseDialog(false)"></v-btn>

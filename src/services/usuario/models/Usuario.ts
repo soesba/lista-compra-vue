@@ -7,7 +7,7 @@ export default interface Usuario {
     nombre?: string;
     primerApellido?: string;
     segundoApellido?: string;
-    foto: Imagen;
+    foto: Imagen | null;
     fechaCreacion: string;
     esAdministrador: boolean;
     permisos: Array<Permiso>;
