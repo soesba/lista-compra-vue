@@ -4,15 +4,15 @@ import AvatarDTO from '../dto/AvatarDTO'
 export const DtoToModel = (dto: AvatarDTO): Avatar => {
   return {
     id: dto.id,
-    nombre: dto.nombre,
-    imagen: dto.imagen
+    imagen: dto.imagen,
+    fechaSubida: dto.fechaSubida
   }
 }
 
 export const ModelToDto = (model: Avatar): AvatarDTO => {
   return {
     id: model.id,
-    nombre: model.nombre,
-    imagen: model.imagen
+    imagen: model.imagen,
+    fechaSubida: model.fechaSubida
   }
 }

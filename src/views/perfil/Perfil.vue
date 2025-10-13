@@ -27,6 +27,7 @@
               required
               :class="{ dirty: v$.usuario.nombre.$dirty }"
               v-model="usuario.nombre"
+              :validations="v$.usuario.nombre"
               :error-messages="v$.usuario.nombre.$errors.map((e: any) => e.$message.toString())"
               @input="v$.usuario.nombre.$touch"></v-text-field>
           </div>
@@ -36,6 +37,7 @@
               label="Primer apellido*"
               required
               :class="{ dirty: v$.usuario.primerApellido.$dirty }"
+              :validations="v$.usuario.primerApellido"
               v-model="usuario.primerApellido"
               @input="v$.usuario.primerApellido.$touch"></v-text-field>
           </div>
@@ -46,6 +48,7 @@
               required
               :class="{ dirty: v$.usuario.segundoApellido.$dirty }"
               v-model="usuario.segundoApellido"
+              :validations="v$.usuario.segundoApellido"
               @input="v$.usuario.segundoApellido.$touch"></v-text-field>
           </div>
         </div>

@@ -22,7 +22,7 @@ export default class AvatarRepositoryImpl implements AvatarRepository {
   }
 
   async getById(id: string): Promise<AvatarResponse> {
-    const endpoint = `/api/avatares?id=${id}`
+    const endpoint = `/api/avatares/${id}`
     const headers = {
       'Content-Type': 'application/json;charset=UTF-8'
     }
@@ -34,26 +34,26 @@ export default class AvatarRepositoryImpl implements AvatarRepository {
     return result
   }
 
-  async getByNombre(username: string): Promise<AvatarResponse> {
-    const endpoint = `/api/avatares?username=${username}`
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.get<AvatarResponseDTO>(endpoint, { headers })
-    const result = {
-      data: DtoToModel(response.data.data),
-      respuesta: response.status
-    }
-    return result
-  }
-
-  async update(data: Avatar): Promise<AvatarResponse> {
+  async insert(data: Avatar): Promise<AvatarResponse> {
     const endpoint = '/api/avatares'
     const headers = {
       'Content-Type': 'application/json;charset=UTF-8'
     }
     const dataDTO: AvatarDTO = ModelToDto(data)
-    const response = await xhr.put<AvatarDTO, AvatarResponseDTO>(endpoint, dataDTO, { headers })
+    const response = await xhr.post<AvatarDTO, AvatarResponseDTO>(endpoint, dataDTO, { headers })
+    const result = {
+      data: DtoToModel(response.data.data),
+      respuesta: response.status
+    }
+    return result
+  }
+
+  async delete(id: string): Promise<AvatarResponse> {
+    const endpoint = `/api/avatares/${id}`
+    const headers = {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+    const response = await xhr.delete<AvatarResponseDTO>(endpoint, { headers})
     const result = {
       data: DtoToModel(response.data.data),
       respuesta: response.status

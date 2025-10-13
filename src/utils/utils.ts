@@ -11,25 +11,6 @@ export const fileToBase64 = (file: any): any => new Promise((resolve, reject) =>
 })
 
 export const getBase64FromImageUrl = async(url: string) => {
-  // var img = new Image();
-
-  // img.setAttribute('crossOrigin', 'anonymous');
-
-  // img.onload = function () {
-  //     var canvas = document.createElement("canvas");
-  //     canvas.width = width
-  //     canvas.height = height
-
-  //     var ctx = canvas.getContext("2d");
-  //     ctx.drawImage(this, 0, 0);
-
-  //     var dataURL = canvas.toDataURL("image/png");
-
-  //     alert(dataURL.replace(/^data:image\/(png|jpg);base64,/, ""));
-  // };
-
-  // img.src = url;
-
   return await fetch(url)
     .then( response => response.blob() )
     .then( blob => new Promise( callback =>{
@@ -37,6 +18,14 @@ export const getBase64FromImageUrl = async(url: string) => {
         reader.onload = function(){ callback(this.result) } ;
         reader.readAsDataURL(blob) ;
     }) ) ;
+}
+
+export const getImageTypeFromContent = (content: string): string => {
+  if (content.startsWith('data:image/jpeg;base64,')) {
+    const base64 = content.replace('data:', '')
+    return base64.split(';base64,')[0]
+  }
+  return ''
 }
 
 export const pluralize = (cadena: string, valor: number | null) => {
@@ -89,4 +78,14 @@ export const stringToNumber = (value: string): number => {
 export const isNumber = (str: string) => {
   const pattern = /^\d+\.?\d*$/
   return pattern.test(str) // returns a boolean
+}
+
+export const isValidHttpUrl = (data: string) => {
+  let url
+  try {
+    url = new URL(data)
+  } catch (_) {
+    return false
+  }
+  return url.protocol === "http:" || url.protocol === "https:"
 }
