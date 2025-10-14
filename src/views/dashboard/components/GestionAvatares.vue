@@ -122,7 +122,7 @@ onMounted(() => {
 
 .lista-avatares {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   flex-wrap: wrap;
   gap: 10px;
   margin: 10px 10px;
