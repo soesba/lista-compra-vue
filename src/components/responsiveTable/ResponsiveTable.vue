@@ -10,7 +10,7 @@
         <tr v-for="(row) in rowData" :key="row.id">
           <td :data-titulo="col.field !== 'actions' ? col.dataTitulo || col.header : null" v-for="col in colsDef" :key="col.field" :class="{ 'action-column': col.field === 'actions' }">
             <slot name="body">
-              <span v-if="col.colType === 'html'" v-html="getValue(row, col)"></span>
+              <div v-if="col.colType === 'html'" v-html="getValue(row, col)"></div>
               <span v-else-if="col.colType !== 'actions'">{{ getValue(row, col) }}</span>
               <span v-else>
                 <component
@@ -24,10 +24,6 @@
               </span>
             </slot>
           </td>
-          <!-- <td v-if="options.actionColumns">
-            <v-btn v-if="options.canEdit" icon="mdi-pencil" variant="text" :color="options.color" @click="onClickEdit(row, indexRow)"></v-btn>
-            <v-btn v-if="options.canDelete" icon="mdi-delete" variant="text" :color="options.color" @click="onClickDelete(row, indexRow)"></v-btn>
-          </td> -->
         </tr>
       </tbody>
     </table>
@@ -126,9 +122,7 @@ const defaultTableOptions: TableOptions = {
   editType: 'custom'
 }
 const options = { ...defaultTableOptions, ...props.options }
-const emitt = defineEmits(['onEdit', 'onDelete'])
 const getValue = (rowData: any, col: ColDef) => {
-  console.log('LOG~ ~ :131 ~ getValue ~ rowData, col:', rowData, col)
   const params: ValueGetterParams = {
     value: rowData[col.field],
     data: rowData,

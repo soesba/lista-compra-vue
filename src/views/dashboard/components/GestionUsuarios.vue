@@ -30,6 +30,11 @@ const tableOptions: TableOptions = {
   editable: false
 }
 const colDef: ColDef[] = [
+  { header: '    ', field: 'esAdministrador', colType: 'html', valueGetter: ({ value }: any) => {
+    console.log('LOG~ ~ :34 ~ value:', value)
+      return { html: value ? '<span class="mdi mdi-shield-account"></span>' : '' }
+    }
+  },
   { header: 'Usuario', field: 'username', colType: 'text' },
   { header: 'Nombre', field: 'nombre', colType: 'text' },
   { header: 'Primer apellido', dataTitulo: 'P. Apellido', field: 'primerApellido', colType: 'text' },
@@ -71,4 +76,9 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+  :deep(.mdi::before) {
+    color: rgb(var(--v-theme-primary));
+    font-size: 20px;
+    vertical-align: middle;
+  }
 </style>
