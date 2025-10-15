@@ -30,8 +30,7 @@ const tableOptions: TableOptions = {
   editable: false
 }
 const colDef: ColDef[] = [
-  { header: '    ', field: 'esAdministrador', colType: 'html', valueGetter: ({ value }: any) => {
-    console.log('LOG~ ~ :34 ~ value:', value)
+  { field: 'esAdministrador', colType: 'html', valueGetter: ({ value }: any) => {
       return { html: value ? '<span class="mdi mdi-shield-account"></span>' : '' }
     }
   },
@@ -62,7 +61,7 @@ const onEdit = (eventData: { data: any; rowIndex: number }) => {
 }
 
 const onDelete = (eventData: { data: any; rowIndex: number }) => {
-  console.log('Eliminar usuario:', eventData)
+  console.log('Eliminar usuario no implementado:', eventData)
 }
 
 onMounted(() => {

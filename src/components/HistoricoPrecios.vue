@@ -42,7 +42,7 @@ const colDef = computed(() => {
 
 const colDefBase: ColDef[] = [
   { field: 'fechaCompra', header: 'Fecha compra', colType: 'text', valueGetter: ({ value }: any) => getFechaCompra(value) },
-  { field: 'establecimiento', header: 'Establecimiento', colType: 'text', valueGetter: ({ value }: any) => { value.nombre } },
+  { field: 'establecimiento', header: 'Establecimiento', colType: 'text', valueGetter: ({ value }: any) => value.nombre },
   { field: 'precio', header: 'Precio', colType: 'number', valueGetter: ({ value }: any) => formatCurrency(value) },
   { field: 'unidadesMedida', header: 'Cantidad', colType: 'html', valueGetter: ({ value }: any) => {
       let html = '<div class="cantidad-container">'

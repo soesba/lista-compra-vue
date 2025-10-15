@@ -29,20 +29,23 @@ const vuetify = createVuetify({
   }
 })
 
-let app
-let containerSelector = "#app";
+// let app
+// let containerSelector = "#app";
 
-// check if app has been mounted already
-const mountPoint = document.querySelector(containerSelector);
+// // check if app has been mounted already
+// const mountPoint = document.querySelector(containerSelector);
 
-if (mountPoint && (mountPoint as any).__vue_app__ !== undefined) {
-    // Set the existing mount point to 'app'.
-    app = (mountPoint as any).__vue_app__._instance.proxy;
-} else {
-  app = createApp(App)
-}
+// if (mountPoint && (mountPoint as any).__vue_app__ !== undefined) {
+//     // Set the existing mount point to 'app'.
+//     app = (mountPoint as any).__vue_app__._instance.proxy;
+//     app.use(pinia)
+// } else {
+//   app = createApp(App).use(pinia);
+// }
 
-app.use(pinia)
+const app = createApp(App)
+
+app.use(pinia);
 
 // Inicializa los stores antes de usar el router
 export const { authStore, uiStore, eventStore, modelStore } = initStores()
