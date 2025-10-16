@@ -12,4 +12,9 @@ export default interface UsuarioDTO {
     fechaCreacion: string;
     esAdministrador: boolean;
     permisos: Array<PermisoDTO>;
+    preferencias: {
+      configuracionId: string;
+      modeloId: string;
+      valor: string;
+    }[];
 }

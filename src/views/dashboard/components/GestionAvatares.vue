@@ -1,14 +1,9 @@
 <template>
   <div class="avatares">
-    <v-card>
-      <v-card-title>{{ title }}</v-card-title>
-      <v-card-text>
-        {{ subtitle }}
-      </v-card-text>
-      <v-card-subtitle v-if="avatares.length === 0">
-        No hay avatares disponibles
-      </v-card-subtitle>
-    </v-card>
+    <TitleView :titulo="title" :subtitulo="subtitle" :show-menu="false"></TitleView>
+    <div v-if="avatares.length === 0">
+      No hay avatares disponibles
+    </div>
     <div class="lista-avatares">
       <div
           v-for="avatar in avatares"

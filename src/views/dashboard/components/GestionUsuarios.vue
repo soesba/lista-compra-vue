@@ -1,11 +1,6 @@
 <template>
   <div class="usuarios">
-    <v-card>
-      <v-card-title>{{ header }}</v-card-title>
-      <v-card-text>
-        {{ subtitle }}
-      </v-card-text>
-    </v-card>
+    <TitleView :titulo="title" :subtitulo="subtitle" :show-menu="false"></TitleView>
     <ResponsiveTable
       :cols-def="colDef"
       :row-data="usuarios"
@@ -16,6 +11,7 @@
 
 <script setup lang="ts">
 import ResponsiveTable, { ColDef, TableOptions } from '@/components/responsiveTable/ResponsiveTable.vue';
+import TitleView from '@/components/TitleView.vue';
 import get from '@/services/usuario/getUsuarios.service';
 import Usuario from '@/services/usuario/models/Usuario';
 import { onMounted, ref } from 'vue';
@@ -23,7 +19,7 @@ import { VBtn } from 'vuetify/components/VBtn'
 
 
 
-const header = 'Usuarios'
+const title = 'Usuarios'
 const subtitle = 'Gestiona los usuarios de la aplicación'
 const usuarios = ref<Usuario[]>([])
 const tableOptions: TableOptions = {

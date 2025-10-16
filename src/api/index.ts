@@ -8,6 +8,8 @@ import DesplegableFactory from "./desplegables/DesplegableFactory"
 import EquivalenciaFactory from "./equivalencia/EquivalenciaFactory"
 import UsuarioFactory from './usuario/UsuarioFactory'
 import AvatarFactory from './avatar/AvatarFactory'
+import ConfiguracionFactory from './configuracion/ConfiguracionFactory'
+import ModeloFactory from './modelo/ModeloFactory'
 
 const API = {
   AuthRepository: AuthFactory.getInstance(),
@@ -19,6 +21,8 @@ const API = {
 	DesplegableRepository: DesplegableFactory.getInstance(),
 	EquivalenciaRepository: EquivalenciaFactory.getInstance(),
   UsuarioRepository: UsuarioFactory.getInstance(),
-  AvatarRepository: AvatarFactory.getInstance()
+  AvatarRepository: AvatarFactory.getInstance(),
+  ConfiguracionRepository: ConfiguracionFactory.getInstance(),
+  ModeloRepository: ModeloFactory.getInstance()
 }
 export default API

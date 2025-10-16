@@ -12,4 +12,9 @@ export default interface Usuario {
     fechaCreacion: string;
     esAdministrador: boolean;
     permisos: Array<Permiso>;
+    preferencias: {
+      configuracionId: string;
+      modeloId: string;
+      valor: string;
+    }[];
 }

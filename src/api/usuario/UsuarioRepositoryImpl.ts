@@ -9,7 +9,7 @@ import Usuario from '@/services/usuario/models/Usuario';
 
 export default class UsuarioRepositoryImpl implements UsuarioRepository {
   async get (): Promise<UsuarioResponse> {
-const endpoint = '/api/usuarios'
+    const endpoint = '/api/usuarios'
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}

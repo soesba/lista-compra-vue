@@ -1,6 +1,9 @@
 <template>
-  <div class="title-container">
-    <label>{{ titulo }}</label>
+  <div class="container">
+    <div class="title-container">
+      <label class="titulo">{{ titulo }}</label>
+      <label class="subtitulo" v-if="subtitulo">{{ subtitulo }}</label>
+    </div>
     <v-menu v-if="showMenu">
       <template v-slot:activator="{ props }">
         <v-btn icon="mdi-dots-vertical" v-bind="props" variant="text"></v-btn>
@@ -29,6 +32,7 @@
 
   const props = defineProps({
     titulo: String,
+    subtitulo: String,
     showMenu: {
       type: Boolean,
       default: true
@@ -108,16 +112,29 @@
   }
 </script>
 <style lang="scss" scoped>
-  .title-container {
+  .container {
     padding: 10px;
     text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2rem;
+    font-size: 1.50rem;
     font-weight: 500;
+    .subtitulo {
+      display: block;
+      flex: none;
+      font-size: 0.875rem;
+      font-weight: 400;
+      letter-spacing: 0.0178571429em;
+      opacity: var(--v-card-subtitle-opacity, var(--v-medium-emphasis-opacity));
+      overflow: hidden;
+      padding: 0 1rem;
+      text-overflow: ellipsis;
+      text-transform: none;
+      white-space: nowrap;
+    }
     @media (max-width: 640px) {
-      font-size: 1.5rem;
+      font-size: 1.25rem;
     }
   }
 </style>

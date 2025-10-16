@@ -1,13 +1,9 @@
 <template>
-  <v-card>
+  <div class="datos-basicos">
     <v-avatar class="avatar" :size="150" @click="onCambiarFotoClick">
       <v-img :src="getImageSrc" :lazy-src="noPhotoUrl" aspect-ratio="1"></v-img>
     </v-avatar>
-    <v-card-title>{{ usuario.username }}</v-card-title>
-    <v-card-subtitle
-      ><strong>Fecha de alta: {{ usuario.fechaCreacion }}</strong></v-card-subtitle
-    >
-    <v-card-text>
+    <TitleView :titulo="usuario.username" :subtitulo="'Fecha de alta: ' + usuario.fechaCreacion" :show-menu="false"></TitleView>
       <div class="form">
         <div class="body">
           <div class="inputGroup">
@@ -53,15 +49,30 @@
           </div>
         </div>
       </div>
-    </v-card-text>
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn variant="text" color="primary" @click="onCancelarClick">Cancelar</v-btn>
-      <v-btn :disabled="btnGuardarDisabled" variant="text" color="primary" @click="onGuardarClick"
-        >Guardar</v-btn
-      >
-    </v-card-actions>
-  </v-card>
+  </div>
+  <div class="preferencias">
+    <TitleView titulo="Preferencias" subtitulo="Apariencia de la interfaz" :show-menu="false"></TitleView>
+    <div class="form">
+      <div class="body">
+        <div class="inputGroup">
+          <v-expansion-panels>
+            <v-expansion-panel v-for="modelo in modelos" :key="modelo.id" :title="modelo.nombre">
+              <v-expansion-panel-text>
+                <v-radio-group :label="config.texto" v-for="config in configuraciones" v-model="config.valorActual" @update:model-value="(value) => config.click(value)">
+                  <v-radio v-for="valor in config.valores" :label="valor.nombre" :value="valor.valor"></v-radio>
+                </v-radio-group>
+                </v-expansion-panel-text>
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="actions">
+    <v-btn variant="text" color="primary" @click="onCancelarClick">Cancelar</v-btn>
+    <v-btn :disabled="btnGuardarDisabled" variant="text" color="primary" @click="onGuardarClick">Guardar</v-btn
+    >
+  </div>
 </template>
 <script setup lang="ts">
   import { authStore, uiStore } from '@/main'
@@ -72,12 +83,28 @@
   import getByUsername from '@/services/usuario/getUsuarioByUsername.service'
   import update from '@/services/usuario/updateUsuario.service'
   import ImageSelect from '@/components/ImageSelect.vue'
+  import getConfiguracionesByCategoria from '@/services/configuracion/getConfiguracionesByCategoria.service'
+import get from '@/services/modelo/getModelos.service'
+import TitleView from '@/components/TitleView.vue'
 
   const noPhotoUrl = new URL('@/assets/images/no-avatar.png', import.meta.url).href
 
   console.log(authStore.getUsuarioLogueado.username)
   const usuario = ref((await getByUsername(authStore.getUsuarioLogueado.username)).data as Usuario)
   let originalUsuario = { ...usuario.value }
+  const modelos = (await get()).data as Array<any>;
+  console.log('LOG~ ~ :30 ~ modelos:', modelos)
+  const configuraciones = ref<Array<any>>((await getConfiguracionesByCategoria('dots_menu')).data as Array<any>);
+  const preferenciasUsuario = usuario.value.preferencias ? usuario.value.preferencias : []
+
+  configuraciones.value.forEach(config => {
+    const pref = preferenciasUsuario.find((p: any) => p.id === config.id)
+    if (pref) {
+      config.valorActual = pref.valor
+    } else {
+      config.valorActual = config.valorDefecto
+    }
+  });
 
   const btnGuardarDisabled = computed(() => {
     return v$.value.$invalid || !v$.value.$dirty
@@ -134,8 +161,14 @@
   }
 </script>
 <style lang="scss" scoped>
-  .v-card {
-    color: rgb(var(--v-theme-primary));
+  .datos-basicos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    // color: rgb(var(--v-theme-primary));
+    .form {
+      width: 100%;
+    }
   }
   .dirty {
     color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
@@ -146,5 +179,11 @@
   .avatar {
     margin-top: 5px;
     cursor: pointer;
+  }
+
+  .v-expansion-panel {
+    * {
+      font-size: 1rem;
+    }
   }
 </style>

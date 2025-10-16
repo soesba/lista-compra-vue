@@ -111,3 +111,14 @@ a.no-link {
 .cursor {
 	cursor: pointer;
 }
+
+.actions {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	margin-top: 10px;
+
+	button {
+		margin-left: 10px !important;
+	}
+}

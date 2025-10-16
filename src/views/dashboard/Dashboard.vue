@@ -27,11 +27,11 @@
 <script setup lang="ts">
   import { ref } from 'vue'
 import GestionUsuarios from './components/GestionUsuarios.vue';
-import GestionBD from './components/GestionBD.vue';
+import GestionAplicacion from './components/GestionAplicacion.vue';
 import GestionAvatares from './components/GestionAvatares.vue';
 
   const tabs = ref(1)
-  const components = [GestionUsuarios, GestionBD, GestionAvatares]
+  const components = [GestionUsuarios, GestionAplicacion, GestionAvatares]
 </script>
 <style lang="scss" scoped>
 

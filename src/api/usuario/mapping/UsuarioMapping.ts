@@ -19,7 +19,8 @@ export const DtoToModel = (dto: UsuarioDTO): Usuario => {
       modeloId: permisoDTO.modeloId,
       acceso: permisoDTO.acceso,
       permiso: permisoDTO.permiso
-    })) : []
+    })) : [],
+    preferencias: dto.preferencias ? dto.preferencias : []
   }
 }
 
@@ -39,6 +40,7 @@ export const ModelToDto = (model: Usuario): UsuarioDTO => {
       modeloId: permiso.modeloId,
       acceso: permiso.acceso,
       permiso: permiso.permiso
-    })) : []
+    })) : [],
+    preferencias: model.preferencias ? model.preferencias : []
   }
 }
