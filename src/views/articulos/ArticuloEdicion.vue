@@ -36,13 +36,13 @@
 	</div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import ComboComponent from '@/components/combos/ComboComponent.vue'
 import EditionToolbar from '@/components/EditionToolbar.vue'
 import { required, requiredIf } from '@vuelidate/validators'
 import { useVuelidate } from '@vuelidate/core'
 import { TipoDato } from '@/services/desplegables/models/TipoDato'
-import { defineComponent, reactive, ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { computed } from 'vue'
 import router from '@/router'
 import { eventStore, modelStore } from '@/main'
@@ -50,11 +50,7 @@ import create from '@/services/articulo/createArticulo.service'
 import update from '@/services/articulo/updateArticulo.service'
 import HistoricoPrecios from '@/components/HistoricoPrecios.vue'
 import Articulo from '@/services/articulo/models/Articulo'
-export default defineComponent({
-	name: 'ArticuloEdicion',
-})
-</script>
-<script setup lang="ts">
+
 // Computed
 const canSave = computed(() => {
 	return !v$.value.$invalid

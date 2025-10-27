@@ -25,8 +25,7 @@
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
 import getArticuloById from '@/services/articulo/getArticuloById.service'
 import { useRoute } from 'vue-router'
 import router from '@/router'
@@ -38,11 +37,6 @@ import getByArticuloId from '@/services/precio/getPrecioByArticuloId.service'
 import deleteItem from '@/services/articulo/deleteArticulo.service'
 import { sort } from '@/utils/utils'
 import HistoricoPrecios from '@/components/HistoricoPrecios.vue'
-export default defineComponent({
-	name: 'ArticuloDetalle',
-})
-</script>
-<script setup lang="ts">
 
 // Props
 defineProps({

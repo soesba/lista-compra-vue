@@ -44,13 +44,8 @@
 	</div>
 </template>
 
-<script lang="ts">
-export default defineComponent({
-	name: 'TipoUnidadEdicion',
-})
-</script>
 <script setup lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { computed } from 'vue'
 import router from '@/router'
 import EditionToolbar from '@/components/EditionToolbar.vue'

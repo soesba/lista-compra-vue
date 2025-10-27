@@ -39,11 +39,14 @@
   const rawConfirmDialog = markRaw(ConfirmDialog)
   const userLogged = ref(authStore.isAuthenticated)
 
-  watch(router.currentRoute, (newValue) => {
+  watch(router.currentRoute, newValue => {
     if (newValue.fullPath === '/login') {
       userLogged.value = false
     } else {
       userLogged.value = authStore.isAuthenticated
+      const preferencias = authStore.getPreferencias
+      console.log('LOG~ ~ :48 ~ Guardamos preferencias:', preferencias)
+      authStore.setPreferencias(preferencias)
     }
   })
 
@@ -53,7 +56,9 @@
     navigationEntries.length > 0 &&
     (navigationEntries[0] as PerformanceNavigationTiming).type === 'reload'
   if (isReload && window.location.pathname !== '') {
+    console.log('Recarga de página detectada, navegando a "/"')
+    const preferencias = authStore.getPreferencias
     router.replace('/')
+    authStore.setPreferencias(preferencias)
   }
-
 </script>

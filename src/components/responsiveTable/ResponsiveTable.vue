@@ -92,7 +92,7 @@ export interface ColDef {
   actions?: Array<ActionColDef>;
 }
 
-import { type Component, defineProps, onMounted, PropType } from 'vue'
+import { type Component, onMounted, PropType } from 'vue'
 
 const props = defineProps({
    // Datos de las filas

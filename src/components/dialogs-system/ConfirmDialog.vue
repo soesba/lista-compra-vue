@@ -9,14 +9,11 @@
 	</v-dialog>
 </template>
 
-<script lang="ts">
-import { uiStore } from '@/main'
-import { computed, defineComponent } from 'vue'
-export default defineComponent({
-	name: 'ConfirmDialog',
-})
-</script>
 <script setup lang="ts">
+import { uiStore } from '@/main'
+import { computed } from 'vue'
+
+
 // Computed
 const show = computed(() => {
 	return uiStore.getConfirmDialog?.show

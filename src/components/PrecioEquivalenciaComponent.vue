@@ -4,18 +4,14 @@
     <div v-html="getBloquePrecioUnidad()"></div>
 	</div>
 </template>
-<script lang="ts">
-import { defineComponent, reactive } from 'vue'
+
+<script setup lang="ts">
+import { reactive } from 'vue'
 import getByFromMultiple from '@/services/equivalencia/getEquivalenciaByFromMultiple.service'
 import type UnidadMedida from '@/services/precio/models/UnidadMedida'
 import { formatCurrency } from '@/utils/utils'
 import Equivalencia from '@/services/equivalencia/models/Equivalencia';
 
-export default defineComponent({
-	name: 'PrecioEquivalenciaComponent',
-})
-</script>
-<script setup lang="ts">
 const props = defineProps({
 	unidadesMedida: {
 		type: Array<UnidadMedida>,

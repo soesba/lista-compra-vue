@@ -6,8 +6,8 @@
   ></ResponsiveTable>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed } from 'vue'
 import type Precio from '@/services/precio/models/Precio'
 import { formatCurrency, pluralize } from '@/utils/utils'
 import router from '@/router'
@@ -16,11 +16,7 @@ import Equivalencia from '@/services/equivalencia/models/Equivalencia'
 import getEquivalencias from '@/services/equivalencia/getEquivalencias.service'
 import ResponsiveTable, { ColDef, TableOptions } from './responsiveTable/ResponsiveTable.vue'
 import { VBtn } from 'vuetify/components/VBtn'
-export default defineComponent({
-	name: 'HistoricoPrecios',
-})
-</script>
-<script setup lang="ts">
+
 const props = defineProps({
   editable: {
     type: Boolean,

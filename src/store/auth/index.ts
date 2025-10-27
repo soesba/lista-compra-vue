@@ -7,11 +7,11 @@ import Cookies from 'js-cookie'
 import { defineStore } from 'pinia'
 
 const config = {
-  appAccessToken:  import.meta.env.VITE_ACCESS_TOKEN,
-  appRefreshToken:  import.meta.env.VITE_REFRESH_TOKEN,
-  appCode:  import.meta.env.VITE_CODE,
+  appAccessToken: import.meta.env.VITE_ACCESS_TOKEN,
+  appRefreshToken: import.meta.env.VITE_REFRESH_TOKEN,
+  appCode: import.meta.env.VITE_CODE,
   redirectSuccess: window.location.href,
-  redirectError:  import.meta.env.VITE_REDIRECT_ERROR || window.location.origin + '/forbidden',
+  redirectError: import.meta.env.VITE_REDIRECT_ERROR || window.location.origin + '/forbidden',
 }
 const buildExpirationDate = (token: string) => {
   if (!token) {
@@ -23,7 +23,7 @@ const buildExpirationDate = (token: string) => {
   return new Date(jsonToken.exp * 1000)
 }
 
-const decodeJwt = (token: string) =>{
+const decodeJwt = (token: string) => {
   const base64Url = token.split('.')[1]
   const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
   return JSON.parse(window.atob(base64))
@@ -41,9 +41,10 @@ const removeAll = (): void => {
 
 const getDefaultState = () => {
   return {
-    token:  Cookies.get(config.appAccessToken) ||'',
+    token: Cookies.get(config.appAccessToken) || '',
     refresh_token: Cookies.get(config.appRefreshToken) || '',
     usuario: JSON.parse(Cookies.get('usuario') || 'null'),
+    preferencias: null as any,
     isRefreshing: false,
     failedQueue: [] as any[]
   }
@@ -61,12 +62,16 @@ export const useAuthStore = defineStore('auth', {
     setUsuario(newUser: UserInfo) {
       this.usuario = newUser
     },
+    setPreferencias(preferencias: any) {
+      this.preferencias = preferencias
+    },
     async login(username: string, password: string) {
       const response: LoginResponse = await API.AuthRepository.login(username, password)
       if (response.status === 200) {
         this.setToken(response.data.access_token)
         this.setRefreshToken(response.data.refresh_token)
         this.setUsuario(response.data.usuario)
+        this.setPreferencias(response.data.usuario.preferencias)
         // Guardar tokens en cookies
         Cookies.set(config.appAccessToken, response.data.access_token, { domain: window.location.hostname, secure: true })
         Cookies.set(config.appRefreshToken, response.data.refresh_token, { domain: window.location.hostname, secure: true })
@@ -125,7 +130,7 @@ export const useAuthStore = defineStore('auth', {
         this.isRefreshing = false;
       }
     },
-    resetState (state: any) {
+    resetState(state: any) {
       state = getDefaultState()
     },
     logout() {
@@ -141,6 +146,7 @@ export const useAuthStore = defineStore('auth', {
     getRefreshTokenSaved: (state) => state.refresh_token,
     getExpiredTokenSaved: (state) => buildExpirationDate(state.token) || null,
     isAuthenticatedUser: (state) => state.usuario !== undefined && state.usuario !== null,
-    getUsuarioLogueado: (state) => state.usuario
+    getUsuarioLogueado: (state) => state.usuario,
+    getPreferencias: (state) => state.preferencias
   }
 })

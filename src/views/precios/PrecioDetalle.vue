@@ -27,21 +27,15 @@
 	</div>
 </template>
 
-<script lang="ts">
-	import { defineComponent, reactive } from 'vue'
+<script setup lang="ts">
+import { reactive } from 'vue'
 	import router from '@/router'
 	import getPrecioById from '@/services/precio/getPrecioById.service'
 	import { useRoute } from 'vue-router'
 	import { formatCurrency, pluralize } from '@/utils/utils'
 	import PrecioEquivalenciaComponent from '@/components/PrecioEquivalenciaComponent.vue'
   import { eventStore, modelStore } from '@/main'
-import deleteItem from '@/services/precio/deletePrecio.service'
-
-	export default defineComponent({
-		name: 'CompraDetalle'
-	})
-</script>
-<script setup lang="ts">
+  import deleteItem from '@/services/precio/deletePrecio.service'
 	import DetailToolbar from '@/components/DetailToolbar.vue'
 	import type Precio from '@/services/precio/models/Precio'
 

@@ -12,13 +12,7 @@
   </div>
 </template>
 
-<script lang="ts">
-export default defineComponent({
-	name: 'EditionToolbar',
-})
-</script>
 <script setup lang="ts">
-import { defineComponent } from 'vue'
 
 defineProps({
   saveDisabled: {

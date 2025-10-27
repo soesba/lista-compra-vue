@@ -43,4 +43,30 @@ export default class ModeloRepositoryImpl implements ModeloRepository {
     }
     return result
   }
+
+  async checkUso(modeloId: string): Promise<ModeloResponse> {
+    const endpoint = `/api/modelos/checkuso/${modeloId}`
+    const headers = {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+    const response = await xhr.get<ModeloResponseDTO>(endpoint, { headers})
+    const result = {
+      data: response.data.data,
+      respuesta: response.status
+    }
+    return result
+  }
+
+  async deleteModelo(modeloId: string): Promise<ModeloResponse> {
+    const endpoint = `/api/modelos/${modeloId}`
+    const headers = {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+    const response = await xhr.delete<ModeloResponseDTO>(endpoint, { headers})
+    const result = {
+      data: response.data.data,
+      respuesta: response.status
+    }
+    return result
+  }
 }

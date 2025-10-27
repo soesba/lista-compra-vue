@@ -55,17 +55,14 @@
 		</div>
 	</div>
 </template>
-<script lang="ts">
+
+<script setup lang="ts">
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import type { PropType } from 'vue'
-import { computed, defineComponent, reactive } from 'vue'
+import { computed, reactive } from 'vue'
 import type Direccion from '@/services/establecimiento/models/Direccion'
-export default defineComponent({
-	name: 'DireccionEdicion',
-})
-</script>
-<script setup lang="ts">
+
 const emitter = defineEmits(['saveDireccion', 'updateDireccion', 'deleteDireccion'])
 const props = defineProps({
 	direccion: {

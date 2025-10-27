@@ -10,7 +10,7 @@
       </template>
 
       <v-list>
-        <v-list-item v-for="(item, i) in menu" :key="i" :value="i" @click="item.click(i)">
+        <v-list-item v-for="(item, i) in menu" :key="i" :value="i" @click="item.click(item)">
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -18,9 +18,11 @@
   </div>
 </template>
 <script setup lang="ts">
-  import { markRaw, ref } from 'vue'
+  import { markRaw, onMounted, ref } from 'vue'
   import MenuDialog from '@/components/MenuDialog.vue'
-  import { uiStore, eventStore } from '@/main'
+  import { uiStore, eventStore, authStore } from '@/main'
+  import getConfiguracionesByCategoria from '@/services/configuracion/getConfiguracionesByCategoria.service'
+  import getModeloByNombre from '@/services/modelo/getModeloByNombre.service'
 
   interface itemMenu {
     name: string
@@ -33,6 +35,7 @@
   const props = defineProps({
     titulo: String,
     subtitulo: String,
+    modelo: String,
     showMenu: {
       type: Boolean,
       default: true
@@ -42,35 +45,56 @@
     }
   })
 
-  const defaultMenu: Array<any> = [
-    {
-      name: 'ordenar',
-      title: 'Ordenar por',
-      click: (i: any) => menuClick(i),
-      valorActual: uiStore.getMenuSortCards,
-      subitems: [
-        { title: 'Nombre ascendente', value: 0 },
-        { title: 'Nombre descendente', value: 1 }
-      ]
-    },
-    {
-      name: 'ver',
-      title: 'Ver',
-      click: (i: any) => menuClick(i),
-      valorActual: uiStore.getMenuShowCards,
-      subitems: [
-        { title: 'Tarjetas pequeñas', value: 0 },
-        { title: 'Tarjetas grandes', value: 1 },
-        { title: 'Lista', value: 2 }
-      ]
-    }
-  ]
+  const configuraciones = ref<Array<any>>([])
+  console.log('LOG~ ~ :49 ~ configuraciones:', configuraciones)
 
-  const menu = ref(props.menu || defaultMenu)
+  const defaultMenu = ref<Array<any>>([])
+
+  const menu = ref<Array<any>>([])
+
+  const modeloData = ref<any>(null)
+
+  const preferencias = authStore.getPreferencias
+  console.log('LOG~ ~ :35 ~ preferencias:', preferencias)
+
+  onMounted(async () => {
+    if (props.modelo) {
+      modeloData.value = (await getModeloByNombre('Articulo')).data
+    }
+    if (props.showMenu) {
+      configuraciones.value = (await getConfiguracionesByCategoria('dots_menu')).data as Array<any>
+
+      defaultMenu.value = configuraciones.value.map(config => {
+        const prefUsuario = preferencias.find(
+          (p: any) =>
+            p.configuracionId === config.id &&
+            p.modeloId === (modeloData.value ? modeloData.value.id : null)
+        )
+        const valorActual = prefUsuario ? Number(prefUsuario.valor) : Number(config.valorDefecto)
+        const itemMenu = {
+          name: config.nombre,
+          title: config.texto,
+          valorActual: valorActual,
+          subitems: config.valores.map((valor: any) => {
+            return {
+              title: valor.nombre,
+              value: Number(valor.valor),
+              click: (menu: string, value: number) => submenuClick(menu, value)
+            }
+          }),
+          click: (i: any) => menuClick(i)
+        }
+        submenuClick(itemMenu.name, itemMenu.valorActual)
+        return itemMenu
+      })
+
+      menu.value = props.menu || defaultMenu.value
+    }
+  })
 
   // Methods
-  const menuClick = (index: number) => {
-    if (index === 0) {
+  const menuClick = (item: itemMenu) => {
+    if (item.name === 'ordenar') {
       uiStore.showCustomDialog({
         component: markRaw(MenuDialog),
         props: {
@@ -82,7 +106,7 @@
           click: (menu: string, value: number) => submenuClick(menu, value)
         }
       })
-    } else if (index === 1) {
+    } else if (item.name === 'ver') {
       uiStore.showCustomDialog({
         component: markRaw(MenuDialog),
         props: {
@@ -118,7 +142,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.50rem;
+    font-size: 1.5rem;
     font-weight: 500;
     .subtitulo {
       display: block;
