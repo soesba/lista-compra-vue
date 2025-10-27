@@ -66,9 +66,9 @@
               <v-expansion-panel-text>
                 <v-radio-group
                   :label="config.texto"
-                  v-for="config in configuraciones"
+                  v-for="config in configUsuario.filter(c => c.modelo.id === modelo.id)"
                   v-model="config.valorActual"
-                  @update:model-value="value => config.click(value)">
+                  @update:model-value="value => config.click(value, modelo)">
                   <v-radio
                     v-for="valor in config.valores"
                     :label="valor.nombre"
@@ -113,29 +113,35 @@
     (await getConfiguracionesByCategoria('dots_menu')).data as Array<any>
   )
   const preferenciasUsuario = usuario.value.preferencias ? usuario.value.preferencias : []
+  const configUsuario = ref<Array<any>>([])
 
-  configuraciones.value.forEach(config => {
-    const pref = preferenciasUsuario.find((p: any) => p.configuracionId === config.id)
-    if (pref) {
-      config.valorActual = pref.valor
-    } else {
-      config.valorActual = config.valorDefecto
-    }
-    config.click = (value: any) => {
-      const existingPrefIndex = preferenciasUsuario.findIndex((p: any) => p.id === config.id)
-      if (existingPrefIndex !== -1) {
-        preferenciasUsuario[existingPrefIndex].valor = value
-      } else {
-        preferenciasUsuario.push({
-          configuracionId: config.id,
-          modeloId: config.modeloId,
-          valor: value
-        })
+  modelos.forEach(modelo => {
+    configuraciones.value.forEach(config => {
+      const newConfigUsuario = { ...config }
+      newConfigUsuario.modelo = modelo
+      const pref = preferenciasUsuario.find(
+        (p: any) => p.configuracionId === config.id && p.modeloId === modelo.id
+      )
+      console.log('LOG~ ~ :122 ~ pref:', pref)
+      newConfigUsuario.valorActual = pref ? pref.valor : config.valorDefecto
+      newConfigUsuario.click = (value: any, modelo: any) => {
+        const existingPrefIndex = preferenciasUsuario.findIndex((p: any) => p.id === config.id)
+        if (existingPrefIndex !== -1) {
+          preferenciasUsuario[existingPrefIndex].valor = value
+        } else {
+          preferenciasUsuario.push({
+            configuracionId: config.id,
+            modeloId: modelo.id,
+            valor: value
+          })
+        }
+        usuario.value.preferencias = preferenciasUsuario
+        v$.value.usuario.$touch()
       }
-      usuario.value.preferencias = preferenciasUsuario
-      v$.value.usuario.$touch()
-    }
+      configUsuario.value.push(newConfigUsuario)
+    })
   })
+  console.log('LOG~ ~ :139 ~ configuraciones:', configUsuario.value)
 
   const btnGuardarDisabled = computed(() => {
     return v$.value.$invalid || !v$.value.$dirty

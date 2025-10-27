@@ -46,7 +46,6 @@
   })
 
   const configuraciones = ref<Array<any>>([])
-  console.log('LOG~ ~ :49 ~ configuraciones:', configuraciones)
 
   const defaultMenu = ref<Array<any>>([])
 
@@ -55,7 +54,6 @@
   const modeloData = ref<any>(null)
 
   const preferencias = authStore.getPreferencias
-  console.log('LOG~ ~ :35 ~ preferencias:', preferencias)
 
   onMounted(async () => {
     if (props.modelo) {

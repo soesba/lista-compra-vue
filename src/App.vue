@@ -32,6 +32,7 @@
   import AlertComponent from './components/AlertComponent.vue'
   import { authStore } from './main'
   import { useRouter } from 'vue-router'
+  import getUsuarioPreferencias from './services/usuario/getUsuarioPreferencias.service'
 
   const router = useRouter()
   const emmiter = defineEmits(['login', 'logout'])
@@ -44,9 +45,9 @@
       userLogged.value = false
     } else {
       userLogged.value = authStore.isAuthenticated
-      const preferencias = authStore.getPreferencias
-      console.log('LOG~ ~ :48 ~ Guardamos preferencias:', preferencias)
-      authStore.setPreferencias(preferencias)
+      // const preferencias = authStore.getPreferencias
+      // console.log('LOG~ ~ :48 ~ Guardamos preferencias:', preferencias)
+      // authStore.setPreferencias(preferencias)
     }
   })
 
@@ -57,8 +58,8 @@
     (navigationEntries[0] as PerformanceNavigationTiming).type === 'reload'
   if (isReload && window.location.pathname !== '') {
     console.log('Recarga de página detectada, navegando a "/"')
-    const preferencias = authStore.getPreferencias
-    router.replace('/')
+    const preferencias = authStore.getUsuarioLogueado.preferencias
     authStore.setPreferencias(preferencias)
+    router.replace('/')
   }
 </script>
