@@ -89,7 +89,7 @@
     console.log(resultadoUso)
     const modeloEncontrado = modelosUI.value.find(m => m.id === modeloId)
     if (modeloEncontrado) {
-      modeloEncontrado.uso = resultadoUso
+      modeloEncontrado.uso = resultadoUso.length !== 0 ? resultadoUso : null
       modeloEncontrado.showResultado = true
     }
   }
