@@ -28,17 +28,12 @@
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed } from 'vue'
+<script setup lang="ts">
+import { computed } from 'vue'
 import router from '@/router'
 import getById from '@/services/establecimiento/getEstablecimientoById.service'
 import { useRoute } from 'vue-router'
 import deleteItem from '@/services/establecimiento/deleteEstablecimiento.service'
-export default defineComponent({
-	name: 'EstablecimientoDetalle',
-})
-</script>
-<script setup lang="ts">
 import DetailToolbar from '@/components/DetailToolbar.vue'
 import type Establecimiento from '@/services/establecimiento/models/Establecimiento'
 import { noLogoUrl } from '@/main'

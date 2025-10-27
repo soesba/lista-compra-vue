@@ -46,16 +46,12 @@
     </div>
   </div>
 </template>
-<script lang="ts">
+
+<script setup lang="ts">
   import useVuelidate from '@vuelidate/core';
   import { required } from '@vuelidate/validators';
-  import { computed, defineComponent, ref } from 'vue';
+  import { computed, ref } from 'vue';
 
-  export default defineComponent({
-    name: 'LoginForm',
-  });
-</script>
-<script setup lang="ts">
   const emitter = defineEmits(['login', 'changePassword']);
   defineProps({
     authError: Boolean,

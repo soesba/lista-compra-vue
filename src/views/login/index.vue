@@ -24,23 +24,21 @@
   </div>
 </template>
 
-<script lang="ts">
-  import LoginForm from './components/LoginForm.vue';
-  import ChangePassword from './components/ChangePassword.vue';
-
-  import { defineComponent, onMounted, ref } from 'vue';
-  import router from '@/router';
-  import { authStore, uiStore } from '@/main';
-
-  export default defineComponent({
-    name: 'LoginTemplate',
-  });
-</script>
 <script setup lang="ts">
+  import LoginForm from './components/LoginForm.vue'
+  import ChangePassword from './components/ChangePassword.vue'
+
+  import { onMounted, ref } from 'vue'
+  import router from '@/router'
+  import { authStore, uiStore } from '@/main'
+  import getUsuarioPreferencias from '@/services/usuario/getUsuarioPreferencias.service'
+  import getUsuarioByUsername from '@/services/usuario/getUsuarioByUsername.service'
+  import Usuario from '@/services/usuario/models/Usuario'
+
   // const userName = ref('');
-  const mode = ref('login');
-  const isLoginError = ref(false);
-  const loginErrorMessage = ref('');
+  const mode = ref('login')
+  const isLoginError = ref(false)
+  const loginErrorMessage = ref('')
 
   onMounted(() => {
     // if (authService.login.isAuth()) {
@@ -50,23 +48,33 @@
     //   mode.value = 'sso';
     //   authService.login.login();
     // }
-  });
+  })
 
   const onLogin = async ({ username, password }: { username: string; password: string }) => {
-    uiStore.setMaskText('Iniciando sesión...');
+    uiStore.setMaskText('Iniciando sesión...')
     try {
-      const login = await authStore.login(username, password);
+      const login = await authStore.login(username, password)
       if (login) {
-        router.push('/');
+        getDatosUsuario()
+        router.push('/')
       } else {
-        isLoginError.value = true;
+        isLoginError.value = true
       }
     } catch (error: any) {
-      console.log(error);
-      isLoginError.value = true;
-      loginErrorMessage.value = error.response?.data?.message || error.message || 'Error en el login';
+      console.log(error)
+      isLoginError.value = true
+      loginErrorMessage.value =
+        error.response?.data?.message || error.message || 'Error en el login'
     }
-  };
+  }
+
+  const getDatosUsuario = async () => {
+    const usuario = (await getUsuarioByUsername(authStore.getUsuarioLogueado.username))
+      .data as Usuario
+    getUsuarioPreferencias(usuario.id).then((response: any) => {
+      console.log(response.data)
+    })
+  }
 
   // const onResetPassword = ({ username }: { username: string }): void => {
   //   userName.value = username;
@@ -82,16 +90,16 @@
 
   const onChangePassword = ({
     currentPassword,
-    newPassword,
+    newPassword
   }: {
-    currentPassword: string;
-    newPassword: string;
+    currentPassword: string
+    newPassword: string
   }) => {
     console.log(
       'LOG~ ~ :82 ~ onChangePassword ~ currentPassword, newPassword:',
       currentPassword,
       newPassword
-    );
+    )
     // changePasswordService.execute(userName.value, currentPassword, newPassword).then(() => {
     //   alert('Contraseña cambiada');
     //   mode.value = 'login';
@@ -99,15 +107,15 @@
     // .catch(() => {
     //   alert('Error al cambiar la contraseña');
     // });
-  };
+  }
 
   const onViewChangePassword = () => {
-    mode.value = 'changePassword';
-  };
+    mode.value = 'changePassword'
+  }
 
   const onBackToLogin = (): void => {
-    mode.value = 'login';
-  };
+    mode.value = 'login'
+  }
 </script>
 
 <style src="./styles.scss" lang="scss" scoped />

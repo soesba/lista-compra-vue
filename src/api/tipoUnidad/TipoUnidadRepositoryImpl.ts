@@ -1,7 +1,7 @@
 import type TipoUnidadResponse from "@/services/tipoUnidad/models/TipoUnidadResponse"
 import { xhr } from "../config/Repository"
 import type TipoUnidadRepository from "./TipoUnidadRepository"
-import { DTOtoModel, requestModelToDTO } from "./mapping/TipoUnidadMapping"
+import { DtoToModel, requestModelToDto } from "./mapping/TipoUnidadMapping"
 import type TipoUnidadDTO from "./dto/TipoUnidadDTO"
 import type TipoUnidadRequest from "@/services/tipoUnidad/models/TipoUnidadRequest"
 import TiposUnidadResponseDTO from './dto/TiposUnidadResponseDTO'
@@ -16,7 +16,7 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
 		}
 		const response = await xhr.get<TiposUnidadResponseDTO>(endpoint, { headers})
 		const result = {
-			data: response.data.data.map((item:TipoUnidadDTO) => DTOtoModel(item)),
+			data: response.data.data.map((item:TipoUnidadDTO) => DtoToModel(item)),
 			respuesta: response.status
 		}
 		return result
@@ -29,7 +29,7 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
 		}
 		const response = await xhr.get<TipoUnidadResponseDTO>(endpoint, { headers})
 		const result = {
-			data: DTOtoModel(response.data.data),
+			data: DtoToModel(response.data.data),
 			respuesta: response.status
 		}
 		return result
@@ -42,7 +42,7 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
 		}
 		const response = await xhr.get<TiposUnidadResponseDTO>(endpoint, { headers})
 		const result = {
-			data: response.data.data.map((item:TipoUnidadDTO) => DTOtoModel(item)),
+			data: response.data.data.map((item:TipoUnidadDTO) => DtoToModel(item)),
 			respuesta: response.status
 		}
 		return result
@@ -53,10 +53,10 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
-		const requestDTO = requestModelToDTO(request)
+		const requestDTO = requestModelToDto(request)
 		const response = await xhr.post<TipoUnidadRequestDTO, TipoUnidadResponseDTO>(endpoint, requestDTO, { headers})
 		const result = {
-			data: DTOtoModel(response.data.data),
+			data: DtoToModel(response.data.data),
 			respuesta: response.status
 		}
 		return result
@@ -67,10 +67,10 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
-		const requestDTO = requestModelToDTO(request)
+		const requestDTO = requestModelToDto(request)
 		const response = await xhr.put<TipoUnidadRequestDTO, TipoUnidadResponseDTO>(endpoint, requestDTO, { headers})
 		const result = {
-			data: DTOtoModel(response.data.data),
+			data: DtoToModel(response.data.data),
 			respuesta: response.status
 		}
 		return result
@@ -83,7 +83,7 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
 		}
 		const response = await xhr.delete<TipoUnidadResponseDTO>(endpoint, { headers})
 		const result = {
-			data: DTOtoModel(response.data.data),
+			data: DtoToModel(response.data.data),
 			respuesta: response.status
 		}
 		return result

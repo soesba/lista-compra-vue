@@ -70,11 +70,11 @@
 	</div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
   import EditionToolbar from '@/components/EditionToolbar.vue'
 	import { required, requiredIf } from '@vuelidate/validators'
 	import { useVuelidate } from '@vuelidate/core'
-	import { defineComponent, onMounted, reactive, ref, watch } from 'vue'
+	import { onMounted, reactive, ref, watch } from 'vue'
 	import { computed } from 'vue'
 	import router from '@/router'
 	import create from '@/services/precio/createPrecio.service'
@@ -85,11 +85,7 @@
 	import ComboComponent from '@/components/combos/ComboComponent.vue'
 	import { TipoDato } from '@/services/desplegables/models/TipoDato'
   import { modelStore } from '@/main'
-	export default defineComponent({
-		name: 'PrecioEdicion'
-	})
-</script>
-<script setup lang="ts">
+
 	// Data
 	const cboArticulos = ref(null)
 	const inputPrecio = ref()

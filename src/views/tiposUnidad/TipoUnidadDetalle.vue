@@ -26,13 +26,8 @@
 	</div>
 </template>
 
-<script lang="ts">
-export default defineComponent({
-	name: 'TipoUnidadDetalle',
-})
-</script>
 <script setup lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { reactive } from 'vue'
 import { computed } from 'vue'
 import router from '@/router'
 import DetailToolbar from '@/components/DetailToolbar.vue'

@@ -62,16 +62,11 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
   import useVuelidate from '@vuelidate/core'
-  import { defineComponent, computed, ref } from 'vue'
+  import { computed, ref } from 'vue'
   import { required, sameAs } from '@vuelidate/validators'
 
-  export default defineComponent({
-    name: 'ChangePassword'
-  })
-</script>
-<script setup lang="ts">
   const emitter = defineEmits(['back', 'send'])
   const username = ref('')
   const currentPassword = ref('')
