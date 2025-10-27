@@ -1,14 +1,10 @@
 <template>
   <v-alert v-model="show" :icon="icon" closable :text="text" :variant="variant" :type="type"></v-alert>
 </template>
-<script lang="ts">
-import { computed, defineComponent, onMounted } from 'vue'
-import { uiStore } from '@/main';
-export default defineComponent({
-	name: 'AlertComponent'
-})
-</script>
 <script setup lang="ts">
+import { computed, onMounted } from 'vue'
+import { uiStore } from '@/main';
+
 // Computed
 const show = computed({
   get () {

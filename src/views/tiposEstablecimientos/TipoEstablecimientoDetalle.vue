@@ -14,8 +14,7 @@
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
 import router from '@/router'
@@ -25,11 +24,6 @@ import type TipoEstablecimiento from '@/services/tipoEstablecimiento/models/Tipo
 import getTipoEstablecimientoById from '@/services/tipoEstablecimiento/getTipoEstablecimientoById.service'
 import { eventStore, modelStore } from '@/main'
 
-export default defineComponent({
-	name: 'TipoEstablecimientoDetalle',
-})
-</script>
-<script setup lang="ts">
 // Props
 defineProps({
 	adding: {

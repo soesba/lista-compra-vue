@@ -9,18 +9,14 @@
 		:label="getLabel()"></component>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, type PropType, watch, onBeforeMount, defineExpose } from 'vue'
+<script setup lang="ts">
+import { ref, type PropType, watch, onBeforeMount, defineExpose } from 'vue'
 import getDesplegable from '@/services/desplegables/getDesplegable.service'
 import { TipoDato } from '@/services/desplegables/models/TipoDato'
 import { sort } from '@/utils/utils';
 import type Item from '@/services/desplegables/models/Item';
 
-export default defineComponent({
-	name: 'ComboComponent',
-})
-</script>
-<script setup lang="ts">
+
 const emit= defineEmits(["blur", 'change'])
 // Props
 const props = defineProps({

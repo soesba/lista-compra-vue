@@ -28,8 +28,8 @@
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
+<script setup lang="ts">
+import { reactive, ref } from 'vue'
 import { computed } from 'vue'
 import EditionToolbar from '@/components/EditionToolbar.vue'
 import router from '@/router'
@@ -39,11 +39,6 @@ import {  eventStore, modelStore } from '@/main'
 import create from '@/services/tipoEstablecimiento/createTipoEstablecimiento.service'
 import update from '@/services/tipoEstablecimiento/updateTipoEstablecimiento.service'
 
-export default defineComponent({
-	name: 'TipoEstablecimientoEdicion',
-})
-</script>
-<script setup lang="ts">
 // Computed
 const canSave = computed(() => {
 	return !v$.value.$invalid

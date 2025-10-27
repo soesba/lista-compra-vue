@@ -1,7 +1,7 @@
 import type ArticuloResponse from "@/services/articulo/models/ArticuloResponse"
 import { xhr } from "../config/Repository"
 import type ArticuloRepository from "./ArticuloRepository"
-import { DTOtoModel, requestModelToDTO } from "./mapping/ArticuloMapping"
+import { DtoToModel, requestModelToDto } from "./mapping/ArticuloMapping"
 import type ArticuloDTO from "./dto/ArticuloDTO"
 import type ArticuloRequest from "@/services/articulo/models/ArticuloRequest"
 import ArticuloResponseDTO from './dto/ArticuloResponseDTO'
@@ -16,7 +16,7 @@ export default class ArticuloRepositoryImpl implements ArticuloRepository {
 		}
 		const response = await xhr.get<ArticulosResponseDTO>(endpoint, { headers})
 		const result = {
-			data: response.data.data.map((item:ArticuloDTO) => DTOtoModel(item)),
+			data: response.data.data.map((item:ArticuloDTO) => DtoToModel(item)),
 			respuesta: response.status
 		}
 		return result
@@ -29,7 +29,7 @@ export default class ArticuloRepositoryImpl implements ArticuloRepository {
 		}
 		const response = await xhr.get<ArticuloResponseDTO>(endpoint, { headers})
 		const result = {
-			data: DTOtoModel(response.data.data),
+			data: DtoToModel(response.data.data),
 			respuesta: response.status
 		}
 		return result
@@ -42,7 +42,7 @@ export default class ArticuloRepositoryImpl implements ArticuloRepository {
 		}
 		const response = await xhr.get<ArticulosResponseDTO>(endpoint, { headers})
 		const result = {
-			data: response.data.data.map((item:ArticuloDTO) => DTOtoModel(item)),
+			data: response.data.data.map((item:ArticuloDTO) => DtoToModel(item)),
 			respuesta: response.status
 		}
 		return result
@@ -53,10 +53,10 @@ export default class ArticuloRepositoryImpl implements ArticuloRepository {
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
-		const requestDTO = requestModelToDTO(request)
+		const requestDTO = requestModelToDto(request)
 		const response = await xhr.post<ArticuloRequestDTO, ArticuloResponseDTO>(endpoint, requestDTO, { headers})
 		const result = {
-			data: DTOtoModel(response.data.data),
+			data: DtoToModel(response.data.data),
 			respuesta: response.status
 		}
 		return result
@@ -67,10 +67,10 @@ export default class ArticuloRepositoryImpl implements ArticuloRepository {
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
-		const requestDTO = requestModelToDTO(request)
+		const requestDTO = requestModelToDto(request)
 		const response = await xhr.put<ArticuloRequestDTO, ArticuloResponseDTO>(endpoint, requestDTO, { headers})
 		const result = {
-			data: DTOtoModel(response.data.data),
+			data: DtoToModel(response.data.data),
 			respuesta: response.status
 		}
 		return result
@@ -83,7 +83,7 @@ export default class ArticuloRepositoryImpl implements ArticuloRepository {
 		}
 		const response = await xhr.delete<ArticuloResponseDTO>(endpoint, { headers})
 		const result = {
-			data: DTOtoModel(response.data.data),
+			data: DtoToModel(response.data.data),
 			respuesta: response.status
 		}
 		return result

@@ -51,7 +51,7 @@
 	</div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import ComboComponent from '@/components/combos/ComboComponent.vue'
 import DireccionEdicion from '@/components/DireccionEdicion.vue'
 import EditionToolbar from '@/components/EditionToolbar.vue'
@@ -60,18 +60,13 @@ import { useVuelidate } from '@vuelidate/core'
 import { TipoDato } from '@/services/desplegables/models/TipoDato'
 import { noLogoUrl } from '@/main'
 import { modelStore, eventStore } from '@/main'
-import { defineComponent, reactive, ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { computed } from 'vue'
 import router from '@/router'
 import create from '@/services/establecimiento/createEstablecimiento.service'
 import update from '@/services/establecimiento/updateEstablecimiento.service'
 import { fileToBase64 } from '@/utils/utils'
 import type Direccion from '@/services/establecimiento/models/Direccion'
-export default defineComponent({
-	name: 'EstablecimientoEdicion',
-})
-</script>
-<script setup lang="ts">
 // Refs
 const fileUpload = ref(null)
 // Computed

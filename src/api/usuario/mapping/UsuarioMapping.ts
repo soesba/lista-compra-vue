@@ -3,13 +3,14 @@ import UsuarioDTO from '../dto/UsuarioDTO'
 import PermisoDTO from '../dto/PermisoDTO'
 import Permiso from '@/services/auth/models/Permiso'
 
-export const DTOtoModel = (dto: UsuarioDTO): Usuario => {
+export const DtoToModel = (dto: UsuarioDTO): Usuario => {
   return {
     id: dto.id,
     username: dto.username,
     nombre: dto.nombre,
-    primerApellido: dto.primerApellido,
-    segundoApellido: dto.segundoApellido,
+    primerApellido: dto.primerApellido ? dto.primerApellido : '',
+    segundoApellido: dto.segundoApellido ? dto.segundoApellido : '',
+    email: dto.email ? dto.email : '',
     foto: dto.foto,
     fechaCreacion: dto.fechaCreacion,
     esAdministrador: dto.esAdministrador,
@@ -18,18 +19,20 @@ export const DTOtoModel = (dto: UsuarioDTO): Usuario => {
       modeloId: permisoDTO.modeloId,
       acceso: permisoDTO.acceso,
       permiso: permisoDTO.permiso
-    })) : []
+    })) : [],
+    preferencias: dto.preferencias ? dto.preferencias : []
   }
 }
 
-export const modelToDTO = (model: Usuario): UsuarioDTO => {
+export const ModelToDto = (model: Usuario): UsuarioDTO => {
   return {
     id: model.id,
     username: model.username,
     nombre: model.nombre,
     primerApellido: model.primerApellido,
     segundoApellido: model.segundoApellido,
-    foto: model.foto,
+    email: model.email ? model.email : '',
+    foto: model.foto ? model.foto : null,
     fechaCreacion: model.fechaCreacion,
     esAdministrador: model.esAdministrador,
     permisos: model.permisos ? model.permisos.map((permiso: Permiso) => ({
@@ -37,6 +40,7 @@ export const modelToDTO = (model: Usuario): UsuarioDTO => {
       modeloId: permiso.modeloId,
       acceso: permiso.acceso,
       permiso: permiso.permiso
-    })) : []
+    })) : [],
+    preferencias: model.preferencias ? model.preferencias : []
   }
 }

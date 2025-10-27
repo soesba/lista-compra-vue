@@ -46,16 +46,12 @@
     <v-list :items="navigationMenuitems"></v-list>
   </v-navigation-drawer>
 </template>
-<script lang="ts">
+
+<script setup lang="ts">
   import { authStore, uiStore } from '@/main'
   import router from '@/router'
   import { ref } from 'vue'
-  import { defineComponent } from 'vue'
-  export default defineComponent({
-    name: 'NavigationComponent'
-  })
-</script>
-<script setup lang="ts">
+
   const usuario = ref(authStore.getUsuarioLogueado)
   const drawer = ref(false)
   const navigationMenuitems = ref([
@@ -67,7 +63,7 @@
       }
     },
     {
-      title: 'Tipo de unidades',
+      title: 'Unidades de medida',
       props: {
         to: '/tiposUnidades',
         link: true

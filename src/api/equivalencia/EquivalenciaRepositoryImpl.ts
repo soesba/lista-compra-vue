@@ -1,7 +1,7 @@
 import type EquivalenciaResponse from "@/services/equivalencia/models/EquivalenciaResponse"
 import { xhr } from "../config/Repository"
 import type EquivalenciaRepository from "./EquivalenciaRepository"
-import { DTOtoModel, modelToDTO, requestModelToDTO } from "./mapping/EquivalenciaMapping"
+import { DtoToModel, ModelToDto, requestModelToDto } from "./mapping/EquivalenciaMapping"
 import type EquivalenciaDTO from "./dto/EquivalenciaDTO"
 import type EquivalenciaRequest from "@/services/equivalencia/models/EquivalenciaRequest"
 import Equivalencia from '@/services/equivalencia/models/Equivalencia'
@@ -17,7 +17,7 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 		}
 		const response = await xhr.get<EquivalenciasResponseDTO>(endpoint, { headers})
 		const result = {
-			data: response.data.data.map((item:EquivalenciaDTO) => DTOtoModel(item)),
+			data: response.data.data.map((item:EquivalenciaDTO) => DtoToModel(item)),
 			respuesta: response.status
 		}
 		return result
@@ -30,7 +30,7 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 		}
 		const response = await xhr.get<EquivalenciaResponseDTO>(endpoint, { headers})
 		const result = {
-			data: DTOtoModel(response.data.data),
+			data: DtoToModel(response.data.data),
 			respuesta: response.status
 		}
 		return result
@@ -43,7 +43,7 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 		}
 		const response = await xhr.get<EquivalenciasResponseDTO>(endpoint, { headers})
 		const result = {
-			data: response.data.data.map((item:EquivalenciaDTO) => DTOtoModel(item)),
+			data: response.data.data.map((item:EquivalenciaDTO) => DtoToModel(item)),
 			respuesta: response.status
 		}
 		return result
@@ -56,7 +56,7 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 		}
 		const response = await xhr.get<EquivalenciasResponseDTO>(endpoint, { headers})
 		const result = {
-			data: response.data.data.map((item:EquivalenciaDTO) => DTOtoModel(item)),
+			data: response.data.data.map((item:EquivalenciaDTO) => DtoToModel(item)),
 			respuesta: response.status
 		}
 		return result
@@ -69,7 +69,7 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 		}
 		const response = await xhr.get<EquivalenciasResponseDTO>(endpoint, { headers})
 		const result = {
-			data: response.data.data.map((item:EquivalenciaDTO) => DTOtoModel(item)),
+			data: response.data.data.map((item:EquivalenciaDTO) => DtoToModel(item)),
 			respuesta: response.status
 		}
 		return result
@@ -80,10 +80,10 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
-		const requestDTO = request.map((item: Equivalencia) => modelToDTO(item))
+		const requestDTO = request.map((item: Equivalencia) => ModelToDto(item))
 		const response = await xhr.post<EquivalenciaDTO[], EquivalenciaResponseDTO>(endpoint, requestDTO, { headers})
 		const result = {
-			data: DTOtoModel(response.data.data),
+			data: DtoToModel(response.data.data),
 			respuesta: response.status
 		}
 		return result
@@ -94,10 +94,10 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
-		const requestDTO = requestModelToDTO(request)
+		const requestDTO = requestModelToDto(request)
 		const response = await xhr.post<EquivalenciaRequestDTO, EquivalenciaResponseDTO>(endpoint, requestDTO, { headers})
 		const result = {
-			data: DTOtoModel(response.data.data),
+			data: DtoToModel(response.data.data),
 			respuesta: response.status
 		}
 		return result
@@ -108,10 +108,10 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
-		const requestDTO = requestModelToDTO(request)
+		const requestDTO = requestModelToDto(request)
 		const response = await xhr.put<EquivalenciaRequestDTO, EquivalenciaResponseDTO>(endpoint, requestDTO, { headers})
 		const result = {
-			data: DTOtoModel(response.data.data),
+			data: DtoToModel(response.data.data),
 			respuesta: response.status
 		}
 		return result
@@ -124,7 +124,7 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 		}
 		const response = await xhr.delete<EquivalenciaResponseDTO>(endpoint, { headers})
 		const result = {
-			data: DTOtoModel(response.data.data),
+			data: DtoToModel(response.data.data),
 			respuesta: response.status
 		}
 		return result

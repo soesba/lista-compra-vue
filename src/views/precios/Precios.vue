@@ -8,24 +8,19 @@
     :sort-by="sortBy" />
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
 import get from '@/services/precio/getPrecio.service'
 import searchPrecio from '@/services/precio/searchPrecio.service'
 import create from '@/services/precio/createPrecio.service'
 import update from '@/services/precio/updatePrecio.service'
-import { defineComponent } from 'vue'
 import router from '@/router'
 import { eventStore } from '@/main';
 import type PrecioRequest from '@/services/precio/models/PrecioRequest'
 import type PrecioResponse from '@/services/precio/models/PrecioResponse'
 import { sort, formatCurrency } from '@/utils/utils'
-export default defineComponent({
-	name: 'Precios'
-})
-</script>
 
-<script setup lang="ts">
+
 const emit = defineEmits(['close-dialog'])
 
 eventStore.$onAction(({args, name}) => {

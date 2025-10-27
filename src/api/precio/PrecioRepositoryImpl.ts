@@ -1,7 +1,7 @@
 import type PrecioResponse from "@/services/precio/models/PrecioResponse"
 import { xhr } from "../config/Repository"
 import type PrecioRepository from "./PrecioRepository"
-import { DTOtoModel, requestModelToDTO } from "./mapping/PrecioMapping"
+import { DtoToModel, requestModelToDto } from "./mapping/PrecioMapping"
 import type PrecioDTO from "./dto/PrecioDTO"
 import type PrecioRequest from "@/services/precio/models/PrecioRequest"
 import PreciosResponseDTO from './dto/PreciosResponseDTO'
@@ -16,7 +16,7 @@ export default class PrecioRepositoryImpl implements PrecioRepository {
 		}
 		const response = await xhr.get<PreciosResponseDTO>(endpoint, { headers})
 		const result = {
-			data: response.data.data.map((item:PrecioDTO) => DTOtoModel(item)),
+			data: response.data.data.map((item:PrecioDTO) => DtoToModel(item)),
 			respuesta: response.status
 		}
 		return result
@@ -29,7 +29,7 @@ export default class PrecioRepositoryImpl implements PrecioRepository {
 		}
 		const response = await xhr.get<PrecioResponseDTO>(endpoint, { headers})
 		const result = {
-			data: DTOtoModel(response.data.data),
+			data: DtoToModel(response.data.data),
 			respuesta: response.status
 		}
 		return result
@@ -42,7 +42,7 @@ export default class PrecioRepositoryImpl implements PrecioRepository {
 		}
 		const response = await xhr.get<PreciosResponseDTO>(endpoint, { headers})
 		const result = {
-			data: response.data.data.map((item:PrecioDTO) => DTOtoModel(item)),
+			data: response.data.data.map((item:PrecioDTO) => DtoToModel(item)),
 			respuesta: response.status
 		}
 		return result
@@ -55,7 +55,7 @@ export default class PrecioRepositoryImpl implements PrecioRepository {
 		}
 		const response = await xhr.get<PreciosResponseDTO>(endpoint, { headers})
 		const result = {
-			data: response.data.data.map((item:PrecioDTO) => DTOtoModel(item)),
+			data: response.data.data.map((item:PrecioDTO) => DtoToModel(item)),
 			respuesta: response.status
 		}
 		return result
@@ -66,10 +66,10 @@ export default class PrecioRepositoryImpl implements PrecioRepository {
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
-		const requestDTO = requestModelToDTO(request)
+		const requestDTO = requestModelToDto(request)
 		const response = await xhr.post<PrecioRequestDTO, PrecioResponseDTO>(endpoint, requestDTO, { headers})
 		const result = {
-			data: DTOtoModel(response.data.data),
+			data: DtoToModel(response.data.data),
 			respuesta: response.status
 		}
 		return result
@@ -80,10 +80,10 @@ export default class PrecioRepositoryImpl implements PrecioRepository {
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
-		const requestDTO = requestModelToDTO(request)
+		const requestDTO = requestModelToDto(request)
 		const response = await xhr.put<PrecioRequestDTO, PrecioResponseDTO>(endpoint, requestDTO, { headers})
 		const result = {
-			data: DTOtoModel(response.data.data),
+			data: DtoToModel(response.data.data),
 			respuesta: response.status
 		}
 		return result
@@ -96,7 +96,7 @@ export default class PrecioRepositoryImpl implements PrecioRepository {
 		}
 		const response = await xhr.delete<PrecioResponseDTO>(endpoint, { headers})
 		const result = {
-			data: DTOtoModel(response.data.data),
+			data: DtoToModel(response.data.data),
 			respuesta: response.status
 		}
 		return result

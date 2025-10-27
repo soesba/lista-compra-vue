@@ -14,8 +14,15 @@
       </div>
     </v-card-subtitle>
     <v-card-text class="avatares">
-      <v-avatar :size="48" v-for="avatarUrl in avatares" :key="avatarUrl" @click="seleccionAvatar(avatarUrl)">
-        <v-img :src="avatarUrl" :lazy-src="avatarUrl" aspect-ratio="1"></v-img>
+      <v-avatar
+        :size="48"
+        v-for="avatar in avatares"
+        :key="avatar.id"
+        @click="seleccionAvatar(avatar.id)">
+        <v-img
+          :src="avatar.imagen.content"
+          :lazy-src="avatar.imagen.content"
+          aspect-ratio="1"></v-img>
       </v-avatar>
     </v-card-text>
     <v-card-actions>
@@ -26,19 +33,20 @@
 </template>
 
 <script setup lang="ts">
-  import { listaAvatares, uiStore } from '@/main'
+  import { uiStore } from '@/main'
+  import get from '@/services/avatar/getAvatares.service'
+  import Avatar from '@/services/avatar/models/Avatar'
   import Imagen from '@/services/commons/Imagen'
-import { getBase64FromImageUrl } from '@/utils/utils'
-  import { ref, reactive } from 'vue'
+  import { ref, reactive, onMounted } from 'vue'
 
   const typeFile = 'image/png, image/gif, image/jpeg, image/svg'
   const upload = ''
   const title = 'Avatar'
   const fileUpload = ref()
   let selectedFile = reactive<File>({} as File)
-  const imagen = ref<Imagen>({} as Imagen)
-  const emitter = defineEmits(['changed', 'reset'])
-  const avatares = listaAvatares()
+  const imagen = ref<Imagen | null>({} as Imagen)
+  const emitter = defineEmits(['changed', 'close'])
+  const avatares = ref<Avatar[]>([])
 
   const onSelectImage = () => {
     selectedFile = fileUpload.value.modelValue
@@ -57,29 +65,35 @@ import { getBase64FromImageUrl } from '@/utils/utils'
     }
   }
 
-  const seleccionAvatar = async (avatarUrl: string) => {
-    if (avatarUrl.includes('no-avatar')) {
-      emitter('reset')
-      uiStore.hideCustomDialog()
+  const seleccionAvatar = async (id: string) => {
+    if (id === '-1') {
+      imagen.value = null
     } else {
-      const imageData = await getBase64FromImageUrl(avatarUrl)
-      imagen.value = {} as Imagen
-      imagen.value.content = imageData as string
-      imagen.value.type = 'image/svg+xml'
-      onAceptarClick()
+      const avatarBase64 = await avatares.value.find(a => a.id === id)?.imagen
+      imagen.value = avatarBase64 || null
     }
+    onAceptarClick()
   }
 
   const onAceptarClick = () => {
-    if (imagen.value) {
-      emitter('changed', { imagen: imagen.value })
-    }
+    emitter('changed', { imagen: imagen.value })
     uiStore.hideCustomDialog()
   }
   const onCancelarClick = () => {
     uiStore.hideCustomDialog()
   }
 
+  onMounted(async () => {
+    avatares.value = (await get()).data as Avatar[]
+    avatares.value.unshift({
+      id: '-1',
+      imagen: {
+        content: new URL('@/assets/images/no-avatar.png', import.meta.url).href,
+        type: 'image/png'
+      },
+      fechaSubida: ''
+    })
+  })
 </script>
 <style lang="scss" scoped>
   .avatares {

@@ -1,57 +1,23 @@
 <template>
-  <div class="wrapper">
-    <table>
-      <thead>
-        <tr>
-          <th>Fecha de compra</th>
-          <th>Establecimiento</th>
-          <th>Precio</th>
-          <th>Cantidad</th>
-          <th>Precio ud ref.</th>
-          <th v-if="editable"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="precio in precios" :key="precio.id">
-          <td data-titulo="Fecha compra">{{ getFechaCompra(precio.fechaCompra) }}</td>
-          <td data-titulo="Establecimiento">{{ precio.establecimiento?.nombre }}</td>
-          <td data-titulo="Precio">{{ formatCurrency(precio.precio) }}</td>
-          <td data-titulo="Cantidad">
-            <div class="cantidad-container">
-              <div v-for="medida in precio.unidadesMedida" :key="medida.id">
-                {{ medida.valor }} {{ pluralize(medida.nombre, medida.valor) }}
-              </div>
-            </div>
-          </td>
-          <td data-titulo="Precio">
-            <div v-for="medida in precio.unidadesMedida" :key="medida.id">
-              {{ getPrecioEquivalencias(medida, precio) }}
-            </div>
-          </td>
-          <td v-if="editable">
-            <v-btn icon="mdi-pencil" variant="text" color="primary" @click="onClickEdit(precio)"></v-btn>
-            <v-btn icon="mdi-delete" variant="text" color="primary" @click="onClickDelete(precio)"></v-btn>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <ResponsiveTable
+    :cols-def="colDef"
+    :row-data="precios"
+    :options="tableOptions"
+  ></ResponsiveTable>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed } from 'vue'
 import type Precio from '@/services/precio/models/Precio'
 import { formatCurrency, pluralize } from '@/utils/utils'
 import router from '@/router'
 import { modelStore } from '@/main'
 import Equivalencia from '@/services/equivalencia/models/Equivalencia'
 import getEquivalencias from '@/services/equivalencia/getEquivalencias.service'
-export default defineComponent({
-	name: 'HistoricoPrecios',
-})
-</script>
-<script setup lang="ts">
-defineProps({
+import ResponsiveTable, { ColDef, TableOptions } from './responsiveTable/ResponsiveTable.vue'
+import { VBtn } from 'vuetify/components/VBtn'
+
+const props = defineProps({
   editable: {
     type: Boolean,
     default: false
@@ -62,13 +28,66 @@ defineProps({
 	},
 })
 
+const tableOptions: TableOptions = {
+  editable: props.editable
+}
+
+const colDef = computed(() => {
+  return props.editable ? colDefBase : colDefBase.filter(col => col.field !== 'actions')
+})
+
+const colDefBase: ColDef[] = [
+  { field: 'fechaCompra', header: 'Fecha compra', colType: 'text', valueGetter: ({ value }: any) => getFechaCompra(value) },
+  { field: 'establecimiento', header: 'Establecimiento', colType: 'text', valueGetter: ({ value }: any) => value.nombre },
+  { field: 'precio', header: 'Precio', colType: 'number', valueGetter: ({ value }: any) => formatCurrency(value) },
+  { field: 'unidadesMedida', header: 'Cantidad', colType: 'html', valueGetter: ({ value }: any) => {
+      let html = '<div class="cantidad-container">'
+      value.forEach((medida: any) => {
+        html += `<div>${medida.valor} ${pluralize(medida.nombre, medida.valor)}</div>`
+      })
+      html += '</div>'
+      return { html }
+    }
+  },
+  { field: 'unidadesMedida', header: 'Precio ud ref.', colType: 'html', valueGetter: (params: any) => {
+      const { value, data } = params
+      let html = ''
+      value.forEach((medida: any) => {
+        const precio = getPrecioEquivalencias.value(medida, data.precio)
+        html += `<div>${precio}</div>`
+      })
+      return { html }
+    }
+  },
+  {
+    field: 'actions',
+    header: 'Acciones',
+    colType: 'actions',
+    actions: [
+      {
+        component: VBtn,
+        props: { icon: 'mdi-pencil', variant: 'text' },
+        action: (data: any) => {
+          onClickEdit(data)
+        }
+      },
+      {
+        component: VBtn,
+        props: { icon: 'mdi-delete', variant: 'text' },
+        action: (data: any) => {
+          onClickDelete(data)
+        }
+      }
+    ]
+  }
+]
 const equivalencias = (await getEquivalencias()).data as Equivalencia[]
 
 const getPrecioEquivalencias = computed(() => {
    return (medida: any, precio: any) => {
      const equivalencia = equivalencias.find((eq: any) => eq.from.id === medida.id)
      if (equivalencia) {
-       return `${formatCurrency(precio.precio / (medida.valor * equivalencia.factor))} ${pluralize(equivalencia.to.nombre, medida.valor * equivalencia.factor)}`
+       return `${formatCurrency(precio / (medida.valor * equivalencia.factor))} ${pluralize(equivalencia.to.nombre, medida.valor * equivalencia.factor)}`
      }
      return ''
    }
