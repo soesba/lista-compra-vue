@@ -1,131 +1,129 @@
 <template>
-	<div class="wrapper-list">
-		<div class="list-container" v-if="items && items?.length > 0" :class="cardClass">
-			<Card
+  <div class="wrapper-list">
+    <div class="list-container" v-if="items && items?.length > 0" :class="cardClass">
+      <Card
         :logo="logo"
         :mapping="mapping"
         v-for="item in items"
         :key="item.id"
-        :card-data="item"/>
-		</div>
-		<div v-else>
-			<empty-card></empty-card>
-		</div>
-		<div v-if="addButton" class="wrapper-add-button">
-			<v-fab
-				icon="mdi-plus"
-				class="ms-4"
-				location="bottom end"
-				absolute
-				offset
-				color="primary"
-				@click="addCard()"
-			></v-fab>
-		</div>
-	</div>
+        :card-data="item" />
+    </div>
+    <div v-else>
+      <empty-card></empty-card>
+    </div>
+    <div v-if="addButton" class="wrapper-add-button">
+      <v-fab
+        icon="mdi-plus"
+        class="ms-4"
+        location="bottom end"
+        absolute
+        offset
+        color="primary"
+        @click="addCard()"></v-fab>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { default as EmptyCard } from '@/components/cards-system/EmptyCard.vue'
-import { default as Card } from '@/components/cards-system/Card.vue'
-import { eventStore } from '@/main'
-import router from '@/router'
-import { sort } from '@/utils/utils';
-import { onMounted, ref } from 'vue'
+  import { default as EmptyCard } from '@/components/cards-system/EmptyCard.vue'
+  import { default as Card } from '@/components/cards-system/Card.vue'
+  import { eventStore } from '@/main'
+  import router from '@/router'
+  import { sort } from '@/utils/utils'
+  import { onMounted, ref } from 'vue'
 
-const emit = defineEmits(['addCard'])
+  const emit = defineEmits(['addCard'])
 
-eventStore.$onAction(({args, name}) => {
-	switch(name) {
-    case 'sortCards':
-			onSortCards(args[0])
-			break
-		case 'showCards':
-			onShowCards(args[0])
-			break
-	}
-})
+  eventStore.$onAction(({ args, name }) => {
+    switch (name) {
+      case 'sortCards':
+        onSortCards(args[0])
+        break
+      case 'showCards':
+        onShowCards(args[0])
+        break
+    }
+  })
 
-const props = defineProps({
-	items: {
-    type: Array<any>,
-    default: () => []
-  },
-	logo: {
-    type: Boolean,
-    default: false,
-  },
-	addButton: {
-		type: Boolean,
-		default: true,
-	},
-	class: {
-		type: String,
-		default: 'card',
-	},
-  mapping: {
-    type: Object,
-    default: () => ({}),
-  },
-  sortBy: {
-    type: Object,
-    default: () => ({ field: 'nombre', order: 'ASC' })
-  },
-  show: {
-    type: Object,
-    default: () => ({ show: 0 })
+  const props = defineProps({
+    items: {
+      type: Array<any>,
+      default: () => []
+    },
+    logo: {
+      type: Boolean,
+      default: false
+    },
+    addButton: {
+      type: Boolean,
+      default: true
+    },
+    class: {
+      type: String,
+      default: 'card'
+    },
+    mapping: {
+      type: Object,
+      default: () => ({})
+    },
+    sortBy: {
+      type: Object,
+      default: () => ({ field: 'nombre', order: 'ASC' })
+    },
+    show: {
+      type: Object,
+      default: () => ({ show: 0 })
+    }
+  })
+
+  const list = ref(props.items || [])
+  const sortBy = ref(props.sortBy)
+  const show = ref(parseInt(import.meta.env.VITE_SHOW_CARDS))
+  const cardClass = ref([props.class])
+  const routes = eventStore.getRoutes
+
+  onMounted(() => {
+    onShowCards(show.value)
+  })
+
+  // Methods
+
+  const addCard = () => {
+    router.push(routes.add)
   }
-})
 
-const list = ref(props.items || [])
-const sortBy = ref(props.sortBy)
-const show = ref(parseInt(import.meta.env.VITE_SHOW_CARDS))
-const cardClass = ref([props.class])
-const routes = eventStore.getRoutes
-
-onMounted(() => {
-  onShowCards(show.value)
-})
-
-// Methods
-
-const addCard = () => {
-  router.push(routes.add)
-}
-
-const onSortCards = (evt: any) => {
-  sortBy.value.order = evt.order === 0 ? 'ASC' : 'DESC'
-  if (evt.order === 0) {
-    list.value = props.items.sort(sort(sortBy.value.field))
-  } else {
-    list.value = props.items.sort(sort(`-${sortBy.value.field}`))
+  const onSortCards = (evt: any) => {
+    sortBy.value.order = evt.order === 0 ? 'ASC' : 'DESC'
+    if (evt.order === 0) {
+      list.value = props.items.sort(sort(sortBy.value.field))
+    } else {
+      list.value = props.items.sort(sort(`-${sortBy.value.field}`))
+    }
   }
-}
 
-const onShowCards = (evt: any) => {
-  show.value = evt.show
-  switch (show.value) {
-    case 0:
-      cardClass.value = ['card', 'small']
-      break
-    case 1:
-      cardClass.value = ['card', 'large']
-      break
-    case 2:
-      cardClass.value = ['list']
-      break
+  const onShowCards = (evt: any) => {
+    show.value = evt.show
+    switch (show.value) {
+      case 0:
+        cardClass.value = ['card', 'small']
+        break
+      case 1:
+        cardClass.value = ['card', 'large']
+        break
+      case 2:
+        cardClass.value = ['list']
+        break
+    }
   }
-}
-
 </script>
 <style lang="scss" scoped>
-	.wrapper-list {
-		.wrapper-add-button {
-			position: fixed;
-			width: 100%;
-			bottom: 40px;
-			right: 20px;
-		}
+  .wrapper-list {
+    .wrapper-add-button {
+      position: fixed;
+      width: 100%;
+      bottom: 40px;
+      right: 20px;
+    }
     .list-container {
       &.card {
         display: grid;
@@ -155,11 +153,18 @@ const onShowCards = (evt: any) => {
           text-align: left;
           .v-card-title {
             flex: 1.5;
+            @media (max-width: 640px) {
+              flex: 3;
+              font-size: 1rem;
+            }
           }
           .v-card-subtitle {
             flex: 1;
             align-self: center;
             font-size: 1rem;
+            @media (max-width: 640px) {
+              display: none;
+            }
           }
           .text-small {
             flex: 1;
@@ -168,7 +173,5 @@ const onShowCards = (evt: any) => {
         }
       }
     }
-	}
-
-
+  }
 </style>

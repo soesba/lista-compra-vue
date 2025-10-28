@@ -6,7 +6,7 @@
       <alert-component></alert-component>
       <raw-confirm-dialog v-if="rawConfirmDialog"></raw-confirm-dialog>
       <raw-dialog-component v-if="rawDialogComponent"></raw-dialog-component>
-      <v-container :class="{ login: !userLogged }" fluid>
+      <v-container :class="{ login: !userLogged }">
         <router-view v-slot="{ Component }">
           <Suspense timeout="0">
             <template #default>
