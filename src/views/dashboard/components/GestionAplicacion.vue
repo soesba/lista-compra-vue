@@ -55,8 +55,6 @@
   import { uiStore } from '@/main'
   import deleteModelo from '@/services/modelo/deleteModelo.service'
 
-  const showResultadoUso = ref(false)
-
   const title = 'Gestión de la aplicación'
   const subtitle = 'Utilidades para la gestión de la aplicación'
 

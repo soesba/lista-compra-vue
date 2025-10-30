@@ -48,7 +48,7 @@
   const props = defineProps({
     items: {
       type: Array<any>,
-      default: () => []
+      required: true
     },
     logo: {
       type: Boolean,
@@ -65,25 +65,15 @@
     mapping: {
       type: Object,
       default: () => ({})
-    },
-    sortBy: {
-      type: Object,
-      default: () => ({ field: 'nombre', order: 'ASC' })
-    },
-    show: {
-      type: Object,
-      default: () => ({ show: 0 })
     }
   })
 
-  const list = ref(props.items || [])
-  const sortBy = ref(props.sortBy)
-  const show = ref(parseInt(import.meta.env.VITE_SHOW_CARDS))
+  const list = ref(props.items)
   const cardClass = ref([props.class])
   const routes = eventStore.getRoutes
 
   onMounted(() => {
-    onShowCards(show.value)
+    // onShowCards(show.value)
   })
 
   // Methods
@@ -93,17 +83,20 @@
   }
 
   const onSortCards = (evt: any) => {
-    sortBy.value.order = evt.order === 0 ? 'ASC' : 'DESC'
+    let field = props.mapping[evt.field]
+    // En el caso de mappings con funciones transformamos en string
+    if (typeof field !== 'string') {
+      field = field.toString().split('.').splice(1).join('.')
+    }
     if (evt.order === 0) {
-      list.value = props.items.sort(sort(sortBy.value.field))
+      list.value = props.items.sort(sort(field))
     } else {
-      list.value = props.items.sort(sort(`-${sortBy.value.field}`))
+      list.value = props.items.sort(sort(`-${field}`))
     }
   }
 
   const onShowCards = (evt: any) => {
-    show.value = evt.show
-    switch (show.value) {
+    switch (evt.show) {
       case 0:
         cardClass.value = ['card', 'small']
         break
@@ -171,6 +164,11 @@
           .text-small {
             flex: 1;
             text-align: right;
+          }
+
+          .logo {
+            height: 64px;
+            width: auto;
           }
         }
       }

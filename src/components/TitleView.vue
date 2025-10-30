@@ -57,36 +57,42 @@
 
   onMounted(async () => {
     if (props.modelo) {
-      modeloData.value = (await getModeloByNombre('Articulo')).data
+      modeloData.value = (await getModeloByNombre(props.modelo)).data
     }
     if (props.showMenu) {
-      configuraciones.value = (await getConfiguracionesByCategoria('dots_menu')).data as Array<any>
+      if (props.menu) {
+        menu.value = props.menu
+        return
+      } else {
+        // Si no se pasa menú por props, cargamos el menú por defecto
+        configuraciones.value = (await getConfiguracionesByCategoria('dots_menu'))
+          .data as Array<any>
 
-      defaultMenu.value = configuraciones.value.map(config => {
-        const prefUsuario = preferencias.find(
-          (p: any) =>
-            p.configuracionId === config.id &&
-            p.modeloId === (modeloData.value ? modeloData.value.id : null)
-        )
-        const valorActual = prefUsuario ? Number(prefUsuario.valor) : Number(config.valorDefecto)
-        const itemMenu = {
-          name: config.nombre,
-          title: config.texto,
-          valorActual: valorActual,
-          subitems: config.valores.map((valor: any) => {
-            return {
-              title: valor.nombre,
-              value: Number(valor.valor),
-              click: (menu: string, value: number) => submenuClick(menu, value)
-            }
-          }),
-          click: (i: any) => menuClick(i)
-        }
-        submenuClick(itemMenu.name, itemMenu.valorActual)
-        return itemMenu
-      })
-
-      menu.value = props.menu || defaultMenu.value
+        defaultMenu.value = configuraciones.value.map(config => {
+          const prefUsuario = preferencias.find(
+            (p: any) =>
+              p.configuracionId === config.id &&
+              p.modeloId === (modeloData.value ? modeloData.value.id : null)
+          )
+          const valorActual = prefUsuario ? Number(prefUsuario.valor) : Number(config.valorDefecto)
+          const itemMenu = {
+            name: config.nombre,
+            title: config.texto,
+            valorActual: valorActual,
+            subitems: config.valores.map((valor: any) => {
+              return {
+                title: valor.nombre,
+                value: Number(valor.valor),
+                click: (menu: string, value: number) => submenuClick(menu, value)
+              }
+            }),
+            click: (i: any) => menuClick(i)
+          }
+          menu.value.push(itemMenu)
+          // Llamamos el método para lanzar la acción correspondiente al cargar la vista: ordenar o ver como
+          submenuClick(itemMenu.name, itemMenu.valorActual)
+        })
+      }
     }
   })
 
@@ -125,7 +131,14 @@
       item.valorActual = index
     }
     if (submenu === 'ordenar') {
-      eventStore.sortCards({ order: index })
+      let field = ''
+      switch (index) {
+        case 0:
+        case 1:
+          field = 'title'
+          break
+      }
+      eventStore.sortCards({ order: index, field })
       uiStore.setMenuSortCards(index)
     } else {
       eventStore.showCards({ show: index })

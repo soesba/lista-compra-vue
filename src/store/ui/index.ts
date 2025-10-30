@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import type UiState from "./types";
-import { useDisplay } from 'vuetify';
 
 const getDefaultCustomDialog = () => {
   return {
@@ -51,9 +50,7 @@ export const useUiStore = defineStore('uiStore', {
     alertComponent: getDefaultAlertComponent(),
     menuSortCards: null,
     menuShowCards: null,
-    mask: getDefaultMask(),
-    breakpoint: 'smAndDown',
-    esPuntoRuptura: false
+    mask: getDefaultMask()
   }),
   getters: {
     getCustomDialog: (state) => state.customDialog,
@@ -62,9 +59,7 @@ export const useUiStore = defineStore('uiStore', {
     getMenuSortCards: (state) => state.menuSortCards || parseInt(import.meta.env.VITE_SORT_CARDS),
     getMenuShowCards: (state) => state.menuShowCards || parseInt(import.meta.env.VITE_SHOW_CARDS),
     getMask: (state) => state.mask,
-    getMaskText: (state) => state.mask.props.text,
-    getBreakpoint: (state) => state.breakpoint,
-    getEsPuntoRuptura: (state) => state.esPuntoRuptura
+    getMaskText: (state) => state.mask.props.text
   },
   actions: {
     showCustomDialog({ component, props, events }: any) {
@@ -106,9 +101,6 @@ export const useUiStore = defineStore('uiStore', {
     },
     setMaskText(text: string) {
       this.mask.props.text = text
-    },
-    setEsPuntoRuptura(value: boolean) {
-      this.esPuntoRuptura = value
     }
   }
 })

@@ -1,7 +1,7 @@
 <template>
   <TitleView :titulo="titulo" :modelo="modelo" />
   <SearchBox @search="onSearch"></SearchBox>
-  <CardList :items="list" :class="getClasses" :mapping="mapping" :sort-by="sortBy" />
+  <CardList :items="list" :class="getClasses" :mapping="mapping" />
 </template>
 
 <script setup lang="ts">
@@ -13,7 +13,6 @@
   import { eventStore } from '@/main'
   import type ArticuloRequest from '@/services/articulo/models/ArticuloRequest'
   import type ArticuloResponse from '@/services/articulo/models/ArticuloResponse'
-  import { sort } from '@/utils/utils'
   import router from '@/router'
 
   const emit = defineEmits(['close-dialog'])
@@ -32,8 +31,7 @@
   const modelo = 'Articulo'
   let cardClass = ref()
   const titulo = ref('Articulos')
-  const list = ref()
-  const sortBy = ref({ field: 'nombre', order: 'ASC' })
+  const list = ref([])
   const mapping = {
     id: 'id',
     title: 'nombre',
@@ -66,8 +64,7 @@
 
   const getAllData = () => {
     get().then((response: ArticuloResponse) => {
-      const order = sortBy.value.order === 'ASC' ? '' : '-'
-      list.value = (response.data as []).sort(sort(`${order}${sortBy.value.field}`))
+      list.value = response.data as []
     })
   }
 
@@ -99,7 +96,7 @@
   const onSearch = (evt: any) => {
     if (evt) {
       searchArticulo(evt).then((response: ArticuloResponse) => {
-        list.value = response.data
+        list.value = response.data as []
       })
     } else {
       getAllData()

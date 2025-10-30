@@ -1,11 +1,3 @@
-type Breakpoint =
-  | 'smAndDown'
-  | 'mdAndUp'
-  | 'mdOnly'
-  | 'lgAndUp'
-  | 'lgOnly'
-  | 'xlOnly'
-
 export default interface UiState {
   menuSortCards: number | null,
   menuShowCards: number | null,
@@ -37,7 +29,5 @@ export default interface UiState {
     props: {
       text: string
     }
-  },
-  breakpoint: Breakpoint,
-  esPuntoRuptura: boolean
+  }
 }
