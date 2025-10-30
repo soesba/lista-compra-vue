@@ -6,7 +6,7 @@
       <alert-component></alert-component>
       <raw-confirm-dialog v-if="rawConfirmDialog"></raw-confirm-dialog>
       <raw-dialog-component v-if="rawDialogComponent"></raw-dialog-component>
-      <v-container :class="{ login: !userLogged }">
+      <v-container :class="{ login: !userLogged, permanent: $vuetify.display.smAndDown }">
         <router-view v-slot="{ Component }">
           <Suspense timeout="0">
             <template #default>
@@ -30,9 +30,8 @@
   import DialogComponent from '@/components/DialogComponent.vue'
   import ConfirmDialog from '@/components/dialogs-system/ConfirmDialog.vue'
   import AlertComponent from './components/AlertComponent.vue'
-  import { authStore } from './main'
+  import { authStore, uiStore } from './main'
   import { useRouter } from 'vue-router'
-  import getUsuarioPreferencias from './services/usuario/getUsuarioPreferencias.service'
 
   const router = useRouter()
   const emmiter = defineEmits(['login', 'logout'])

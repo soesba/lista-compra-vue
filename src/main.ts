@@ -50,6 +50,11 @@ app.use(pinia);
 // Inicializa los stores antes de usar el router
 export const { authStore, uiStore, eventStore, modelStore } = initStores()
 
+export const interceptorMsg = new InterceptorMessages(xhr)
+interceptorMsg.execute()
+
+export const noLogoUrl = new URL('@/assets/images/no-logo.svg', import.meta.url).href
+export const noAvatarUrl = new URL('@/assets/images/no-avatar.png', import.meta.url).href
 
 app.use(router).
   use(vuetify).
@@ -58,9 +63,6 @@ app.use(router).
   component('SearchBox', SearchBox).
   mount('#app')
 
-export const interceptorMsg = new InterceptorMessages(xhr)
-interceptorMsg.execute()
-export const noLogoUrl = new URL('@/assets/images/no-logo.svg', import.meta.url).href
 export const listaAvatares = (() => {
   const lista = []
   lista.push(new URL('@/assets/images/no-avatar.png', import.meta.url).href)

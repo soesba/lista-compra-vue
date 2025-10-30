@@ -8,7 +8,7 @@ export default interface Usuario {
   primerApellido?: string;
   segundoApellido?: string;
   email?: string;
-  foto: Imagen | null;
+  foto?: Imagen | null;
   fechaCreacion: string;
   esAdministrador: boolean;
   permisos: Array<Permiso>;

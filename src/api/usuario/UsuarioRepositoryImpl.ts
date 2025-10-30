@@ -7,6 +7,9 @@ import UsuarioDTO from './dto/UsuarioDTO';
 import UsuarioResponseDTO from './dto/UsuarioResponseDTO';
 import Usuario from '@/services/usuario/models/Usuario';
 import PreferenciaResponse from '@/services/usuario/models/PreferenciaResponse';
+import ImagenResponseDTO from '../commons/ImagenResponseDTO';
+import ImagenResponse from '@/services/commons/ImagenResponse';
+import FotoRequest from '@/services/usuario/models/FotoRequest';
 
 export default class UsuarioRepositoryImpl implements UsuarioRepository {
   async get(): Promise<UsuarioResponse> {
@@ -68,6 +71,16 @@ export default class UsuarioRepositoryImpl implements UsuarioRepository {
       'Content-Type': 'application/json;charset=UTF-8'
     }
     const response = await xhr.get<PreferenciaResponse>(endpoint, { headers })
+    return response.data
+  }
+
+  async getFoto(request: FotoRequest): Promise<ImagenResponse> {
+    const requestEndpoint = request.username ? `?username=${request.username}` : `?id=${request.userId}`
+    const endpoint = `/api/usuarios/foto${requestEndpoint}`
+    const headers = {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+    const response = await xhr.get<ImagenResponseDTO>(endpoint, { headers })
     return response.data
   }
 }

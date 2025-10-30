@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar color="primary" prominent class="app-bar">
+  <v-app-bar color="primary" prominent class="app-bar" v-if="$vuetify.display.smAndDown">
     <div v-if="$slots.left" class="left-slot">
       <slot name="left" />
     </div>
@@ -14,12 +14,6 @@
         <v-toolbar-title>Precios compra</v-toolbar-title>
       </router-link>
     </div>
-
-    <!-- <template v-if="$vuetify.display.mdAndUp">
-      <v-btn icon="mdi-magnify" variant="text"></v-btn>
-
-      <v-btn icon="mdi-filter" variant="text"></v-btn>
-    </template> -->
     <div v-if="$slots.right" class="right-slot">
       <slot name="right" />
     </div>
@@ -27,12 +21,15 @@
       <v-btn append-icon="mdi-menu-down" variant="text" :ripple="false">
         {{ usuario.username }}
         <v-menu activator="parent">
-          <v-list>
+          <v-list class="dots-menu">
             <v-list-item
-              v-for="(item, index) in dotsMenuItems.filter(item => item.visible !== false)"
+              v-for="(item, index) in dotsMenuItems.submenus!.filter(
+                item => item.props.visible !== false
+              )"
               :key="index"
-              :value="index">
-              <v-list-item-title @click="item.click">{{ item.title }}</v-list-item-title>
+              :value="index"
+              :to="item.props.to">
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -40,85 +37,180 @@
     </div>
   </v-app-bar>
   <v-navigation-drawer
+    :title="true"
     v-model="drawer"
-    :location="$vuetify.display.mobile ? 'bottom' : undefined"
-    temporary>
-    <v-list :items="navigationMenuitems"></v-list>
+    :location="$vuetify.display.smAndDown ? 'bottom' : undefined"
+    :class="[$vuetify.display.smAndDown ? 'temporary-drawer' : 'permanent-drawer']"
+    class="rounded-xl"
+    :temporary="!isPermanent"
+    :permanent="isPermanent"
+    :persistent="true">
+    <v-list-item v-if="isPermanent" title="Precios compra" class="title"></v-list-item>
+    <v-list-item v-if="isPermanent" class="avatar_box">
+      <v-avatar class="avatar" :size="100">
+        <v-img :src="avatarSrc" :lazy-src="noAvatarUrl" aspect-ratio="1"></v-img>
+      </v-avatar>
+    </v-list-item>
+    <v-list v-model="opened" :nav="isPermanent" open-strategy="multiple">
+      <template
+        v-for="item in navigationMenuitems.filter(item => item.props.visible !== false)"
+        :key="item.props.value">
+        <v-list-group
+          :value="item.props.value"
+          v-if="item.submenus"
+          :title="item.title"
+          :prepend-icon="item.props?.prependIcon || ''">
+          <template v-slot:activator="{ props }">
+            <v-list-item v-bind="props" :title="usuario.username"></v-list-item>
+          </template>
+          <v-list-item
+            v-for="submenu in (item.submenus as Array<any>).filter(
+              (sub: any) => sub.props.visible !== false
+            )"
+            :key="submenu.props.value"
+            :title="submenu.title"
+            v-bind="submenu.props"
+            @click="submenu.click"></v-list-item>
+        </v-list-group>
+        <v-list-item v-else v-bind="item.props" :title="item.title"></v-list-item>
+      </template>
+    </v-list>
+    <template v-if="isPermanent" v-slot:append>
+      <div class="pa-2">
+        <v-list-item
+          :key="menuItemLogout?.props.value"
+          :title="menuItemLogout?.title"
+          v-bind="menuItemLogout?.props"
+          @click="menuItemLogout?.click">
+        </v-list-item>
+      </div>
+    </template>
   </v-navigation-drawer>
 </template>
 
 <script setup lang="ts">
-  import { authStore, uiStore } from '@/main'
-  import router from '@/router'
-  import { ref } from 'vue'
+  import { authStore, noAvatarUrl, uiStore } from '@/main'
+  import getUsuarioFoto from '@/services/usuario/getUsuarioFoto.service'
+  import { computed, ref, watchEffect } from 'vue'
+  import { useDisplay } from 'vuetify'
 
+  const display = useDisplay()
+
+  // Computamos si el drawer debe ser permanente
+  const isPermanent = computed(() => display.smAndDown.value === false)
+
+  const opened = ref([])
   const usuario = ref(authStore.getUsuarioLogueado)
-  const drawer = ref(false)
+  const avatarSrc = ref()
+
+  // Traer avatar cuando haya usuario
+  watchEffect(async () => {
+    if (usuario.value) {
+      const avatar = (await getUsuarioFoto({ username: usuario.value.username })).data
+      avatarSrc.value = avatar.content || noAvatarUrl
+    } else {
+      avatarSrc.value = noAvatarUrl
+    }
+  })
+
+  const drawer = ref(true)
+
   const navigationMenuitems = ref([
+    {
+      title: usuario.value.username,
+      click: () => {},
+      props: {
+        prependIcon: 'mdi-account-circle-outline',
+        value: 'usuario',
+        visible: computed(() => isPermanent.value)
+      },
+      submenus: [
+        {
+          title: 'Perfil',
+          props: {
+            to: '/perfil',
+            prependIcon: 'mdi-account-circle-outline',
+            value: 'perfil'
+          }
+        },
+        {
+          title: 'Administración',
+          props: {
+            to: '/dashboard',
+            prependIcon: 'mdi-cog-outline',
+            visible:
+              authStore.getUsuarioLogueado && authStore.getUsuarioLogueado.esAdministrador === true,
+            value: 'administracion'
+          }
+        },
+        {
+          title: 'Logout',
+          click: () => {
+            uiStore.showConfirmDialog({
+              props: {
+                text: '¿Desea cerrar la sesión?',
+                title: 'Confirmación'
+              },
+              aceptarFn: authStore.logout
+            })
+          },
+          props: {
+            prependIcon: 'mdi-logout',
+            value: 'logout',
+            visible: computed(() => !isPermanent.value)
+          }
+        }
+      ]
+    },
     {
       title: 'Articulos',
       props: {
         to: '/articulos',
-        link: true
+        link: true,
+        prependIcon: 'mdi-cart-outline',
+        value: 'articulos'
       }
     },
     {
       title: 'Unidades de medida',
       props: {
         to: '/tiposUnidades',
-        link: true
+        link: true,
+        prependIcon: 'mdi-ruler',
+        value: 'unidades'
       }
     },
     {
       title: 'Categorías de establecimientos',
       props: {
         to: '/tiposEstablecimientos',
-        link: true
+        link: true,
+        prependIcon: 'mdi-store-cog-outline',
+        value: 'categoriasEstablecimientos'
       }
     },
     {
       title: 'Establecimientos',
       props: {
         to: '/establecimientos',
-        link: true
+        link: true,
+        prependIcon: 'mdi-store',
+        value: 'establecimientos'
       }
     },
     {
       title: 'Precios',
       props: {
         to: '/precios',
-        link: true
+        link: true,
+        prependIcon: 'mdi-currency-eur',
+        value: 'precios'
       }
     }
   ])
 
-  const dotsMenuItems = [
-    {
-      title: 'Perfil',
-      click: () => {
-        router.push('/perfil')
-      }
-    },
-    {
-      title: 'Administración',
-      click: () => {
-        router.push('/dashboard')
-      },
-      visible: authStore.getUsuarioLogueado && authStore.getUsuarioLogueado.esAdministrador === true
-    },
-    {
-      title: 'Logout',
-      click: () => {
-        uiStore.showConfirmDialog({
-          props: {
-            text: '¿Desea cerrar la sesión?',
-            title: 'Confirmación'
-          },
-          aceptarFn: authStore.logout
-        })
-      }
-    }
-  ]
+  const dotsMenuItems = navigationMenuitems.value[0]
+  const menuItemLogout = dotsMenuItems.submenus!.find(item => item.props.value === 'logout')
 </script>
 <style lang="scss" scoped>
   :deep(.v-toolbar__content) {
@@ -136,5 +228,28 @@
 
   .right-slot {
     margin-left: 16px;
+  }
+
+  .v-navigation-drawer {
+    background-color: rgb(var(--v-theme-primary));
+    color: rgb(var(--v-theme-on-primary));
+  }
+
+  .permanent-drawer {
+    height: calc(100% - 20px) !important;
+    margin: 10px;
+    :deep(.title .v-list-item-title) {
+      padding: 10px;
+      font-size: 1.5rem;
+    }
+    :deep(.v-list-group) {
+      --list-indent-size: 0px;
+    }
+  }
+
+  .avatar_box {
+    display: flex;
+    justify-content: center;
+    padding: 16px 0;
   }
 </style>
