@@ -37,21 +37,19 @@
     </div>
   </v-app-bar>
   <v-navigation-drawer
-    :title="true"
+    mobile-breakpoint="sm"
     v-model="drawer"
     :location="$vuetify.display.smAndDown ? 'bottom' : undefined"
-    :class="[$vuetify.display.smAndDown ? 'temporary-drawer' : 'permanent-drawer']"
-    class="rounded-xl"
-    :temporary="!isPermanent"
-    :permanent="isPermanent"
-    :persistent="true">
-    <v-list-item v-if="isPermanent" title="Precios compra" class="title"></v-list-item>
-    <v-list-item v-if="isPermanent" class="avatar_box">
+    :class="[$vuetify.display.smAndDown ? 'mobile-drawer' : 'rounded-xl']"
+    :temporary="isMobileAndDown"
+    :persistent="!isMobileAndDown">
+    <v-list-item v-if="!isMobileAndDown" title="Precios compra" class="title"></v-list-item>
+    <v-list-item v-if="!isMobileAndDown" class="avatar_box">
       <v-avatar class="avatar" :size="100">
         <v-img :src="avatarSrc" :lazy-src="noAvatarUrl" aspect-ratio="1"></v-img>
       </v-avatar>
     </v-list-item>
-    <v-list v-model="opened" :nav="isPermanent" open-strategy="multiple">
+    <v-list v-model="opened" :nav="!isMobileAndDown" open-strategy="multiple">
       <template
         v-for="item in navigationMenuitems.filter(item => item.props.visible !== false)"
         :key="item.props.value">
@@ -75,7 +73,7 @@
         <v-list-item v-else v-bind="item.props" :title="item.title"></v-list-item>
       </template>
     </v-list>
-    <template v-if="isPermanent" v-slot:append>
+    <template v-if="!isMobileAndDown" v-slot:append>
       <div class="pa-2">
         <v-list-item
           :key="menuItemLogout?.props.value"
@@ -96,8 +94,8 @@
 
   const display = useDisplay()
 
-  // Computamos si el drawer debe ser permanente
-  const isPermanent = computed(() => display.smAndDown.value === false)
+  // Comprobamos si es móvil
+  const isMobileAndDown = computed(() => display.smAndDown.value)
 
   const opened = ref([])
   const usuario = ref(authStore.getUsuarioLogueado)
@@ -113,7 +111,7 @@
     }
   })
 
-  const drawer = ref(true)
+  const drawer = ref(!isMobileAndDown.value)
 
   const navigationMenuitems = ref([
     {
@@ -122,7 +120,7 @@
       props: {
         prependIcon: 'mdi-account-circle-outline',
         value: 'usuario',
-        visible: computed(() => isPermanent.value)
+        visible: computed(() => !isMobileAndDown.value)
       },
       submenus: [
         {
@@ -157,7 +155,7 @@
           props: {
             prependIcon: 'mdi-logout',
             value: 'logout',
-            visible: computed(() => !isPermanent.value)
+            visible: computed(() => isMobileAndDown.value)
           }
         }
       ]
@@ -235,7 +233,7 @@
     color: rgb(var(--v-theme-on-primary));
   }
 
-  .permanent-drawer {
+  nav:not(.mobile-drawer) {
     height: calc(100% - 20px) !important;
     margin: 10px;
     :deep(.title .v-list-item-title) {

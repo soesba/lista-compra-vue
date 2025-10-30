@@ -51,7 +51,7 @@ a.no-link {
 		}
 	}
 
-	&.permanent {
+	&:not(.mobile) {
 		margin-left: 10px;
 	}
 }
