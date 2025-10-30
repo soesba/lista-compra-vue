@@ -143,13 +143,15 @@
         flex-wrap: wrap;
         margin: 0 auto;
         margin-bottom: 60px; // salvar boton de añadir
+        :deep(a) {
+          width: 80vw;
+          max-width: 90%;
+        }
         :deep(.v-card) {
           // box-shadow: none;
           // margin: 0px;
           display: flex;
           flex-direction: row;
-          width: 80vw;
-          max-width: 90vm;
           text-align: left;
           .v-card-title {
             flex: 1.5;
