@@ -123,7 +123,9 @@
       console.log('LOG~ ~ :122 ~ pref:', pref)
       newConfigUsuario.valorActual = pref ? pref.valor : config.valorDefecto
       newConfigUsuario.click = (value: any, modelo: any) => {
-        const existingPrefIndex = preferenciasUsuario.findIndex((p: any) => p.id === config.id)
+        const existingPrefIndex = preferenciasUsuario.findIndex(
+          (p: any) => p.configuracionId === config.id && p.modeloId === modelo.id
+        )
         if (existingPrefIndex !== -1) {
           preferenciasUsuario[existingPrefIndex].valor = value
         } else {
@@ -167,6 +169,7 @@
   const onGuardarClick = () => {
     update(usuario.value).then(response => {
       originalUsuario = response.data as Usuario
+      authStore.setPreferencias(originalUsuario.preferencias)
       usuario.value = { ...originalUsuario }
       v$.value.$reset()
     })

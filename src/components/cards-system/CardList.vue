@@ -137,7 +137,7 @@
         margin: 0 auto;
         margin-bottom: 60px; // salvar boton de añadir
         :deep(a) {
-          width: 80vw;
+          width: 90%;
           max-width: 90%;
         }
         :deep(.v-card) {
