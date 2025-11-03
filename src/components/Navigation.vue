@@ -92,6 +92,7 @@
   import { computed, ref, watchEffect } from 'vue'
   import { useDisplay } from 'vuetify'
 
+  const emmitter = defineEmits(['logout'])
   const display = useDisplay()
 
   // Comprobamos si es móvil
@@ -149,7 +150,7 @@
                 text: '¿Desea cerrar la sesión?',
                 title: 'Confirmación'
               },
-              aceptarFn: authStore.logout
+              aceptarFn: () => emmitter('logout')
             })
           },
           props: {

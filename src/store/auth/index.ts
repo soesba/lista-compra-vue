@@ -1,5 +1,4 @@
 import API from '@/api'
-import router from '@/router'
 import LoginResponse from '@/services/auth/models/LoginResponse'
 import UserInfo from '@/services/auth/models/UserInfo'
 import axios from 'axios'
@@ -137,7 +136,6 @@ export const useAuthStore = defineStore('auth', {
       console.log('Cerrando sesión')
       this.resetState(this.$state)
       removeAll()
-      router.push('/login')
     }
   },
   getters: {

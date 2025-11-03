@@ -32,9 +32,12 @@
             <div v-if="!modelo.uso">No se han encontrado usos para este modelo.</div>
             <div v-else>
               <div>El modelo se está utilizando en las siguientes entidades:</div>
-              <ul>
-                <li v-for="(uso, index) in modelo.uso" :key="index">{{ uso }}</li>
-              </ul>
+              <div v-for="(uso, index) in modelo.uso" :key="index">
+                <label>{{ uso.entidad }}</label>
+                <ul>
+                  <li v-for="detalle in uso.detalles" :key="index">{{ detalle }}</li>
+                </ul>
+              </div>
             </div>
           </div>
           <div class="actions">

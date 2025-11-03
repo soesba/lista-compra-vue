@@ -36,7 +36,8 @@
     id: 'id',
     title: 'nombre',
     subtitle: 'abreviatura',
-    text: 'fechaCreacion'
+    text: (item: any) =>
+      item.borrable ? '<i class="f-18 mdi mdi-lock-open"></i>' : '<i class="f-18 mdi mdi-lock"></i>'
   }
 
   const routes = {

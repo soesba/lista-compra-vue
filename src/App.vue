@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <Mask></Mask>
-    <navigation v-if="userLogged" />
+    <navigation v-if="userLogged" @logout="onLogout" />
     <v-main>
       <alert-component></alert-component>
       <raw-confirm-dialog v-if="rawConfirmDialog"></raw-confirm-dialog>
@@ -34,7 +34,7 @@
   import { useRouter } from 'vue-router'
 
   const router = useRouter()
-  const emmiter = defineEmits(['login', 'logout'])
+  const emmiter = defineEmits(['login'])
   const rawDialogComponent = markRaw(DialogComponent)
   const rawConfirmDialog = markRaw(ConfirmDialog)
   const userLogged = ref(authStore.isAuthenticated)
@@ -55,10 +55,15 @@
   const isReload =
     navigationEntries.length > 0 &&
     (navigationEntries[0] as PerformanceNavigationTiming).type === 'reload'
-  if (isReload && window.location.pathname !== '') {
+  if (isReload && window.location.pathname !== '' && authStore.getUsuarioLogueado) {
     console.log('Recarga de página detectada, navegando a "/"')
     const preferencias = authStore.getUsuarioLogueado.preferencias
     authStore.setPreferencias(preferencias)
     router.replace('/')
+  }
+
+  const onLogout = () => {
+    authStore.logout()
+    router.push('/login')
   }
 </script>

@@ -56,8 +56,12 @@ interceptorMsg.execute()
 export const noLogoUrl = new URL('@/assets/images/no-logo.svg', import.meta.url).href
 export const noAvatarUrl = new URL('@/assets/images/no-avatar.png', import.meta.url).href
 
-app.use(router).
-  use(vuetify).
+try {
+  app.use(router)
+} catch (error) {
+  console.error('Error al inicializar el router:', error)
+}
+app.use(vuetify).
   component('CardList', CardList).
   component('TitleView', TitleView).
   component('SearchBox', SearchBox).

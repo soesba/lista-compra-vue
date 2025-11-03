@@ -38,7 +38,7 @@
     subtitle: 'descripcion',
     text: (item: any) =>
       // item.tienePrecios ? 'Se han introducido precios' : 'No se han introducido precios',
-      item.tienePrecios ? '<i class="mdi mdi-currency-eur"></i>' : '<div>&nbsp</div>'
+      item.tienePrecios ? '<i class="f-18 mdi mdi-currency-eur"></i>' : '<div>&nbsp</div>'
   }
   const routes = {
     detail: '/articulo-detalle',
