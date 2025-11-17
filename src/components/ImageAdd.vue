@@ -41,8 +41,13 @@
 
 <script setup lang="ts">
   import { uiStore } from '@/main'
-  import Imagen from '@/services/commons/Imagen'
-  import { fileToBase64, getBase64FromImageUrl, getImageTypeFromContent, isValidHttpUrl } from '@/utils/utils'
+  import Imagen from '@/services/commons/models/Imagen'
+  import {
+    fileToBase64,
+    getBase64FromImageUrl,
+    getImageTypeFromContent,
+    isValidHttpUrl
+  } from '@/utils/utils'
   import useVuelidate from '@vuelidate/core'
   import { requiredIf } from '@vuelidate/validators'
   import { ref, computed } from 'vue'
@@ -59,21 +64,23 @@
   const inputFileDisabled = computed(() => imageUrl.value?.length > 0)
   const textFieldDisabled = computed(() => fileUpload.value?.modelValue?.length > 0)
 
-  const btnAceptarDisabled = computed(() => v$.value.$invalid || (!selectedFile.value && !imageUrl.value))
+  const btnAceptarDisabled = computed(
+    () => v$.value.$invalid || (!selectedFile.value && !imageUrl.value)
+  )
 
-    // Validations
+  // Validations
   const validations = computed(() => {
     return {
       selectedFile: { required: requiredIf(() => !imageUrl.value || imageUrl.value.length === 0) },
       imageUrl: {
-        isUrl: () =>{
+        isUrl: () => {
           if (imageUrl.value) {
             return isValidHttpUrl(imageUrl.value)
           }
           return true
         },
         required: requiredIf(() => !selectedFile.value)
-     }
+      }
     }
   })
   // Use the "useVuelidate" function to perform form validation
@@ -105,7 +112,7 @@
       imagen.value.type = selectedFile.value?.type
       imagen.value.content = await fileToBase64(selectedFile.value)
       console.log('LOG~ ~ :107 ~ onAceptarClick ~ imagen:', imagen)
-    // Seleccion de imagen desde URL
+      // Seleccion de imagen desde URL
     } else if (imageUrl) {
       const imageData = await getBase64FromImageUrl(imageUrl.value)
       imagen.value = {} as Imagen
