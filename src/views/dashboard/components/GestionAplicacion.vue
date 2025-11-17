@@ -1,19 +1,6 @@
 <template>
   <div class="base-datos">
     <TitleView :titulo="title" :subtitulo="subtitle" :show-menu="false"></TitleView>
-    <!-- <div class="lista-configuraciones">
-      <v-card
-          v-for="configuracion in configuraciones"
-          :key="configuracion.id"
-          class="config-card"
-      >
-        <v-card-title>{{ configuracion.nombre }}</v-card-title>
-        <v-card-subtitle v-if="configuracion.texto">{{ configuracion.texto }}</v-card-subtitle>
-        <v-card-text>
-          <div v-for="valor in configuracion.valores" :key="valor">{{ valor }}</div>
-        </v-card-text>
-      </v-card>
-    </div> -->
     <TitleSection
       titulo="Modelos de la aplicación"
       subtitulo="Entidades principales con los que trabaja la aplicación"></TitleSection>
@@ -25,7 +12,7 @@
             <div>{{ modelo.id }}</div>
           </div>
           <div class="actions center">
-            <v-btn color="error" @click="onClickEliminar(modelo.id)">Eliminar</v-btn>
+            <v-btn color="error" @click="onClickEliminar(modelo)">Eliminar</v-btn>
             <v-btn color="primary" @click="checkUso(modelo.id)">Comprobar uso</v-btn>
           </div>
           <div class="resultado-uso" v-if="modelo.showResultado">
@@ -90,7 +77,7 @@
     console.log(resultadoUso)
     const modeloEncontrado = modelosUI.value.find(m => m.id === modeloId)
     if (modeloEncontrado) {
-      modeloEncontrado.uso = resultadoUso.length !== 0 ? resultadoUso : null
+      modeloEncontrado.uso = resultadoUso
       modeloEncontrado.showResultado = true
     }
   }

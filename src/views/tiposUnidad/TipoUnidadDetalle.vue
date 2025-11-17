@@ -3,9 +3,10 @@
     @onBack="onBack"
     @onEdit="setEdicion"
     @onDelete="runDelete"
-    :deleteDisabled="!canDelete" />
+    :deleteDisabled="!canDelete"
+    :editDisabled="!canEdit" />
   <div class="form" v-if="data">
-    <TitleSection :titulo="data.nombre" :subtitulo="data.abreviatura" />
+    <TitleSection :titulo="data.nombre" :subtitulo="data.abreviatura" :aviso="avisoSeccion" />
     <div class="body">
       <div class="inputGroup">
         <label class="labelFor">Equivalencias</label>
@@ -32,7 +33,7 @@
   import router from '@/router'
   import DetailToolbar from '@/components/DetailToolbar.vue'
   import TitleSection from '@/components/TitleSection.vue'
-  import { eventStore, modelStore } from '@/main'
+  import { authStore, eventStore, modelStore } from '@/main'
   import { useRoute } from 'vue-router'
   import getById from '@/services/tipoUnidad/getTipoUnidadById.service'
   import deleteItem from '@/services/tipoUnidad/deleteTipoUnidad.service'
@@ -42,7 +43,20 @@
   import getByFrom from '@/services/equivalencia/getEquivalenciaByFrom.service'
   // Computed
   const canDelete = computed(() => {
-    return data.borrable
+    return authStore.usuario.esAdministrador || data.borrable
+  })
+  const canEdit = computed(() => {
+    return authStore.usuario.esAdministrador || data.borrable
+  })
+  const avisoSeccion = computed(() => {
+    if (!data.borrable) {
+      if (authStore.usuario.esAdministrador) {
+        return 'Este es un dato maestro. Cualquier modificación o eliminación afectará a todos los usuarios.'
+      } else {
+        return 'Este es un dato maestro. Solo puede ser eliminado o modificado por un administrador.'
+      }
+    }
+    return ''
   })
   // Data
   const route = useRoute()

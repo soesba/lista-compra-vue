@@ -3,15 +3,21 @@
     <label class="titulo">{{ titulo }}</label>
     <label class="subtitulo" v-if="subtitulo">{{ subtitulo }}</label>
   </div>
+  <div class="aviso-seccion" v-if="aviso">
+    {{ aviso }}
+  </div>
 </template>
 <script setup lang="ts">
-
   defineProps({
     titulo: {
       type: String,
       required: true
     },
     subtitulo: {
+      type: String,
+      required: false
+    },
+    aviso: {
       type: String,
       required: false
     }
@@ -39,5 +45,12 @@
     @media (max-width: 640px) {
       font-size: 1rem;
     }
+  }
+  .aviso-seccion {
+    border: 1px solid rgb(var(--v-theme-primary));
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+    color: rgb(var(--v-theme-primary));
   }
 </style>
