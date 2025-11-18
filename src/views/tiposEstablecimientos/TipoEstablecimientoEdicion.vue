@@ -3,6 +3,14 @@
   <div class="form" v-if="editData">
     <div class="body">
       <div class="inputGroup">
+        <v-checkbox
+          label="Protección contra borrado accidental"
+          :model-value="!editData.borrable"></v-checkbox>
+      </div>
+      <div v-if="showCheckDatoMaestro" class="inputGroup">
+        <v-checkbox label="Dato maestro" v-model="editData.esMaestro"></v-checkbox>
+      </div>
+      <div class="inputGroup">
         <v-text-field
           variant="underlined"
           label="Nombre*"
@@ -23,14 +31,6 @@
           @blur="v$.editData.abreviatura.$touch"
           @input="v$.editData.abreviatura.$touch">
         </v-text-field>
-      </div>
-      <div class="inputGroup">
-        <v-checkbox
-          label="Protección contra borrado accidental"
-          :model-value="!editData.borrable"></v-checkbox>
-      </div>
-      <div v-if="showCheckDatoMaestro" class="inputGroup">
-        <v-checkbox label="Dato maestro" v-model="editData.esMaestro"></v-checkbox>
       </div>
     </div>
   </div>

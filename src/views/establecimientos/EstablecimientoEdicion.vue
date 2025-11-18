@@ -19,6 +19,11 @@
     </div>
     <div class="body">
       <div class="inputGroup">
+        <v-checkbox
+          label="Protección contra borrado accidental"
+          :model-value="!editData.borrable"></v-checkbox>
+      </div>
+      <div class="inputGroup">
         <v-text-field
           variant="underlined"
           label="Nombre*"
@@ -27,11 +32,6 @@
           :error-messages="v$.editData.nombre.$errors.map(e => e.$message.toString())"
           @blur="v$.editData.nombre.$touch"
           @input="v$.editData.nombre.$touch"></v-text-field>
-      </div>
-      <div class="inputGroup">
-        <v-checkbox
-          label="Protección contra borrado accidental"
-          :model-value="!editData.borrable"></v-checkbox>
       </div>
       <div class="inputGroup">
         <combo-component
