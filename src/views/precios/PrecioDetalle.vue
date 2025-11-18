@@ -4,6 +4,10 @@
     <TitleSection :titulo="data.articulo!.nombre" :subtitulo="data.marca" />
     <div v-if="data.precio" class="body">
       <div class="inputGroup">
+        <div class="labelFor">Protección contra borrado accidental</div>
+        <div>{{ data.borrable ? 'Desactivado' : 'Activado' }}</div>
+      </div>
+      <div class="inputGroup">
         <div class="labelFor">Establecimiento</div>
         <label>{{ data.establecimiento?.nombre }}</label>
       </div>

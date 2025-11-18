@@ -35,7 +35,10 @@
     id: 'id',
     title: 'nombre',
     subtitle: 'abreviatura',
-    text: 'fechaCreacion'
+    text: (item: any) =>
+      item.esMaestro
+        ? '<i class="f-18 mdi mdi-lock"></i>'
+        : '<i class="f-18 mdi mdi-lock-open"></i>'
   }
 
   const routes = {

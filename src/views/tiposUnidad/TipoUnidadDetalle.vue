@@ -8,6 +8,10 @@
   <div class="form" v-if="data">
     <TitleSection :titulo="data.nombre" :subtitulo="data.abreviatura" :aviso="avisoSeccion" />
     <div class="body">
+      <div v-if="!data.esMaestro" class="inputGroup">
+        <div class="labelFor">Protección contra borrado accidental</div>
+        <div>{{ data.borrable ? 'Desactivado' : 'Activado' }}</div>
+      </div>
       <div class="inputGroup">
         <label class="labelFor">Equivalencias</label>
       </div>
@@ -43,10 +47,10 @@
   import getByFrom from '@/services/equivalencia/getEquivalenciaByFrom.service'
   // Computed
   const canDelete = computed(() => {
-    return !data.esMaestro
+    return !data.esMaestro || authStore.usuario.esAdministrador
   })
   const canEdit = computed(() => {
-    return !data.esMaestro
+    return !data.esMaestro || authStore.usuario.esAdministrador
   })
   const avisoSeccion = computed(() => {
     if (data.esMaestro) {

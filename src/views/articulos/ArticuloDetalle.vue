@@ -4,6 +4,10 @@
     <TitleSection :titulo="data.nombre" :subtitulo="data.descripcion" />
     <div class="body">
       <div class="inputGroup">
+        <div class="labelFor">Protección contra borrado accidental</div>
+        <div>{{ data.borrable ? 'Desactivado' : 'Activado' }}</div>
+      </div>
+      <div class="inputGroup">
         <div class="labelFor">Unidades de medida:</div>
         <div v-for="tipoUnidad in data.tiposUnidad">{{ tipoUnidad.nombre }}</div>
       </div>

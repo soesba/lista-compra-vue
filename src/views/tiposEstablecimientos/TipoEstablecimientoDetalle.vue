@@ -6,7 +6,12 @@
     :deleteDisabled="!canDelete"
     :editDisabled="!canEdit" />
   <div class="form">
+    <TitleSection :titulo="data.nombre" :subtitulo="data.abreviatura" :aviso="avisoSeccion" />
     <div class="body">
+      <div v-if="!data.esMaestro" class="inputGroup">
+        <div class="labelFor">Protección contra borrado accidental</div>
+        <div>{{ data.borrable ? 'Desactivado' : 'Activado' }}</div>
+      </div>
       <div class="inputGroup">
         <div class="labelFor">Nombre</div>
         <label>{{ data.nombre }}</label>
@@ -23,11 +28,12 @@
   import { useRoute } from 'vue-router'
   import { computed } from 'vue'
   import router from '@/router'
+  import TitleSection from '@/components/TitleSection.vue'
   import DetailToolbar from '@/components/DetailToolbar.vue'
   import deleteItem from '@/services/tipoEstablecimiento/deleteTipoEstablecimiento.service'
   import type TipoEstablecimiento from '@/services/tipoEstablecimiento/models/TipoEstablecimiento'
   import getTipoEstablecimientoById from '@/services/tipoEstablecimiento/getTipoEstablecimientoById.service'
-  import { eventStore, modelStore } from '@/main'
+  import { authStore, eventStore, modelStore } from '@/main'
 
   // Props
   defineProps({
@@ -44,10 +50,21 @@
 
   // Computed
   const canDelete = computed(() => {
-    return !data.esMaestro
+    return !data.esMaestro || authStore.usuario.esAdministrador
   })
   const canEdit = computed(() => {
-    return !data.esMaestro
+    return !data.esMaestro || authStore.usuario.esAdministrador
+  })
+
+  const avisoSeccion = computed(() => {
+    if (data.esMaestro) {
+      if (authStore.usuario.esAdministrador) {
+        return 'Este es un dato maestro. Cualquier modificación o eliminación afectará a todos los usuarios.'
+      } else {
+        return 'Este es un dato maestro. Solo puede ser eliminado o modificado por un administrador.'
+      }
+    }
+    return ''
   })
 
   // Methods

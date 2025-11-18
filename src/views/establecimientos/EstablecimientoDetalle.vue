@@ -12,6 +12,10 @@
     </div>
     <div class="body">
       <div class="inputGroup">
+        <div class="labelFor">Protección contra borrado accidental</div>
+        <div>{{ data.borrable ? 'Desactivado' : 'Activado' }}</div>
+      </div>
+      <div class="inputGroup">
         <label class="labelFor">Categoría</label>
         <label>{{ data.tipoEstablecimiento.nombre }}</label>
       </div>
@@ -66,10 +70,10 @@
     return data.direcciones.length !== 0
   })
   const canDelete = computed(() => {
-    return data.borrable
+    return data.borrable || authStore.usuario.esAdministrador
   })
   const canEdit = computed(() => {
-    return data.borrable
+    return data.borrable || authStore.usuario.esAdministrador
   })
 
   // Methods
