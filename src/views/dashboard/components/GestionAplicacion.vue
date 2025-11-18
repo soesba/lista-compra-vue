@@ -30,7 +30,13 @@
               </div>
             </div>
             <div class="resultado-uso" v-if="modelo.showResultadoCheckData">
-              {{ modelo.resultado }}
+              {{
+                `Total de registros comprobados: ${modelo.resultado.total}\nTotal de fallas encontradas: ${modelo.resultado.totalFallas}`
+              }}
+              <ResponsiveTable
+                :cols-def="colDefBase"
+                :row-data="modelo.resultado.fallas"
+                :options="{ editable: false }"></ResponsiveTable>
             </div>
             <div class="actions">
               <v-btn
@@ -47,6 +53,7 @@
 </template>
 
 <script setup lang="ts">
+  import ResponsiveTable from '@/components/responsiveTable/ResponsiveTable.vue'
   import TitleSection from '@/components/TitleSection.vue'
   import get from '@/services/modelo/getModelos.service'
   import Modelo from '@/services/modelo/models/Modelo'
@@ -55,9 +62,24 @@
   import { uiStore } from '@/main'
   import deleteModelo from '@/services/modelo/deleteModelo.service'
   import checkData from '@/services/commons/checkData.service'
+  import { ColDef } from '@/components/responsiveTable/ResponsiveTable.vue'
 
   const title = 'Gestión de la aplicación'
   const subtitle = 'Utilidades para la gestión de la aplicación'
+
+  const colDefBase: ColDef[] = [
+    {
+      field: 'id',
+      header: 'Identificador',
+      colType: 'text'
+    },
+    {
+      field: 'nombre',
+      header: 'Nombre',
+      colType: 'text'
+    },
+    { field: 'mensaje', header: 'Mensaje', colType: 'text' }
+  ]
 
   const modelos = ref<Array<Modelo>>((await get()).data as Array<Modelo>)
   const modelosUI = ref<Array<any>>(
@@ -112,7 +134,8 @@
       console.log(`Comprobar datos de modelo ${modelo.nombre}`)
       checkData(modelo.nombre).then(response => {
         const data = response.data
-        modelo.resultado = `Total de registros comprobados: ${data.total}\nTotal de fallas encontradas: ${data.totalFallas}\n\nFallas:\n${data.fallas.join('\n')}`
+        // modelo.resultado = `Total de registros comprobados: ${data.total}\nTotal de fallas encontradas: ${data.totalFallas}\n\nFallas:\n${data.fallas.join('\n')}`
+        modelo.resultado = data
         modelo.showResultadoCheckData = true
       })
     }

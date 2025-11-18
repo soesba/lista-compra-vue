@@ -1,5 +1,9 @@
 export default interface CheckData {
   total: number;
   totalFallas: number;
-  fallas: string[];
+  fallas: [{
+    id: string;
+    nombre: string;
+    mensaje: string;
+  }];
 }
