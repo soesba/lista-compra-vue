@@ -66,10 +66,10 @@
     return data.direcciones.length !== 0
   })
   const canDelete = computed(() => {
-    return authStore.usuario.esAdministrador || data.borrable
+    return data.borrable
   })
   const canEdit = computed(() => {
-    return authStore.usuario.esAdministrador || data.borrable
+    return data.borrable
   })
 
   // Methods

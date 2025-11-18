@@ -129,12 +129,12 @@ export const useAuthStore = defineStore('auth', {
         this.isRefreshing = false;
       }
     },
-    resetState(state: any) {
-      state = getDefaultState()
+    resetState() {
+      this.$state = getDefaultState()
     },
     logout() {
       console.log('Cerrando sesión')
-      this.resetState(this.$state)
+      this.resetState()
       removeAll()
     }
   },

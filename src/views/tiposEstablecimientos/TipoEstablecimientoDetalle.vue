@@ -27,7 +27,7 @@
   import deleteItem from '@/services/tipoEstablecimiento/deleteTipoEstablecimiento.service'
   import type TipoEstablecimiento from '@/services/tipoEstablecimiento/models/TipoEstablecimiento'
   import getTipoEstablecimientoById from '@/services/tipoEstablecimiento/getTipoEstablecimientoById.service'
-  import { authStore, eventStore, modelStore } from '@/main'
+  import { eventStore, modelStore } from '@/main'
 
   // Props
   defineProps({
@@ -44,10 +44,10 @@
 
   // Computed
   const canDelete = computed(() => {
-    return authStore.usuario.esAdministrador || data.borrable
+    return !data.esMaestro
   })
   const canEdit = computed(() => {
-    return authStore.usuario.esAdministrador || data.borrable
+    return !data.esMaestro
   })
 
   // Methods

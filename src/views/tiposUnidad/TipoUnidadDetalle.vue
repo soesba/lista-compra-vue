@@ -43,13 +43,13 @@
   import getByFrom from '@/services/equivalencia/getEquivalenciaByFrom.service'
   // Computed
   const canDelete = computed(() => {
-    return authStore.usuario.esAdministrador || data.borrable
+    return !data.esMaestro
   })
   const canEdit = computed(() => {
-    return authStore.usuario.esAdministrador || data.borrable
+    return !data.esMaestro
   })
   const avisoSeccion = computed(() => {
-    if (!data.borrable) {
+    if (data.esMaestro) {
       if (authStore.usuario.esAdministrador) {
         return 'Este es un dato maestro. Cualquier modificación o eliminación afectará a todos los usuarios.'
       } else {

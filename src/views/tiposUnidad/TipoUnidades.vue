@@ -37,7 +37,9 @@
     title: 'nombre',
     subtitle: 'abreviatura',
     text: (item: any) =>
-      item.borrable ? '<i class="f-18 mdi mdi-lock-open"></i>' : '<i class="f-18 mdi mdi-lock"></i>'
+      item.esMaestro
+        ? '<i class="f-18 mdi mdi-lock"></i>'
+        : '<i class="f-18 mdi mdi-lock-open"></i>'
   }
 
   const routes = {
