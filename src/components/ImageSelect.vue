@@ -36,7 +36,7 @@
   import { uiStore } from '@/main'
   import get from '@/services/avatar/getAvatares.service'
   import Avatar from '@/services/avatar/models/Avatar'
-  import Imagen from '@/services/commons/Imagen'
+  import Imagen from '@/services/commons/models/Imagen'
   import { ref, reactive, onMounted } from 'vue'
 
   const typeFile = 'image/png, image/gif, image/jpeg, image/svg'

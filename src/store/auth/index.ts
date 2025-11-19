@@ -1,5 +1,4 @@
 import API from '@/api'
-import router from '@/router'
 import LoginResponse from '@/services/auth/models/LoginResponse'
 import UserInfo from '@/services/auth/models/UserInfo'
 import axios from 'axios'
@@ -76,6 +75,7 @@ export const useAuthStore = defineStore('auth', {
         Cookies.set(config.appAccessToken, response.data.access_token, { domain: window.location.hostname, secure: true })
         Cookies.set(config.appRefreshToken, response.data.refresh_token, { domain: window.location.hostname, secure: true })
         Cookies.set('usuario', JSON.stringify(response.data.usuario), { domain: window.location.hostname, secure: true })
+        sessionStorage.setItem('usuario', JSON.stringify(response.data.usuario))
         return true
       } else {
         throw new Error('Error al iniciar sesión')
@@ -130,14 +130,13 @@ export const useAuthStore = defineStore('auth', {
         this.isRefreshing = false;
       }
     },
-    resetState(state: any) {
-      state = getDefaultState()
+    resetState() {
+      this.$state = getDefaultState()
     },
     logout() {
       console.log('Cerrando sesión')
-      this.resetState(this.$state)
+      this.resetState()
       removeAll()
-      router.push('/login')
     }
   },
   getters: {

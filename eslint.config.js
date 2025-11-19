@@ -31,9 +31,15 @@ export default [
         singleQuote: true,
         trailingComma: 'none',
         bracketSpacing: true,
-        arrowParens: 'avoid'
+        arrowParens: 'avoid',
+        printWidth: 120,
       }],
 
+      // Permite líneas más largas antes de romper
+      'max-len': ['error', { code: 120, ignoreUrls: true }],
+
+      // Desactiva la regla que fuerza saltos en cadenas de métodos
+      'newline-per-chained-call': ['off'],
       // General JS/TS rules
       'semi': ['error', 'never'],
       'comma-dangle': ['error', 'never'],
@@ -45,7 +51,7 @@ export default [
       // Stylistic rules
       '@stylistic/eol-last': ['error', 'always'],
       '@stylistic/no-trailing-spaces': 'error',
-      '@stylistic/max-statements-per-line': ['error', { max: 2 }],
+      '@stylistic/max-statements-per-line': ['error', { max: 4 }],
       '@stylistic/comma-dangle': ['error', 'never'],
       '@stylistic/no-extra-semi': 'off',
       '@stylistic/no-multi-spaces': 'error',

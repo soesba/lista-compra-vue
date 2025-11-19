@@ -1,5 +1,6 @@
 import type ArticuloRequest from "@/services/articulo/models/ArticuloRequest"
 import type ArticuloResponse from "@/services/articulo/models/ArticuloResponse"
+import CheckDataResponse from '../commons/dto/CheckDataResponseDTO';
 
 export default interface ArticuloRepository {
 	get(): Promise<ArticuloResponse>;
@@ -8,4 +9,5 @@ export default interface ArticuloRepository {
 	insert(request: ArticuloRequest): Promise<ArticuloResponse>;
 	update(request: ArticuloRequest): Promise<ArticuloResponse>;
 	delete(id: string): Promise<ArticuloResponse>;
+	checkData(): Promise<CheckDataResponse>;
 }

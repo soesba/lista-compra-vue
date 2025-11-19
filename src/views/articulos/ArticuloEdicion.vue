@@ -13,15 +13,19 @@
           @input="v$.editData.nombre.$touch"></v-text-field>
       </div>
       <div class="inputGroup">
-        <v-text-field
-          variant="underlined"
-          label="Descripción"
-          v-model="editData.descripcion"></v-text-field>
+        <v-text-field variant="underlined" label="Descripción" v-model="editData.descripcion"></v-text-field>
+      </div>
+      <div class="inputGroup">
+        <v-checkbox
+          label="Protección contra borrado accidental"
+          v-model="editData.borrable"
+          :true-value="false"
+          :false-value="true"></v-checkbox>
       </div>
       <div class="inputGroup">
         <combo-component
           :tipo-dato="TipoDato.TipoUnidad"
-          :model-value="editData.tiposUnidad"
+          v-model="editData.tiposUnidad"
           label="Unidades de medida (máx 2)"
           required
           multiple
@@ -59,9 +63,7 @@
 
   // Data
   const adding = ref(false)
-  const editData = reactive<any>(
-    modelStore.getArticulo ? modelStore.getArticulo : { borrable: true }
-  )
+  const editData = reactive<any>(modelStore.getArticulo ? modelStore.getArticulo : { borrable: true })
   if (!editData.id) {
     adding.value = true
   }
@@ -86,7 +88,6 @@
 
   // Methods
   const onChange = (event: any) => {
-    editData.tiposUnidad = event
     v$.value.editData.tiposUnidad.$touch()
   }
 

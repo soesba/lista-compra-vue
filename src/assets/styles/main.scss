@@ -7,12 +7,13 @@
 }
 
 body {
-  min-width: 360px;
+	font-family: Roboto, sans-serif;
+	min-width: 360px;
 }
 
 html {
 	height: 100dvh;
-  min-width: 360px;
+	min-width: 360px;
 	overflow-y: auto;
 }
 
@@ -25,22 +26,39 @@ a.no-link {
 	font-size: 0.6rem;
 }
 
-.v-main {
-  min-width: 360px;
+.dots-menu {
+	min-width: 150px;
+
+	.v-list-item {
+		cursor: pointer;
+		color: rgb(var(--v-theme-primary));
+	}
+
 }
 
-.v-container.login {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	min-height: 90vh;
-	@media (min-width: 1280px) {
-  	min-height: 90vh;
-  }
+.v-main {
+	min-width: 360px;
+}
+
+.v-container {
+	&.login {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-height: 90vh;
+
+		@media (min-width: 1280px) {
+			min-height: 90vh;
+		}
+	}
+
+	&:not(.mobile) {
+		margin-left: 10px;
+	}
 }
 
 .v-dialog {
-  max-width: 400px;
+	max-width: 400px;
 }
 
 .v-card-text {
@@ -51,7 +69,8 @@ a.no-link {
 
 .v-card {
 	margin: 10px;
-  text-align: center;
+	text-align: center;
+
 	&.screen-center {
 		margin-left: auto;
 		margin-right: auto;
@@ -68,44 +87,51 @@ a.no-link {
 			margin-left: 10px !important;
 		}
 	}
+
+	.mdi.f-18 {
+		font-size: 18px;
+	}
 }
 
 .v-avatar {
 	cursor: pointer;
 	border: 2px solid transparent;
+
 	&:hover {
 		border: 2px solid #1976d2;
 	}
 }
 
 .form {
-  .header {
+	.header {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-    padding-bottom: 10px;
+		padding-bottom: 10px;
 	}
 }
 
 .inputGroup {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px;
 
-  .labelFor {
-    margin-right: 10px;
-  }
+	.labelFor {
+		margin-right: 10px;
+	}
 }
 
 .margin {
-  margin: 10px;
+	margin: 10px;
 }
+
 .margin-left-right {
-  margin: 0px 10px;
+	margin: 0px 10px;
 }
+
 .margin-top-bottom {
-  margin: 10px 0px;
+	margin: 10px 0px;
 }
 
 .cursor {

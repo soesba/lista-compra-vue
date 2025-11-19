@@ -1,12 +1,12 @@
 <template>
   <v-app>
     <Mask></Mask>
-    <navigation v-if="userLogged" />
+    <navigation v-if="userLogged" @logout="onLogout" />
     <v-main>
       <alert-component></alert-component>
       <raw-confirm-dialog v-if="rawConfirmDialog"></raw-confirm-dialog>
       <raw-dialog-component v-if="rawDialogComponent"></raw-dialog-component>
-      <v-container :class="{ login: !userLogged }" fluid>
+      <v-container :class="{ login: !userLogged, mobile: $vuetify.display.smAndDown }">
         <router-view v-slot="{ Component }">
           <Suspense timeout="0">
             <template #default>
@@ -32,10 +32,9 @@
   import AlertComponent from './components/AlertComponent.vue'
   import { authStore } from './main'
   import { useRouter } from 'vue-router'
-  import getUsuarioPreferencias from './services/usuario/getUsuarioPreferencias.service'
 
   const router = useRouter()
-  const emmiter = defineEmits(['login', 'logout'])
+  const emmiter = defineEmits(['login'])
   const rawDialogComponent = markRaw(DialogComponent)
   const rawConfirmDialog = markRaw(ConfirmDialog)
   const userLogged = ref(authStore.isAuthenticated)
@@ -56,10 +55,15 @@
   const isReload =
     navigationEntries.length > 0 &&
     (navigationEntries[0] as PerformanceNavigationTiming).type === 'reload'
-  if (isReload && window.location.pathname !== '') {
+  if (isReload && window.location.pathname !== '' && authStore.getUsuarioLogueado) {
     console.log('Recarga de página detectada, navegando a "/"')
     const preferencias = authStore.getUsuarioLogueado.preferencias
     authStore.setPreferencias(preferencias)
     router.replace('/')
+  }
+
+  const onLogout = () => {
+    authStore.logout()
+    router.push('/login')
   }
 </script>

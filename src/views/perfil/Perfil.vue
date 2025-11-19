@@ -1,7 +1,7 @@
 <template>
   <div class="datos-basicos">
     <v-avatar class="avatar" :size="150" @click="onCambiarFotoClick">
-      <v-img :src="getImageSrc" :lazy-src="noPhotoUrl" aspect-ratio="1"></v-img>
+      <v-img :src="getImageSrc" :lazy-src="noAvatarUrl" aspect-ratio="1"></v-img>
     </v-avatar>
     <TitleView
       :titulo="usuario.username"
@@ -89,7 +89,7 @@
   </div>
 </template>
 <script setup lang="ts">
-  import { authStore, uiStore } from '@/main'
+  import { authStore, noAvatarUrl, uiStore } from '@/main'
   import { computed, markRaw, ref } from 'vue'
   import { required } from '@vuelidate/validators'
   import { useVuelidate } from '@vuelidate/core'
@@ -100,8 +100,6 @@
   import getConfiguracionesByCategoria from '@/services/configuracion/getConfiguracionesByCategoria.service'
   import get from '@/services/modelo/getModelos.service'
   import TitleView from '@/components/TitleView.vue'
-
-  const noPhotoUrl = new URL('@/assets/images/no-avatar.png', import.meta.url).href
 
   console.log(authStore.getUsuarioLogueado.username)
   const usuario = ref(
@@ -125,7 +123,9 @@
       console.log('LOG~ ~ :122 ~ pref:', pref)
       newConfigUsuario.valorActual = pref ? pref.valor : config.valorDefecto
       newConfigUsuario.click = (value: any, modelo: any) => {
-        const existingPrefIndex = preferenciasUsuario.findIndex((p: any) => p.id === config.id)
+        const existingPrefIndex = preferenciasUsuario.findIndex(
+          (p: any) => p.configuracionId === config.id && p.modeloId === modelo.id
+        )
         if (existingPrefIndex !== -1) {
           preferenciasUsuario[existingPrefIndex].valor = value
         } else {
@@ -148,7 +148,7 @@
   })
 
   const getImageSrc = computed(() => {
-    return usuario.value.foto ? usuario.value.foto.content : noPhotoUrl
+    return usuario.value.foto ? usuario.value.foto.content : noAvatarUrl
   })
   // Validations
   const validations = computed(() => {
@@ -169,6 +169,7 @@
   const onGuardarClick = () => {
     update(usuario.value).then(response => {
       originalUsuario = response.data as Usuario
+      authStore.setPreferencias(originalUsuario.preferencias)
       usuario.value = { ...originalUsuario }
       v$.value.$reset()
     })

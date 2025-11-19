@@ -1,14 +1,14 @@
 import type Item from "@/services/desplegables/models/Item";
 import type Direccion from "./Direccion";
-import Imagen from '@/services/commons/Imagen';
+import Imagen from '@/services/commons/models/Imagen';
 
 export default interface Establecimiento {
 	id: string;
 	tmpId?: string;
 	nombre: string;
 	tipoEstablecimiento: Item;
-  tipoEstablecimientoId: string;
-  tipoEstablecimientoNombre: string;
+	tipoEstablecimientoId: string;
+	tipoEstablecimientoNombre: string;
 	logo: Imagen;
 	notas: string;
 	direcciones: Direccion[];
