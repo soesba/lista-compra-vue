@@ -1,5 +1,5 @@
 <template>
-  <TitleView v-if="list.length" :titulo="titulo" :modelo="modelo" />
+  <TitleView :titulo="titulo" :modelo="modelo" />
   <SearchBox @search="onSearch"></SearchBox>
   <CardList :logo="true" :items="list" :class="getClasses" :mapping="mapping" />
 </template>

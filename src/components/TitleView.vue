@@ -53,7 +53,7 @@
 
   const modeloData = ref<any>(null)
 
-  const preferencias = authStore.getPreferencias
+  const preferencias = authStore.getPreferencias || []
 
   onMounted(async () => {
     if (props.modelo) {
@@ -65,14 +65,12 @@
         return
       } else {
         // Si no se pasa menú por props, cargamos el menú por defecto
-        configuraciones.value = (await getConfiguracionesByCategoria('dots_menu'))
-          .data as Array<any>
+        configuraciones.value = (await getConfiguracionesByCategoria('dots_menu')).data as Array<any>
 
         defaultMenu.value = configuraciones.value.map(config => {
           const prefUsuario = preferencias.find(
             (p: any) =>
-              p.configuracionId === config.id &&
-              p.modeloId === (modeloData.value ? modeloData.value.id : null)
+              p.configuracionId === config.id && p.modeloId === (modeloData.value ? modeloData.value.id : null)
           )
           const valorActual = prefUsuario ? Number(prefUsuario.valor) : Number(config.valorDefecto)
           const itemMenu = {

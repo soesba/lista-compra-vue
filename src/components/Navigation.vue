@@ -23,9 +23,7 @@
         <v-menu activator="parent">
           <v-list class="dots-menu">
             <v-list-item
-              v-for="(item, index) in dotsMenuItems.submenus!.filter(
-                item => item.props.visible !== false
-              )"
+              v-for="(item, index) in dotsMenuItems.submenus!.filter(item => item.props.visible !== false)"
               :key="index"
               :value="index"
               :to="item.props.to">
@@ -62,9 +60,7 @@
             <v-list-item v-bind="props" :title="usuario.username"></v-list-item>
           </template>
           <v-list-item
-            v-for="submenu in (item.submenus as Array<any>).filter(
-              (sub: any) => sub.props.visible !== false
-            )"
+            v-for="submenu in (item.submenus as Array<any>).filter((sub: any) => sub.props.visible !== false)"
             :key="submenu.props.value"
             :title="submenu.title"
             v-bind="submenu.props"
@@ -106,7 +102,7 @@
   watchEffect(async () => {
     if (usuario.value) {
       const avatar = (await getUsuarioFoto({ username: usuario.value.username })).data
-      avatarSrc.value = avatar.content || noAvatarUrl
+      avatarSrc.value = avatar?.content || noAvatarUrl
     } else {
       avatarSrc.value = noAvatarUrl
     }
@@ -137,8 +133,7 @@
           props: {
             to: '/dashboard',
             prependIcon: 'mdi-cog-outline',
-            visible:
-              authStore.getUsuarioLogueado && authStore.getUsuarioLogueado.esAdministrador === true,
+            visible: authStore.getUsuarioLogueado && authStore.getUsuarioLogueado.esAdministrador === true,
             value: 'administracion'
           }
         },
