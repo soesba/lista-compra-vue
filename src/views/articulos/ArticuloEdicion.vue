@@ -13,15 +13,14 @@
           @input="v$.editData.nombre.$touch"></v-text-field>
       </div>
       <div class="inputGroup">
-        <v-text-field
-          variant="underlined"
-          label="Descripción"
-          v-model="editData.descripcion"></v-text-field>
+        <v-text-field variant="underlined" label="Descripción" v-model="editData.descripcion"></v-text-field>
       </div>
       <div class="inputGroup">
         <v-checkbox
           label="Protección contra borrado accidental"
-          :model-value="!editData.borrable"></v-checkbox>
+          v-model="editData.borrable"
+          :true-value="false"
+          :false-value="true"></v-checkbox>
       </div>
       <div class="inputGroup">
         <combo-component
@@ -64,9 +63,7 @@
 
   // Data
   const adding = ref(false)
-  const editData = reactive<any>(
-    modelStore.getArticulo ? modelStore.getArticulo : { borrable: true }
-  )
+  const editData = reactive<any>(modelStore.getArticulo ? modelStore.getArticulo : { borrable: true })
   if (!editData.id) {
     adding.value = true
   }

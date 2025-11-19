@@ -5,7 +5,9 @@
       <div class="inputGroup">
         <v-checkbox
           label="Protección contra borrado accidental"
-          :model-value="!editData.borrable"></v-checkbox>
+          v-model="editData.borrable"
+          :true-value="false"
+          :false-value="true"></v-checkbox>
       </div>
       <div v-if="showCheckDatoMaestro" class="inputGroup">
         <v-checkbox label="Dato maestro" v-model="editData.esMaestro"></v-checkbox>

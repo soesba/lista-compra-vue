@@ -5,7 +5,9 @@
       <div class="inputGroup">
         <v-checkbox
           label="Protección contra borrado accidental"
-          :model-value="!editData.borrable"></v-checkbox>
+          v-model="editData.borrable"
+          :true-value="false"
+          :false-value="true"></v-checkbox>
       </div>
       <div v-if="showCheckDatoMaestro" class="inputGroup">
         <v-checkbox label="Dato maestro" v-model="editData.esMaestro"></v-checkbox>
@@ -80,17 +82,13 @@
   })
   // Data
   const adding = ref(false)
-  const editData = reactive<any>(
-    modelStore.getTipoUnidad ? modelStore.getTipoUnidad : { borrable: true }
-  )
+  const editData = reactive<any>(modelStore.getTipoUnidad ? modelStore.getTipoUnidad : { borrable: true })
   if (!editData.id) {
     adding.value = true
   }
-  const equivalencias = reactive<Equivalencia[]>(
-    (await (
-      await getByFrom(editData.id)
-    ).data) as Equivalencia[]
-  )
+  const equivalencias = editData?.id
+    ? reactive<Equivalencia[]>((await (await getByFrom(editData.id)).data) as Equivalencia[])
+    : []
 
   const from = ref({
     id: editData.id,
@@ -135,9 +133,7 @@
 
   const onDeleteEquivalencia = (data: Equivalencia) => {
     if (data.tmpId) {
-      equivalencias.splice(
-        equivalencias.findIndex((eq: Equivalencia) => eq.tmpId === data.tmpId, 1)
-      )
+      equivalencias.splice(equivalencias.findIndex((eq: Equivalencia) => eq.tmpId === data.tmpId, 1))
     } else {
       equivalencias.forEach((eq: Equivalencia, index: number) => {
         if ((data.id && eq.id === data.id) || (data.tmpId && eq.tmpId === data.tmpId)) {

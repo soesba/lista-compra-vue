@@ -5,7 +5,9 @@
       <div class="inputGroup">
         <v-checkbox
           label="Protección contra borrado accidental"
-          :model-value="!editData.borrable"></v-checkbox>
+          v-model="editData.borrable"
+          :true-value="false"
+          :false-value="true"></v-checkbox>
       </div>
       <div class="inputGroup">
         <v-text-field
@@ -15,11 +17,7 @@
           append-inner-icon="mdi-calendar"
           @blur="setFechaCompra($event)">
           <v-menu activator="parent" :close-on-content-click="false">
-            <v-date-picker
-              color="primary"
-              hideHeader
-              :first-day-of-week="1"
-              v-model="editData.fechaCompra">
+            <v-date-picker color="primary" hideHeader :first-day-of-week="1" v-model="editData.fechaCompra">
             </v-date-picker>
           </v-menu>
         </v-text-field>
@@ -200,9 +198,7 @@
   }
 
   const setFechaCompra = (event: any) => {
-    editData!.fechaCompra = event.target.value
-      ? new Date(event.target.value.split('/').reverse().join('-'))
-      : null
+    editData!.fechaCompra = event.target.value ? new Date(event.target.value.split('/').reverse().join('-')) : null
   }
 
   const onBack = () => {

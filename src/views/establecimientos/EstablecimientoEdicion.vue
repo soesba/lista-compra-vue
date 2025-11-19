@@ -8,20 +8,16 @@
         <v-btn variant="text" color="primary" @click="resetLogo()">Quitar imagen</v-btn>
       </div>
       <div class="input-file">
-        <input
-          id="upfile"
-          ref="fileUpload"
-          type="file"
-          :accept="typeFile"
-          :value="upload"
-          @change="onSelectLogo" />
+        <input id="upfile" ref="fileUpload" type="file" :accept="typeFile" :value="upload" @change="onSelectLogo" />
       </div>
     </div>
     <div class="body">
       <div class="inputGroup">
         <v-checkbox
           label="Protección contra borrado accidental"
-          :model-value="!editData.borrable"></v-checkbox>
+          v-model="editData.borrable"
+          :true-value="false"
+          :false-value="true"></v-checkbox>
       </div>
       <div class="inputGroup">
         <v-text-field
@@ -88,9 +84,7 @@
 
   // Data
   const adding = ref(false)
-  const editData = reactive<any>(
-    modelStore.getEstablecimiento || { borrable: true, direcciones: [] }
-  )
+  const editData = reactive<any>(modelStore.getEstablecimiento || { borrable: true, direcciones: [] })
   if (!editData.id) {
     adding.value = true
   }
