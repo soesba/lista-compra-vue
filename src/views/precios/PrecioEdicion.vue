@@ -28,22 +28,20 @@
         <combo-component
           ref="cboArticulos"
           :tipo-dato="TipoDato.Articulos"
-          :model-value="editData.articulo"
+          v-model="editData.articulo"
           required
           :error-messages="v$.editData.articulo.$errors.map(e => e.$message)"
-          @blur="v$.editData.articulo.$touch()"
-          @change="onChangeArticulo"></combo-component>
+          @blur="v$.editData.articulo.$touch()"></combo-component>
       </div>
       <div class="inputGroup">
         <combo-component
           :tipo-dato="TipoDato.Establecimientos"
-          :model-value="editData.establecimiento"
+          v-model="editData.establecimiento"
           :return-object="false"
           required
           :error-messages="v$.editData.establecimiento.$errors.map(e => e.$message)"
           :validations="v$.editData.establecimiento"
-          @blur="v$.editData.establecimiento.$touch()"
-          @change="onChangeEstablecimiento"></combo-component>
+          @blur="v$.editData.establecimiento.$touch()"></combo-component>
       </div>
       <div class="inputGroup">
         <v-text-field variant="underlined" label="Marca*" v-model="editData.marca"></v-text-field>
@@ -186,14 +184,6 @@
         evt.preventDefault()
       }
     }
-  }
-
-  const onChangeArticulo = (event: any) => {
-    editData.articulo = event
-  }
-
-  const onChangeEstablecimiento = (event: any) => {
-    editData.establecimiento = event
   }
 
   const getArrayUnidadesMedida = () => {

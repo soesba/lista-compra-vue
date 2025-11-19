@@ -1,6 +1,6 @@
+import CheckDataResponse from '@/services/commons/models/CheckDataResponse';
 import type EstablecimientoRequest from "@/services/establecimiento/models/EstablecimientoRequest";
 import type EstablecimientoResponse from "@/services/establecimiento/models/EstablecimientoResponse"
-import CheckDataResponse from '../commons/CheckDataResponse';
 
 export default interface EstablecimientoRepository {
   get(): Promise<EstablecimientoResponse>;

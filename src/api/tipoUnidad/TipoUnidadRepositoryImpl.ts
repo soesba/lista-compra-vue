@@ -7,7 +7,7 @@ import type TipoUnidadRequest from "@/services/tipoUnidad/models/TipoUnidadReque
 import TiposUnidadResponseDTO from './dto/TiposUnidadResponseDTO'
 import TipoUnidadResponseDTO from './dto/TipoUnidadResponseDTO'
 import TipoUnidadRequestDTO from './dto/TipoUnidadRequestDTO'
-import CheckDataResponse from '../commons/CheckDataResponse'
+import CheckDataResponse from '@/services/commons/models/CheckDataResponse'
 
 export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
   async get(): Promise<TipoUnidadResponse> {

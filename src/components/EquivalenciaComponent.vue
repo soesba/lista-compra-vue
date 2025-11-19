@@ -2,7 +2,7 @@
   <div class="inputGroup">
     <combo-component
       :tipo-dato="TipoDato.TipoUnidad"
-      :model-value="nuevaEquivalencia.to"
+      v-model="nuevaEquivalencia.to"
       :variant="props.equivalencia ? 'outlined' : 'underlined'"
       :return-object="false"
       required
@@ -85,7 +85,6 @@
   // Methods
 
   const onChangeCboTo = (value: any) => {
-    nuevaEquivalencia.value.to = value
     if (props.equivalencia && nuevaEquivalencia.value.to !== props.equivalencia.to) {
       emitter('updateEquivalencia', nuevaEquivalencia.value)
     }

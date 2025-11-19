@@ -10,14 +10,14 @@ export const fileToBase64 = (file: any): any => new Promise((resolve, reject) =>
   reader.onerror = error => reject(error)
 })
 
-export const getBase64FromImageUrl = async(url: string) => {
+export const getBase64FromImageUrl = async (url: string) => {
   return await fetch(url)
-    .then( response => response.blob() )
-    .then( blob => new Promise( callback =>{
-        let reader = new FileReader() ;
-        reader.onload = function(){ callback(this.result) } ;
-        reader.readAsDataURL(blob) ;
-    }) ) ;
+    .then(response => response.blob())
+    .then(blob => new Promise(callback => {
+      let reader = new FileReader();
+      reader.onload = function () { callback(this.result) };
+      reader.readAsDataURL(blob);
+    }));
 }
 
 export const getImageTypeFromContent = (content: string): string => {
@@ -41,6 +41,11 @@ export const pluralize = (cadena: string, valor: number | null) => {
     return cadena.concat('s')
   }
   return cadena.concat('as')
+}
+
+export const capitalize = (cadena: string) => {
+  if (!cadena) return cadena
+  return cadena.charAt(0).toUpperCase() + cadena.slice(1).toLowerCase()
 }
 
 export const sort = (property: any) => {

@@ -7,7 +7,7 @@ import type TipoEstablecimientoRequest from "@/services/tipoEstablecimiento/mode
 import TiposEstablecimientoResponseDTO from './dto/TiposEstablecimientoResponseDTO'
 import TipoEstablecimientoResponseDTO from './dto/TipoEstablecimientoResponseDTO'
 import TipoEstablecimientoRequestDTO from './dto/TipoEstablecimientoRequestDTO'
-import CheckDataResponse from '../commons/CheckDataResponse'
+import CheckDataResponse from '@/services/commons/models/CheckDataResponse'
 
 export default class TipoEstablecimientoRepositoryImpl implements TipoEstablecimientoRepository {
   async get(): Promise<TipoEstablecimientoResponse> {

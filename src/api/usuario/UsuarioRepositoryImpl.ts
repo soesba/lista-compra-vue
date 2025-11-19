@@ -7,7 +7,7 @@ import UsuarioDTO from './dto/UsuarioDTO';
 import UsuarioResponseDTO from './dto/UsuarioResponseDTO';
 import Usuario from '@/services/usuario/models/Usuario';
 import PreferenciaResponse from '@/services/usuario/models/PreferenciaResponse';
-import ImagenResponseDTO from '../commons/ImagenResponseDTO';
+import ImagenResponseDTO from '../commons/dto/ImagenResponseDTO';
 import ImagenResponse from '@/services/commons/models/ImagenResponse';
 import FotoRequest from '@/services/usuario/models/FotoRequest';
 

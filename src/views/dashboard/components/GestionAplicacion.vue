@@ -33,15 +33,21 @@
               {{
                 `Total de registros comprobados: ${modelo.resultado.total}\nTotal de fallas encontradas: ${modelo.resultado.totalFallas}`
               }}
-              <ResponsiveTable
-                :cols-def="colDefBase"
-                :row-data="modelo.resultado.fallas"
-                :options="{ editable: false }"></ResponsiveTable>
+              <div v-if="modelo.resultado.totalFallas > 0">
+                <ResponsiveTable
+                  :ref="`tabla-${modelo.id}`"
+                  :cols-def="colDefBase"
+                  :row-data="rowData"
+                  :options="{ editable: false }"></ResponsiveTable>
+                <div class="center">
+                  <v-btn color="primary" @click="onClickSolucionarTodos(modelo.resultado.fallas)"
+                    >Resolver problemas</v-btn
+                  >
+                </div>
+              </div>
             </div>
             <div class="actions">
-              <v-btn
-                v-if="modelo.showResultadoCheckUso || modelo.showResultadoCheckData"
-                @click="reset(modelo.id)"
+              <v-btn v-if="modelo.showResultadoCheckUso || modelo.showResultadoCheckData" @click="reset(modelo.id)"
                 >Reset</v-btn
               >
             </div>
@@ -57,16 +63,19 @@
   import TitleSection from '@/components/TitleSection.vue'
   import get from '@/services/modelo/getModelos.service'
   import Modelo from '@/services/modelo/models/Modelo'
-  import { ref } from 'vue'
+  import { markRaw, ref } from 'vue'
   import checkUsoModelo from '@/services/modelo/checkUsoModelo.service'
   import { uiStore } from '@/main'
   import deleteModelo from '@/services/modelo/deleteModelo.service'
   import checkData from '@/services/commons/checkData.service'
   import { ColDef } from '@/components/responsiveTable/ResponsiveTable.vue'
+  import PopupSolucionarProblemas from './PopupSolucionarProblemas.vue'
+  import { VBtn } from 'vuetify/components/VBtn'
 
   const title = 'Gestión de la aplicación'
   const subtitle = 'Utilidades para la gestión de la aplicación'
 
+  const rowData = ref<Array<any>>([])
   const colDefBase: ColDef[] = [
     {
       field: 'id',
@@ -78,7 +87,21 @@
       header: 'Nombre',
       colType: 'text'
     },
-    { field: 'mensaje', header: 'Mensaje', colType: 'text' }
+    { field: 'mensaje', header: 'Mensaje', colType: 'text' },
+    {
+      field: 'actions',
+      header: '',
+      colType: 'actions',
+      actions: [
+        {
+          component: VBtn,
+          props: { color: 'primary', small: true, text: 'Resolver' },
+          action: (data: any) => {
+            onClickSolucionar(data)
+          }
+        }
+      ]
+    }
   ]
 
   const modelos = ref<Array<Modelo>>((await get()).data as Array<Modelo>)
@@ -128,23 +151,68 @@
   }
 
   const onCheckDataClick = (modeloId: number) => {
-    console.log('Comprobar datos de la aplicación')
     const modelo = modelosUI.value.find(m => m.id === modeloId.toString())
     if (modelo) {
       console.log(`Comprobar datos de modelo ${modelo.nombre}`)
       checkData(modelo.nombre).then(response => {
         const data = response.data
-        // modelo.resultado = `Total de registros comprobados: ${data.total}\nTotal de fallas encontradas: ${data.totalFallas}\n\nFallas:\n${data.fallas.join('\n')}`
         modelo.resultado = data
+        modelo.resultado.fallas.map((item: any) => (item.modeloId = modeloId))
+        rowData.value = data.fallas
         modelo.showResultadoCheckData = true
       })
     }
   }
+
+  const onClickSolucionarTodos = (fallas: any) => {
+    console.log('Solucionar todos los problemas de inconsistencia del modelo')
+    mostrarPopupSolucionarProblemas(fallas, true)
+  }
+
+  const onClickSolucionar = (data: any) => {
+    console.log('LOG~ ~ :172 ~ onClickSolucionar ~ data:', data)
+    console.log('Solucionar problemas de inconsistencia del registro')
+    mostrarPopupSolucionarProblemas([data])
+  }
+
+  const mostrarPopupSolucionarProblemas = (fallas: Array<any>, multiple: boolean = false) => {
+    uiStore.showCustomDialog({
+      component: markRaw(PopupSolucionarProblemas),
+      props: {
+        closable: true,
+        title: 'Resolver problemas',
+        data: {
+          fallas,
+          multiple,
+          modelo: modelos.value.find(m => m.id === fallas[0].modeloId)
+        }
+      },
+      events: {
+        resolve: (data: any) => {
+          console.log('LOG~ ~ :192 ~ mostrarPopupSolucionarProblemas ~ data:', data)
+          onCheckDataClick(fallas[0].modeloId)
+        }
+      }
+    })
+  }
 </script>
 
 <style lang="scss" scoped>
+  @media (max-width: 713px) {
+    :deep(.v-expansion-panel-text__wrapper) {
+      padding: 8px;
+      .actions.center {
+        flex-direction: column;
+      }
+    }
+  }
+
   .v-expansion-panels {
     padding: 5px;
+
+    .center {
+      text-align: center;
+    }
 
     .actions.center {
       flex-wrap: wrap;

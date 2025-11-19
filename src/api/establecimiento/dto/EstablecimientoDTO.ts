@@ -1,6 +1,6 @@
 import type TipoEstablecimientoDTO from "@/api/tipoEstablecimiento/dto/TipoEstablecimientoDTO";
 import type DireccionDTO from "./DireccionDTO"
-import ImagenDTO from '@/api/commons/ImagenDTO';
+import ImagenDTO from '@/api/commons/dto/ImagenDTO';
 
 export default interface EstablecimientoDTO {
 	id: string;

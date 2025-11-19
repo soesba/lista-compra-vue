@@ -75,6 +75,7 @@ export const useAuthStore = defineStore('auth', {
         Cookies.set(config.appAccessToken, response.data.access_token, { domain: window.location.hostname, secure: true })
         Cookies.set(config.appRefreshToken, response.data.refresh_token, { domain: window.location.hostname, secure: true })
         Cookies.set('usuario', JSON.stringify(response.data.usuario), { domain: window.location.hostname, secure: true })
+        sessionStorage.setItem('usuario', JSON.stringify(response.data.usuario))
         return true
       } else {
         throw new Error('Error al iniciar sesión')

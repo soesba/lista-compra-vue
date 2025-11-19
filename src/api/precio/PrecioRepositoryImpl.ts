@@ -7,7 +7,7 @@ import type PrecioRequest from "@/services/precio/models/PrecioRequest"
 import PreciosResponseDTO from './dto/PreciosResponseDTO'
 import PrecioResponseDTO from './dto/PrecioResponseDTO'
 import PrecioRequestDTO from './dto/PrecioRequestDTO'
-import CheckDataResponse from '../commons/CheckDataResponse'
+import CheckDataResponse from '@/services/commons/models/CheckDataResponse'
 
 export default class PrecioRepositoryImpl implements PrecioRepository {
   async get(): Promise<PrecioResponse> {

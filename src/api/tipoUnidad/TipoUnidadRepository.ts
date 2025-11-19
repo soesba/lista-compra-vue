@@ -1,6 +1,6 @@
+import CheckDataResponse from '@/services/commons/models/CheckDataResponse';
 import type TipoUnidadRequest from "@/services/tipoUnidad/models/TipoUnidadRequest";
 import type TipoUnidadResponse from "@/services/tipoUnidad/models/TipoUnidadResponse"
-import CheckDataResponse from '../commons/CheckDataResponse';
 
 export default interface TipoUnidadRepository {
   get(): Promise<TipoUnidadResponse>;

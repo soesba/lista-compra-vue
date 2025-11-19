@@ -26,7 +26,7 @@
       <div class="inputGroup">
         <combo-component
           :tipo-dato="TipoDato.TipoUnidad"
-          :model-value="editData.tiposUnidad"
+          v-model="editData.tiposUnidad"
           label="Unidades de medida (máx 2)"
           required
           multiple
@@ -91,7 +91,6 @@
 
   // Methods
   const onChange = (event: any) => {
-    editData.tiposUnidad = event
     v$.value.editData.tiposUnidad.$touch()
   }
 

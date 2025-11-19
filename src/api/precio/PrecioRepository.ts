@@ -1,6 +1,6 @@
+import CheckDataResponse from '@/services/commons/models/CheckDataResponse';
 import type PrecioRequest from "@/services/precio/models/PrecioRequest"
 import type PrecioResponse from "@/services/precio/models/PrecioResponse"
-import CheckDataResponse from '../commons/CheckDataResponse';
 
 export default interface PrecioRepository {
   get(): Promise<PrecioResponse>;

@@ -36,12 +36,11 @@
       <div class="inputGroup">
         <combo-component
           :tipo-dato="TipoDato.TipoEstablecimientos"
-          :model-value="editData.tipoEstablecimiento"
+          v-model="editData.tipoEstablecimiento"
           :return-object="true"
           required
           :error-messages="v$.editData.tipoEstablecimiento.$errors.map(e => e.$message)"
-          @blur="v$.editData.tipoEstablecimiento.$touch"
-          @change="onChange"></combo-component>
+          @blur="v$.editData.tipoEstablecimiento.$touch"></combo-component>
       </div>
       <div class="inputGroup">
         <label class="labelFor">Direcciones</label>
@@ -115,10 +114,10 @@
   const v$ = useVuelidate(validations, { editData })
 
   // Methods
-  const onChange = (event: any) => {
-    editData.tipoEstablecimiento = event
-    v$.value.editData.tipoEstablecimiento.$touch()
-  }
+  // const onChange = (event: any) => {
+  //   editData.tipoEstablecimiento = event
+  //   v$.value.editData.tipoEstablecimiento.$touch()
+  // }
 
   const onBack = () => {
     modelStore.setEstablecimiento(null)
