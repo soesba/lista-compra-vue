@@ -13,7 +13,7 @@ export const DtoToModel = (dto: UsuarioDTO): Usuario => {
     email: dto.email ? dto.email : '',
     foto: dto.foto,
     fechaCreacion: dto.fechaCreacion,
-    esAdministrador: dto.esAdministrador,
+    rol: dto.rol,
     permisos: dto.permisos ? dto.permisos.map((permisoDTO: PermisoDTO) => ({
       id: permisoDTO.id,
       modeloId: permisoDTO.modeloId,
@@ -34,7 +34,7 @@ export const ModelToDto = (model: Usuario): UsuarioDTO => {
     email: model.email ? model.email : '',
     foto: model.foto ? model.foto : null,
     fechaCreacion: model.fechaCreacion,
-    esAdministrador: model.esAdministrador,
+    rol: model.rol,
     permisos: model.permisos ? model.permisos.map((permiso: Permiso) => ({
       id: permiso.id,
       modeloId: permiso.modeloId,
