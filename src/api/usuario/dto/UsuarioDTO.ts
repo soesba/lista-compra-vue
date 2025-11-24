@@ -1,5 +1,6 @@
 import ImagenDTO from '@/api/commons/dto/ImagenDTO';
 import PermisoDTO from './PermisoDTO';
+import ItemDTO from '@/api/desplegables/dto/ItemDTO';
 
 export default interface UsuarioDTO {
   id: string;
@@ -10,7 +11,8 @@ export default interface UsuarioDTO {
   email?: string;
   foto?: ImagenDTO | null;
   fechaCreacion: string;
-  rol: string;
+  esAdministrador: boolean;
+  rol: ItemDTO | null;
   permisos: Array<PermisoDTO>;
   preferencias: {
     configuracionId: string;

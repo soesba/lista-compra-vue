@@ -1,18 +1,12 @@
 <template>
   <div class="usuarios">
     <TitleView :titulo="title" :subtitulo="subtitle" :show-menu="false"></TitleView>
-    <ResponsiveTable
-      :cols-def="colDef"
-      :row-data="usuarios"
-      :options="tableOptions"></ResponsiveTable>
+    <ResponsiveTable :cols-def="colDef" :row-data="usuarios" :options="tableOptions"></ResponsiveTable>
   </div>
 </template>
 
 <script setup lang="ts">
-  import ResponsiveTable, {
-    ColDef,
-    TableOptions
-  } from '@/components/responsiveTable/ResponsiveTable.vue'
+  import ResponsiveTable, { ColDef, TableOptions } from '@/components/responsiveTable/ResponsiveTable.vue'
   import TitleView from '@/components/TitleView.vue'
   import get from '@/services/usuario/getUsuarios.service'
   import Usuario from '@/services/usuario/models/Usuario'
@@ -48,6 +42,7 @@
       colType: 'text'
     },
     { header: 'Email', field: 'email', colType: 'text' },
+    { header: 'Rol', field: 'rol', colType: 'text', valueGetter: (params: any) => params.value?.nombre || '' },
     {
       header: 'Fecha creación',
       dataTitulo: 'F. Creación',

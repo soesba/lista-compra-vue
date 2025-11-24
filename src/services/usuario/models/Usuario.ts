@@ -1,5 +1,6 @@
 import Imagen from '@/services/commons/models/Imagen';
 import Permiso from './Permiso';
+import Item from '@/services/desplegables/models/Item';
 
 export default interface Usuario {
   id: string;
@@ -10,7 +11,8 @@ export default interface Usuario {
   email?: string;
   foto?: Imagen | null;
   fechaCreacion: string;
-  rol: string;
+  esAdministrador: boolean;
+  rol: Item | null;
   permisos: Array<Permiso>;
   preferencias: {
     configuracionId: string;

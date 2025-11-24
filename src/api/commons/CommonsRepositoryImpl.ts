@@ -19,4 +19,22 @@ export default class CommonsRepositoryImpl implements CommonsRepository {
     }
     return result
   }
+
+  async resolveErrorRol(modelo: string, ids: string[], rolId: string): Promise<any> {
+    const endpoint = `/api/common/asignarRol`
+    const headers = {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+    const requestDTO = {
+      modelo,
+      ids,
+      rolId
+    }
+    const response = await xhr.post<any, any>(endpoint, requestDTO, { headers })
+    const result = {
+      data: (response.data.data),
+      respuesta: response.status
+    }
+    return result
+  }
 }

@@ -37,7 +37,7 @@
                 <ResponsiveTable
                   :ref="`tabla-${modelo.id}`"
                   :cols-def="colDefBase"
-                  :row-data="rowData"
+                  :row-data="modelo.resultado.fallas"
                   :options="{ editable: false }"></ResponsiveTable>
                 <div class="center">
                   <v-btn color="primary" @click="onClickSolucionarTodos(modelo.resultado.fallas)"
@@ -154,13 +154,19 @@
     const modelo = modelosUI.value.find(m => m.id === modeloId.toString())
     if (modelo) {
       console.log(`Comprobar datos de modelo ${modelo.nombre}`)
-      checkData(modelo.nombre).then(response => {
-        const data = response.data
-        modelo.resultado = data
-        modelo.resultado.fallas.map((item: any) => (item.modeloId = modeloId))
-        rowData.value = data.fallas
-        modelo.showResultadoCheckData = true
-      })
+      checkData(modelo.nombre)
+        .then(response => {
+          const data = response.data
+          modelo.resultado = data
+          modelo.resultado.fallas.map((item: any) => (item.modeloId = modeloId))
+          modelo.showResultadoCheckData = true
+        })
+        .catch(error => {
+          uiStore.showAlertComponent({
+            text: error.message,
+            type: 'error'
+          })
+        })
     }
   }
 

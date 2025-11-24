@@ -13,15 +13,15 @@
           </li>
           <div v-if="!error.resuelto">
             <combo-component
-              :tipo-dato="TipoDato.Usuario"
-              v-model="usuarioSeleccionado"
+              :tipo-dato="getTipoDatoDesplegable(error.mensaje as string)"
+              v-model="datoSeleccionado"
               variant="underlined"
               :return-object="false"
               required>
             </combo-component>
             <div class="actions">
               <v-btn
-                :disabled="btnResolverDisabled(error)"
+                :disabled="btnResolverDisabled()"
                 variant="text"
                 color="primary"
                 text="Resolver"
@@ -61,43 +61,50 @@
 
   console.log('LOG~ ~ :20 ~ mensajesUnicos:', erroresUi)
 
-  const usuarioSeleccionado = ref<string>('')
+  const datoSeleccionado = ref<string>('')
 
-  const btnResolverDisabled = (error: any): boolean => {
-    switch (error.mensaje.toLowerCase()) {
-      case 'no tiene usuario asociado':
-        return !usuarioSeleccionado.value
-      default:
-        return false
-    }
-  }
+  const btnResolverDisabled = (): boolean => !datoSeleccionado.value
 
   const getResolutionForMessage = (mensaje: string): string => {
     switch (mensaje.toLowerCase()) {
       case 'no tiene usuario asociado':
         return `Asignar un usuario válido ${props.data?.multiple ? 'a los registros.' : 'al registro.'}`
+      case 'no tiene rol asignado':
+        return `Asignar un rol válido ${props.data?.multiple ? 'a los registros.' : 'al registro.'}`
       default:
         return 'No se encontró una resolución específica para este error.'
     }
   }
 
+  const getTipoDatoDesplegable = (mensaje: string) => {
+    switch (mensaje.toLowerCase()) {
+      case 'no tiene usuario asociado':
+        return TipoDato.Usuario
+      case 'no tiene rol asignado':
+        return TipoDato.Rol
+      default:
+        return undefined
+    }
+  }
+
   const onResolverClick = (error: any, index: number) => {
     console.log('LOG~ ~ :47 ~ onResolverClick ~ error, index:', error, index)
-    console.log('LOG~ ~ :49 ~ onResolverClick ~ usuarioSeleccionado:', usuarioSeleccionado.value)
+    console.log('LOG~ ~ :49 ~ onResolverClick ~ usuarioSeleccionado:', datoSeleccionado.value)
     switch (error.mensaje.toLowerCase()) {
       case 'no tiene usuario asociado':
         resolverErrorUsuario(
           modeloTratado.nombre,
           errores.map((e: any) => e.id),
-          usuarioSeleccionado.value
-        )
-          .then((response: any) => {
+          datoSeleccionado.value
+        ).then((response: any) => {
             emit('resolve', response)
             close()
-          })
-          .catch(error => {
+          }).catch(error => {
             console.error('Error al resolver el problema:', error)
           })
+        break
+      case 'no tiene rol asignado':
+          // TODO
         break
       default:
         console.log('No se encontró una resolución para este error.')
