@@ -59,7 +59,7 @@ const imagenMenu = [
     title: 'Eliminar',
     click: (id: string) => {
       console.log('Eliminar avatar', id)
-      uiStore.showConfirmDialog({
+      uiStore.showActionDialog({
           props: {
             text: '¿Desea eliminar el avatar?',
             title: 'Confirmación'

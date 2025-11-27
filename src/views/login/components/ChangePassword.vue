@@ -78,8 +78,9 @@ import useVuelidate from '@vuelidate/core'
   }
 
   const onClickEnviar = () => {
-    uiStore.showConfirmDialog({
+    uiStore.showActionDialog({
       props: {
+        type: 'confirmation',
         title: 'Confirmación',
         text: '¿Está seguro que desea cambiar la contraseña?'
       },

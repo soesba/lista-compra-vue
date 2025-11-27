@@ -75,7 +75,6 @@
   const title = 'Gestión de la aplicación'
   const subtitle = 'Utilidades para la gestión de la aplicación'
 
-  const rowData = ref<Array<any>>([])
   const colDefBase: ColDef[] = [
     {
       field: 'id',
@@ -135,7 +134,7 @@
   }
 
   const onClickEliminar = (modeloId: string) => {
-    uiStore.showConfirmDialog({
+    uiStore.showActionDialog({
       props: {
         text: 'Si elimina este elemento, se eliminará toda la información relacionada (como configuraciones de usuario, etc.). ¿Desea continuar?',
         title: 'Confirmación'

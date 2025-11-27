@@ -10,10 +10,12 @@ const getDefaultCustomDialog = () => {
   }
 }
 
-const getDefaultConfirmDialog = () => {
+const getDefaultActionDialog = () => {
   return {
     show: false,
     props: {
+      type: 'confirmation' as const,
+      showIcon: true,
       title: 'Confirmación',
       text: ''
     },
@@ -46,7 +48,7 @@ export const useUiStore = defineStore('uiStore', {
   // convert to a function
   state: (): UiState => ({
     customDialog: getDefaultCustomDialog(),
-    confirmDialog: getDefaultConfirmDialog(),
+    actionDialog: getDefaultActionDialog(),
     alertComponent: getDefaultAlertComponent(),
     menuSortCards: null,
     menuShowCards: null,
@@ -54,7 +56,7 @@ export const useUiStore = defineStore('uiStore', {
   }),
   getters: {
     getCustomDialog: (state) => state.customDialog,
-    getConfirmDialog: (state) => state.confirmDialog,
+    getActionDialog: (state) => state.actionDialog,
     getAlertComponent: (state) => state.alertComponent,
     getMenuSortCards: (state) => state.menuSortCards || parseInt(import.meta.env.VITE_SORT_CARDS),
     getMenuShowCards: (state) => state.menuShowCards || parseInt(import.meta.env.VITE_SHOW_CARDS),
@@ -71,13 +73,13 @@ export const useUiStore = defineStore('uiStore', {
     hideCustomDialog() {
       this.customDialog.show = false
     },
-    showConfirmDialog({ props, aceptarFn }: any) {
-      this.confirmDialog.show = true
-      this.confirmDialog.props = { ...props }
-      this.confirmDialog.aceptarFn = aceptarFn
+    showActionDialog({ props, aceptarFn }: any) {
+      this.actionDialog.show = true
+      this.actionDialog.props = { ...props }
+      this.actionDialog.aceptarFn = aceptarFn
     },
-    hideConfirmDialog() {
-      this.confirmDialog.show = false
+    hideActionDialog() {
+      this.actionDialog.show = false
     },
     showAlertComponent(props: any) {
       this.alertComponent.props = { ...props }
