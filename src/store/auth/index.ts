@@ -1,6 +1,7 @@
-import API from '@/api'
+import login from '@/services/auth/login.service'
 import LoginResponse from '@/services/auth/models/LoginResponse'
 import UserInfo from '@/services/auth/models/UserInfo'
+import refresh from '@/services/auth/refreshToken.service'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { defineStore } from 'pinia'
@@ -65,7 +66,7 @@ export const useAuthStore = defineStore('auth', {
       this.preferencias = preferencias
     },
     async login(username: string, password: string) {
-      const response: LoginResponse = await API.AuthRepository.login(username, password)
+      const response: LoginResponse = await login(username, password)
       if (response.status === 200) {
         this.setToken(response.data.access_token)
         this.setRefreshToken(response.data.refresh_token)
@@ -87,7 +88,7 @@ export const useAuthStore = defineStore('auth', {
         this.logout()
         throw new Error('No refresh token available')
       }
-      const response: LoginResponse = await API.AuthRepository.refresh(refreshToken)
+      const response: LoginResponse = await refresh(refreshToken)
       if (response.status === 200) {
         this.setToken(response.data.access_token)
         this.setRefreshToken(response.data.refresh_token)

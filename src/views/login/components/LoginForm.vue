@@ -9,6 +9,7 @@
           v-model="username"
           class="input_form text"
           placeholder="Nombre de usuario"
+          autocomplete="username"
           :invalid="v$.username.$invalid"
           :dirty="v$.username.$dirty"
           :validations="v$.username"
@@ -18,7 +19,7 @@
           @keypress.native.enter="onLogin" />
         <v-text-field
           v-model="password"
-          autocomplete="current-password"
+          autocomplete="password"
           class="input_form text"
           placeholder="Contraseña"
           :append-inner-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
@@ -38,36 +39,39 @@
       <div class="button_submit">
         <v-btn color="primary" raised :disabled="btnLoginDisabled" @click="onLogin()">Login</v-btn>
       </div>
-      <div class="password_recovery" v-if="false">
-        <label raised color="primary" @click="onChangePassword()" href=""
-          >Cambiar contraseña</label
-        >
+    </div>
+    <div class="other-actions">
+      <div class="password_recovery">
+        <label @click="onChangePassword()">Olvidé mi contraseña</label>
+      </div>
+      <div class="not-account">
+        <label @click="onRegister()">No tengo cuenta</label>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import useVuelidate from '@vuelidate/core';
-  import { required } from '@vuelidate/validators';
-  import { computed, ref } from 'vue';
+  import useVuelidate from '@vuelidate/core'
+  import { required } from '@vuelidate/validators'
+  import { computed, ref } from 'vue'
 
-  const emitter = defineEmits(['login', 'changePassword']);
+  const emitter = defineEmits(['login', 'changePassword', 'register'])
   defineProps({
     authError: Boolean,
     authErrorMessage: {
       type: String,
       default: '',
     },
-  });
+  })
 
-  const username = ref('');
-  const password = ref('');
-  const showPass = ref(false);
+  const username = ref('')
+  const password = ref('')
+  const showPass = ref(false)
 
   const btnLoginDisabled = computed(() => {
-    return v$.value.$invalid;
-  });
+    return v$.value.$invalid
+  })
 
   // Validations
   const validations = computed(() => {
@@ -77,27 +81,31 @@
       },
       password: {
         required,
-      },
-    };
-  });
+      }
+    }
+  })
   // Use the "useVuelidate" function to perform form validation
-  const v$ = useVuelidate(validations, { username, password });
+  const v$ = useVuelidate(validations, { username, password })
 
   const onLogin = () => {
-    v$.value.$touch();
+    v$.value.$touch()
 
     if (v$.value.$invalid) {
-      return;
+      return
     }
     emitter('login', {
       username: username.value,
       password: password.value,
-    });
-  };
+    })
+  }
 
   const onChangePassword = () => {
-    emitter('changePassword');
-  };
+    emitter('changePassword')
+  }
+
+  const onRegister = () => {
+    emitter('register')
+  }
 </script>
 
 <style lang="scss" scoped>
@@ -126,12 +134,6 @@
         font-size: 0.8em;
       }
     }
-    .password_recovery {
-      label {
-        cursor: pointer;
-        text-decoration: underline;
-      }
-    }
 
     .login_actions {
       display: flex;
@@ -140,6 +142,18 @@
       flex: 2;
       padding-top: 8px;
       gap: 8px;
+    }
+
+    .other-actions {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-top: 16px;
+      font-size: 0.9rem;
+      label {
+        cursor: pointer;
+        text-decoration: underline;
+      }
     }
   }
 </style>

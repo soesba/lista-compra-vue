@@ -10,14 +10,15 @@
           :auth-error="isLoginError"
           :auth-error-message="loginErrorMessage"
           @login="onLogin"
-          @change-password="onViewChangePassword" />
-        <!-- <reset-password
-          v-else-if="mode === 'resetPassword'"
-          @send="onResetPassword"
-          @back="onBackToLogin" /> -->
+          @change-password="onViewChangePassword"
+          @register="onViewRegister" />
         <change-password
           v-else-if="mode === 'changePassword'"
           @send="onChangePassword"
+          @back="onBackToLogin" />
+        <register-form
+          v-else-if="mode === 'register'"
+          @send="onRegister"
           @back="onBackToLogin" />
       </div>
     </div>
@@ -26,6 +27,7 @@
 
 <script setup lang="ts">
   import LoginForm from './components/LoginForm.vue'
+  import RegisterForm from './components/RegisterForm.vue'
   import ChangePassword from './components/ChangePassword.vue'
 
   import { onMounted, ref } from 'vue'
@@ -34,6 +36,8 @@
   import getUsuarioPreferencias from '@/services/usuario/getUsuarioPreferencias.service'
   import getUsuarioByUsername from '@/services/usuario/getUsuarioByUsername.service'
   import Usuario from '@/services/usuario/models/Usuario'
+import registrarUsuario from '@/services/auth/registrarUsuario.service'
+import cambiarPassword from '@/services/auth/cambiarPassword.service'
 
   // const userName = ref('');
   const mode = ref('login')
@@ -76,41 +80,30 @@
     })
   }
 
-  // const onResetPassword = ({ username }: { username: string }): void => {
-  //   userName.value = username;
+  const onChangePassword = ({ username, newPassword }: { username: string, newPassword: string }): void => {
+    console.log('LOG~ ~ :80 ~ onChangePassword ~ username, newPassword:', username, newPassword)
 
-  //   resetPasswordService.execute(username).then(() => {
-  //       mode.value = 'changePassword';
-  //     })
-  //     .catch(() => {
-  //       // INCLUIR ACCIÓN DE FALLO
-  //       alert('Error en el reseteo de password');
-  //     });
-  // };
+    cambiarPassword(username, newPassword).then(() => {
+      mode.value = 'login'
+    }).catch((error) => {
+      console.error('Error al cambiar la contraseña:', error)
+    })
+  }
 
-  const onChangePassword = ({
-    currentPassword,
-    newPassword
-  }: {
-    currentPassword: string
-    newPassword: string
-  }) => {
-    console.log(
-      'LOG~ ~ :82 ~ onChangePassword ~ currentPassword, newPassword:',
-      currentPassword,
-      newPassword
-    )
-    // changePasswordService.execute(userName.value, currentPassword, newPassword).then(() => {
-    //   alert('Contraseña cambiada');
-    //   mode.value = 'login';
-    // })
-    // .catch(() => {
-    //   alert('Error al cambiar la contraseña');
-    // });
+  const onRegister = ({username, email, password }: {username: string, email: string, password: string}) => {
+    registrarUsuario(username, email, password).then(() => {
+      mode.value = 'login'
+    }).catch((error) => {
+      console.error('Error al registrar el usuario:', error)
+    })
   }
 
   const onViewChangePassword = () => {
     mode.value = 'changePassword'
+  }
+
+  const onViewRegister = () => {
+    mode.value = 'register'
   }
 
   const onBackToLogin = (): void => {
