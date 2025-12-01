@@ -141,7 +141,6 @@
     } else if (col.colType === 'boolean') {
       return col.valueGetter ? col.valueGetter!(params) : params.value ? 'Sí' : 'No'
     }
-    console.log(params)
     return col.valueGetter ? col.valueGetter!(params) : params.value
   }
 

@@ -74,7 +74,7 @@
 
   const title = 'Gestión de la aplicación'
   const subtitle = 'Utilidades para la gestión de la aplicación'
-
+  const emitter = defineEmits(['recargaUsuarios'])
   const colDefBase: ColDef[] = [
     {
       field: 'id',
@@ -175,7 +175,6 @@
   }
 
   const onClickSolucionar = (data: any) => {
-    console.log('LOG~ ~ :172 ~ onClickSolucionar ~ data:', data)
     console.log('Solucionar problemas de inconsistencia del registro')
     mostrarPopupSolucionarProblemas([data])
   }
@@ -194,8 +193,8 @@
       },
       events: {
         resolve: (data: any) => {
-          console.log('LOG~ ~ :192 ~ mostrarPopupSolucionarProblemas ~ data:', data)
           onCheckDataClick(fallas[0].modeloId)
+          emitter('recargaUsuarios')
         }
       }
     })

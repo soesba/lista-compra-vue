@@ -26,7 +26,6 @@ export const DtoToModel = (dto: UsuarioDTO): Usuario => {
     })) : [],
     preferencias: dto.preferencias ? dto.preferencias : []
   }
-  console.log('LOG~ ~ :29 ~ DtoToModel ~ model:', model)
   return model
 }
 

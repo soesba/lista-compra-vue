@@ -40,6 +40,7 @@
 <script setup lang="ts">
   import ComboComponent from '@/components/combos/ComboComponent.vue'
   import { uiStore } from '@/main'
+import resolverErrorRol from '@/services/commons/resolverErrorRol.service'
   import resolverErrorUsuario from '@/services/commons/resolverErrorUsuario.service'
   import { TipoDato } from '@/services/desplegables/models/TipoDato'
   import { capitalize, ref } from 'vue'
@@ -59,55 +60,57 @@
     mensaje
   }))
 
-  console.log('LOG~ ~ :20 ~ mensajesUnicos:', erroresUi)
-
-  const datoSeleccionado = ref<string>('')
+  const datoSeleccionado = ref()
 
   const btnResolverDisabled = (): boolean => !datoSeleccionado.value
 
   const getResolutionForMessage = (mensaje: string): string => {
-    switch (mensaje.toLowerCase()) {
-      case 'no tiene usuario asociado':
-        return `Asignar un usuario válido ${props.data?.multiple ? 'a los registros.' : 'al registro.'}`
-      case 'no tiene rol asignado':
-        return `Asignar un rol válido ${props.data?.multiple ? 'a los registros.' : 'al registro.'}`
-      default:
-        return 'No se encontró una resolución específica para este error.'
+    if (mensaje.toLowerCase().includes('no tiene usuario asociado')) {
+      return `Asignar un usuario válido ${props.data?.multiple ? 'a los registros.' : 'al registro.'}`
+    } else if (mensaje.toLowerCase().includes('no tiene rol asignado')) {
+      return `Asignar un rol válido ${props.data?.multiple ? 'a los registros.' : 'al registro.'}`
     }
+    return 'No se encontró una resolución específica para este error.'
   }
 
   const getTipoDatoDesplegable = (mensaje: string) => {
-    switch (mensaje.toLowerCase()) {
-      case 'no tiene usuario asociado':
-        return TipoDato.Usuario
-      case 'no tiene rol asignado':
-        return TipoDato.Rol
-      default:
-        return undefined
+     if (mensaje.toLowerCase().includes('no tiene usuario asociado')) {
+      return TipoDato.Usuario
+    } else if (mensaje.toLowerCase().includes('no tiene rol asignado')) {
+      return TipoDato.Rol
     }
+    return undefined
   }
 
   const onResolverClick = (error: any, index: number) => {
-    console.log('LOG~ ~ :47 ~ onResolverClick ~ error, index:', error, index)
-    console.log('LOG~ ~ :49 ~ onResolverClick ~ usuarioSeleccionado:', datoSeleccionado.value)
-    switch (error.mensaje.toLowerCase()) {
-      case 'no tiene usuario asociado':
-        resolverErrorUsuario(
-          modeloTratado.nombre,
-          errores.map((e: any) => e.id),
-          datoSeleccionado.value
-        ).then((response: any) => {
-            emit('resolve', response)
-            close()
-          }).catch(error => {
-            console.error('Error al resolver el problema:', error)
-          })
-        break
-      case 'no tiene rol asignado':
-          // TODO
-        break
-      default:
-        console.log('No se encontró una resolución para este error.')
+    if (error.mensaje.toLowerCase().includes('no tiene usuario asociado')) {
+      resolverErrorUsuario(
+        modeloTratado.nombre,
+        errores.map((e: any) => e.id),
+        datoSeleccionado.value
+      ).then((response: any) => {
+        emit('resolve', response)
+        close()
+      }).catch(error => {
+        console.error('Error al resolver el problema:', error)
+      }).finally(() => {
+        close()
+      })
+    } else if (error.mensaje.toLowerCase().includes('no tiene rol asignado')) {
+      resolverErrorRol(
+        modeloTratado.nombre,
+        errores.map((e: any) => e.id),
+        datoSeleccionado.value
+      ).then((response: any) => {
+        emit('resolve', response)
+        close()
+      }).catch(error => {
+        console.error('Error al resolver el problema:', error)
+      }).finally(() => {
+        close()
+      })
+    } else {
+      console.log('No se encontró una resolución para este error.')
     }
   }
 

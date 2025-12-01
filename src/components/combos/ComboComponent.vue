@@ -106,6 +106,8 @@
         return 'Unidad'.concat(label)
       case TipoDato.Usuario:
         return 'Usuario'.concat(label)
+      case TipoDato.Rol:
+        return 'Rol'.concat(label)
     }
   }
 

@@ -10,16 +10,20 @@
   import TitleView from '@/components/TitleView.vue'
   import get from '@/services/usuario/getUsuarios.service'
   import Usuario from '@/services/usuario/models/Usuario'
-  import { onMounted, ref } from 'vue'
+  import { computed, onMounted, ref, watch } from 'vue'
   import { VBtn } from 'vuetify/components/VBtn'
 
+  const props = defineProps({
+    reload: Boolean
+  })
+  const emmiter = defineEmits(['resetReload'])
   const title = 'Usuarios'
   const subtitle = 'Gestiona los usuarios de la aplicación'
   const usuarios = ref<Usuario[]>([])
   const tableOptions: TableOptions = {
     editable: false
   }
-  const colDef: ColDef[] = [
+  const colDef = computed((): ColDef[] => [
     {
       field: 'esAdministrador',
       colType: 'html',
@@ -63,7 +67,16 @@
         }
       ]
     }
-  ]
+  ])
+
+  watch(
+    () => props.reload,
+    (newVal) => {
+      if (newVal) {
+        cargaUsuarios()
+      }
+    }
+  )
 
   // const onEdit = (eventData: { data: any; rowIndex: number }) => {
   //   console.log('Editar usuario:', eventData)
@@ -73,15 +86,21 @@
     console.log('Eliminar usuario no implementado:', eventData)
   }
 
+  const cargaUsuarios = () => {
+    get().then(response => {
+      usuarios.value = response.data as Usuario[]
+    })
+    .catch(error => {
+      console.error('Error al cargar los usuarios:', error)
+    })
+    if (props.reload) {
+      emmiter('resetReload')
+    }
+  }
+
   onMounted(() => {
     console.log('Mounted GestionUsuarios')
-    get()
-      .then(response => {
-        usuarios.value = response.data as Usuario[]
-      })
-      .catch(error => {
-        console.error('Error al cargar los usuarios:', error)
-      })
+    cargaUsuarios()
   })
 </script>
 
