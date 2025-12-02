@@ -59,6 +59,7 @@
   import Articulo from '@/services/articulo/models/Articulo'
   import Precio from '@/services/precio/models/Precio'
   import updateUnidadesMedidaPrecio from '@/services/precio/updateUnidadesMedidaPrecio.service'
+import getByArticuloId from '@/services/precio/getPrecioByArticuloId.service'
 
   // Computed
   const canSave = computed(() => {
@@ -66,11 +67,16 @@
   })
 
   // Data
+  const from = history.state.back
   const adding = ref(false)
   const originalData = modelStore.getArticulo ? { ...modelStore.getArticulo } : null
   const editData = reactive<any>(modelStore.getArticulo ? { ...modelStore.getArticulo} : { borrable: true })
   if (!editData.id) {
     adding.value = true
+  }
+  if (from.includes('precio-edicion')) {
+    // Si venimos de la edición de un precio, recargamos los precios asociados al artículo
+    editData.precios = (await getByArticuloId(editData.id)).data
   }
   const unidadesBorradas = ref<any[]>([])
   // Validations
