@@ -11,7 +11,7 @@
   import searchTipoUnidad from '@/services/tipoUnidad/searchTipoUnidad.service'
   import create from '@/services/tipoUnidad/createTipoUnidad.service'
   import update from '@/services/tipoUnidad/updateTipoUnidad.service'
-  import { eventStore } from '@/main'
+  import { eventStore, modelStore } from '@/main'
   import type TipoUnidadRequest from '@/services/tipoUnidad/models/TipoUnidadRequest'
   import type TipoUnidadResponse from '@/services/tipoUnidad/models/TipoUnidadResponse'
   import type Equivalencia from '@/services/equivalencia/models/Equivalencia'
@@ -49,6 +49,9 @@
     list: '/tiposUnidades'
   }
   eventStore.setRoutes(routes)
+  // Anulamos cualquier tipo de unidad previamente almacenado
+  modelStore.setTipoUnidad(null)
+
 
   // Computed
   const getClasses = computed(() => {

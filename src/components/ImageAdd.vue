@@ -87,7 +87,6 @@
   const v$ = useVuelidate(validations, { selectedFile, imageUrl })
 
   const onSelectImage = () => {
-    console.log('LOG ~ onSelectImage ~ selectedFile:', fileUpload.value.modelValue)
     selectedFile.value = fileUpload.value.modelValue
     imagen.value = null
     v$.value.$touch()
@@ -100,7 +99,6 @@
   }
 
   const onUpdateUrl = () => {
-    console.log('LOG ~ onUpdateUrl ~ imageUrl:', imageUrl.value)
     fileUpload.value.reset()
     v$.value.$touch()
   }
@@ -111,7 +109,6 @@
       imagen.value = {} as Imagen
       imagen.value.type = selectedFile.value?.type
       imagen.value.content = await fileToBase64(selectedFile.value)
-      console.log('LOG~ ~ :107 ~ onAceptarClick ~ imagen:', imagen)
       // Seleccion de imagen desde URL
     } else if (imageUrl) {
       const imageData = await getBase64FromImageUrl(imageUrl.value)

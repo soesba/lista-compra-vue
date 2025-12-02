@@ -11,7 +11,7 @@
   import searchTipoEstablecimiento from '@/services/tipoEstablecimiento/searchTipoEstablecimiento.service'
   import create from '@/services/tipoEstablecimiento/createTipoEstablecimiento.service'
   import update from '@/services/tipoEstablecimiento/updateTipoEstablecimiento.service'
-  import { eventStore } from '@/main'
+  import { eventStore, modelStore } from '@/main'
   import type TipoEstablecimientoRequest from '@/services/tipoEstablecimiento/models/TipoEstablecimientoRequest'
   import type TipoEstablecimientoResponse from '@/services/tipoEstablecimiento/models/TipoEstablecimientoResponse'
   const emit = defineEmits(['close-dialog'])
@@ -48,6 +48,9 @@
     list: '/tiposEstablecimientos'
   }
   eventStore.setRoutes(routes)
+  // Anulamos cualquier tipo de establecimiento previamente almacenado
+  modelStore.setTipoEstablecimiento(null)
+
 
   // Computed
   const getClasses = computed(() => {

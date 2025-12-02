@@ -10,7 +10,7 @@
   import searchArticulo from '@/services/articulo/searchArticulo.service'
   import create from '@/services/articulo/createArticulo.service'
   import update from '@/services/articulo/updateArticulo.service'
-  import { eventStore } from '@/main'
+  import { eventStore, modelStore } from '@/main'
   import type ArticuloRequest from '@/services/articulo/models/ArticuloRequest'
   import type ArticuloResponse from '@/services/articulo/models/ArticuloResponse'
   import router from '@/router'
@@ -47,6 +47,10 @@
     list: '/articulos'
   }
   eventStore.setRoutes(routes)
+
+  // Anulamos cualquier articulo previamente almacenado
+  modelStore.setArticulo(null)
+
   // Computed
   const getClasses = computed(() => {
     return cardClass.value ? cardClass.value.join(' ') : ''

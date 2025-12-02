@@ -23,8 +23,6 @@ const props = defineProps({
 	},
 })
 
-console.log(props)
-
 let equivalencias = reactive(await (await getByFromMultiple(props.unidadesMedida.map((x) => x.id))).data) as Equivalencia[]
 
 const getPrecio = (eq: any) => {

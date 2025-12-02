@@ -73,7 +73,7 @@
   const bindProps = { ...props }
   const bindEvents = {
     blur: () => onBlur(),
-    'update:modelValue': (event: any) => onUpdateModelValue(event),
+    // 'update:modelValue': (event: any) => onUpdateModelValue(event),
     change: (event: any) => onChange(event)
   }
 

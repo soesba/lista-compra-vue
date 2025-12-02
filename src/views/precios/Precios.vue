@@ -11,7 +11,7 @@
   import create from '@/services/precio/createPrecio.service'
   import update from '@/services/precio/updatePrecio.service'
   import router from '@/router'
-  import { eventStore } from '@/main'
+  import { eventStore, modelStore } from '@/main'
   import type PrecioRequest from '@/services/precio/models/PrecioRequest'
   import type PrecioResponse from '@/services/precio/models/PrecioResponse'
   import { formatCurrency } from '@/utils/utils'
@@ -50,6 +50,10 @@
     list: '/precios'
   }
   eventStore.setRoutes(routes)
+
+  // Anulamos cualquier precio previamente almacenado
+  modelStore.setPrecio(null)
+
   // Computed
   const getClasses = computed(() => {
     return cardClass.value ? cardClass.value.join(' ') : ''

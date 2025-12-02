@@ -23,7 +23,10 @@ a.no-link {
 }
 
 .text-small {
-	font-size: 0.6rem;
+	font-size: 0.8rem;
+  &.secondary {
+    color: rgb(var(--v-theme-secondary));
+  }
 }
 
 .dots-menu {

@@ -21,7 +21,6 @@
   })
   // success, info, warning, error
   const type = computed(() => {
-    console.log(uiStore.getAlertComponent?.props.type)
     return uiStore.getAlertComponent?.props.type
   })
   const variant = computed(() => {

@@ -10,7 +10,7 @@
   import searchEstablecimiento from '@/services/establecimiento/searchEstablecimiento.service'
   import create from '@/services/establecimiento/createEstablecimiento.service'
   import update from '@/services/establecimiento/updateEstablecimiento.service'
-  import { eventStore } from '@/main'
+  import { eventStore, modelStore } from '@/main'
   import router from '@/router'
   import type EstablecimientoRequest from '@/services/establecimiento/models/EstablecimientoRequest'
   import type EstablecimientoResponse from '@/services/establecimiento/models/EstablecimientoResponse'
@@ -44,6 +44,9 @@
     list: '/establecimientos'
   }
   eventStore.setRoutes(routes)
+  // Anulamos cualquier establecimiento previamente almacenado
+  modelStore.setEstablecimiento(null)
+
   // Computed
   const getClasses = computed(() => {
     return cardClass.value ? cardClass.value.join(' ') : ''

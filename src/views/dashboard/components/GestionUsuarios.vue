@@ -83,6 +83,7 @@
   // }
 
   const onDelete = (eventData: { data: any; rowIndex: number }) => {
+    // TODO
     console.log('Eliminar usuario no implementado:', eventData)
   }
 
@@ -99,7 +100,6 @@
   }
 
   onMounted(() => {
-    console.log('Mounted GestionUsuarios')
     cargaUsuarios()
   })
 </script>

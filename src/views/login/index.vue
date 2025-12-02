@@ -81,7 +81,6 @@ import cambiarPassword from '@/services/auth/cambiarPassword.service'
   }
 
   const onChangePassword = ({ username, newPassword }: { username: string, newPassword: string }): void => {
-    console.log('LOG~ ~ :80 ~ onChangePassword ~ username, newPassword:', username, newPassword)
 
     cambiarPassword(username, newPassword).then(() => {
       mode.value = 'login'

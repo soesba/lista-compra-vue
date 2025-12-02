@@ -8,6 +8,7 @@ import PreciosResponseDTO from './dto/PreciosResponseDTO'
 import PrecioResponseDTO from './dto/PrecioResponseDTO'
 import PrecioRequestDTO from './dto/PrecioRequestDTO'
 import CheckDataResponse from '@/services/commons/models/CheckDataResponse'
+import UnidadMedida from '@/services/precio/models/UnidadMedida'
 
 export default class PrecioRepositoryImpl implements PrecioRepository {
   async get(): Promise<PrecioResponse> {
@@ -83,6 +84,19 @@ export default class PrecioRepositoryImpl implements PrecioRepository {
     }
     const requestDTO = requestModelToDto(request)
     const response = await xhr.put<PrecioRequestDTO, PrecioResponseDTO>(endpoint, requestDTO, { headers })
+    const result = {
+      data: DtoToModel(response.data.data),
+      respuesta: response.status
+    }
+    return result
+  }
+
+  async updateUnidadesMedida(precioId: string, unidades: Array<UnidadMedida>): Promise<PrecioResponse> {
+    const endpoint = `/api/precios/${precioId}/unidadesMedida`
+    const headers = {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+    const response = await xhr.put<{ unidadesMedida: Array<any> }, PrecioResponseDTO>(endpoint, { unidadesMedida: unidades }, { headers })
     const result = {
       data: DtoToModel(response.data.data),
       respuesta: response.status

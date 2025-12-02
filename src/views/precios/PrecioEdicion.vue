@@ -117,21 +117,11 @@
       : ''
   })
 
-  // const editData = ref<any>({
-  // 	id: '',
-  // 	precio: 0,
-  // 	marca: '',
-  // 	articulo: null,
-  // 	establecimiento: null,
-  // 	unidadesMedida: [],
-  // 	fechaCreacion: '',
-  // 	notas: '',
-  // 	borrable: true
-  // })
-
-  // Watch
+  // Watch para controlar cambios en editData.articulo y cargar unidades de medida
   watch(
-    async () => editData?.articulo,
+    async () => {
+      return editData?.articulo;
+    },
     async () => {
       if (!editData?.id) {
         const response = await getArrayUnidadesMedida()
@@ -161,9 +151,14 @@
   // Use the "useVuelidate" function to perform form validation
   const v$ = useVuelidate(validations, { editData })
 
-  onMounted(() => {
+  onMounted(async () => {
     v$.value.editData.articulo.$reset
     v$.value.editData.establecimiento.$reset
+
+    if (editData.articulo) {
+      const response = await getArrayUnidadesMedida()
+      editData!.unidadesMedida = response
+    }
   })
 
   // Methods
@@ -190,7 +185,7 @@
       const tmpArray: any = []
       articulo.tiposUnidad.forEach(element => {
         const tmp: any = { ...element }
-        tmp.valor = null
+        tmp.valor = editData.unidadesMedida.find((um: any) => um.id === element.id)?.valor || 0
         tmpArray.push(tmp)
       })
       return tmpArray

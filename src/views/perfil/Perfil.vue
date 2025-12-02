@@ -101,7 +101,7 @@
   import get from '@/services/modelo/getModelos.service'
   import TitleView from '@/components/TitleView.vue'
 
-  console.log(authStore.getUsuarioLogueado.username)
+
   const usuario = ref(
     (await getUsuarioByUsername(authStore.getUsuarioLogueado.username)).data as Usuario
   )
@@ -120,7 +120,6 @@
       const pref = preferenciasUsuario.find(
         (p: any) => p.configuracionId === config.id && p.modeloId === modelo.id
       )
-      console.log('LOG~ ~ :122 ~ pref:', pref)
       newConfigUsuario.valorActual = pref ? pref.valor : config.valorDefecto
       newConfigUsuario.click = (value: any, modelo: any) => {
         const existingPrefIndex = preferenciasUsuario.findIndex(
@@ -141,7 +140,6 @@
       configUsuario.value.push(newConfigUsuario)
     })
   })
-  console.log('LOG~ ~ :139 ~ configuraciones:', configUsuario.value)
 
   const btnGuardarDisabled = computed(() => {
     return v$.value.$invalid || !v$.value.$dirty
@@ -185,7 +183,6 @@
       component: markRaw(ImageSelect),
       events: {
         changed: (data: any) => {
-          console.log('LOG~ ~ :123 ~ onCambiarFotoClick ~ data:', data)
           if (data && data.imagen) {
             usuario.value.foto = data.imagen
             v$.value.usuario.$touch()

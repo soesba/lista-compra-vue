@@ -1,4 +1,12 @@
 <template>
+  <v-btn
+    v-if="editable"
+    class="mb-4"
+    color="primary"
+    @click="onClickInsert"
+  >
+    Insertar precio
+  </v-btn>
   <ResponsiveTable
     :cols-def="colDef"
     :row-data="precios"
@@ -16,6 +24,7 @@ import Equivalencia from '@/services/equivalencia/models/Equivalencia'
 import getEquivalencias from '@/services/equivalencia/getEquivalencias.service'
 import ResponsiveTable, { ColDef, TableOptions } from './responsiveTable/ResponsiveTable.vue'
 import { VBtn } from 'vuetify/components/VBtn'
+import Articulo from '@/services/articulo/models/Articulo'
 
 const props = defineProps({
   editable: {
@@ -23,20 +32,24 @@ const props = defineProps({
     default: false
   },
 	precios: {
-		type: Array<Precio>,
-		default: {},
+		type: Array as () => Precio[],
+		default: () => [],
 	},
+  articulo: {
+    type: Object as () => Articulo,
+    default: null
+  }
 })
 
 const tableOptions: TableOptions = {
   editable: props.editable
 }
 
-const colDef = computed(() => {
-  return props.editable ? colDefBase : colDefBase.filter(col => col.field !== 'actions')
+const colDef = computed((): ColDef[] => {
+  return props.editable ? colDefBase.value : colDefBase.value.filter(col => col.field !== 'actions')
 })
 
-const colDefBase: ColDef[] = [
+const colDefBase = computed((): ColDef[] =>[
   { field: 'fechaCompra', header: 'Fecha compra', colType: 'text', valueGetter: ({ value }: any) => getFechaCompra(value) },
   { field: 'establecimiento', header: 'Establecimiento', colType: 'text', valueGetter: ({ value }: any) => value.nombre },
   { field: 'precio', header: 'Precio', colType: 'number', valueGetter: ({ value }: any) => formatCurrency(value) },
@@ -80,7 +93,8 @@ const colDefBase: ColDef[] = [
       }
     ]
   }
-]
+])
+
 const equivalencias = (await getEquivalencias()).data as Equivalencia[]
 
 const getPrecioEquivalencias = computed(() => {
@@ -101,12 +115,30 @@ const getFechaCompra = (value: any) => {
 	}).format(value) : ''
 }
 
+const onClickInsert = () => {
+  const nuevoPrecio: Precio = {
+    id: '',
+    precio: 0,
+    marca: '',
+    articulo: props.articulo,
+    establecimiento: null,
+    unidadesMedida: props.articulo ? props.articulo.tiposUnidad.map(item => { return { ...item, valor: 0 } }) : [],
+    fechaCompra: null,
+    fechaCreacion: '',
+    notas: '',
+    borrable: true
+  }
+  modelStore.setPrecio(nuevoPrecio)
+  router.push('/precio-edicion')
+}
+
 const onClickEdit = (precio: Precio) => {
   modelStore.setPrecio(precio)
   router.push('/precio-edicion')
 }
 
 const onClickDelete = (precio: Precio) => {
+  // TODO
   console.log('LOG~ ~ :68 ~ onClickDelete ~ precio:', precio)
 }
 </script>
