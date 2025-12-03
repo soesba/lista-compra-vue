@@ -8,6 +8,7 @@ import TiposUnidadResponseDTO from './dto/TiposUnidadResponseDTO'
 import TipoUnidadResponseDTO from './dto/TipoUnidadResponseDTO'
 import TipoUnidadRequestDTO from './dto/TipoUnidadRequestDTO'
 import CheckDataResponse from '@/services/commons/models/CheckDataResponse'
+import EquivalenciaResponse from '@/services/equivalencia/models/EquivalenciaResponse'
 
 export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
   async get(): Promise<TipoUnidadResponse> {
@@ -34,6 +35,18 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
       respuesta: response.status
     }
     return result
+  }
+
+  async getEquivalencias(id: string): Promise<EquivalenciaResponse> {
+    const endpoint = `/api/tipos-unidad/${id}/equivalencias`
+    const headers = {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+    const response = await xhr.get<EquivalenciaResponse>(endpoint, { headers })
+    return {
+      respuesta: response.status,
+      data: response.data.data
+    }
   }
 
   async search(id: string): Promise<TipoUnidadResponse> {
