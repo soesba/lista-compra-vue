@@ -5,7 +5,7 @@ export default interface TipoUnidadDTO {
   nombre: string;
   abreviatura: string;
   equivalencias: EquivalenciaDTO[];
-  fechaCreacion: string;
+  fechaCreacion: Date;
   borrable: boolean;
   esMaestro: boolean;
 }

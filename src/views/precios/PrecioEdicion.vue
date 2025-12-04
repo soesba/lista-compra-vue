@@ -82,7 +82,7 @@
   import update from '@/services/precio/updatePrecio.service'
   import getArticuloById from '@/services/articulo/getArticuloById.service'
   import type Articulo from '@/services/articulo/models/Articulo'
-  import { isNumber, pluralize } from '@/utils/utils'
+  import { dateToFront, isNumber, pluralize } from '@/utils/utils'
   import ComboComponent from '@/components/combos/ComboComponent.vue'
   import { TipoDato } from '@/services/desplegables/models/TipoDato'
   import { modelStore } from '@/main'
@@ -108,13 +108,7 @@
     return !v$.value.$invalid
   })
   const getFechaCompra = computed(() => {
-    return editData?.fechaCompra
-      ? new Intl.DateTimeFormat('es-ES', {
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric'
-        }).format(editData.fechaCompra)
-      : ''
+    return dateToFront(editData?.fechaCompra)
   })
 
   // Watch para controlar cambios en editData.articulo y cargar unidades de medida

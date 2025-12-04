@@ -9,8 +9,8 @@ export default interface PrecioDTO {
 	marca: string;
 	establecimiento: EstablecimientoDTO;
 	unidadesMedida: Array<UnidadMedidaDTO>;
-	fechaCompra: string;
-	fechaCreacion: string;
+	fechaCompra: Date;
+	fechaCreacion: Date;
 	notas: string;
 	borrable: boolean;
 }

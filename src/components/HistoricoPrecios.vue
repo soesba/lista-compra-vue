@@ -16,7 +16,7 @@
 <script setup lang="ts">
   import { computed, onMounted } from 'vue'
   import type Precio from '@/services/precio/models/Precio'
-  import { formatCurrency, pluralize } from '@/utils/utils'
+  import { dateToFront, formatCurrency, pluralize } from '@/utils/utils'
   import router from '@/router'
   import { modelStore } from '@/main'
   import ResponsiveTable, { ColDef, TableOptions } from './responsiveTable/ResponsiveTable.vue'
@@ -67,7 +67,7 @@
       valueGetter: ({ value }: any) => {
         let html = '<div class="cantidad-container">'
         value.forEach((medida: any) => {
-          html += `<div>${medida.valor} ${pluralize(medida.nombre, medida.valor)}</div>`
+          html += `<div>${formatCurrency(medida.valor, false)} ${pluralize(medida.nombre, medida.valor)}</div>`
         })
         html += '</div>'
         return { html }
@@ -113,7 +113,7 @@
   const getPrecioEquivalencias = computed(() => {
     return (medida: any, precio: any) => {
       console.log('LOG~ ~ :102 ~ acceso a equivalencias')
-      const equivalencia = medida.equivalencias[0]
+      const equivalencia = medida.equivalencias ? medida.equivalencias[0] : null
       if (equivalencia) {
         return `${formatCurrency(precio / (medida.valor * equivalencia.factor))} ${pluralize(equivalencia.to.nombre, medida.valor * equivalencia.factor)}`
       }
@@ -122,13 +122,7 @@
   })
 
   const getFechaCompra = (value: any) => {
-    return value
-      ? new Intl.DateTimeFormat('es-ES', {
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric'
-        }).format(value)
-      : ''
+    return dateToFront(value)
   }
 
   const onClickInsert = () => {

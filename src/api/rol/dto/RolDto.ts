@@ -3,5 +3,5 @@ export default interface RolDto {
   nombre: string;
   descripcion: string;
   codigo: string;
-  fechaCreacion: string;
+  fechaCreacion: Date;
 }

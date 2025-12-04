@@ -3,4 +3,5 @@ export default interface TipoEstablecimientoRequestDTO {
   nombre: string;
   abreviatura: string;
   borrable: boolean;
+  fechaCreacion: Date;
 }

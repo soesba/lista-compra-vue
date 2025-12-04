@@ -6,4 +6,5 @@ export default interface TipoUnidadRequestDTO {
 	abreviatura: string;
   equivalencias: EquivalenciaDTO[];
 	borrable: boolean;
+  fechaCreacion: Date;
 }

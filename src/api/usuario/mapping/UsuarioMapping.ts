@@ -2,6 +2,7 @@ import Usuario from '@/services/usuario/models/Usuario'
 import UsuarioDTO from '../dto/UsuarioDTO'
 import PermisoDTO from '../dto/PermisoDTO'
 import Permiso from '@/services/auth/models/Permiso'
+import { dateToFront, StringToDate } from '@/utils/utils'
 
 export const DtoToModel = (dto: UsuarioDTO): Usuario => {
   const model: Usuario = {
@@ -12,7 +13,7 @@ export const DtoToModel = (dto: UsuarioDTO): Usuario => {
     segundoApellido: dto.segundoApellido ? dto.segundoApellido : '',
     email: dto.email ? dto.email : '',
     foto: dto.foto,
-    fechaCreacion: dto.fechaCreacion,
+    fechaCreacion: dto.fechaCreacion ? dateToFront(dto.fechaCreacion) : '',
     esAdministrador: dto.esAdministrador,
     rol: dto.rol ? {
       id: dto.rol.id,
@@ -38,7 +39,7 @@ export const ModelToDto = (model: Usuario): UsuarioDTO => {
     segundoApellido: model.segundoApellido,
     email: model.email ? model.email : '',
     foto: model.foto ? model.foto : null,
-    fechaCreacion: model.fechaCreacion,
+    fechaCreacion: model.fechaCreacion ? StringToDate(model.fechaCreacion) : new Date(),
     esAdministrador: model.esAdministrador,
     rol: model.rol ? {
       id: model.rol.id,

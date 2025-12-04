@@ -10,7 +10,7 @@ export default interface UsuarioDTO {
   segundoApellido?: string;
   email?: string;
   foto?: ImagenDTO | null;
-  fechaCreacion: string;
+  fechaCreacion: Date;
   esAdministrador: boolean;
   rol: ItemDTO | null;
   permisos: Array<PermisoDTO>;

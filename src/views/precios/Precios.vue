@@ -14,7 +14,7 @@
   import { eventStore, modelStore } from '@/main'
   import type PrecioRequest from '@/services/precio/models/PrecioRequest'
   import type PrecioResponse from '@/services/precio/models/PrecioResponse'
-  import { formatCurrency } from '@/utils/utils'
+  import { dateToFront, formatCurrency } from '@/utils/utils'
   import Precio from '@/services/precio/models/Precio'
 
   const emit = defineEmits(['close-dialog'])
@@ -65,13 +65,7 @@
 
   // Methods
   const getFechaCompra = (item: any) => {
-    return item.fechaCompra
-      ? new Intl.DateTimeFormat('es-ES', {
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric'
-        }).format(item.fechaCompra)
-      : ''
+    return dateToFront(item.fechaCompra)
   }
 
   const getAllData = () => {

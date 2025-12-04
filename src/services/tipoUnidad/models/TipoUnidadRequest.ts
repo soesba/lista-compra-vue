@@ -6,4 +6,5 @@ export default interface TipoUnidadRequest {
 	abreviatura: string;
   equivalencias: Equivalencia[];
 	borrable: boolean;
+  fechaCreacion: string;
 }

@@ -5,7 +5,7 @@ export default interface ArticuloDTO {
 	nombre: string;
 	descripcion: string;
 	tiposUnidad: TipoUnidadDTO[];
-	fechaCreacion: string;
+	fechaCreacion: Date;
 	tienePrecios: boolean;
 	borrable: boolean;
 }
