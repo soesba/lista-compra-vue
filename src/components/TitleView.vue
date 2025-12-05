@@ -81,6 +81,7 @@
               return {
                 title: valor.nombre,
                 value: Number(valor.valor),
+                direction: valor.direccion,
                 click: (menu: string, value: number) => submenuClick(menu, value)
               }
             }),
@@ -129,14 +130,10 @@
       item.valorActual = index
     }
     if (submenu === 'ordenar') {
-      let field = ''
-      switch (index) {
-        case 0:
-        case 1:
-          field = 'title'
-          break
-      }
-      eventStore.sortCards({ order: index, field })
+      // Por ahora solo por nombre
+      let field = 'title'
+      let direccion = item.subitems[item.valorActual].direction
+      eventStore.sortCards({ order: direccion, field })
       uiStore.setMenuSortCards(index)
     } else {
       eventStore.showCards({ show: index })

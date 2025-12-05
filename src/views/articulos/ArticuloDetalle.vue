@@ -33,7 +33,7 @@
   import { eventStore, modelStore } from '@/main'
   import type Articulo from '@/services/articulo/models/Articulo'
   import type Precio from '@/services/precio/models/Precio'
-  import getByArticuloId from '@/services/precio/getPrecioByArticuloId.service'
+  import getByArticuloId from '@/services/precio/getPreciosByArticuloId.service'
   import deleteItem from '@/services/articulo/deleteArticulo.service'
   import { sort } from '@/utils/utils'
   import HistoricoPrecios from '@/components/HistoricoPrecios.vue'

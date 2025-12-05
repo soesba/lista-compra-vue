@@ -1,12 +1,7 @@
 <template>
   <div class="wrapper-list">
     <div class="list-container" v-if="items && items?.length > 0" :class="cardClass">
-      <Card
-        :logo="logo"
-        :mapping="mapping"
-        v-for="item in items"
-        :key="item.id"
-        :card-data="item" />
+      <Card :logo="logo" :mapping="mapping" v-for="item in items" :key="item.id" :card-data="item" />
     </div>
     <div v-else>
       <empty-card></empty-card>
@@ -29,10 +24,10 @@
   import { default as Card } from '@/components/cards-system/Card.vue'
   import { eventStore } from '@/main'
   import router from '@/router'
-  import { sort } from '@/utils/utils'
-  import { onMounted, ref } from 'vue'
+  import { ref } from 'vue'
+  import OrderRequest from '@/services/commons/models/OrderRequest'
 
-  const emit = defineEmits(['addCard'])
+  const emit = defineEmits(['addCard', 'sortCards'])
 
   eventStore.$onAction(({ args, name }) => {
     switch (name) {
@@ -68,31 +63,20 @@
     }
   })
 
-  const list = ref(props.items)
   const cardClass = ref([props.class])
   const routes = eventStore.getRoutes
 
-  onMounted(() => {
-    // onShowCards(show.value)
-  })
-
   // Methods
-
   const addCard = () => {
     router.push(routes.add)
   }
 
   const onSortCards = (evt: any) => {
-    let field = props.mapping[evt.field]
-    // En el caso de mappings con funciones transformamos en string
-    if (typeof field !== 'string') {
-      field = field.toString().split('.').splice(1).join('.')
+    const orderBy: OrderRequest = {
+      field: evt.field,
+      direction: evt.order === 1 ? 'asc' : 'desc'
     }
-    if (evt.order === 0) {
-      list.value = props.items.sort(sort(field))
-    } else {
-      list.value = props.items.sort(sort(`-${field}`))
-    }
+    emit('sortCards', orderBy)
   }
 
   const onShowCards = (evt: any) => {

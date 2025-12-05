@@ -1,7 +1,7 @@
 <template>
   <detail-toolbar @onBack="onBack" @onEdit="setEdicion" @onDelete="runDelete"> </detail-toolbar>
   <div class="form">
-    <TitleSection :titulo="data.articulo!.nombre" :subtitulo="data.marca" />
+    <TitleSection :titulo="data.articulo.nombre" :subtitulo="data.marca" />
     <div v-if="data.precio" class="body">
       <div class="inputGroup">
         <div class="labelFor">Protección contra borrado accidental</div>
@@ -14,7 +14,7 @@
       <div class="inputGroup">
         <div class="labelFor">Medidas:</div>
         <div class="labelData" v-for="tipoUnidad in data.unidadesMedida">
-          {{ tipoUnidad.valor }} {{ pluralize(tipoUnidad.nombre, tipoUnidad.valor) }}
+          {{ formatCurrency(tipoUnidad.valor, false) }} {{ pluralize(tipoUnidad.nombre, tipoUnidad.valor) }}
         </div>
       </div>
       <div class="inputGroup">
@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-  import { reactive } from 'vue'
+  import {  onMounted, ref } from 'vue'
   import router from '@/router'
   import getPrecioById from '@/services/precio/getPrecioById.service'
   import { useRoute } from 'vue-router'
@@ -49,7 +49,7 @@
   })
   const route = useRoute()
   // Data
-  const data: Precio = reactive((await getPrecioById(route.params['id'].toString())).data as Precio)
+  const data = ref((await getPrecioById(route.params['id'].toString())).data as Precio)
 
   // Methods
   const onBack = () => {
@@ -57,7 +57,7 @@
   }
 
   const setEdicion = () => {
-    modelStore.setPrecio(data)
+    modelStore.setPrecio(data.value)
     router.push(eventStore.getRoutes.edit)
   }
 

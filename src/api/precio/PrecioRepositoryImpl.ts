@@ -9,10 +9,18 @@ import PrecioResponseDTO from './dto/PrecioResponseDTO'
 import PrecioRequestDTO from './dto/PrecioRequestDTO'
 import CheckDataResponse from '@/services/commons/models/CheckDataResponse'
 import UnidadMedida from '@/services/precio/models/UnidadMedida'
+import OrderRequest from '@/services/commons/models/OrderRequest'
+
+const mapping: { [key: string]: string } = {
+  title: 'articulo'
+}
 
 export default class PrecioRepositoryImpl implements PrecioRepository {
-  async get(): Promise<PrecioResponse> {
-    const endpoint = '/api/precios'
+  async get(orderReq: OrderRequest): Promise<PrecioResponse> {
+    const endpoint = '/api/precios?' + new URLSearchParams({
+      orderBy: mapping[orderReq.field] || orderReq.field,
+      direction: orderReq.direction
+    }).toString()
     const headers = {
       'Content-Type': 'application/json;charset=UTF-8'
     }
@@ -50,7 +58,7 @@ export default class PrecioRepositoryImpl implements PrecioRepository {
     return result
   }
 
-  async search(request: string): Promise<PrecioResponse> {
+  async search(request: string, orderReq: OrderRequest): Promise<PrecioResponse> {
     const endpoint = `/api/precios/search/${request}`
     const headers = {
       'Content-Type': 'application/json;charset=UTF-8'

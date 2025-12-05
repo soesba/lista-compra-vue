@@ -5,8 +5,8 @@
 </template>
 
 <script setup lang="ts">
-  import { onMounted, ref, computed } from 'vue'
-  import get from '@/services/precio/getPrecio.service'
+  import { ref, computed } from 'vue'
+  import get from '@/services/precio/getPrecios.service'
   import searchPrecio from '@/services/precio/searchPrecio.service'
   import create from '@/services/precio/createPrecio.service'
   import update from '@/services/precio/updatePrecio.service'
@@ -27,6 +27,9 @@
       case 'saveCard':
         onSaveCard(args[0])
         break
+      case 'sortCards':
+        onSortCards(args[0])
+        break
     }
   })
   // Data
@@ -34,6 +37,7 @@
   let cardClass = ref()
   const titulo = ref('Precios')
   const list = ref([])
+  const orderReq = ref()
   const mapping = {
     id: 'id',
     title: (item: Precio) => item.articulo.nombre,
@@ -59,17 +63,13 @@
     return cardClass.value ? cardClass.value.join(' ') : ''
   })
 
-  onMounted(() => {
-    getAllData()
-  })
-
   // Methods
   const getFechaCompra = (item: any) => {
     return dateToFront(item.fechaCompra)
   }
 
   const getAllData = () => {
-    get().then((response: PrecioResponse) => {
+    get(orderReq.value).then((response: PrecioResponse) => {
       list.value = response.data as []
     })
   }
@@ -105,12 +105,20 @@
 
   const onSearch = (evt: any) => {
     if (evt) {
-      searchPrecio(evt).then((response: PrecioResponse) => {
+      searchPrecio(evt, orderReq.value).then((response: PrecioResponse) => {
         list.value = response.data as []
       })
     } else {
       getAllData()
     }
+  }
+
+  const onSortCards = (evt: any) => {
+    orderReq.value = {
+      field: evt.field,
+      direction: evt.order === 1 ? 'asc' : 'desc'
+    }
+    getAllData()
   }
 </script>
 <style lang="scss" scoped>

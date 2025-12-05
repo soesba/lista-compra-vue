@@ -59,7 +59,7 @@
   import Articulo from '@/services/articulo/models/Articulo'
   import Precio from '@/services/precio/models/Precio'
   import updateUnidadesMedidaPrecio from '@/services/precio/updateUnidadesMedidaPrecio.service'
-import getByArticuloId from '@/services/precio/getPrecioByArticuloId.service'
+import getByArticuloId from '@/services/precio/getPreciosByArticuloId.service'
 
   // Computed
   const canSave = computed(() => {
