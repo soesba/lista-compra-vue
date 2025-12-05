@@ -38,9 +38,9 @@
     id: 'id',
     title: (item: Precio) => item.articulo.nombre,
     text: (item: Precio) => {
-      return `Establecimiento: ${item.establecimiento?.nombre}\n
-    Última fecha compra: ${getFechaCompra(item)}\n
-    Precio: ${formatCurrency(item.precio)}`
+      return `${item.establecimiento?.nombre}\n
+    ${getFechaCompra(item)}\n
+    ${formatCurrency(item.precio)}`
     }
   }
   const routes = {

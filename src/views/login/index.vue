@@ -36,8 +36,8 @@
   import getUsuarioPreferencias from '@/services/usuario/getUsuarioPreferencias.service'
   import getUsuarioByUsername from '@/services/usuario/getUsuarioByUsername.service'
   import Usuario from '@/services/usuario/models/Usuario'
-import registrarUsuario from '@/services/auth/registrarUsuario.service'
-import cambiarPassword from '@/services/auth/cambiarPassword.service'
+  import registrarUsuario from '@/services/auth/registrarUsuario.service'
+  import cambiarPassword from '@/services/auth/cambiarPassword.service'
 
   // const userName = ref('');
   const mode = ref('login')
@@ -76,7 +76,7 @@ import cambiarPassword from '@/services/auth/cambiarPassword.service'
     const usuario = (await getUsuarioByUsername(authStore.getUsuarioLogueado.username))
       .data as Usuario
     getUsuarioPreferencias(usuario.id).then((response: any) => {
-      console.log(response.data)
+      // console.log(response.data)
     })
   }
 
