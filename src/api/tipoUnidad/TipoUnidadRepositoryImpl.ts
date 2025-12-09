@@ -9,10 +9,18 @@ import TipoUnidadResponseDTO from './dto/TipoUnidadResponseDTO'
 import TipoUnidadRequestDTO from './dto/TipoUnidadRequestDTO'
 import CheckDataResponse from '@/services/commons/models/CheckDataResponse'
 import EquivalenciaResponse from '@/services/equivalencia/models/EquivalenciaResponse'
+import OrderRequest from '@/services/commons/models/OrderRequest'
+
+const mapping: { [key: string]: string } = {
+  title: 'nombre'
+}
 
 export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
-  async get(): Promise<TipoUnidadResponse> {
-    const endpoint = '/api/tipos-unidad'
+  async get(orderReq: OrderRequest): Promise<TipoUnidadResponse> {
+    const endpoint = '/api/tipos-unidad?' + new URLSearchParams({
+      orderBy: mapping[orderReq.field] || orderReq.field,
+      direction: orderReq.direction
+    }).toString()
     const headers = {
       'Content-Type': 'application/json;charset=UTF-8'
     }
@@ -49,8 +57,11 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
     }
   }
 
-  async search(id: string): Promise<TipoUnidadResponse> {
-    const endpoint = `/api/tipos-unidad/search/${id}`
+  async search(request: string, orderReq: OrderRequest): Promise<TipoUnidadResponse> {
+    const endpoint = `/api/tipos-unidad/search/${request}?` + new URLSearchParams({
+      orderBy: mapping[orderReq.field] || orderReq.field,
+      direction: orderReq.direction
+    }).toString()
     const headers = {
       'Content-Type': 'application/json;charset=UTF-8'
     }

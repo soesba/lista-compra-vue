@@ -8,10 +8,18 @@ import ArticuloResponseDTO from './dto/ArticuloResponseDTO'
 import ArticulosResponseDTO from './dto/ArticulosResponseDTO'
 import ArticuloRequestDTO from './dto/ArticuloRequestDTO'
 import CheckDataResponse from '../commons/dto/CheckDataResponseDTO'
+import OrderRequest from '@/services/commons/models/OrderRequest'
+
+const mapping: { [key: string]: string } = {
+  title: 'nombre'
+}
 
 export default class ArticuloRepositoryImpl implements ArticuloRepository {
-	async get(): Promise<ArticuloResponse> {
-		const endpoint = '/api/articulos'
+	async get(orderReq: OrderRequest): Promise<ArticuloResponse> {
+		const endpoint = '/api/articulos?' + new URLSearchParams({
+      orderBy: mapping[orderReq.field] || orderReq.field,
+      direction: orderReq.direction
+    }).toString()
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}
@@ -36,8 +44,11 @@ export default class ArticuloRepositoryImpl implements ArticuloRepository {
 		return result
 	}
 
-	async search(request: string): Promise<ArticuloResponse> {
-		const endpoint = `/api/articulos/search/${request}`
+	async search(request: string, orderReq: OrderRequest): Promise<ArticuloResponse> {
+		const endpoint = `/api/articulos/search/${request}?` + new URLSearchParams({
+			orderBy: mapping[orderReq.field] || orderReq.field,
+			direction: orderReq.direction
+		}).toString()
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8'
 		}

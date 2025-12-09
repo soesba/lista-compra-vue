@@ -59,7 +59,10 @@ export default class PrecioRepositoryImpl implements PrecioRepository {
   }
 
   async search(request: string, orderReq: OrderRequest): Promise<PrecioResponse> {
-    const endpoint = `/api/precios/search/${request}`
+    const endpoint = `/api/precios/search/${request}` + new URLSearchParams({
+      orderBy: mapping[orderReq.field] || orderReq.field,
+      direction: orderReq.direction
+    }).toString()
     const headers = {
       'Content-Type': 'application/json;charset=UTF-8'
     }

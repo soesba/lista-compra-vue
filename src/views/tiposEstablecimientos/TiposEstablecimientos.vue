@@ -24,6 +24,9 @@
       case 'saveCard':
         onSaveCard(args[0])
         break
+      case 'sortCards':
+        onSortCards(args[0])
+        break
     }
   })
   // Data
@@ -31,6 +34,7 @@
   let cardClass = ref()
   const titulo = ref('Categorías de establecimientos')
   const list = ref([])
+  const orderReq = ref()
   const mapping = {
     id: 'id',
     title: 'nombre',
@@ -57,14 +61,10 @@
     return cardClass.value ? cardClass.value.join(' ') : ''
   })
 
-  onMounted(() => {
-    getAllData()
-  })
-
-  // Methods
+    // Methods
 
   const getAllData = () => {
-    get().then((response: TipoEstablecimientoResponse) => {
+    get(orderReq.value).then((response: TipoEstablecimientoResponse) => {
       list.value = response.data as []
     })
   }
@@ -100,11 +100,19 @@
 
   const onSearch = (evt: any) => {
     if (evt) {
-      searchTipoEstablecimiento(evt).then((response: TipoEstablecimientoResponse) => {
+      searchTipoEstablecimiento(evt, orderReq.value).then((response: TipoEstablecimientoResponse) => {
         list.value = response.data as []
       })
     } else {
       getAllData()
     }
+  }
+
+  const onSortCards = (evt: any) => {
+    orderReq.value = {
+      field: evt.field,
+      direction: evt.order === 1 ? 'asc' : 'desc'
+    }
+    getAllData()
   }
 </script>

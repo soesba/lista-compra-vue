@@ -25,6 +25,9 @@
       case 'saveCard':
         onSaveCard(args[0])
         break
+      case 'sortCards':
+        onSortCards(args[0])
+        break
     }
   })
   // Data
@@ -32,6 +35,7 @@
   let cardClass = ref()
   const titulo = ref('Tipos de unidades')
   const list = ref([])
+  const orderReq = ref()
   const mapping = {
     id: 'id',
     title: 'nombre',
@@ -58,12 +62,9 @@
     return cardClass.value ? cardClass.value.join(' ') : ''
   })
 
-  onMounted(() => {
-    getAllData()
-  })
-
+  // Methods
   const getAllData = () => {
-    get().then((response: TipoUnidadResponse) => {
+    get(orderReq.value).then((response: TipoUnidadResponse) => {
       list.value = response.data as []
     })
   }
@@ -105,11 +106,19 @@
 
   const onSearch = (evt: any) => {
     if (evt) {
-      searchTipoUnidad(evt).then((response: TipoUnidadResponse) => {
+      searchTipoUnidad(evt, orderReq.value).then((response: TipoUnidadResponse) => {
         list.value = response.data as []
       })
     } else {
       getAllData()
     }
+  }
+
+  const onSortCards = (evt: any) => {
+    orderReq.value = {
+      field: evt.field,
+      direction: evt.order === 1 ? 'asc' : 'desc'
+    }
+    getAllData()
   }
 </script>

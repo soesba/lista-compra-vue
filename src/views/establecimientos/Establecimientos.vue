@@ -23,6 +23,9 @@
       case 'saveCard':
         onSaveCard(args[0])
         break
+      case 'sortCards':
+        onSortCards(args[0])
+        break
     }
   })
   // Data
@@ -30,6 +33,7 @@
   let cardClass = ref()
   const titulo = ref('Establecimientos')
   const list = ref([])
+  const orderReq = ref()
   const mapping = {
     id: 'id',
     logo: 'logo',
@@ -52,18 +56,13 @@
     return cardClass.value ? cardClass.value.join(' ') : ''
   })
 
-  onMounted(() => {
-    getAllData()
-  })
-
   // Methods
-
   const onAddCard = () => {
     router.push(routes.add)
   }
 
   const getAllData = async () => {
-    list.value = (await get()).data as []
+    list.value = (await get(orderReq.value)).data as []
   }
 
   const onSaveCard = (cardData: any) => {
@@ -93,11 +92,19 @@
 
   const onSearch = (evt: any) => {
     if (evt) {
-      searchEstablecimiento(evt).then((response: EstablecimientoResponse) => {
+      searchEstablecimiento(evt, orderReq.value).then((response: EstablecimientoResponse) => {
         list.value = response.data as []
       })
     } else {
       getAllData()
     }
+  }
+
+  const onSortCards = (evt: any) => {
+    orderReq.value = {
+      field: evt.field,
+      direction: evt.order === 1 ? 'asc' : 'desc'
+    }
+    getAllData()
   }
 </script>
