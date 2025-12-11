@@ -73,6 +73,9 @@
           </div>
         </div>
       </div>
+      <div class="inputGroup">
+        <v-text-field variant="underlined" label="Notas" v-model="editData.notas"></v-text-field>
+      </div>
     </div>
   </div>
 </template>
@@ -88,11 +91,10 @@
   import update from '@/services/precio/updatePrecio.service'
   import getArticuloById from '@/services/articulo/getArticuloById.service'
   import type Articulo from '@/services/articulo/models/Articulo'
-  import { dateToBack, dateToFront, isNumber, pluralize, StringToDate } from '@/utils/utils'
+  import { dateToFront, isNumber, pluralize, StringToDate } from '@/utils/utils'
   import ComboComponent from '@/components/combos/ComboComponent.vue'
   import { TipoDato } from '@/services/desplegables/models/TipoDato'
   import { modelStore } from '@/main'
-import TipoUnidadRepositoryImpl from '@/api/tipoUnidad/TipoUnidadRepositoryImpl'
 
   // Data
   const adding = ref(false)

@@ -35,6 +35,9 @@
         </combo-component>
       </div>
       <span class="text-small secondary">{{ messageHelperTiposUnidad }}</span>
+      <div class="inputGroup">
+        <v-text-field variant="underlined" label="Notas" v-model="editData.notas"></v-text-field>
+      </div>
       <div v-if="editData.id">
         <div class="inputGroup">
           <label class="labelFor">Histórico de precios</label>

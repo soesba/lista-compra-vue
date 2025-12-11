@@ -22,6 +22,10 @@
         <label>{{ formatCurrency(data.precio) }}</label>
       </div>
       <PrecioEquivalenciaComponent :unidades-medida="data.unidadesMedida" :precio="data.precio" />
+      <div class="inputGroup" v-if="data.notas">
+        <div class="labelFor">Notas</div>
+        <label>{{ data.notas }}</label>
+      </div>
     </div>
     <div v-else class="body">No hay precios introducidos</div>
   </div>

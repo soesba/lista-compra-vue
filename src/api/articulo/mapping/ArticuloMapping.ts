@@ -17,7 +17,8 @@ export const DtoToModel = (origin: ArticuloDTO): Articulo => {
 		}) : [],
 		fechaCreacion: origin.fechaCreacion ? dateToFront(origin.fechaCreacion) : '',
 		borrable: origin.borrable,
-		tienePrecios: origin.tienePrecios
+		tienePrecios: origin.tienePrecios,
+    notas: origin.notas
 	}
 	return model
 }
@@ -28,7 +29,8 @@ export const requestModelToDto = (origin: ArticuloRequest): ArticuloRequestDTO =
     nombre: origin.nombre,
     descripcion: origin.descripcion,
     tiposUnidad: origin.tiposUnidad ? origin.tiposUnidad.map(item => item.id) : [],
-    borrable: origin.borrable
+    borrable: origin.borrable,
+    notas: origin.notas
   }
 	return dto
 }

@@ -44,6 +44,11 @@ a.no-link {
 }
 
 .v-container {
+  .v-label,
+  .v-field-label,
+  .v-field-label--floating {
+    color: rgb(var(--v-theme-primary));
+  }
 	&.login {
 		display: flex;
 		justify-content: center;

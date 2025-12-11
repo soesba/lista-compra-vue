@@ -12,4 +12,5 @@ export default interface Articulo {
 	tienePrecios: boolean;
 	borrable: boolean;
   precios?: Array<Precio>;
+  notas: string;
 }

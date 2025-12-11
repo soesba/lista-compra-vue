@@ -43,7 +43,7 @@
   }
 
   const colDef = computed((): ColDef[] => {
-    return props.editable ? colDefBase.value : colDefBase.value.filter(col => col.field !== 'actions')
+    return props.editable ? colDefBase.value : colDefBase.value.filter(col => col.colType !== 'actions')
   })
 
   const colDefBase = computed((): ColDef[] => [
@@ -87,6 +87,7 @@
         return { html }
       }
     },
+    { field: 'notas', header: 'Notas', colType: 'text' },
     {
       field: 'actions',
       header: 'Acciones',
@@ -156,71 +157,3 @@
     console.log('LOG~ ~ :68 ~ onClickDelete ~ precio:', precio)
   }
 </script>
-<style lang="scss" scoped>
-  .v-card-text {
-    font-size: inherit;
-  }
-  .wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    .inputGroup {
-      justify-content: space-between;
-      align-items: center;
-    }
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    th,
-    td {
-      padding: 8px;
-      text-align: left;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
-  }
-  @media (max-width: 30em) {
-    /* 30 x 16px = 480px */
-    table {
-      width: 100%;
-      border-collapse: none;
-      td {
-        padding: 0.3em 1em;
-      }
-    }
-    table thead {
-      display: none;
-    }
-    table tr {
-      display: flex;
-      flex-direction: column;
-      margin: 0.5em 0;
-      margin-bottom: 1em;
-      border-radius: 4px;
-      border-color: rgba(var(--v-border-color), var(--v-border-opacity));
-      border-style: solid;
-      border-width: 0;
-      box-shadow:
-        0px 2px 1px -1px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)),
-        0px 1px 1px 0px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.14)),
-        0px 1px 3px 0px var(--v-shadow-key-ambient-opacity, rgba(0, 0, 0, 0.12));
-    }
-    table td[data-titulo] {
-      display: flex;
-      justify-content: space-between;
-      // padding: 0.3em 1em;
-    }
-    table td:not([data-titulo]) {
-      display: flex;
-      justify-content: center;
-      // padding: 0.3em 1em;
-    }
-    table td[data-titulo]::before {
-      content: attr(data-titulo) ':';
-      font-size: 0.8rem;
-      font-weight: 500;
-    }
-  }
-</style>
