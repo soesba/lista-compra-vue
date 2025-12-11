@@ -7,9 +7,11 @@ export default interface UiState {
     props: object,
     events: object
   },
-  confirmDialog: {
+  actionDialog: {
     show: boolean,
     props: {
+      type: 'confirmation' | 'done',
+      showIcon?: boolean,
       title: string;
       text: string;
     },

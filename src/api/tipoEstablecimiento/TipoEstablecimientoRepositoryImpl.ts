@@ -8,10 +8,18 @@ import TiposEstablecimientoResponseDTO from './dto/TiposEstablecimientoResponseD
 import TipoEstablecimientoResponseDTO from './dto/TipoEstablecimientoResponseDTO'
 import TipoEstablecimientoRequestDTO from './dto/TipoEstablecimientoRequestDTO'
 import CheckDataResponse from '@/services/commons/models/CheckDataResponse'
+import OrderRequest from '@/services/commons/models/OrderRequest'
+
+const mapping: { [key: string]: string } = {
+  title: 'nombre'
+}
 
 export default class TipoEstablecimientoRepositoryImpl implements TipoEstablecimientoRepository {
-  async get(): Promise<TipoEstablecimientoResponse> {
-    const endpoint = '/api/tipo-establecimientos'
+  async get(orderReq: OrderRequest): Promise<TipoEstablecimientoResponse> {
+    const endpoint = '/api/tipo-establecimientos?' + new URLSearchParams({
+      orderBy: mapping[orderReq.field] || orderReq.field,
+      direction: orderReq.direction
+    }).toString()
     const headers = {
       'Content-Type': 'application/json;charset=UTF-8'
     }
@@ -36,8 +44,11 @@ export default class TipoEstablecimientoRepositoryImpl implements TipoEstablecim
     return result
   }
 
-  async search(request: string): Promise<TipoEstablecimientoResponse> {
-    const endpoint = `/api/tipo-establecimientos/search/${request}`
+  async search(request: string, orderReq: OrderRequest): Promise<TipoEstablecimientoResponse> {
+    const endpoint = `/api/tipo-establecimientos/search ${request}?` + new URLSearchParams({
+      orderBy: mapping[orderReq.field] || orderReq.field,
+      direction: orderReq.direction
+    }).toString()
     const headers = {
       'Content-Type': 'application/json;charset=UTF-8'
     }

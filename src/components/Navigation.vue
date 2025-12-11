@@ -140,7 +140,7 @@
         {
           title: 'Logout',
           click: () => {
-            uiStore.showConfirmDialog({
+            uiStore.showActionDialog({
               props: {
                 text: '¿Desea cerrar la sesión?',
                 title: 'Confirmación'

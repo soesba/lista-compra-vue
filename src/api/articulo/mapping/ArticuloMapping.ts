@@ -2,6 +2,7 @@ import type Articulo from "@/services/articulo/models/Articulo"
 import type ArticuloDTO from "../dto/ArticuloDTO"
 import type ArticuloRequestDTO from "../dto/ArticuloRequestDTO"
 import type ArticuloRequest from "@/services/articulo/models/ArticuloRequest"
+import { dateToFront } from '@/utils/utils'
 
 export const DtoToModel = (origin: ArticuloDTO): Articulo => {
 	const model = {
@@ -14,7 +15,7 @@ export const DtoToModel = (origin: ArticuloDTO): Articulo => {
 				nombre: item.nombre
 			}
 		}) : [],
-		fechaCreacion: origin.fechaCreacion,
+		fechaCreacion: origin.fechaCreacion ? dateToFront(origin.fechaCreacion) : '',
 		borrable: origin.borrable,
 		tienePrecios: origin.tienePrecios
 	}

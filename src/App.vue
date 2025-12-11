@@ -4,7 +4,7 @@
     <navigation v-if="userLogged" @logout="onLogout" />
     <v-main>
       <alert-component></alert-component>
-      <raw-confirm-dialog v-if="rawConfirmDialog"></raw-confirm-dialog>
+      <raw-action-dialog v-if="rawActionDialog"></raw-action-dialog>
       <raw-dialog-component v-if="rawDialogComponent"></raw-dialog-component>
       <v-container :class="{ login: !userLogged, mobile: $vuetify.display.smAndDown }">
         <router-view v-slot="{ Component }">
@@ -28,7 +28,7 @@
   import { default as Mask } from '@/components/Mask.vue'
   import { ref, markRaw, watch } from 'vue'
   import DialogComponent from '@/components/DialogComponent.vue'
-  import ConfirmDialog from '@/components/dialogs-system/ConfirmDialog.vue'
+  import ActionDialog from '@/components/dialogs-system/ActionDialog.vue'
   import AlertComponent from './components/AlertComponent.vue'
   import { authStore } from './main'
   import { useRouter } from 'vue-router'
@@ -36,7 +36,7 @@
   const router = useRouter()
   const emmiter = defineEmits(['login'])
   const rawDialogComponent = markRaw(DialogComponent)
-  const rawConfirmDialog = markRaw(ConfirmDialog)
+  const rawActionDialog = markRaw(ActionDialog)
   const userLogged = ref(authStore.isAuthenticated)
 
   watch(router.currentRoute, newValue => {

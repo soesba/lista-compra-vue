@@ -14,6 +14,7 @@
 	.v-card {
 		margin: 10px;
 		.v-card-title {
+      color: rgb(var(--v-theme-primary));
 			display: flex;
 			flex-direction: row;
 			div:first-of-type {

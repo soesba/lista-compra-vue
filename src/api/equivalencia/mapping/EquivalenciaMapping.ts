@@ -6,12 +6,8 @@ import type EquivalenciaRequest from "@/services/equivalencia/models/Equivalenci
 export const DtoToModel = (origin: EquivalenciaDTO): Equivalencia => {
 	const model = {
 		id: origin.id,
-		from: origin.from,
 		to: origin.to,
-		factor: origin.factor,
-		fechaCreacion: origin.fechaCreacion,
-		borrable: origin.borrable,
-    markedForDeletion: false
+		factor: origin.factor
 	}
 	return model
 }

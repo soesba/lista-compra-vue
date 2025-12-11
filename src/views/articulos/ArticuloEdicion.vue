@@ -31,12 +31,16 @@
           multiple
           :error-messages="v$.editData.tiposUnidad.$errors.map((e: any) => e.$message)"
           @blur="v$.editData.tiposUnidad.$touch()"
-          @change="onChange"></combo-component>
+          @update:model-value="onChange">
+        </combo-component>
       </div>
-      <div class="inputGroup">
-        <label class="labelFor">Histórico de precios</label>
+      <span class="text-small secondary">{{ messageHelperTiposUnidad }}</span>
+      <div v-if="editData.id">
+        <div class="inputGroup">
+          <label class="labelFor">Histórico de precios</label>
+        </div>
+        <HistoricoPrecios :precios="editData.precios" :editable="true" :articulo="editData"></HistoricoPrecios>
       </div>
-      <HistoricoPrecios :precios="editData.precios" :editable="true"></HistoricoPrecios>
     </div>
   </div>
 </template>
@@ -55,19 +59,28 @@
   import update from '@/services/articulo/updateArticulo.service'
   import HistoricoPrecios from '@/components/HistoricoPrecios.vue'
   import Articulo from '@/services/articulo/models/Articulo'
+  import Precio from '@/services/precio/models/Precio'
+  import updateUnidadesMedidaPrecio from '@/services/precio/updateUnidadesMedidaPrecio.service'
+import getByArticuloId from '@/services/precio/getPreciosByArticuloId.service'
 
   // Computed
   const canSave = computed(() => {
-    return !v$.value.$invalid
+    return !v$.value.$invalid && v$.value.editData.$anyDirty
   })
 
   // Data
+  const from = history.state.back
   const adding = ref(false)
-  const editData = reactive<any>(modelStore.getArticulo ? modelStore.getArticulo : { borrable: true })
+  const originalData = modelStore.getArticulo ? { ...modelStore.getArticulo } : null
+  const editData = reactive<any>(modelStore.getArticulo ? { ...modelStore.getArticulo} : { borrable: true })
   if (!editData.id) {
     adding.value = true
   }
-
+  if (from.includes('precio-edicion')) {
+    // Si venimos de la edición de un precio, recargamos los precios asociados al artículo
+    editData.precios = (await getByArticuloId(editData.id)).data
+  }
+  const unidadesBorradas = ref<any[]>([])
   // Validations
   const validations = computed(() => {
     const maxTiposUnidad = (value: any) => {
@@ -87,7 +100,22 @@
   const v$ = useVuelidate(validations, { editData })
 
   // Methods
+  const messageHelperTiposUnidad = ref()
   const onChange = (event: any) => {
+    if (originalData) {
+      originalData.tiposUnidad.map((tipoUnidad: any) => {
+        if (!event.find((tipoUnidadItem: any) => tipoUnidadItem.id === tipoUnidad.id)) {
+          // Tipo unidad borrada
+          unidadesBorradas.value.push(tipoUnidad)
+        }
+      })
+      if (unidadesBorradas.value.length > 0) {
+        messageHelperTiposUnidad.value = `Las unidades de medida ${unidadesBorradas.value.map((u: any) => u.nombre).join(', ')}
+         serán eliminadas. Si existen precios asociados únicamente a estas unidades, también serán eliminados.`
+      } else {
+        messageHelperTiposUnidad.value = ''
+      }
+    }
     v$.value.editData.tiposUnidad.$touch()
   }
 
@@ -105,6 +133,26 @@
     if (adding.value) {
       createArticulo(editData)
     } else {
+      if (unidadesBorradas.value.length > 0) {
+        const preciosAfectados = editData.precios.filter((precio: any) => {
+          return unidadesBorradas.value.find((u: any) => {
+            return precio.unidadesMedida.find((um: any) => um.id === u.id)
+          })
+        })
+        preciosAfectados.forEach((precio: any) => {
+          precio.unidadesMedida = precio.unidadesMedida.filter((um: any) => {
+            return !unidadesBorradas.value.find((u: any) => u.id === um.id)
+          })
+        })
+        preciosAfectados.forEach((precio: Precio) => {
+          updateUnidadesMedidaPrecio(precio.id, precio.unidadesMedida).then(response => {
+            console.log('LOG~ ~ :145 ~ save ~ response:', response)
+          })
+        })
+      }
+      editData.precios.unidadesMedida = editData.precios.unidadesMedida.filter((um: any) => {
+        return !unidadesBorradas.value.find((u: any) => u.id === um.id)
+      })
       updateArticulo(editData)
     }
   }

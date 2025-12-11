@@ -8,10 +8,19 @@ import PreciosResponseDTO from './dto/PreciosResponseDTO'
 import PrecioResponseDTO from './dto/PrecioResponseDTO'
 import PrecioRequestDTO from './dto/PrecioRequestDTO'
 import CheckDataResponse from '@/services/commons/models/CheckDataResponse'
+import UnidadMedida from '@/services/precio/models/UnidadMedida'
+import OrderRequest from '@/services/commons/models/OrderRequest'
+
+const mapping: { [key: string]: string } = {
+  title: 'articulo'
+}
 
 export default class PrecioRepositoryImpl implements PrecioRepository {
-  async get(): Promise<PrecioResponse> {
-    const endpoint = '/api/precios'
+  async get(orderReq: OrderRequest): Promise<PrecioResponse> {
+    const endpoint = '/api/precios?' + new URLSearchParams({
+      orderBy: mapping[orderReq.field] || orderReq.field,
+      direction: orderReq.direction
+    }).toString()
     const headers = {
       'Content-Type': 'application/json;charset=UTF-8'
     }
@@ -49,8 +58,11 @@ export default class PrecioRepositoryImpl implements PrecioRepository {
     return result
   }
 
-  async search(request: string): Promise<PrecioResponse> {
-    const endpoint = `/api/precios/search/${request}`
+  async search(request: string, orderReq: OrderRequest): Promise<PrecioResponse> {
+    const endpoint = `/api/precios/search/${request}` + new URLSearchParams({
+      orderBy: mapping[orderReq.field] || orderReq.field,
+      direction: orderReq.direction
+    }).toString()
     const headers = {
       'Content-Type': 'application/json;charset=UTF-8'
     }
@@ -83,6 +95,19 @@ export default class PrecioRepositoryImpl implements PrecioRepository {
     }
     const requestDTO = requestModelToDto(request)
     const response = await xhr.put<PrecioRequestDTO, PrecioResponseDTO>(endpoint, requestDTO, { headers })
+    const result = {
+      data: DtoToModel(response.data.data),
+      respuesta: response.status
+    }
+    return result
+  }
+
+  async updateUnidadesMedida(precioId: string, unidades: Array<UnidadMedida>): Promise<PrecioResponse> {
+    const endpoint = `/api/precios/${precioId}/unidadesMedida`
+    const headers = {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+    const response = await xhr.put<{ unidadesMedida: Array<any> }, PrecioResponseDTO>(endpoint, { unidadesMedida: unidades }, { headers })
     const result = {
       data: DtoToModel(response.data.data),
       respuesta: response.status

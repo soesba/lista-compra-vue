@@ -26,6 +26,11 @@ const vuetify = createVuetify({
   locale: {
     locale: 'es',
     messages: { es }
+  },
+  date: {
+    locale: {
+      en: 'es-ES',
+    }
   }
 })
 

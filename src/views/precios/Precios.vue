@@ -5,16 +5,16 @@
 </template>
 
 <script setup lang="ts">
-  import { onMounted, ref, computed } from 'vue'
-  import get from '@/services/precio/getPrecio.service'
+  import { ref, computed } from 'vue'
+  import get from '@/services/precio/getPrecios.service'
   import searchPrecio from '@/services/precio/searchPrecio.service'
   import create from '@/services/precio/createPrecio.service'
   import update from '@/services/precio/updatePrecio.service'
   import router from '@/router'
-  import { eventStore } from '@/main'
+  import { eventStore, modelStore } from '@/main'
   import type PrecioRequest from '@/services/precio/models/PrecioRequest'
   import type PrecioResponse from '@/services/precio/models/PrecioResponse'
-  import { formatCurrency } from '@/utils/utils'
+  import { dateToFront, formatCurrency } from '@/utils/utils'
   import Precio from '@/services/precio/models/Precio'
 
   const emit = defineEmits(['close-dialog'])
@@ -27,6 +27,9 @@
       case 'saveCard':
         onSaveCard(args[0])
         break
+      case 'sortCards':
+        onSortCards(args[0])
+        break
     }
   })
   // Data
@@ -34,13 +37,14 @@
   let cardClass = ref()
   const titulo = ref('Precios')
   const list = ref([])
+  const orderReq = ref()
   const mapping = {
     id: 'id',
     title: (item: Precio) => item.articulo.nombre,
     text: (item: Precio) => {
-      return `Establecimiento: ${item.establecimiento?.nombre}\n
-    Última fecha compra: ${getFechaCompra(item)}\n
-    Precio: ${formatCurrency(item.precio)}`
+      return `${item.establecimiento?.nombre}\n
+    ${getFechaCompra(item)}\n
+    ${formatCurrency(item.precio)}`
     }
   }
   const routes = {
@@ -50,28 +54,22 @@
     list: '/precios'
   }
   eventStore.setRoutes(routes)
+
+  // Anulamos cualquier precio previamente almacenado
+  modelStore.setPrecio(null)
+
   // Computed
   const getClasses = computed(() => {
     return cardClass.value ? cardClass.value.join(' ') : ''
   })
 
-  onMounted(() => {
-    getAllData()
-  })
-
   // Methods
   const getFechaCompra = (item: any) => {
-    return item.fechaCompra
-      ? new Intl.DateTimeFormat('es-ES', {
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric'
-        }).format(item.fechaCompra)
-      : ''
+    return dateToFront(item.fechaCompra)
   }
 
   const getAllData = () => {
-    get().then((response: PrecioResponse) => {
+    get(orderReq.value).then((response: PrecioResponse) => {
       list.value = response.data as []
     })
   }
@@ -107,12 +105,20 @@
 
   const onSearch = (evt: any) => {
     if (evt) {
-      searchPrecio(evt).then((response: PrecioResponse) => {
+      searchPrecio(evt, orderReq.value).then((response: PrecioResponse) => {
         list.value = response.data as []
       })
     } else {
       getAllData()
     }
+  }
+
+  const onSortCards = (evt: any) => {
+    orderReq.value = {
+      field: evt.field,
+      direction: evt.order === 1 ? 'asc' : 'desc'
+    }
+    getAllData()
   }
 </script>
 <style lang="scss" scoped>

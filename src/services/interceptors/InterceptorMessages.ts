@@ -28,7 +28,7 @@ export default class InterceptorMessages implements Interceptor {
       uiStore.hideMask()
       // console.log("🚀 ~ InterceptorMessages ~ axiosInstance.interceptors.response.use ~ response:", response)
       // Handle the response here
-      if (response.status !== 200) {
+      if (response.status !== 200 && response.status !== 201) {
         uiStore.showAlertComponent({
           text: response.data.message,
           type: 'error'

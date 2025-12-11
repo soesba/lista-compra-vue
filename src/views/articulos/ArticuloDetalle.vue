@@ -16,7 +16,7 @@
           <label class="labelFor">Histórico de precios</label>
         </div>
         <!-- <v-btn variant="text" color="primary" @click="introducirPrecio()">Introducir precio de compra</v-btn> -->
-        <HistoricoPrecios v-if="data.tienePrecios" :precios="data.precios"></HistoricoPrecios>
+        <HistoricoPrecios v-if="data.precios" :precios="data.precios"></HistoricoPrecios>
         <div v-else class="inputGroup">
           <label>No hay precios registrados</label>
         </div>
@@ -33,11 +33,14 @@
   import { eventStore, modelStore } from '@/main'
   import type Articulo from '@/services/articulo/models/Articulo'
   import type Precio from '@/services/precio/models/Precio'
-  import getByArticuloId from '@/services/precio/getPrecioByArticuloId.service'
+  import getByArticuloId from '@/services/precio/getPreciosByArticuloId.service'
   import deleteItem from '@/services/articulo/deleteArticulo.service'
   import { sort } from '@/utils/utils'
   import HistoricoPrecios from '@/components/HistoricoPrecios.vue'
   import TitleSection from '@/components/TitleSection.vue'
+  import getEquivalencias from '@/services/tipoUnidad/getEquivalencias.service'
+  import Equivalencia from '@/services/equivalencia/models/Equivalencia'
+  import { onMounted, ref } from 'vue'
 
   // Props
   defineProps({
@@ -47,20 +50,29 @@
     }
   })
   const route = useRoute()
-  // Data
-  const data: Articulo = (await getArticuloById(route.params['id'].toString())).data as Articulo
-  const precios: Precio[] = ((await getByArticuloId(data.id)).data as Precio[]).sort(
-    sort('fechaCompra')
-  )
-  data.precios = precios
+  const data = ref((await getArticuloById(route.params['id'].toString())).data as Articulo)
 
+  onMounted(async() => {
+    const precios = ((await getByArticuloId(data.value.id)).data as Precio[]).sort(sort('fechaCompra'))
+    for (const precio of precios) {
+      for (const um of precio.unidadesMedida) {
+        const equivalencias = await getEquivalencias(um.id)
+        console.log('LOG~ ~ :62 ~ equivalencias:', equivalencias)
+        um.equivalencias = []
+        um.equivalencias?.push( ...(equivalencias.data as Equivalencia[]))
+      }
+    }
+    data.value.precios = precios
+  })
+
+  // Data
   // Methods
   const onBack = () => {
     router.push(eventStore.getRoutes.list)
   }
 
   const setEdicion = () => {
-    modelStore.articulo = data
+    modelStore.articulo = data.value
     router.push(eventStore.getRoutes.edit)
   }
 

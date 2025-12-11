@@ -1,5 +1,5 @@
 <template>
-  <edition-toolbar @onBack="onBack" @onSave="saveAll" :saveDisabled="!canSave" />
+  <edition-toolbar @onBack="onBack" @onSave="save" :saveDisabled="!canSave" />
   <div class="form" v-if="editData">
     <div class="body">
       <div class="inputGroup">
@@ -38,19 +38,19 @@
         <label class="labelFor">Equivalencias</label>
       </div>
       <div class="inputGroup">
-        <label v-if="equivalencias?.length === 0"> No hay equivalencias </label>
+        <label v-if="editData.equivalencias?.length === 0"> No hay equivalencias </label>
       </div>
       <div class="inputGroup margin-top-bottom">
         <label>1 {{ editData.nombre }} equivale a </label>
       </div>
       <equivalencia-component
-        v-for="equivalencia in equivalenciasListado"
+        v-for="equivalencia in editData.equivalencias"
         v-bind:key="equivalencia.id || equivalencia.tmpId"
         :equivalencia="equivalencia"
         @update-equivalencia="onUpdateEquivalencia"
         @delete-equivalencia="onDeleteEquivalencia">
       </equivalencia-component>
-      <equivalencia-component :from="from" @save-equivalencia="onSaveEquivalencia" />
+      <equivalencia-component @save-equivalencia="onSaveEquivalencia" />
       <div class="inputGroup">
         <small class="text-caption text-medium-emphasis">*campo requerido</small>
       </div>
@@ -70,11 +70,10 @@
   import { authStore, modelStore } from '@/main'
   import create from '@/services/tipoUnidad/createTipoUnidad.service'
   import update from '@/services/tipoUnidad/updateTipoUnidad.service'
-  import getByFrom from '@/services/equivalencia/getEquivalenciaByFrom.service'
-  import save from '@/services/equivalencia/saveEquivalencias.service'
+
   // Computed
   const canSave = computed(() => {
-    return !v$.value.$invalid
+    return !v$.value.editData.$invalid
   })
 
   const showCheckDatoMaestro = computed(() => {
@@ -86,19 +85,9 @@
   if (!editData.id) {
     adding.value = true
   }
-  const equivalencias = editData?.id
-    ? reactive<Equivalencia[]>((await (await getByFrom(editData.id)).data) as Equivalencia[])
-    : []
-
-  const from = ref({
-    id: editData.id,
-    nombre: editData.nombre
-  })
-
-  // Computed
-  const equivalenciasListado = computed(() => {
-    return equivalencias.filter(eq => eq.markedForDeletion === false)
-  })
+  if (editData.equivalencias == null) {
+    editData.equivalencias = []
+  }
 
   // Validations
   const validations = computed(() => {
@@ -117,9 +106,9 @@
   // Methods
 
   const onUpdateEquivalencia = (data: Equivalencia) => {
-    equivalencias.forEach((eq: Equivalencia, index: number) => {
+    editData.equivalencias.forEach((eq: Equivalencia, index: number) => {
       if ((data.id && eq.id === data.id) || (data.tmpId && eq.tmpId === data.tmpId)) {
-        equivalencias[index] = data
+        editData.equivalencias[index] = data
       }
     })
   }
@@ -128,44 +117,35 @@
     if (!data.tmpId) {
       data.tmpId = Date.now()
     }
-    equivalencias.push(data)
+    editData.equivalencias.push(data)
   }
 
   const onDeleteEquivalencia = (data: Equivalencia) => {
-    if (data.tmpId) {
-      equivalencias.splice(equivalencias.findIndex((eq: Equivalencia) => eq.tmpId === data.tmpId, 1))
-    } else {
-      equivalencias.forEach((eq: Equivalencia, index: number) => {
-        if ((data.id && eq.id === data.id) || (data.tmpId && eq.tmpId === data.tmpId)) {
-          equivalencias[index].markedForDeletion = true
-        }
-      })
-    }
+    const idDelete = data.id ? data.id : data.tmpId
+    editData.equivalencias.splice(editData.equivalencias.findIndex((eq: Equivalencia) => eq.id === idDelete), 1)
   }
 
-  const saveAll = () => {
-    equivalencias.forEach((eq: Equivalencia) => {
+  const save = () => {
+    editData.equivalencias.forEach((eq: Equivalencia) => {
       delete eq.tmpId
-      eq.from = editData.id
     })
-    const promesas = []
     if (adding.value) {
-      promesas.push(create(editData))
-      // createTipoUnidad(editData)
-    } else {
-      promesas.push(update(editData))
-      // updateTipoUnidad(editData)
-    }
-    promesas.push(save(equivalencias))
-    Promise.all(promesas)
-      .then(responses => {
-        if (responses && responses[0] && responses[1]) {
+      create(editData).then((response: any) => {
+        if (response.respuesta === 200) {
           onBack()
         }
+      }).catch((error: any) => {
+        console.error('Error al crear la unidad de medida:', error)
       })
-      .catch(error => {
-        console.error('Error al guardar los tipos de unidades y equivalencias:', error)
+    } else {
+      update(editData).then((response: any) => {
+        if (response.respuesta === 200) {
+          onBack()
+        }
+      }).catch((error: any) => {
+        console.error('Error al actualizar la unidad de medida:', error)
       })
+    }
   }
 
   const onBack = () => {

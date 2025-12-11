@@ -1,31 +1,29 @@
 <template>
   <div class="usuarios">
     <TitleView :titulo="title" :subtitulo="subtitle" :show-menu="false"></TitleView>
-    <ResponsiveTable
-      :cols-def="colDef"
-      :row-data="usuarios"
-      :options="tableOptions"></ResponsiveTable>
+    <ResponsiveTable :cols-def="colDef" :row-data="usuarios" :options="tableOptions"></ResponsiveTable>
   </div>
 </template>
 
 <script setup lang="ts">
-  import ResponsiveTable, {
-    ColDef,
-    TableOptions
-  } from '@/components/responsiveTable/ResponsiveTable.vue'
+  import ResponsiveTable, { ColDef, TableOptions } from '@/components/responsiveTable/ResponsiveTable.vue'
   import TitleView from '@/components/TitleView.vue'
   import get from '@/services/usuario/getUsuarios.service'
   import Usuario from '@/services/usuario/models/Usuario'
-  import { onMounted, ref } from 'vue'
+  import { computed, onMounted, ref, watch } from 'vue'
   import { VBtn } from 'vuetify/components/VBtn'
 
+  const props = defineProps({
+    reload: Boolean
+  })
+  const emmiter = defineEmits(['resetReload'])
   const title = 'Usuarios'
   const subtitle = 'Gestiona los usuarios de la aplicación'
   const usuarios = ref<Usuario[]>([])
   const tableOptions: TableOptions = {
     editable: false
   }
-  const colDef: ColDef[] = [
+  const colDef = computed((): ColDef[] => [
     {
       field: 'esAdministrador',
       colType: 'html',
@@ -48,6 +46,7 @@
       colType: 'text'
     },
     { header: 'Email', field: 'email', colType: 'text' },
+    { header: 'Rol', field: 'rol', colType: 'text', valueGetter: (params: any) => params.value?.nombre || '' },
     {
       header: 'Fecha creación',
       dataTitulo: 'F. Creación',
@@ -68,25 +67,40 @@
         }
       ]
     }
-  ]
+  ])
+
+  watch(
+    () => props.reload,
+    (newVal) => {
+      if (newVal) {
+        cargaUsuarios()
+      }
+    }
+  )
 
   // const onEdit = (eventData: { data: any; rowIndex: number }) => {
   //   console.log('Editar usuario:', eventData)
   // }
 
   const onDelete = (eventData: { data: any; rowIndex: number }) => {
+    // TODO
     console.log('Eliminar usuario no implementado:', eventData)
   }
 
+  const cargaUsuarios = () => {
+    get().then(response => {
+      usuarios.value = response.data as Usuario[]
+    })
+    .catch(error => {
+      console.error('Error al cargar los usuarios:', error)
+    })
+    if (props.reload) {
+      emmiter('resetReload')
+    }
+  }
+
   onMounted(() => {
-    console.log('Mounted GestionUsuarios')
-    get()
-      .then(response => {
-        usuarios.value = response.data as Usuario[]
-      })
-      .catch(error => {
-        console.error('Error al cargar los usuarios:', error)
-      })
+    cargaUsuarios()
   })
 </script>
 

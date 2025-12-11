@@ -2,7 +2,7 @@ import type Precio from "@/services/precio/models/Precio"
 import type PrecioDTO from "../dto/PrecioDTO"
 import type PrecioRequestDTO from "../dto/PrecioRequestDTO"
 import type PrecioRequest from "@/services/precio/models/PrecioRequest"
-import { stringToNumber } from '@/utils/utils'
+import { dateToFront, StringToDate, stringToNumber } from '@/utils/utils'
 
 export const DtoToModel = (origin: PrecioDTO): Precio => {
 	const model: Precio = {
@@ -12,9 +12,8 @@ export const DtoToModel = (origin: PrecioDTO): Precio => {
 		marca: origin.marca,
 		establecimiento: origin.establecimiento,
 		unidadesMedida: origin.unidadesMedida,
-		// fechaCompra: origin.fechaCompra ? origin.fechaCompra.split('/').reverse().join('-') : origin.fechaCompra,
-		fechaCompra: origin.fechaCompra ? new Date(origin.fechaCompra.split('/').reverse().join('-')) : null,
-		fechaCreacion: origin.fechaCreacion,
+		fechaCompra: origin.fechaCompra,
+		fechaCreacion: origin.fechaCreacion ? dateToFront(origin.fechaCreacion) : '',
 		notas: origin.notas,
 		borrable: origin.borrable
 	}
@@ -29,12 +28,8 @@ export const requestModelToDto = (origin: PrecioRequest): PrecioRequestDTO => {
 		marca: origin.marca,
 		establecimiento: origin.establecimiento,
 		unidadesMedida: origin.unidadesMedida,
-		fechaCompra: origin.fechaCompra ? new Intl.DateTimeFormat('es-ES', {
-			day: "2-digit",
-			month: "2-digit",
-			year: "numeric",
-		}).format(origin.fechaCompra) : '',
-		fechaCreacion: origin.fechaCreacion,
+		fechaCompra: origin.fechaCompra,
+		fechaCreacion: origin.fechaCreacion ? StringToDate(origin.fechaCreacion) : new Date(),
 		notas: origin.notas,
 		borrable: origin.borrable
 	}

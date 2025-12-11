@@ -23,7 +23,10 @@ a.no-link {
 }
 
 .text-small {
-	font-size: 0.6rem;
+	font-size: 0.8rem;
+  &.secondary {
+    color: rgb(var(--v-theme-secondary));
+  }
 }
 
 .dots-menu {
@@ -46,6 +49,7 @@ a.no-link {
 		justify-content: center;
 		align-items: center;
 		min-height: 90vh;
+    max-width: none;
 
 		@media (min-width: 1280px) {
 			min-height: 90vh;
@@ -68,6 +72,7 @@ a.no-link {
 }
 
 .v-card {
+  color: rgb(var(--v-theme-primary));
 	margin: 10px;
 	text-align: center;
 
@@ -118,6 +123,7 @@ a.no-link {
 	gap: 10px;
 
 	.labelFor {
+    color: rgb(var(--v-theme-primary));
 		margin-right: 10px;
 	}
 }

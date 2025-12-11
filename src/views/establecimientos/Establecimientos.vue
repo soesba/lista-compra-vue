@@ -5,12 +5,12 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, onMounted, ref } from 'vue'
+  import { computed, ref } from 'vue'
   import get from '@/services/establecimiento/getEstablecimiento.service'
   import searchEstablecimiento from '@/services/establecimiento/searchEstablecimiento.service'
   import create from '@/services/establecimiento/createEstablecimiento.service'
   import update from '@/services/establecimiento/updateEstablecimiento.service'
-  import { eventStore } from '@/main'
+  import { eventStore, modelStore } from '@/main'
   import router from '@/router'
   import type EstablecimientoRequest from '@/services/establecimiento/models/EstablecimientoRequest'
   import type EstablecimientoResponse from '@/services/establecimiento/models/EstablecimientoResponse'
@@ -23,6 +23,9 @@
       case 'saveCard':
         onSaveCard(args[0])
         break
+      case 'sortCards':
+        onSortCards(args[0])
+        break
     }
   })
   // Data
@@ -30,6 +33,7 @@
   let cardClass = ref()
   const titulo = ref('Establecimientos')
   const list = ref([])
+  const orderReq = ref()
   const mapping = {
     id: 'id',
     logo: 'logo',
@@ -44,23 +48,21 @@
     list: '/establecimientos'
   }
   eventStore.setRoutes(routes)
+  // Anulamos cualquier establecimiento previamente almacenado
+  modelStore.setEstablecimiento(null)
+
   // Computed
   const getClasses = computed(() => {
     return cardClass.value ? cardClass.value.join(' ') : ''
   })
 
-  onMounted(() => {
-    getAllData()
-  })
-
   // Methods
-
   const onAddCard = () => {
     router.push(routes.add)
   }
 
   const getAllData = async () => {
-    list.value = (await get()).data as []
+    list.value = (await get(orderReq.value)).data as []
   }
 
   const onSaveCard = (cardData: any) => {
@@ -90,11 +92,19 @@
 
   const onSearch = (evt: any) => {
     if (evt) {
-      searchEstablecimiento(evt).then((response: EstablecimientoResponse) => {
+      searchEstablecimiento(evt, orderReq.value).then((response: EstablecimientoResponse) => {
         list.value = response.data as []
       })
     } else {
       getAllData()
     }
+  }
+
+  const onSortCards = (evt: any) => {
+    orderReq.value = {
+      field: evt.field,
+      direction: evt.order === 1 ? 'asc' : 'desc'
+    }
+    getAllData()
   }
 </script>

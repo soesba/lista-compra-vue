@@ -39,16 +39,16 @@
   }
 
   const confirmDelete = () => {
-    uiStore.showConfirmDialog({
+    uiStore.showActionDialog({
       props: {
         text: '¿Desea eliminar el elemento?',
         title: 'Confirmación'
       },
-      aceptarFn: onCloseConfirmDialog
+      aceptarFn: onCloseActionDialog
     })
   }
 
-  const onCloseConfirmDialog = () => {
+  const onCloseActionDialog = () => {
     emit('onDelete')
   }
 

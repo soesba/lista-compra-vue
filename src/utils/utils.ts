@@ -1,3 +1,4 @@
+import { format } from 'date-fns'
 /**
  * Conversión de ficheros a base64 para su posterior subida
  * @param file Fichero seleccionado desde un input file
@@ -75,9 +76,38 @@ export const formatCurrency = (value: number, currency = true) => {
   const result = value ? value.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : ''
   return currency && result ? result.concat(' €') : result
 }
+
 export const stringToNumber = (value: string): number => {
   const result = parseFloat(value.replace('.', '').replace(',', '.'))
   return isNaN(result) ? 0 : result
+}
+
+export const dateToBack = (value: string): string => {
+  return value ? format(new Date(value), 'yyyy-MM-dd') : ''
+}
+
+export const dateToFront = (value: Date): string => {
+  return value ? format(new Date(value), 'dd/MM/yyyy') : ''
+}
+
+export const DateToString = (date: Date): string => {
+  if (date) {
+    date = new Date(date)
+  } else {
+    return ''
+  }
+  const year = date.getFullYear()
+  const month = (date.getMonth() + 1).toString().padStart(2, '0')
+  const day = date.getDate().toString().padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+export const StringToDate = (dateStr: string): Date => {
+  const parts = dateStr.split('/')
+  const year = parseInt(parts[2], 10)
+  const month = parseInt(parts[1], 10) - 1
+  const day = parseInt(parts[0], 10)
+  return new Date(year, month, day)
 }
 
 export const isNumber = (str: string) => {

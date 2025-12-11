@@ -3,4 +3,5 @@ export default interface TipoEstablecimientoRequest {
 	nombre: string;
 	abreviatura: string;
 	borrable: boolean;
+  fechaCreacion: string;
 }

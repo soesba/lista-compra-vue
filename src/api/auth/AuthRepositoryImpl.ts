@@ -55,4 +55,53 @@ export default class AuthRepositoryImpl implements AuthRepository {
       }
     }
   }
+
+  /**
+   *  Servicio de cambio de contraseña
+   * @param username: Nombre de usuario
+   * @param newPassword: Nueva contraseña
+   * @return Promise<Response>: Retorna el resultado del cambio de contraseña
+   * @reject Promise<error>: Retorna error cuando el cambio no es correcto
+   */
+  async changePassword(username: string, newPassword: string): Promise<any> {
+    const endpoint = '/auth/change-password'
+    const headers = {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+
+    const request = {
+      username,
+      newPassword
+    }
+
+    const response = await xhr.post<any, any>(endpoint, request, { headers })
+    return {
+      status: response.status,
+      data: response.data
+    }
+  }
+
+  /**
+   * Servicio de registro de nuevo usuario
+   * @param username
+   * @param email
+   * @param password
+   * @returns
+   */
+  async register(username: string, email: string, password: string): Promise<any> {
+    const endpoint = '/auth/register'
+    const headers = {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+    const request = {
+      username,
+      email,
+      password
+    }
+    const response = await xhr.post<any, any>(endpoint, request, { headers })
+    return {
+      status: response.status,
+      data: response.data
+    }
+  }
 }

@@ -2,9 +2,10 @@ import Usuario from '@/services/usuario/models/Usuario'
 import UsuarioDTO from '../dto/UsuarioDTO'
 import PermisoDTO from '../dto/PermisoDTO'
 import Permiso from '@/services/auth/models/Permiso'
+import { dateToFront, StringToDate } from '@/utils/utils'
 
 export const DtoToModel = (dto: UsuarioDTO): Usuario => {
-  return {
+  const model: Usuario = {
     id: dto.id,
     username: dto.username,
     nombre: dto.nombre,
@@ -12,8 +13,12 @@ export const DtoToModel = (dto: UsuarioDTO): Usuario => {
     segundoApellido: dto.segundoApellido ? dto.segundoApellido : '',
     email: dto.email ? dto.email : '',
     foto: dto.foto,
-    fechaCreacion: dto.fechaCreacion,
+    fechaCreacion: dto.fechaCreacion ? dateToFront(dto.fechaCreacion) : '',
     esAdministrador: dto.esAdministrador,
+    rol: dto.rol ? {
+      id: dto.rol.id,
+      nombre: dto.rol.nombre
+    } : null,
     permisos: dto.permisos ? dto.permisos.map((permisoDTO: PermisoDTO) => ({
       id: permisoDTO.id,
       modeloId: permisoDTO.modeloId,
@@ -22,6 +27,7 @@ export const DtoToModel = (dto: UsuarioDTO): Usuario => {
     })) : [],
     preferencias: dto.preferencias ? dto.preferencias : []
   }
+  return model
 }
 
 export const ModelToDto = (model: Usuario): UsuarioDTO => {
@@ -33,8 +39,12 @@ export const ModelToDto = (model: Usuario): UsuarioDTO => {
     segundoApellido: model.segundoApellido,
     email: model.email ? model.email : '',
     foto: model.foto ? model.foto : null,
-    fechaCreacion: model.fechaCreacion,
+    fechaCreacion: model.fechaCreacion ? StringToDate(model.fechaCreacion) : new Date(),
     esAdministrador: model.esAdministrador,
+    rol: model.rol ? {
+      id: model.rol.id,
+      nombre: model.rol.nombre
+    } : null,
     permisos: model.permisos ? model.permisos.map((permiso: Permiso) => ({
       id: permiso.id,
       modeloId: permiso.modeloId,

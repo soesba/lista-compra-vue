@@ -5,12 +5,12 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, onMounted, ref } from 'vue'
+  import { computed, ref } from 'vue'
   import get from '@/services/articulo/getArticulo.service'
   import searchArticulo from '@/services/articulo/searchArticulo.service'
   import create from '@/services/articulo/createArticulo.service'
   import update from '@/services/articulo/updateArticulo.service'
-  import { eventStore } from '@/main'
+  import { eventStore, modelStore } from '@/main'
   import type ArticuloRequest from '@/services/articulo/models/ArticuloRequest'
   import type ArticuloResponse from '@/services/articulo/models/ArticuloResponse'
   import router from '@/router'
@@ -25,6 +25,9 @@
       case 'saveCard':
         onSaveCard(args[0])
         break
+      case 'sortCards':
+        onSortCards(args[0])
+        break
     }
   })
   // Data
@@ -32,6 +35,7 @@
   let cardClass = ref()
   const titulo = ref('Articulos')
   const list = ref([])
+  const orderReq = ref()
   const mapping = {
     id: 'id',
     title: 'nombre',
@@ -47,23 +51,22 @@
     list: '/articulos'
   }
   eventStore.setRoutes(routes)
+
+  // Anulamos cualquier articulo previamente almacenado
+  modelStore.setArticulo(null)
+
   // Computed
   const getClasses = computed(() => {
     return cardClass.value ? cardClass.value.join(' ') : ''
   })
 
-  onMounted(() => {
-    getAllData()
-  })
-
   // Methods
-
   const onAddCard = () => {
     router.push(routes.add)
   }
 
   const getAllData = () => {
-    get().then((response: ArticuloResponse) => {
+    get(orderReq.value).then((response: ArticuloResponse) => {
       list.value = response.data as []
     })
   }
@@ -95,11 +98,19 @@
 
   const onSearch = (evt: any) => {
     if (evt) {
-      searchArticulo(evt).then((response: ArticuloResponse) => {
+      searchArticulo(evt, orderReq.value).then((response: ArticuloResponse) => {
         list.value = response.data as []
       })
     } else {
       getAllData()
     }
+  }
+
+  const onSortCards = (evt: any) => {
+    orderReq.value = {
+      field: evt.field,
+      direction: evt.order === 1 ? 'asc' : 'desc'
+    }
+    getAllData()
   }
 </script>

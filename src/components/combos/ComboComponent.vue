@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, type PropType, watch, onBeforeMount, defineExpose } from 'vue'
+  import { ref, type PropType, watch, onBeforeMount } from 'vue'
   import getDesplegable from '@/services/desplegables/getDesplegable.service'
   import { TipoDato } from '@/services/desplegables/models/TipoDato'
   import { sort } from '@/utils/utils'
@@ -73,7 +73,7 @@
   const bindProps = { ...props }
   const bindEvents = {
     blur: () => onBlur(),
-    'update:modelValue': (event: any) => onUpdateModelValue(event),
+    // 'update:modelValue': (event: any) => onUpdateModelValue(event),
     change: (event: any) => onChange(event)
   }
 
@@ -106,6 +106,8 @@
         return 'Unidad'.concat(label)
       case TipoDato.Usuario:
         return 'Usuario'.concat(label)
+      case TipoDato.Rol:
+        return 'Rol'.concat(label)
     }
   }
 

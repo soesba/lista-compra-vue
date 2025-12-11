@@ -6,10 +6,10 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
-import getByFromMultiple from '@/services/equivalencia/getEquivalenciaByFromMultiple.service'
 import type UnidadMedida from '@/services/precio/models/UnidadMedida'
 import { formatCurrency } from '@/utils/utils'
+import getEquivalencias from '@/services/tipoUnidad/getEquivalencias.service';
+import { onMounted, ref } from 'vue';
 import Equivalencia from '@/services/equivalencia/models/Equivalencia';
 
 const props = defineProps({
@@ -23,9 +23,25 @@ const props = defineProps({
 	},
 })
 
-console.log(props)
+const equivalencias = ref()
 
-let equivalencias = reactive(await (await getByFromMultiple(props.unidadesMedida.map((x) => x.id))).data) as Equivalencia[]
+onMounted(async () => {
+  equivalencias.value = await loadEquivalencias()
+})
+
+const loadEquivalencias = async (): Promise<Equivalencia[]> => {
+  let resultado: any = []
+  for (const unidad of props.unidadesMedida) {
+    const result = (await getEquivalencias(unidad.id)).data as any[]
+    for (const item of result) {
+      resultado.push( {
+        ...item,
+        from: { ...unidad}
+      })
+    }
+  }
+  return resultado
+}
 
 const getPrecio = (eq: any) => {
 	const valor = props.unidadesMedida.find((x) => x.id === eq.from.id)

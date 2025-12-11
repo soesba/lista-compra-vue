@@ -1,11 +1,5 @@
 <template>
-  <v-alert
-    v-model="show"
-    :icon="icon"
-    closable
-    :text="text"
-    :variant="variant"
-    :type="type"></v-alert>
+  <v-alert v-model="show" :icon="icon" closable :text="text" :variant="variant" :type="type"></v-alert>
 </template>
 <script setup lang="ts">
   import { computed, onMounted } from 'vue'
@@ -27,7 +21,6 @@
   })
   // success, info, warning, error
   const type = computed(() => {
-    console.log(uiStore.getAlertComponent?.props.type)
     return uiStore.getAlertComponent?.props.type
   })
   const variant = computed(() => {
@@ -51,5 +44,7 @@
     position: fixed;
     z-index: 1000;
     width: 80%;
+    margin-top: 16px;
+    justify-self: center;
   }
 </style>

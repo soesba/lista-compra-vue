@@ -4,7 +4,6 @@
       :tipo-dato="TipoDato.TipoUnidad"
       v-model="nuevaEquivalencia.to"
       :variant="props.equivalencia ? 'outlined' : 'underlined'"
-      :return-object="false"
       required
       :error-messages="v$.nuevaEquivalencia.to.$errors.map(e => e.$message)"
       @change="onChangeCboTo">
@@ -40,7 +39,6 @@
   import { computed, ref, type PropType } from 'vue'
   import type Equivalencia from '@/services/equivalencia/models/Equivalencia'
   import { TipoDato } from '@/services/desplegables/models/TipoDato'
-  import type Item from '@/services/desplegables/models/Item'
   import { requiredIf } from '@vuelidate/validators'
 
   const emitter = defineEmits(['saveEquivalencia', 'updateEquivalencia', 'deleteEquivalencia'])
@@ -48,12 +46,6 @@
     equivalencia: {
       type: Object as PropType<Equivalencia>,
       default: null
-    },
-    from: {
-      type: Object as PropType<Item>,
-      default() {
-        return {}
-      }
     }
   })
 
@@ -61,10 +53,10 @@
     ? ref({ ...props.equivalencia })
     : ref({
         tmpId: 0,
-        from: props.from,
         to: null,
         factor: null
       })
+  console.log('LOG~ ~ :68 ~ nuevaEquivalencia:', nuevaEquivalencia)
 
   // Computed
   const canSave = computed(() => {
@@ -74,10 +66,9 @@
   const validations = computed(() => {
     return {
       nuevaEquivalencia: {
-        from: { required: requiredIf(props.equivalencia !== null) },
         tmpId: { required: requiredIf(!props.equivalencia) },
-        to: { required: requiredIf(props.equivalencia !== null) },
-        factor: { required: requiredIf(props.equivalencia !== null) }
+        to: { required: requiredIf(!props.equivalencia) },
+        factor: { required: requiredIf(!props.equivalencia) }
       }
     }
   })
@@ -85,6 +76,7 @@
   // Methods
 
   const onChangeCboTo = (value: any) => {
+    console.log('LOG~ ~ :79 ~ onChangeCboTo ~ value:', value)
     if (props.equivalencia && nuevaEquivalencia.value.to !== props.equivalencia.to) {
       emitter('updateEquivalencia', nuevaEquivalencia.value)
     }
@@ -116,7 +108,6 @@
   const resetForm = () => {
     nuevaEquivalencia.value = {
       tmpId: 0,
-      from: props.from,
       to: null,
       factor: null
     }

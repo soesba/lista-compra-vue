@@ -37,7 +37,7 @@
                 <ResponsiveTable
                   :ref="`tabla-${modelo.id}`"
                   :cols-def="colDefBase"
-                  :row-data="rowData"
+                  :row-data="modelo.resultado.fallas"
                   :options="{ editable: false }"></ResponsiveTable>
                 <div class="center">
                   <v-btn color="primary" @click="onClickSolucionarTodos(modelo.resultado.fallas)"
@@ -74,8 +74,7 @@
 
   const title = 'Gestión de la aplicación'
   const subtitle = 'Utilidades para la gestión de la aplicación'
-
-  const rowData = ref<Array<any>>([])
+  const emitter = defineEmits(['recargaUsuarios'])
   const colDefBase: ColDef[] = [
     {
       field: 'id',
@@ -135,7 +134,7 @@
   }
 
   const onClickEliminar = (modeloId: string) => {
-    uiStore.showConfirmDialog({
+    uiStore.showActionDialog({
       props: {
         text: 'Si elimina este elemento, se eliminará toda la información relacionada (como configuraciones de usuario, etc.). ¿Desea continuar?',
         title: 'Confirmación'
@@ -154,13 +153,19 @@
     const modelo = modelosUI.value.find(m => m.id === modeloId.toString())
     if (modelo) {
       console.log(`Comprobar datos de modelo ${modelo.nombre}`)
-      checkData(modelo.nombre).then(response => {
-        const data = response.data
-        modelo.resultado = data
-        modelo.resultado.fallas.map((item: any) => (item.modeloId = modeloId))
-        rowData.value = data.fallas
-        modelo.showResultadoCheckData = true
-      })
+      checkData(modelo.nombre)
+        .then(response => {
+          const data = response.data
+          modelo.resultado = data
+          modelo.resultado.fallas.map((item: any) => (item.modeloId = modeloId))
+          modelo.showResultadoCheckData = true
+        })
+        .catch(error => {
+          uiStore.showAlertComponent({
+            text: error.message,
+            type: 'error'
+          })
+        })
     }
   }
 
@@ -170,7 +175,6 @@
   }
 
   const onClickSolucionar = (data: any) => {
-    console.log('LOG~ ~ :172 ~ onClickSolucionar ~ data:', data)
     console.log('Solucionar problemas de inconsistencia del registro')
     mostrarPopupSolucionarProblemas([data])
   }
@@ -189,8 +193,8 @@
       },
       events: {
         resolve: (data: any) => {
-          console.log('LOG~ ~ :192 ~ mostrarPopupSolucionarProblemas ~ data:', data)
           onCheckDataClick(fallas[0].modeloId)
+          emitter('recargaUsuarios')
         }
       }
     })

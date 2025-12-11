@@ -9,6 +9,6 @@ export default interface EstablecimientoDTO {
 	logo: ImagenDTO;
 	notas: string;
 	direcciones: DireccionDTO[];
-	fechaCreacion: string;
+	fechaCreacion: Date;
 	borrable: boolean;
 }

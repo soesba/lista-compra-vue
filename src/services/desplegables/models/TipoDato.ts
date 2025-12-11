@@ -4,4 +4,5 @@ export enum TipoDato {
   TipoEstablecimientos = "tipo-establecimientos",
   TipoUnidad = "tipos-unidad",
   Usuario = "usuarios",
+  Rol = "roles"
 }
