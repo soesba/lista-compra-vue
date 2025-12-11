@@ -50,7 +50,7 @@
         @update-equivalencia="onUpdateEquivalencia"
         @delete-equivalencia="onDeleteEquivalencia">
       </equivalencia-component>
-      <equivalencia-component :from="from" @save-equivalencia="onSaveEquivalencia" />
+      <equivalencia-component @save-equivalencia="onSaveEquivalencia" />
       <div class="inputGroup">
         <small class="text-caption text-medium-emphasis">*campo requerido</small>
       </div>
@@ -73,7 +73,7 @@
 
   // Computed
   const canSave = computed(() => {
-    return !v$.value.$invalid
+    return !v$.value.editData.$invalid
   })
 
   const showCheckDatoMaestro = computed(() => {
@@ -88,10 +88,6 @@
   if (editData.equivalencias == null) {
     editData.equivalencias = []
   }
-  const from = ref({
-    id: editData.id,
-    nombre: editData.nombre
-  })
 
   // Validations
   const validations = computed(() => {
@@ -130,6 +126,9 @@
   }
 
   const save = () => {
+    editData.equivalencias.forEach((eq: Equivalencia) => {
+      delete eq.tmpId
+    })
     if (adding.value) {
       create(editData).then((response: any) => {
         if (response.respuesta === 200) {

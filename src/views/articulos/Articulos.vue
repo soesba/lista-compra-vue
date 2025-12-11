@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, onMounted, ref } from 'vue'
+  import { computed, ref } from 'vue'
   import get from '@/services/articulo/getArticulo.service'
   import searchArticulo from '@/services/articulo/searchArticulo.service'
   import create from '@/services/articulo/createArticulo.service'

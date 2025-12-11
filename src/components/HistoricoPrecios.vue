@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, onMounted } from 'vue'
+  import { computed } from 'vue'
   import type Precio from '@/services/precio/models/Precio'
   import { dateToFront, formatCurrency, pluralize } from '@/utils/utils'
   import router from '@/router'

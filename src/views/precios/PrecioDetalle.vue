@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-  import {  onMounted, ref } from 'vue'
+  import { ref } from 'vue'
   import router from '@/router'
   import getPrecioById from '@/services/precio/getPrecioById.service'
   import { useRoute } from 'vue-router'

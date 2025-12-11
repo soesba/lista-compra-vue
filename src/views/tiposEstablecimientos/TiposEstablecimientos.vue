@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-  import { onMounted, ref, computed } from 'vue'
+  import { ref, computed } from 'vue'
   import router from '@/router'
   import get from '@/services/tipoEstablecimiento/getTipoEstablecimiento.service'
   import searchTipoEstablecimiento from '@/services/tipoEstablecimiento/searchTipoEstablecimiento.service'
