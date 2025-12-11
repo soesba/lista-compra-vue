@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, type PropType, watch, onBeforeMount, defineExpose } from 'vue'
+  import { ref, type PropType, watch, onBeforeMount } from 'vue'
   import getDesplegable from '@/services/desplegables/getDesplegable.service'
   import { TipoDato } from '@/services/desplegables/models/TipoDato'
   import { sort } from '@/utils/utils'

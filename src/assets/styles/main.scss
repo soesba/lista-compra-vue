@@ -72,6 +72,7 @@ a.no-link {
 }
 
 .v-card {
+  color: rgb(var(--v-theme-primary));
 	margin: 10px;
 	text-align: center;
 
@@ -122,6 +123,7 @@ a.no-link {
 	gap: 10px;
 
 	.labelFor {
+    color: rgb(var(--v-theme-primary));
 		margin-right: 10px;
 	}
 }

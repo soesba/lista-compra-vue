@@ -95,6 +95,7 @@
 </script>
 <style lang="scss" scoped>
   .wrapper-list {
+    color: rgb(var(--v-theme-primary));
     .wrapper-add-button {
       position: fixed;
       width: 100%;

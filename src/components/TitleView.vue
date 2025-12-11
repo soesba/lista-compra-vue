@@ -150,6 +150,7 @@
     align-items: center;
     font-size: 1.5rem;
     font-weight: 500;
+    color: rgb(var(--v-theme-primary));
     .subtitulo {
       display: block;
       flex: none;

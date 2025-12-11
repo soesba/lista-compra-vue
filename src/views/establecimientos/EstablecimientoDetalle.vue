@@ -97,6 +97,9 @@
   }
 </script>
 <style lang="scss" scoped>
+  .header {
+    color: rgb(var(--v-theme-primary));
+  }
   .logo {
     width: 150px;
   }

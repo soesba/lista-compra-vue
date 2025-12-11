@@ -76,6 +76,9 @@
   })
 </script>
 <style lang="scss" scoped>
+  .v-card-title {
+    color: rgb(var(--v-theme-primary));
+  }
   .v-card-subtitle {
     min-height: 19.94px;
   }
