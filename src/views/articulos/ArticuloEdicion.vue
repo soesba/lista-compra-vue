@@ -35,10 +35,12 @@
         </combo-component>
       </div>
       <span class="text-small secondary">{{ messageHelperTiposUnidad }}</span>
-      <div class="inputGroup">
-        <label class="labelFor">Histórico de precios</label>
+      <div v-if="editData.id">
+        <div class="inputGroup">
+          <label class="labelFor">Histórico de precios</label>
+        </div>
+        <HistoricoPrecios :precios="editData.precios" :editable="true" :articulo="editData"></HistoricoPrecios>
       </div>
-      <HistoricoPrecios :precios="editData.precios" :editable="true" :articulo="editData"></HistoricoPrecios>
     </div>
   </div>
 </template>
@@ -63,7 +65,7 @@ import getByArticuloId from '@/services/precio/getPreciosByArticuloId.service'
 
   // Computed
   const canSave = computed(() => {
-    return !v$.value.$invalid
+    return !v$.value.$invalid && v$.value.editData.$anyDirty
   })
 
   // Data

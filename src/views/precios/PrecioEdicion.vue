@@ -13,11 +13,16 @@
         <v-text-field
           variant="underlined"
           label="Fecha*"
-          v-model="getFechaCompra"
+          :model-value="getFechaCompra"
           append-inner-icon="mdi-calendar"
-          @blur="setFechaCompra($event)">
-          <v-menu activator="parent" :close-on-content-click="false">
-            <v-date-picker color="primary" hideHeader :first-day-of-week="1" v-model="editData.fechaCompra">
+          @blur="($event: any) => setFechaCompra($event.target.value, 'text')">
+          <v-menu activator="parent" :close-on-content-click="true">
+            <v-date-picker
+              color="primary"
+              hideHeader
+              :first-day-of-week="1"
+              v-model="editData.fechaCompra"
+              @update:model-value="($event: any) => setFechaCompra($event, 'date')">
             </v-date-picker>
           </v-menu>
         </v-text-field>
@@ -25,6 +30,7 @@
       <div class="inputGroup">
         <combo-component
           ref="cboArticulos"
+          :disabled="from.includes('articulo')"
           :tipo-dato="TipoDato.Articulos"
           v-model="editData.articulo"
           required
@@ -82,14 +88,13 @@
   import update from '@/services/precio/updatePrecio.service'
   import getArticuloById from '@/services/articulo/getArticuloById.service'
   import type Articulo from '@/services/articulo/models/Articulo'
-  import { dateToFront, isNumber, pluralize } from '@/utils/utils'
+  import { dateToBack, dateToFront, isNumber, pluralize, StringToDate } from '@/utils/utils'
   import ComboComponent from '@/components/combos/ComboComponent.vue'
   import { TipoDato } from '@/services/desplegables/models/TipoDato'
   import { modelStore } from '@/main'
+import TipoUnidadRepositoryImpl from '@/api/tipoUnidad/TipoUnidadRepositoryImpl'
 
   // Data
-  const cboArticulos = ref(null)
-  const inputPrecio = ref()
   const adding = ref(false)
   const from = history.state.back
   const editData = reactive<any>(modelStore.precio ? modelStore.getPrecio : { borrable: true })
@@ -103,13 +108,35 @@
         })
       : ''
   }
+
+const isValidDate = (value: any) => {
+  if (!value) return false
+  if (typeof value === 'object' && value instanceof Date) {
+    return !isNaN(value.getTime())
+  }
+  const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/
+  if (regex.test(value) && new Date(value)) {
+    return !isNaN(new Date(value).getTime())
+  }
+  return false
+}
+
   // Computed
   const canSave = computed(() => {
     return !v$.value.$invalid
   })
+
   const getFechaCompra = computed(() => {
-    return dateToFront(editData?.fechaCompra)
+    return dateToFront(editData!.fechaCompra)
   })
+
+  const setFechaCompra = (value: any, type: string) => {
+    if (type === 'date') {
+      editData!.fechaCompra = value
+    } else if (isValidDate(value)) {
+      editData!.fechaCompra = StringToDate(value)
+    }
+  }
 
   // Watch para controlar cambios en editData.articulo y cargar unidades de medida
   watch(
@@ -184,10 +211,6 @@
       })
       return tmpArray
     })
-  }
-
-  const setFechaCompra = (event: any) => {
-    editData!.fechaCompra = event.target.value ? new Date(event.target.value.split('/').reverse().join('-')) : null
   }
 
   const onBack = () => {
