@@ -4,4 +4,5 @@ export default interface ArticuloRequestDTO {
 	descripcion: string;
 	tiposUnidad: string[];
 	borrable: boolean;
+  notas: string;
 }

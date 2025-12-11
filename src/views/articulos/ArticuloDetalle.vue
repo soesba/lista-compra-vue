@@ -11,6 +11,10 @@
         <div class="labelFor">Unidades de medida:</div>
         <div v-for="tipoUnidad in data.tiposUnidad">{{ tipoUnidad.nombre }}</div>
       </div>
+      <div class="inputGroup" v-if="data.notas">
+        <div class="labelFor">Notas</div>
+        <label>{{ data.notas }}</label>
+      </div>
       <div>
         <div class="inputGroup">
           <label class="labelFor">Histórico de precios</label>

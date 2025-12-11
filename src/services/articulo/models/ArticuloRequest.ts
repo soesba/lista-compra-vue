@@ -6,4 +6,5 @@ export default interface ArticuloRequest {
 	descripcion: string;
 	tiposUnidad: Array<Item>;
 	borrable: boolean;
+  notas: string;
 }

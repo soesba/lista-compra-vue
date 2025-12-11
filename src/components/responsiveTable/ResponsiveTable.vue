@@ -146,7 +146,7 @@
 
   onMounted(() => {
     setTimeout(() => {
-      setActionColumnWidth()
+      // setActionColumnWidth()
     }, 500)
   })
 

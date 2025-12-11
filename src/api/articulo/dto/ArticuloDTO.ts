@@ -8,4 +8,5 @@ export default interface ArticuloDTO {
 	fechaCreacion: Date;
 	tienePrecios: boolean;
 	borrable: boolean;
+  notas: string;
 }
