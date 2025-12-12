@@ -94,15 +94,13 @@ const eliminarAvatar = (id: string) => {
   })
 }
 
-const loadAvatares = () => {
-  get().then(response => {
-    avatares.value = response.data as Avatar[]
-  })
+const loadAvatares = async () => {
+  avatares.value = (await get()).data as Avatar[]
 }
 
-onMounted(() => {
+onMounted(async () => {
   console.log('Mounted GestionAvatares')
-  loadAvatares()
+  await loadAvatares()
 })
 
 </script>
