@@ -5,6 +5,12 @@ import { authStore, uiStore } from "@/main"
 export default class InterceptorMessages implements Interceptor {
   private _token: string = ''
 
+  private NO_MASK_ENDPOINTS = new Set<string>([
+    '/api/modelos',
+    '/api/configuracion',
+  ])
+
+
   constructor(private xhrs: Xhr) {
     console.log('Se ha creado el interceptor de mensajes')
   }
@@ -14,7 +20,9 @@ export default class InterceptorMessages implements Interceptor {
 
     // Request interceptor
     axiosInstance.interceptors.request.use(config => {
-      uiStore.showMask()
+      if (![...this.NO_MASK_ENDPOINTS].some((ep) => config.url?.startsWith(ep))) {
+        uiStore.showMask()
+      }
       // Modify the request config here
       this._token = authStore.getAccesTokenSaved
       if (this._token) {
@@ -25,7 +33,9 @@ export default class InterceptorMessages implements Interceptor {
 
     // Response interceptor
     axiosInstance.interceptors.response.use((response) => {
-      uiStore.hideMask()
+      if (![...this.NO_MASK_ENDPOINTS].some((ep) => response.config.url?.startsWith(ep))) {
+        uiStore.hideMask()
+      }
       // console.log("🚀 ~ InterceptorMessages ~ axiosInstance.interceptors.response.use ~ response:", response)
       // Handle the response here
       if (response.status !== 200 && response.status !== 201) {
