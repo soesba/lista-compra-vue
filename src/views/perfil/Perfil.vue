@@ -98,7 +98,7 @@
   import update from '@/services/usuario/updateUsuario.service'
   import ImageSelect from '@/components/ImageSelect.vue'
   import getConfiguracionesByCategoria from '@/services/configuracion/getConfiguracionesByCategoria.service'
-  import get from '@/services/modelo/getModelos.service'
+  import getModelos from '@/services/modelo/getModelos.service'
   import TitleView from '@/components/TitleView.vue'
 
 
@@ -106,7 +106,7 @@
     (await getUsuarioByUsername(authStore.getUsuarioLogueado.username)).data as Usuario
   )
   let originalUsuario = { ...usuario.value }
-  const modelos = (await get()).data as Array<any>
+  const modelos = (await getModelos()).data as Array<any>
   const configuraciones = ref<Array<any>>(
     (await getConfiguracionesByCategoria('dots_menu')).data as Array<any>
   )

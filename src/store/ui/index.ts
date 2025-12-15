@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import type UiState from "./types";
+import getConfiguracionesByCategoria from '@/services/configuracion/getConfiguracionesByCategoria.service';
+import getModeloByNombre from '@/services/modelo/getModeloByNombre.service';
 
 const getDefaultCustomDialog = () => {
   return {
@@ -52,7 +54,9 @@ export const useUiStore = defineStore('uiStore', {
     alertComponent: getDefaultAlertComponent(),
     menuSortCards: null,
     menuShowCards: null,
-    mask: getDefaultMask()
+    mask: getDefaultMask(),
+    configuraciones: null,
+    modelos: []
   }),
   getters: {
     getCustomDialog: (state) => state.customDialog,
@@ -61,7 +65,9 @@ export const useUiStore = defineStore('uiStore', {
     getMenuSortCards: (state) => state.menuSortCards || parseInt(import.meta.env.VITE_SORT_CARDS),
     getMenuShowCards: (state) => state.menuShowCards || parseInt(import.meta.env.VITE_SHOW_CARDS),
     getMask: (state) => state.mask,
-    getMaskText: (state) => state.mask.props.text
+    getMaskText: (state) => state.mask.props.text,
+    getConfiguraciones: async (state) => state.configuraciones || (await getConfiguracionesByCategoria('dots_menu')).data as Array<any>,
+    getModeloByNombre: (state) => (nombre: string) => state.modelos.find(modelo => modelo.nombre === nombre) || null
   },
   actions: {
     showCustomDialog({ component, props, events }: any) {
@@ -103,6 +109,9 @@ export const useUiStore = defineStore('uiStore', {
     },
     setMaskText(text: string) {
       this.mask.props.text = text
+    },
+    setModelos (modelos: Array<any>) {
+      this.modelos = modelos
     }
   }
 })

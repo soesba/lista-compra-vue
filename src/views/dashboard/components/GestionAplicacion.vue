@@ -61,7 +61,7 @@
 <script setup lang="ts">
   import ResponsiveTable from '@/components/responsiveTable/ResponsiveTable.vue'
   import TitleSection from '@/components/TitleSection.vue'
-  import get from '@/services/modelo/getModelos.service'
+  import getModelos from '@/services/modelo/getModelos.service'
   import Modelo from '@/services/modelo/models/Modelo'
   import { markRaw, ref } from 'vue'
   import checkUsoModelo from '@/services/modelo/checkUsoModelo.service'
@@ -103,7 +103,7 @@
     }
   ]
 
-  const modelos = ref<Array<Modelo>>((await get()).data as Array<Modelo>)
+  const modelos = ref<Array<Modelo>>((await getModelos()).data as Array<Modelo>)
   const modelosUI = ref<Array<any>>(
     modelos.value.map(m => {
       return {

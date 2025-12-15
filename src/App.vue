@@ -26,12 +26,13 @@
 <script setup lang="ts">
   import { default as Navigation } from '@/components/Navigation.vue'
   import { default as Mask } from '@/components/Mask.vue'
-  import { ref, markRaw, watch } from 'vue'
+  import { ref, markRaw, watch, onMounted } from 'vue'
   import DialogComponent from '@/components/DialogComponent.vue'
   import ActionDialog from '@/components/dialogs-system/ActionDialog.vue'
   import AlertComponent from './components/AlertComponent.vue'
-  import { authStore } from './main'
+  import { authStore, uiStore } from './main'
   import { useRouter } from 'vue-router'
+import getModelos from './services/modelo/getModelos.service'
 
   const router = useRouter()
   const emmiter = defineEmits(['login'])
@@ -52,15 +53,19 @@
 
   // Navegar a "/"" al recargar la página
   const navigationEntries = performance.getEntriesByType('navigation')
-  const isReload =
-    navigationEntries.length > 0 &&
-    (navigationEntries[0] as PerformanceNavigationTiming).type === 'reload'
+  const isReload = navigationEntries.length > 0 && (navigationEntries[0] as PerformanceNavigationTiming).type === 'reload'
   if (isReload && window.location.pathname !== '' && authStore.getUsuarioLogueado) {
     console.log('Recarga de página detectada, navegando a "/"')
     const preferencias = authStore.getUsuarioLogueado.preferencias
     authStore.setPreferencias(preferencias)
+
     router.replace('/')
   }
+
+  onMounted(async () => {
+    const modelos = (await getModelos()).data as Array<any>
+    uiStore.setModelos(modelos)
+  })
 
   const onLogout = () => {
     authStore.logout()

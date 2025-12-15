@@ -57,7 +57,7 @@
 
   onMounted(async () => {
     if (props.modelo) {
-      modeloData.value = (await getModeloByNombre(props.modelo)).data
+      modeloData.value = uiStore.getModeloByNombre(props.modelo)
     }
     if (props.showMenu) {
       if (props.menu) {
@@ -65,7 +65,8 @@
         return
       } else {
         // Si no se pasa menú por props, cargamos el menú por defecto
-        configuraciones.value = (await getConfiguracionesByCategoria('dots_menu')).data as Array<any>
+        // configuraciones.value = (await getConfiguracionesByCategoria('dots_menu')).data as Array<any>
+        configuraciones.value = await uiStore.getConfiguraciones
 
         defaultMenu.value = configuraciones.value.map(config => {
           const prefUsuario = preferencias.find(
