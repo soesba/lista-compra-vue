@@ -2,7 +2,19 @@ import type Establecimiento from "@/services/establecimiento/models/Establecimie
 import type EstablecimientoDTO from "../dto/EstablecimientoDTO"
 import type EstablecimientoRequestDTO from "../dto/EstablecimientoRequestDTO"
 import type EstablecimientoRequest from "@/services/establecimiento/models/EstablecimientoRequest"
-import { dateToFront } from '@/utils/utils'
+import { dateToFront, StringToDate } from '@/utils/utils'
+import DireccionDTO from '../dto/DireccionDTO'
+
+
+const direccionModelToDto = (origin: any): DireccionDTO => {
+  return {
+    id: origin.id,
+    direccion: origin.direccion,
+    codPostal: origin.codPostal,
+    poblacion: origin.poblacion,
+    favorita: origin.favorita
+  }
+}
 
 export const DtoToModel = (origin: EstablecimientoDTO): Establecimiento => {
 	const model = {
@@ -26,8 +38,9 @@ export const DtoToModel = (origin: EstablecimientoDTO): Establecimiento => {
 export const requestModelToDto = (origin: EstablecimientoRequest): EstablecimientoRequestDTO => {
   const dto: EstablecimientoRequestDTO = {
     ...origin,
-    fechaCreacion: origin.fechaCreacion ? new Date(origin.fechaCreacion) : new Date(),
-    tipoEstablecimiento: origin.tipoEstablecimiento.id
+    fechaCreacion: origin.fechaCreacion ? StringToDate(origin.fechaCreacion) : new Date(),
+    tipoEstablecimiento: origin.tipoEstablecimiento.id,
+    direcciones: origin.direcciones.map(direccion => direccionModelToDto(direccion)) || []
   }
 
 	return dto

@@ -40,14 +40,13 @@ import getModelos from './services/modelo/getModelos.service'
   const rawActionDialog = markRaw(ActionDialog)
   const userLogged = ref(authStore.isAuthenticated)
 
-  watch(router.currentRoute, newValue => {
+  watch(router.currentRoute, async newValue => {
     if (newValue.fullPath === '/login') {
       userLogged.value = false
     } else {
       userLogged.value = authStore.isAuthenticated
-      // const preferencias = authStore.getPreferencias
-      // console.log('LOG~ ~ :48 ~ Guardamos preferencias:', preferencias)
-      // authStore.setPreferencias(preferencias)
+      const modelos = (await getModelos()).data as Array<any>
+      uiStore.setModelos(modelos)
     }
   })
 
@@ -61,11 +60,6 @@ import getModelos from './services/modelo/getModelos.service'
 
     router.replace('/')
   }
-
-  onMounted(async () => {
-    const modelos = (await getModelos()).data as Array<any>
-    uiStore.setModelos(modelos)
-  })
 
   const onLogout = () => {
     authStore.logout()

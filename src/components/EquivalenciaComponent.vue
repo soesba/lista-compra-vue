@@ -56,7 +56,6 @@
         to: null,
         factor: null
       })
-  console.log('LOG~ ~ :68 ~ nuevaEquivalencia:', nuevaEquivalencia)
 
   // Computed
   const canSave = computed(() => {
@@ -76,7 +75,6 @@
   // Methods
 
   const onChangeCboTo = (value: any) => {
-    console.log('LOG~ ~ :79 ~ onChangeCboTo ~ value:', value)
     if (props.equivalencia && nuevaEquivalencia.value.to !== props.equivalencia.to) {
       emitter('updateEquivalencia', nuevaEquivalencia.value)
     }

@@ -61,7 +61,6 @@
     for (const precio of precios) {
       for (const um of precio.unidadesMedida) {
         const equivalencias = await getEquivalencias(um.id)
-        console.log('LOG~ ~ :62 ~ equivalencias:', equivalencias)
         um.equivalencias = []
         um.equivalencias?.push( ...(equivalencias.data as Equivalencia[]))
       }

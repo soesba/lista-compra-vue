@@ -113,7 +113,6 @@
 
   const getPrecioEquivalencias = computed(() => {
     return (medida: any, precio: any) => {
-      console.log('LOG~ ~ :102 ~ acceso a equivalencias')
       const equivalencia = medida.equivalencias ? medida.equivalencias[0] : null
       if (equivalencia) {
         return `${formatCurrency(precio / (medida.valor * equivalencia.factor))} ${pluralize(equivalencia.to.nombre, medida.valor * equivalencia.factor)}`
