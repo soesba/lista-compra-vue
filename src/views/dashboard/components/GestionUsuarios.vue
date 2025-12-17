@@ -8,6 +8,7 @@
 <script setup lang="ts">
   import ResponsiveTable, { ColDef, TableOptions } from '@/components/responsiveTable/ResponsiveTable.vue'
   import TitleView from '@/components/TitleView.vue'
+import { uiStore } from '@/main'
   import get from '@/services/usuario/getUsuarios.service'
   import Usuario from '@/services/usuario/models/Usuario'
   import { computed, onMounted, ref, watch } from 'vue'
@@ -62,7 +63,7 @@
           component: VBtn,
           props: { icon: 'mdi-delete', variant: 'text' },
           action: (data: any) => {
-            onDelete(data)
+            confirmDelete(data)
           }
         }
       ]
@@ -81,6 +82,16 @@
   // const onEdit = (eventData: { data: any; rowIndex: number }) => {
   //   console.log('Editar usuario:', eventData)
   // }
+
+  const confirmDelete = (eventData: { data: any; rowIndex: number }) => {
+    uiStore.showActionDialog({
+      props: {
+        text: 'Si elimina el usuario, se eliminarán todos sus registros relacionados.\n ¿Desea continuar?',
+        title: 'Confirmación'
+      },
+      aceptarFn: () => onDelete(eventData)
+    })
+  }
 
   const onDelete = (eventData: { data: any; rowIndex: number }) => {
     // TODO

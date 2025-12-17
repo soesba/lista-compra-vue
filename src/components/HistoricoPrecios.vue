@@ -40,7 +40,6 @@
 
   const tableOptions: TableOptions = {
     editable: props.editable,
-    width: 900
   }
 
   const colDef = computed((): ColDef[] => {
