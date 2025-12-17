@@ -39,7 +39,8 @@
   })
 
   const tableOptions: TableOptions = {
-    editable: props.editable
+    editable: props.editable,
+    width: 900
   }
 
   const colDef = computed((): ColDef[] => {
@@ -56,8 +57,16 @@
     {
       field: 'establecimiento',
       header: 'Establecimiento',
-      colType: 'text',
-      valueGetter: ({ value }: any) => value.nombre
+      colType: 'html',
+      width: 150,
+      alignment: 'center',
+      valueGetter: ({ value }: any) => {
+        return value.logo.content ?
+          { html: `<div class="logo">
+                    <img src="${value.logo.content}" class="logo" />
+                  </div>` }
+          : { html: `<span>${value.nombre}</span>` }
+      }
     },
     { field: 'precio', header: 'Precio', colType: 'number', valueGetter: ({ value }: any) => formatCurrency(value) },
     {
@@ -87,7 +96,7 @@
         return { html }
       }
     },
-    { field: 'notas', header: 'Notas', colType: 'text' },
+    { field: 'notas', header: 'Notas', colType: 'text', width: 200 },
     {
       field: 'actions',
       header: 'Acciones',
@@ -156,3 +165,15 @@
     console.log('LOG~ ~ :68 ~ onClickDelete ~ precio:', precio)
   }
 </script>
+<style lang="scss" scoped>
+  :deep(.logo) {
+    width: 50px;
+    gap: 10px;
+    justify-self: center;
+  }
+
+  .wrapper {
+    justify-content: center;
+  }
+
+</style>

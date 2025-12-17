@@ -45,6 +45,7 @@
   import getEquivalencias from '@/services/tipoUnidad/getEquivalencias.service'
   import Equivalencia from '@/services/equivalencia/models/Equivalencia'
   import { onMounted, ref } from 'vue'
+import getLogo from '@/services/establecimiento/getLogo.service'
 
   // Props
   defineProps({
@@ -58,7 +59,14 @@
 
   onMounted(async() => {
     const precios = ((await getByArticuloId(data.value.id)).data as Precio[]).sort(sort('fechaCompra'))
+    let logos: any[] = []
     for (const precio of precios) {
+      let logo = logos.find((logo: any) => logo.establecimientoId === precio.establecimiento!.id)
+      if (!logo) {
+        logo = { logo: (await getLogo(precio.establecimiento!.id)).data, establecimientoId: precio.establecimiento!.id }
+        logos.push(logo)
+      }
+      precio.establecimiento!.logo = logo.logo
       for (const um of precio.unidadesMedida) {
         const equivalencias = await getEquivalencias(um.id)
         um.equivalencias = []
