@@ -26,7 +26,8 @@
               v-for="(item, index) in dotsMenuItems.submenus!.filter(item => item.props.visible !== false)"
               :key="index"
               :value="index"
-              :to="item.props.to">
+              :to="item.props.to"
+              @click="item.click">
               <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item>
           </v-list>

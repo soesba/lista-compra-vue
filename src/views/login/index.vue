@@ -22,6 +22,7 @@
           @back="onBackToLogin" />
       </div>
     </div>
+    <span class="footer">Aplicación desplegada en render.com. La primera petición al servidor aplica un retardo por periodo de inactividad.</span>
   </div>
 </template>
 
@@ -30,26 +31,15 @@
   import RegisterForm from './components/RegisterForm.vue'
   import ChangePassword from './components/ChangePassword.vue'
 
-  import { onMounted, ref } from 'vue'
+  import { ref } from 'vue'
   import router from '@/router'
   import { authStore, uiStore } from '@/main'
   import registrarUsuario from '@/services/auth/registrarUsuario.service'
   import cambiarPassword from '@/services/auth/cambiarPassword.service'
 
-  // const userName = ref('');
   const mode = ref('login')
   const isLoginError = ref(false)
   const loginErrorMessage = ref('')
-
-  onMounted(() => {
-    // if (authService.login.isAuth()) {
-    //   authService.logout.logout();
-    // }
-    // if (!authService.login.isLoginApp()) {
-    //   mode.value = 'sso';
-    //   authService.login.login();
-    // }
-  })
 
   const onLogin = async ({ username, password }: { username: string; password: string }) => {
     uiStore.setMaskText('Iniciando sesión...')
