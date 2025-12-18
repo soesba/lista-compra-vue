@@ -1,21 +1,20 @@
 <template>
-	<div id="bloqueEdicion">
+  <div id="bloqueEdicion" v-if="direcciones.length" v-for="(editDireccion, index) in direcciones" :key="editDireccion.id">
 		<div class="inputGroup">
 			<v-text-field
 				label="Dirección*"
 				required
-        :variant="props.direccion ? 'outlined' : 'underlined'"
-				v-model="nuevaDireccion.direccion"
-				:error-messages="v$.nuevaDireccion.direccion.$errors.map((e: any) => e.$message)"
-				@blur="txtDireccionOnBlur"
-				@input="v$.nuevaDireccion.direccion.$touch"
+        variant="outlined"
+				v-model="editDireccion.direccion"
+				:error-messages="v$.direcciones.$each.$response.$errors[index].direccion"
+				@blur="() => txtDireccionOnBlur(editDireccion)"
 			></v-text-field>
-      <div class="wrapper-icons" v-if="props.direccion">
+      <div class="wrapper-icons">
         <v-btn
-          :icon="nuevaDireccion.favorita ? 'mdi-star' : 'mdi-star-outline'"
+          :icon="editDireccion.favorita ? 'mdi-star' : 'mdi-star-outline'"
           variant="text"
           color="primary"
-          @click="setFavorita"
+          @click="setFavorita(editDireccion)"
         ></v-btn>
         <v-btn
           icon="mdi-delete"
@@ -24,7 +23,37 @@
           @click="onClickDelete"
         ></v-btn>
       </div>
-      <div class="wrapper-icons" v-if="!props.direccion">
+		</div>
+		<div class="inputGroup">
+			<v-text-field
+				type="number"
+				label="C.Postal"
+        variant="outlined"
+				v-model="editDireccion.codPostal"
+				:hide-spin-buttons="true"
+				max-width="100"
+        @blur="() => txtCodPostalOnBlur(editDireccion)"
+				@keypress="onCodPostalKeyPress"
+			></v-text-field>
+			<v-text-field
+        label="Población"
+        variant="outlined"
+        v-model="editDireccion.poblacion"
+        @blur="() => txtPoblacionOnBlur(editDireccion)"
+      ></v-text-field>
+		</div>
+	</div>
+	<div id="bloqueCreacion">
+		<div class="inputGroup">
+			<v-text-field
+				label="Dirección*"
+				required
+        variant="underlined"
+				v-model="nuevaDireccion.direccion"
+				:error-messages="v$.nuevaDireccion.direccion.$errors.map((e: any) => e.$message)"
+				@blur="() => txtDireccionOnBlur(nuevaDireccion)"
+			></v-text-field>
+      <div class="wrapper-icons">
         <v-btn
           icon="mdi-check"
           variant="text"
@@ -39,18 +68,18 @@
 			<v-text-field
 				type="number"
 				label="C.Postal"
-        :variant="props.direccion ? 'outlined' : 'underlined'"
+        variant="underlined"
 				v-model="nuevaDireccion.codPostal"
 				:hide-spin-buttons="true"
 				max-width="100"
-        @blur="txtCodPostalOnBlur"
+        @blur="() => txtCodPostalOnBlur(nuevaDireccion)"
 				@keypress="onCodPostalKeyPress"
 			></v-text-field>
 			<v-text-field
         label="Población"
-        :variant="props.direccion ? 'outlined' : 'underlined'"
+        variant="underlined"
         v-model="nuevaDireccion.poblacion"
-        @blur="txtPoblacionOnBlur"
+        @blur="() => txtPoblacionOnBlur(nuevaDireccion)"
       ></v-text-field>
 		</div>
 	</div>
@@ -58,21 +87,21 @@
 
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core'
-import { required } from '@vuelidate/validators'
+import { helpers, required } from '@vuelidate/validators'
 import type { PropType } from 'vue'
-import { computed, reactive } from 'vue'
+import { computed, ref } from 'vue'
 import type Direccion from '@/services/establecimiento/models/Direccion'
 
-const emitter = defineEmits(['saveDireccion', 'updateDireccion', 'deleteDireccion'])
+const emitter = defineEmits(['createDireccion', 'updateDireccion', 'deleteDireccion'])
 const props = defineProps({
-	direccion: {
-		type: Object as PropType<Direccion>,
+	direcciones: {
+		type: Array as PropType<Array<Direccion>>,
 		default: null,
 	},
 })
 
-const nuevaDireccion = props.direccion ? reactive<any>({ ...props.direccion }) : reactive({
-	tmpId: Date.now(),
+const nuevaDireccion = ref({
+	tmpId: 0,
 	direccion: '',
 	codPostal: '',
 	poblacion: '',
@@ -91,40 +120,47 @@ const validations = computed(() => {
 			codPostal: {},
 			poblacion: {},
 		},
+    direcciones: {
+     $each: helpers.forEach({
+        direccion: { required },
+        codPostal: {},
+        poblacion: {},
+      })
+    }
 	}
 })
-const v$ = useVuelidate(validations, nuevaDireccion )
+const v$ = useVuelidate(validations, { nuevaDireccion, direcciones: props.direcciones } )
 // Methods
-const setFavorita = () => {
-	nuevaDireccion.value.favorita = !nuevaDireccion.value.favorita
-	emitter('updateDireccion', nuevaDireccion.value)
+const setFavorita = (data: any) => {
+	data.favorita = !data.favorita
+	emitter('updateDireccion', data)
 }
 
 const onCodPostalKeyPress = (evt: any) => {
 	if (evt.target.value.length === 5) evt.preventDefault()
 }
 
-const txtDireccionOnBlur = () => {
-	if (props.direccion && nuevaDireccion.value.direccion !== props.direccion.direccion) {
-		emitter('updateDireccion', nuevaDireccion.value)
-	}
-	v$.value.nuevaDireccion.direccion.$touch
+const txtDireccionOnBlur = (data: any) => {
+  if (data.tmpId || data.id) {
+    emitter('updateDireccion', data)
+  }
 }
 
-const txtCodPostalOnBlur = () => {
-	if (props.direccion && nuevaDireccion.value.codPostal !== props.direccion.codPostal) {
-		emitter('updateDireccion', nuevaDireccion.value)
-	}
+const txtCodPostalOnBlur = (data: any) => {
+  if (data.tmpId || data.id) {
+    emitter('updateDireccion', data)
+  }
 }
 
-const txtPoblacionOnBlur = () => {
-	if (props.direccion && nuevaDireccion.value.poblacion !== props.direccion.poblacion) {
-		emitter('updateDireccion', nuevaDireccion.value)
-	}
+const txtPoblacionOnBlur = (data: any) => {
+  if (data.tmpId || data.id) {
+    emitter('updateDireccion', data)
+  }
 }
 
 const onClickSave = () => {
-	emitter('saveDireccion', nuevaDireccion.value)
+  nuevaDireccion.value.tmpId = Date.now()
+	emitter('createDireccion', { ...nuevaDireccion.value})
 	resetForm()
 }
 

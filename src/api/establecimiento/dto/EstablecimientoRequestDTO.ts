@@ -10,6 +10,6 @@ export default interface EstablecimientoRequestDTO {
 	};
 	notas: string;
 	direcciones: DireccionDTO[];
-	fechaCreacion: Date;
+  fechaCreacion: Date;
 	borrable: boolean;
 }

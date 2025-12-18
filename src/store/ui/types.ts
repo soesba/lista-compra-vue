@@ -1,3 +1,17 @@
+interface ItemConfiguracion {
+  nombre: string;
+  texto: string;
+  valores: [];
+  categoria: string;
+  valorDefecto: string;
+  id: string;
+}
+
+interface ItemModelo {
+  id: string;
+  nombre: string;
+}
+
 export default interface UiState {
   menuSortCards: number | null,
   menuShowCards: number | null,
@@ -31,5 +45,7 @@ export default interface UiState {
     props: {
       text: string
     }
-  }
+  },
+  configuraciones: ItemConfiguracion[] | null;
+  modelos: ItemModelo[];
 }

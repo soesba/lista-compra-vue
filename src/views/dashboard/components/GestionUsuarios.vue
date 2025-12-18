@@ -8,6 +8,8 @@
 <script setup lang="ts">
   import ResponsiveTable, { ColDef, TableOptions } from '@/components/responsiveTable/ResponsiveTable.vue'
   import TitleView from '@/components/TitleView.vue'
+import { uiStore } from '@/main'
+import deleteUsuario from '@/services/usuario/deleteUsuario.service'
   import get from '@/services/usuario/getUsuarios.service'
   import Usuario from '@/services/usuario/models/Usuario'
   import { computed, onMounted, ref, watch } from 'vue'
@@ -27,6 +29,8 @@
     {
       field: 'esAdministrador',
       colType: 'html',
+      alignment: 'center',
+      width: 50,
       valueGetter: ({ value }: any) => {
         return { html: value ? '<span class="mdi mdi-shield-account"></span>' : '' }
       }
@@ -60,14 +64,15 @@
       actions: [
         {
           component: VBtn,
-          props: { icon: 'mdi-delete', variant: 'text' },
+          props: { icon: 'mdi-delete', variant: 'text', disabled: (params: any) => params.data.esAdministrador, hidden: (params: any) => params.data.esAdministrador },
           action: (data: any) => {
-            onDelete(data)
+            confirmDelete(data)
           }
         }
       ]
     }
   ])
+
 
   watch(
     () => props.reload,
@@ -82,9 +87,24 @@
   //   console.log('Editar usuario:', eventData)
   // }
 
-  const onDelete = (eventData: { data: any; rowIndex: number }) => {
+  const confirmDelete = (eventData: { data: any; rowIndex: number }) => {
+    uiStore.showActionDialog({
+      props: {
+        text: 'Si elimina el usuario, se eliminarán todos sus registros relacionados.\n ¿Desea continuar?',
+        title: 'Confirmación'
+      },
+      aceptarFn: () => onDelete(eventData)
+    })
+  }
+
+  const onDelete = (eventData: any) => {
     // TODO
     console.log('Eliminar usuario no implementado:', eventData)
+    deleteUsuario(eventData.id).then(() => {
+      cargaUsuarios()
+    }).catch((error) => {
+      console.error('Error al eliminar el usuario:', error)
+    })
   }
 
   const cargaUsuarios = () => {
@@ -109,5 +129,11 @@
     color: rgb(var(--v-theme-primary));
     font-size: 20px;
     vertical-align: middle;
+  }
+
+  :deep(table td) {
+    @media (min-width: 30em) { /* 30 x 16px = 480px */
+      height: 64px;
+    }
   }
 </style>

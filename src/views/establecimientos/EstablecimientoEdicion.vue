@@ -43,11 +43,11 @@
         <label v-if="!mostrarDirecciones"> No hay direcciones </label>
       </div>
       <direccion-edicion
+        @create-direccion="onCreateDireccion"
         @update-direccion="onUpdateDireccion"
         @delete-direccion="onDeleteDireccion"
-        v-for="direccion in editData.direcciones"
-        :direccion="direccion"></direccion-edicion>
-      <direccion-edicion @save-direccion="onSaveDireccion"></direccion-edicion>
+        :direcciones="editData.direcciones">
+      </direccion-edicion>
     </div>
   </div>
 </template>
@@ -91,7 +91,7 @@
 
   const typeFile = 'image/png, image/gif, image/jpeg, image/svg'
   const upload = ''
-  let selectedFile = reactive<any>('')
+  let selectedFile = ref()
 
   // Validations
   const validations = computed(() => {
@@ -122,7 +122,7 @@
     }
   }
 
-  const onSaveDireccion = (dir: any) => {
+  const onCreateDireccion = (dir: any) => {
     editData.direcciones.push(dir)
   }
 
@@ -147,10 +147,10 @@
   }
 
   const save = async () => {
-    if (selectedFile) {
-      const imgBase64 = await fileToBase64(selectedFile)
+    if (selectedFile.value) {
+      const imgBase64 = await fileToBase64(selectedFile.value)
       editData.logo = {
-        type: selectedFile.type,
+        type: selectedFile.value.type,
         content: imgBase64
       }
     }
@@ -186,24 +186,24 @@
   }
 
   const onSelectLogo = (evt: any) => {
-    selectedFile = evt.target.files[0]
-    if (selectedFile) {
+    selectedFile.value = evt.target.files[0]
+    if (selectedFile.value) {
       const reader = new FileReader()
 
       reader.onload = function () {
         if (!editData.logo) {
           editData.logo = {}
         }
-        editData.logo.type = selectedFile.type
-        editData.logo.content = URL.createObjectURL(selectedFile)
+        editData.logo.type = selectedFile.value.type
+        editData.logo.content = URL.createObjectURL(selectedFile.value)
       }
 
-      reader.readAsDataURL(selectedFile)
+      reader.readAsDataURL(selectedFile.value)
     }
   }
 
   const resetLogo = () => {
-    selectedFile = null
+    selectedFile.value = null
     fileUpload.value = null
     editData.logo = null
   }

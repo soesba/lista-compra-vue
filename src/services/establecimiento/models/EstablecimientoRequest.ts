@@ -11,6 +11,6 @@ export default interface EstablecimientoRequest {
 	};
 	notas: string;
 	direcciones: Direccion[];
-	fechaCreacion: string;
+  fechaCreacion: string;
 	borrable: boolean;
 }

@@ -22,6 +22,7 @@
           @back="onBackToLogin" />
       </div>
     </div>
+    <span class="footer">Aplicación desplegada en render.com. La primera petición al servidor aplica un retardo por periodo de inactividad.</span>
   </div>
 </template>
 
@@ -30,36 +31,21 @@
   import RegisterForm from './components/RegisterForm.vue'
   import ChangePassword from './components/ChangePassword.vue'
 
-  import { onMounted, ref } from 'vue'
+  import { ref } from 'vue'
   import router from '@/router'
   import { authStore, uiStore } from '@/main'
-  import getUsuarioPreferencias from '@/services/usuario/getUsuarioPreferencias.service'
-  import getUsuarioByUsername from '@/services/usuario/getUsuarioByUsername.service'
-  import Usuario from '@/services/usuario/models/Usuario'
   import registrarUsuario from '@/services/auth/registrarUsuario.service'
   import cambiarPassword from '@/services/auth/cambiarPassword.service'
 
-  // const userName = ref('');
   const mode = ref('login')
   const isLoginError = ref(false)
   const loginErrorMessage = ref('')
-
-  onMounted(() => {
-    // if (authService.login.isAuth()) {
-    //   authService.logout.logout();
-    // }
-    // if (!authService.login.isLoginApp()) {
-    //   mode.value = 'sso';
-    //   authService.login.login();
-    // }
-  })
 
   const onLogin = async ({ username, password }: { username: string; password: string }) => {
     uiStore.setMaskText('Iniciando sesión...')
     try {
       const login = await authStore.login(username, password)
       if (login) {
-        getDatosUsuario()
         router.push('/')
       } else {
         isLoginError.value = true
@@ -70,14 +56,6 @@
       loginErrorMessage.value =
         error.response?.data?.message || error.message || 'Error en el login'
     }
-  }
-
-  const getDatosUsuario = async () => {
-    const usuario = (await getUsuarioByUsername(authStore.getUsuarioLogueado.username))
-      .data as Usuario
-    getUsuarioPreferencias(usuario.id).then((response: any) => {
-      // console.log(response.data)
-    })
   }
 
   const onChangePassword = ({ username, newPassword }: { username: string, newPassword: string }): void => {

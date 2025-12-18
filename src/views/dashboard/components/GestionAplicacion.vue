@@ -3,10 +3,10 @@
     <TitleView :titulo="title" :subtitulo="subtitle" :show-menu="false"></TitleView>
     <div class="seccion">
       <TitleSection
-        titulo="Modelos de la aplicación"
-        subtitulo="Entidades principales con los que trabaja la aplicación"></TitleSection>
+        titulo="Secciones de la aplicación"
+        subtitulo="Apartados en los que se divide la aplicación"></TitleSection>
       <v-expansion-panels multiple>
-        <v-expansion-panel v-for="modelo in modelosUI" :key="modelo.id" :title="modelo.nombre">
+        <v-expansion-panel v-for="modelo in modelosUI" :key="modelo.id" :title="getTitleTab(modelo.nombre)">
           <v-expansion-panel-text>
             <div class="inputGroup">
               <div class="labelFor">Identificador:</div>
@@ -18,9 +18,9 @@
               <v-btn color="primary" @click="onCheckDataClick(modelo.id)">Inconsistencias</v-btn>
             </div>
             <div class="resultado-uso" v-if="modelo.showResultadoCheckUso">
-              <div v-if="!modelo.uso">No se han encontrado usos para este modelo.</div>
+              <div v-if="!modelo.uso">No se han encontrado usos para esta sección.</div>
               <div v-else>
-                <div>El modelo se está utilizando en las siguientes entidades:</div>
+                <div>La sección se está utilizando en las siguientes configuraciones:</div>
                 <div v-for="(uso, index) in modelo.uso" :key="index">
                   <label>{{ uso.entidad }}</label>
                   <ul>
@@ -61,7 +61,7 @@
 <script setup lang="ts">
   import ResponsiveTable from '@/components/responsiveTable/ResponsiveTable.vue'
   import TitleSection from '@/components/TitleSection.vue'
-  import get from '@/services/modelo/getModelos.service'
+  import getModelos from '@/services/modelo/getModelos.service'
   import Modelo from '@/services/modelo/models/Modelo'
   import { markRaw, ref } from 'vue'
   import checkUsoModelo from '@/services/modelo/checkUsoModelo.service'
@@ -103,7 +103,7 @@
     }
   ]
 
-  const modelos = ref<Array<Modelo>>((await get()).data as Array<Modelo>)
+  const modelos = ref<Array<Modelo>>((await getModelos()).data as Array<Modelo>)
   const modelosUI = ref<Array<any>>(
     modelos.value.map(m => {
       return {
@@ -128,9 +128,32 @@
     console.log(resultadoUso)
     const modeloEncontrado = modelosUI.value.find(m => m.id === modeloId)
     if (modeloEncontrado) {
-      modeloEncontrado.uso = resultadoUso
+      modeloEncontrado.uso = resultadoUso.length ? resultadoUso : null
       modeloEncontrado.showResultadoCheckUso = true
     }
+  }
+
+  const getTitleTab = (nombre: any) => {
+    let resultado = ''
+    if (!nombre) {
+      return 'Modelo desconocido'
+    }
+    // Normaliza separadores
+    let cadena = String(nombre).replace(/[-_]+/g, ' ')
+    // Inserta espacios entre fronteras camel/pascal
+    cadena = cadena
+      .replace(/([a-záéíóúñ])([A-ZÁÉÍÓÚÑ0-9])/g, '$1 $2')
+      .replace(/([A-ZÁÉÍÓÚÑ]+)([A-ZÁÉÍÓÚÑ][a-záéíóúñ0-9]+)/g, '$1 $2')
+      .trim()
+
+    const palabras = cadena.split(/\s+/)
+    palabras.forEach(palabra => {
+      if (resultado.length) {
+        palabra = palabra.charAt(0).toLowerCase() + palabra.slice(1)
+      }
+      resultado += palabra === 'Tipo' ? palabra + ' de ' : palabra + ' '
+    })
+    return resultado.trim()
   }
 
   const onClickEliminar = (modeloId: string) => {
@@ -193,6 +216,7 @@
       },
       events: {
         resolve: (data: any) => {
+          console.log('LOG~ ~ :219 ~ mostrarPopupSolucionarProblemas ~ data:', data)
           onCheckDataClick(fallas[0].modeloId)
           emitter('recargaUsuarios')
         }

@@ -9,6 +9,8 @@ import EstablecimientosResponseDTO from './dto/EstablecimientosResponseDTO'
 import EstablecimientoRequestDTO from './dto/EstablecimientoRequestDTO'
 import CheckDataResponse from '@/services/commons/models/CheckDataResponse'
 import OrderRequest from '@/services/commons/models/OrderRequest'
+import Imagen from '@/services/commons/models/Imagen'
+import ImagenDTO from '../commons/dto/ImagenDTO'
 
 const mapping: { [key: string]: string } = {
   title: 'nombre'
@@ -44,6 +46,14 @@ export default class EstablecimientoRepositoryImpl implements EstablecimientoRep
     return result
   }
 
+  async getLogo(id: string): Promise<Imagen> {
+    const endpoint = `/api/establecimientos/${id}/logo`
+    const headers = {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+    const response = await xhr.get<ImagenDTO>(endpoint, { headers })
+    return response.data
+  }
 
   async search(request: string, orderReq: OrderRequest): Promise<EstablecimientoResponse> {
     const endpoint = `/api/establecimientos/search/${request}?` + new URLSearchParams({

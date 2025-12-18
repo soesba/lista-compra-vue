@@ -1,9 +1,9 @@
 <template>
   <div class="wrapper">
-    <table name="responsive-table" :color="options.color">
+    <table name="responsive-table" :color="options.color" :style="{ width: options.width + 'px' }">
       <thead>
         <tr>
-          <th v-for="col in colsDef" :key="col.field" :class="{ 'action-column': col.field === 'actions' }">
+          <th v-for="col in colsDef" :key="col.field" :class="{ 'action-column': col.field === 'actions' }" :style="{ width: col.width + 'px' }">
             {{ col.header }}
           </th>
         </tr>
@@ -11,22 +11,23 @@
       <tbody>
         <tr v-for="row in rowData" :key="row.id">
           <td
-            :data-titulo="col.field !== 'actions' ? col.dataTitulo || col.header : null"
+            :data-titulo="col.field !== 'actions' ? col.dataTitulo : null"
             v-for="col in colsDef"
             :key="col.field"
-            :class="{ 'action-column': col.field === 'actions' }">
+            :class="{ 'action-column': col.field === 'actions' }"
+            :style="{ width: col.width + 'px', textAlign: col.alignment || 'left' }">
             <slot name="body">
               <div v-if="col.colType === 'html'" v-html="getValue(row, col)"></div>
               <span v-else-if="col.colType !== 'actions'">{{ getValue(row, col) }}</span>
-              <span v-else>
+              <div v-else>
                 <component
                   :is="action.component"
                   v-for="(action, index) in col.actions"
-                  v-bind="action.props"
+                  v-bind="getActionProps(action, row)"
                   :color="action.props.color || options.color"
                   :key="index"
                   @click="action.action(row)" />
-              </span>
+              </div>
             </slot>
           </td>
         </tr>
@@ -68,7 +69,9 @@
     // Especifica si la tabla es editable
     editable?: Boolean
     // Especifica el modo de edición de la tabla
-    editType?: editType
+    editType?: editType,
+    // Ancho de la tabla
+    width?: number
   }
   // Interface que define las propiedades de cada uno de los componentes dentro de la columna de Acciones.
   interface ActionColDef {
@@ -93,6 +96,10 @@
     valueGetter?: ValueGetterFunction
     // habilita / deshabilita ordenación
     sortable?: boolean
+    // ancho de la columna
+    width?: number
+    // alineación del contenido de la columna
+    alignment?: 'left' | 'center' | 'right'
     // contenido de la columna de acciones (solo aplicable si colType === 'actions')
     actions?: Array<ActionColDef>
   }
@@ -127,6 +134,18 @@
     editType: 'custom'
   }
   const options = { ...defaultTableOptions, ...props.options }
+
+  const getActionProps = (action: ActionColDef, rowData: any) => {
+    const propsCopy: Record<string, any> = { ...action.props }
+    // Asignar resultado de funciones a las props
+    Object.keys(propsCopy).forEach(key => {
+      if (typeof propsCopy[key] === 'function') {
+        propsCopy[key] = propsCopy[key]({data: rowData})
+      }
+    })
+    return propsCopy
+  }
+
   const getValue = (rowData: any, col: ColDef) => {
     const params: ValueGetterParams = {
       value: rowData[col.field],
@@ -146,8 +165,8 @@
 
   onMounted(() => {
     setTimeout(() => {
-      // setActionColumnWidth()
-    }, 500)
+      setActionColumnWidth()
+    }, 200)
   })
 
   // Ajuste del ancho de la columna de acciones al contenido

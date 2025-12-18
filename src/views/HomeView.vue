@@ -2,7 +2,7 @@
  <v-container>
     <v-row class="text-center">
       <v-col cols="12">
-        Aplicación para controlar los precios de la compra diaria
+        <v-label>Aplicación para controlar los precios de la compra diaria</v-label>
       </v-col>
     </v-row>
  </v-container>
@@ -10,3 +10,10 @@
 
 <script setup lang="ts">
 </script>
+
+<style lang="scss" scoped>
+.v-label {
+  flex-wrap: wrap;
+  white-space: normal;
+}
+</style>

@@ -56,7 +56,6 @@
         to: null,
         factor: null
       })
-  console.log('LOG~ ~ :68 ~ nuevaEquivalencia:', nuevaEquivalencia)
 
   // Computed
   const canSave = computed(() => {
@@ -75,8 +74,7 @@
   const v$ = useVuelidate(validations, { nuevaEquivalencia })
   // Methods
 
-  const onChangeCboTo = (value: any) => {
-    console.log('LOG~ ~ :79 ~ onChangeCboTo ~ value:', value)
+  const onChangeCboTo = () => {
     if (props.equivalencia && nuevaEquivalencia.value.to !== props.equivalencia.to) {
       emitter('updateEquivalencia', nuevaEquivalencia.value)
     }

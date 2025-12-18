@@ -1,8 +1,8 @@
 import API from '@/api'
 import ModeloResponse from './models/ModeloResponse'
 
-const get = async (): Promise<ModeloResponse> => {
+const getModelos = async (): Promise<ModeloResponse> => {
   return await API.ModeloRepository.get()
 }
 
-export default get
+export default getModelos

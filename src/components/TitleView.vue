@@ -21,8 +21,6 @@
   import { markRaw, onMounted, ref } from 'vue'
   import MenuDialog from '@/components/MenuDialog.vue'
   import { uiStore, eventStore, authStore } from '@/main'
-  import getConfiguracionesByCategoria from '@/services/configuracion/getConfiguracionesByCategoria.service'
-  import getModeloByNombre from '@/services/modelo/getModeloByNombre.service'
 
   interface itemMenu {
     name: string
@@ -57,7 +55,7 @@
 
   onMounted(async () => {
     if (props.modelo) {
-      modeloData.value = (await getModeloByNombre(props.modelo)).data
+      modeloData.value = uiStore.getModeloByNombre(props.modelo)
     }
     if (props.showMenu) {
       if (props.menu) {
@@ -65,7 +63,8 @@
         return
       } else {
         // Si no se pasa menú por props, cargamos el menú por defecto
-        configuraciones.value = (await getConfiguracionesByCategoria('dots_menu')).data as Array<any>
+        // configuraciones.value = (await getConfiguracionesByCategoria('dots_menu')).data as Array<any>
+        configuraciones.value = await uiStore.getConfiguraciones
 
         defaultMenu.value = configuraciones.value.map(config => {
           const prefUsuario = preferencias.find(

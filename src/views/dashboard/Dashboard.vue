@@ -21,7 +21,7 @@
   </div>
 </template>
 <script setup lang="ts">
-  import { computed, ref } from 'vue'
+  import { ref } from 'vue'
   import GestionUsuarios from './components/GestionUsuarios.vue'
   import GestionAplicacion from './components/GestionAplicacion.vue'
   import GestionAvatares from './components/GestionAvatares.vue'

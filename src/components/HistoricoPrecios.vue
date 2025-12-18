@@ -1,16 +1,21 @@
 <template>
-  <v-btn
-    v-if="editable"
-    class="mb-4"
-    color="primary"
-    @click="onClickInsert">
-      Insertar precio
-  </v-btn>
-  <ResponsiveTable
-    :cols-def="colDef"
-    :row-data="precios"
-    :options="tableOptions">
-  </ResponsiveTable>
+  <div class="historico-precios-wrapper" :class="{ 'editing': editable }">
+    <ResponsiveTable
+      :cols-def="colDef"
+      :row-data="precios"
+      :options="tableOptions">
+    </ResponsiveTable>
+    <div v-if="editable" class="wrapper-add-button">
+      <v-fab
+        icon="mdi-plus"
+        class="ms-4"
+        location="bottom end"
+        absolute
+        offset
+        color="primary"
+        @click="onClickInsert()"></v-fab>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -39,7 +44,7 @@
   })
 
   const tableOptions: TableOptions = {
-    editable: props.editable
+    editable: props.editable,
   }
 
   const colDef = computed((): ColDef[] => {
@@ -50,14 +55,23 @@
     {
       field: 'fechaCompra',
       header: 'Fecha compra',
+      width: 150,
       colType: 'text',
       valueGetter: ({ value }: any) => getFechaCompra(value)
     },
     {
       field: 'establecimiento',
       header: 'Establecimiento',
-      colType: 'text',
-      valueGetter: ({ value }: any) => value.nombre
+      colType: 'html',
+      width: 150,
+      alignment: 'center',
+      valueGetter: ({ value }: any) => {
+        return value.logo.content ?
+          { html: `<div class="logo">
+                    <img src="${value.logo.content}" class="logo" />
+                  </div>` }
+          : { html: `<span>${value.nombre}</span>` }
+      }
     },
     { field: 'precio', header: 'Precio', colType: 'number', valueGetter: ({ value }: any) => formatCurrency(value) },
     {
@@ -113,7 +127,6 @@
 
   const getPrecioEquivalencias = computed(() => {
     return (medida: any, precio: any) => {
-      console.log('LOG~ ~ :102 ~ acceso a equivalencias')
       const equivalencia = medida.equivalencias ? medida.equivalencias[0] : null
       if (equivalencia) {
         return `${formatCurrency(precio / (medida.valor * equivalencia.factor))} ${pluralize(equivalencia.to.nombre, medida.valor * equivalencia.factor)}`
@@ -157,3 +170,26 @@
     console.log('LOG~ ~ :68 ~ onClickDelete ~ precio:', precio)
   }
 </script>
+<style lang="scss" scoped>
+  :deep(.logo) {
+    width: 50px;
+    gap: 10px;
+    justify-self: center;
+  }
+
+  .wrapper {
+    justify-content: center;
+  }
+  .historico-precios-wrapper {
+    &.editing {
+      margin-bottom: 60px; // salvar boton de añadir
+    }
+    .wrapper-add-button {
+      position: fixed;
+      width: 100%;
+      bottom: 40px;
+      right: 20px;
+    }
+  }
+
+</style>
