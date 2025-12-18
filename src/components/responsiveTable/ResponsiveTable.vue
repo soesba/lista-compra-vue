@@ -23,7 +23,7 @@
                 <component
                   :is="action.component"
                   v-for="(action, index) in col.actions"
-                  v-bind="action.props"
+                  v-bind="getActionProps(action, row)"
                   :color="action.props.color || options.color"
                   :key="index"
                   @click="action.action(row)" />
@@ -134,6 +134,18 @@
     editType: 'custom'
   }
   const options = { ...defaultTableOptions, ...props.options }
+
+  const getActionProps = (action: ActionColDef, rowData: any) => {
+    const propsCopy: Record<string, any> = { ...action.props }
+    // Asignar resultado de funciones a las props
+    Object.keys(propsCopy).forEach(key => {
+      if (typeof propsCopy[key] === 'function') {
+        propsCopy[key] = propsCopy[key]({data: rowData})
+      }
+    })
+    return propsCopy
+  }
+
   const getValue = (rowData: any, col: ColDef) => {
     const params: ValueGetterParams = {
       value: rowData[col.field],
@@ -153,8 +165,8 @@
 
   onMounted(() => {
     setTimeout(() => {
-      // setActionColumnWidth()
-    }, 500)
+      setActionColumnWidth()
+    }, 200)
   })
 
   // Ajuste del ancho de la columna de acciones al contenido

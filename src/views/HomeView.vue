@@ -10,3 +10,10 @@
 
 <script setup lang="ts">
 </script>
+
+<style lang="scss" scoped>
+.v-label {
+  flex-wrap: wrap;
+  white-space: normal;
+}
+</style>

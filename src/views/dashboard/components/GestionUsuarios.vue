@@ -29,6 +29,8 @@ import deleteUsuario from '@/services/usuario/deleteUsuario.service'
     {
       field: 'esAdministrador',
       colType: 'html',
+      alignment: 'center',
+      width: 50,
       valueGetter: ({ value }: any) => {
         return { html: value ? '<span class="mdi mdi-shield-account"></span>' : '' }
       }
@@ -62,7 +64,7 @@ import deleteUsuario from '@/services/usuario/deleteUsuario.service'
       actions: [
         {
           component: VBtn,
-          props: { icon: 'mdi-delete', variant: 'text' },
+          props: { icon: 'mdi-delete', variant: 'text', disabled: (params: any) => params.data.esAdministrador, hidden: (params: any) => params.data.esAdministrador },
           action: (data: any) => {
             confirmDelete(data)
           }
@@ -70,6 +72,7 @@ import deleteUsuario from '@/services/usuario/deleteUsuario.service'
       ]
     }
   ])
+
 
   watch(
     () => props.reload,
@@ -126,5 +129,11 @@ import deleteUsuario from '@/services/usuario/deleteUsuario.service'
     color: rgb(var(--v-theme-primary));
     font-size: 20px;
     vertical-align: middle;
+  }
+
+  :deep(table td) {
+    @media (min-width: 30em) { /* 30 x 16px = 480px */
+      height: 64px;
+    }
   }
 </style>

@@ -55,6 +55,7 @@
     {
       field: 'fechaCompra',
       header: 'Fecha compra',
+      width: 150,
       colType: 'text',
       valueGetter: ({ value }: any) => getFechaCompra(value)
     },
@@ -100,7 +101,7 @@
         return { html }
       }
     },
-    { field: 'notas', header: 'Notas', colType: 'text', width: 200 },
+    { field: 'notas', header: 'Notas', colType: 'text' },
     {
       field: 'actions',
       header: 'Acciones',
