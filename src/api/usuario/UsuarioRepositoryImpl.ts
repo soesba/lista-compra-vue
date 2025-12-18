@@ -11,6 +11,7 @@ import ImagenResponseDTO from '../commons/dto/ImagenResponseDTO';
 import ImagenResponse from '@/services/commons/models/ImagenResponse';
 import FotoRequest from '@/services/usuario/models/FotoRequest';
 import CheckDataResponse from '@/services/commons/models/CheckDataResponse';
+import UsuarioDeleteResponseDTO from './dto/UsuarioDeleteResponseDTO';
 
 export default class UsuarioRepositoryImpl implements UsuarioRepository {
   async get(): Promise<UsuarioResponse> {
@@ -61,6 +62,22 @@ export default class UsuarioRepositoryImpl implements UsuarioRepository {
     const response = await xhr.put<UsuarioDTO, UsuarioResponseDTO>(endpoint, dataDTO, { headers })
     const result = {
       data: DtoToModel(response.data.data),
+      respuesta: response.status
+    }
+    return result
+  }
+
+  async delete(id: string): Promise<UsuarioResponse> {
+    const endpoint = `/api/usuarios/${id}`
+    const headers = {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+    const response = await xhr.delete<UsuarioDeleteResponseDTO>(endpoint, { headers })
+    console.log('LOG~ ~ :75 ~ UsuarioRepositoryImpl ~ delete ~ response:', response)
+    const data = response.data
+    console.log('LOG~ ~ :78 ~ UsuarioRepositoryImpl ~ delete ~ data:', data)
+    const result = {
+      data: DtoToModel(data.data.result),
       respuesta: response.status
     }
     return result

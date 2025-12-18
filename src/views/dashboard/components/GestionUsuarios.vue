@@ -9,6 +9,7 @@
   import ResponsiveTable, { ColDef, TableOptions } from '@/components/responsiveTable/ResponsiveTable.vue'
   import TitleView from '@/components/TitleView.vue'
 import { uiStore } from '@/main'
+import deleteUsuario from '@/services/usuario/deleteUsuario.service'
   import get from '@/services/usuario/getUsuarios.service'
   import Usuario from '@/services/usuario/models/Usuario'
   import { computed, onMounted, ref, watch } from 'vue'
@@ -93,9 +94,14 @@ import { uiStore } from '@/main'
     })
   }
 
-  const onDelete = (eventData: { data: any; rowIndex: number }) => {
+  const onDelete = (eventData: any) => {
     // TODO
     console.log('Eliminar usuario no implementado:', eventData)
+    deleteUsuario(eventData.id).then(() => {
+      cargaUsuarios()
+    }).catch((error) => {
+      console.error('Error al eliminar el usuario:', error)
+    })
   }
 
   const cargaUsuarios = () => {

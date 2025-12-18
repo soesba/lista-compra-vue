@@ -10,6 +10,7 @@ export default interface UsuarioRepository {
   getById(id: string): Promise<UsuarioResponse>;
   getByUsername(username: string): Promise<UsuarioResponse>;
   update(data: Usuario): Promise<UsuarioResponse>;
+  delete(id: string): Promise<UsuarioResponse>;
   getPreferencias(userId: string): Promise<PreferenciaResponse>;
   getFoto(request: FotoRequest): Promise<ImagenResponse>;
   checkData(): Promise<CheckDataResponse>;
