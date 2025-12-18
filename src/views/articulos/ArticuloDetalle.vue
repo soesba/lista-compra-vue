@@ -5,7 +5,7 @@
     <div class="body">
       <div class="inputGroup">
         <div class="labelFor">Protección contra borrado accidental</div>
-        <div>{{ data.borrable ? 'Desactivado' : 'Activado' }}</div>
+        <div>{{ data.borrable ? 'No' : 'Sí' }}</div>
       </div>
       <div class="inputGroup">
         <div class="labelFor">Unidades de medida:</div>

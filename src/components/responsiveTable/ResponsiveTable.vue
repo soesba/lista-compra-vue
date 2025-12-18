@@ -19,7 +19,7 @@
             <slot name="body">
               <div v-if="col.colType === 'html'" v-html="getValue(row, col)"></div>
               <span v-else-if="col.colType !== 'actions'">{{ getValue(row, col) }}</span>
-              <span v-else>
+              <div v-else>
                 <component
                   :is="action.component"
                   v-for="(action, index) in col.actions"
@@ -27,7 +27,7 @@
                   :color="action.props.color || options.color"
                   :key="index"
                   @click="action.action(row)" />
-              </span>
+              </div>
             </slot>
           </td>
         </tr>

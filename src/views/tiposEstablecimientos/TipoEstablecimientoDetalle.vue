@@ -10,7 +10,7 @@
     <div class="body">
       <div v-if="!data.esMaestro" class="inputGroup">
         <div class="labelFor">Protección contra borrado accidental</div>
-        <div>{{ data.borrable ? 'Desactivado' : 'Activado' }}</div>
+        <div>{{ data.borrable ? 'No' : 'Sí' }}</div>
       </div>
       <div class="inputGroup">
         <div class="labelFor">Nombre</div>

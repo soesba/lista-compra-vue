@@ -1,16 +1,21 @@
 <template>
-  <v-btn
-    v-if="editable"
-    class="mb-4"
-    color="primary"
-    @click="onClickInsert">
-      Insertar precio
-  </v-btn>
-  <ResponsiveTable
-    :cols-def="colDef"
-    :row-data="precios"
-    :options="tableOptions">
-  </ResponsiveTable>
+  <div class="historico-precios-wrapper" :class="{ 'editing': editable }">
+    <ResponsiveTable
+      :cols-def="colDef"
+      :row-data="precios"
+      :options="tableOptions">
+    </ResponsiveTable>
+    <div v-if="editable" class="wrapper-add-button">
+      <v-fab
+        icon="mdi-plus"
+        class="ms-4"
+        location="bottom end"
+        absolute
+        offset
+        color="primary"
+        @click="onClickInsert()"></v-fab>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -173,6 +178,17 @@
 
   .wrapper {
     justify-content: center;
+  }
+  .historico-precios-wrapper {
+    &.editing {
+      margin-bottom: 60px; // salvar boton de añadir
+    }
+    .wrapper-add-button {
+      position: fixed;
+      width: 100%;
+      bottom: 40px;
+      right: 20px;
+    }
   }
 
 </style>
