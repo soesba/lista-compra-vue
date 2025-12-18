@@ -216,6 +216,7 @@
       },
       events: {
         resolve: (data: any) => {
+          console.log('LOG~ ~ :219 ~ mostrarPopupSolucionarProblemas ~ data:', data)
           onCheckDataClick(fallas[0].modeloId)
           emitter('recargaUsuarios')
         }

@@ -33,9 +33,6 @@
   import { onMounted, ref } from 'vue'
   import router from '@/router'
   import { authStore, uiStore } from '@/main'
-  import getUsuarioPreferencias from '@/services/usuario/getUsuarioPreferencias.service'
-  import getUsuarioByUsername from '@/services/usuario/getUsuarioByUsername.service'
-  import Usuario from '@/services/usuario/models/Usuario'
   import registrarUsuario from '@/services/auth/registrarUsuario.service'
   import cambiarPassword from '@/services/auth/cambiarPassword.service'
 
@@ -59,7 +56,6 @@
     try {
       const login = await authStore.login(username, password)
       if (login) {
-        getDatosUsuario()
         router.push('/')
       } else {
         isLoginError.value = true
@@ -70,14 +66,6 @@
       loginErrorMessage.value =
         error.response?.data?.message || error.message || 'Error en el login'
     }
-  }
-
-  const getDatosUsuario = async () => {
-    const usuario = (await getUsuarioByUsername(authStore.getUsuarioLogueado.username))
-      .data as Usuario
-    getUsuarioPreferencias(usuario.id).then((response: any) => {
-      // console.log(response.data)
-    })
   }
 
   const onChangePassword = ({ username, newPassword }: { username: string, newPassword: string }): void => {

@@ -7,7 +7,7 @@
         variant="outlined"
 				v-model="editDireccion.direccion"
 				:error-messages="v$.direcciones.$each.$response.$errors[index].direccion"
-				@blur="($event: any) => txtDireccionOnBlur($event, editDireccion)"
+				@blur="() => txtDireccionOnBlur(editDireccion)"
 			></v-text-field>
       <div class="wrapper-icons">
         <v-btn
@@ -32,14 +32,14 @@
 				v-model="editDireccion.codPostal"
 				:hide-spin-buttons="true"
 				max-width="100"
-        @blur="($event: any) => txtCodPostalOnBlur($event, editDireccion)"
+        @blur="() => txtCodPostalOnBlur(editDireccion)"
 				@keypress="onCodPostalKeyPress"
 			></v-text-field>
 			<v-text-field
         label="Población"
         variant="outlined"
         v-model="editDireccion.poblacion"
-        @blur="($event: any) => txtPoblacionOnBlur($event, editDireccion)"
+        @blur="() => txtPoblacionOnBlur(editDireccion)"
       ></v-text-field>
 		</div>
 	</div>
@@ -51,7 +51,7 @@
         variant="underlined"
 				v-model="nuevaDireccion.direccion"
 				:error-messages="v$.nuevaDireccion.direccion.$errors.map((e: any) => e.$message)"
-				@blur="($event: any) => txtDireccionOnBlur($event, nuevaDireccion)"
+				@blur="() => txtDireccionOnBlur(nuevaDireccion)"
 			></v-text-field>
       <div class="wrapper-icons">
         <v-btn
@@ -72,14 +72,14 @@
 				v-model="nuevaDireccion.codPostal"
 				:hide-spin-buttons="true"
 				max-width="100"
-        @blur="($event: any) => txtCodPostalOnBlur($event, nuevaDireccion)"
+        @blur="() => txtCodPostalOnBlur(nuevaDireccion)"
 				@keypress="onCodPostalKeyPress"
 			></v-text-field>
 			<v-text-field
         label="Población"
         variant="underlined"
         v-model="nuevaDireccion.poblacion"
-        @blur="($event: any) => txtPoblacionOnBlur($event, nuevaDireccion)"
+        @blur="() => txtPoblacionOnBlur(nuevaDireccion)"
       ></v-text-field>
 		</div>
 	</div>
@@ -89,7 +89,7 @@
 import useVuelidate from '@vuelidate/core'
 import { helpers, required } from '@vuelidate/validators'
 import type { PropType } from 'vue'
-import { computed, reactive, ref } from 'vue'
+import { computed, ref } from 'vue'
 import type Direccion from '@/services/establecimiento/models/Direccion'
 
 const emitter = defineEmits(['createDireccion', 'updateDireccion', 'deleteDireccion'])
@@ -140,19 +140,19 @@ const onCodPostalKeyPress = (evt: any) => {
 	if (evt.target.value.length === 5) evt.preventDefault()
 }
 
-const txtDireccionOnBlur = (event: any, data: any) => {
+const txtDireccionOnBlur = (data: any) => {
   if (data.tmpId || data.id) {
     emitter('updateDireccion', data)
   }
 }
 
-const txtCodPostalOnBlur = (event: any, data: any) => {
+const txtCodPostalOnBlur = (data: any) => {
   if (data.tmpId || data.id) {
     emitter('updateDireccion', data)
   }
 }
 
-const txtPoblacionOnBlur = (event: any, data: any) => {
+const txtPoblacionOnBlur = (data: any) => {
   if (data.tmpId || data.id) {
     emitter('updateDireccion', data)
   }

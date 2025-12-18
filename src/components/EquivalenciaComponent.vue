@@ -74,7 +74,7 @@
   const v$ = useVuelidate(validations, { nuevaEquivalencia })
   // Methods
 
-  const onChangeCboTo = (value: any) => {
+  const onChangeCboTo = () => {
     if (props.equivalencia && nuevaEquivalencia.value.to !== props.equivalencia.to) {
       emitter('updateEquivalencia', nuevaEquivalencia.value)
     }

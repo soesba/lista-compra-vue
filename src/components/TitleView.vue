@@ -21,8 +21,6 @@
   import { markRaw, onMounted, ref } from 'vue'
   import MenuDialog from '@/components/MenuDialog.vue'
   import { uiStore, eventStore, authStore } from '@/main'
-  import getConfiguracionesByCategoria from '@/services/configuracion/getConfiguracionesByCategoria.service'
-  import getModeloByNombre from '@/services/modelo/getModeloByNombre.service'
 
   interface itemMenu {
     name: string

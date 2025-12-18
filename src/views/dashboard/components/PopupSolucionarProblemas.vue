@@ -25,7 +25,7 @@
                 variant="text"
                 color="primary"
                 text="Resolver"
-                @click="onResolverClick(error, index)">
+                @click="onResolverClick(error)">
               </v-btn>
             </div>
           </div>
@@ -82,7 +82,7 @@ import resolverErrorRol from '@/services/commons/resolverErrorRol.service'
     return undefined
   }
 
-  const onResolverClick = (error: any, index: number) => {
+  const onResolverClick = (error: any) => {
     if (error.mensaje.toLowerCase().includes('no tiene usuario asociado')) {
       resolverErrorUsuario(
         modeloTratado.nombre,

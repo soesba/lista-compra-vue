@@ -26,7 +26,7 @@
 <script setup lang="ts">
   import { default as Navigation } from '@/components/Navigation.vue'
   import { default as Mask } from '@/components/Mask.vue'
-  import { ref, markRaw, watch, onMounted } from 'vue'
+  import { ref, markRaw, watch } from 'vue'
   import DialogComponent from '@/components/DialogComponent.vue'
   import ActionDialog from '@/components/dialogs-system/ActionDialog.vue'
   import AlertComponent from './components/AlertComponent.vue'
