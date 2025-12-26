@@ -64,7 +64,10 @@
   import Articulo from '@/services/articulo/models/Articulo'
   import Precio from '@/services/precio/models/Precio'
   import updateUnidadesMedidaPrecio from '@/services/precio/updateUnidadesMedidaPrecio.service'
-import getByArticuloId from '@/services/precio/getPreciosByArticuloId.service'
+  import getByArticuloId from '@/services/precio/getPreciosByArticuloId.service'
+  import getLogo from '@/services/establecimiento/getLogo.service'
+  import getEquivalencias from '@/services/tipoUnidad/getEquivalencias.service'
+  import Equivalencia from '@/services/equivalencia/models/Equivalencia'
 
   // Computed
   const canSave = computed(() => {
@@ -81,7 +84,22 @@ import getByArticuloId from '@/services/precio/getPreciosByArticuloId.service'
   }
   if (from.includes('precio-edicion')) {
     // Si venimos de la edición de un precio, recargamos los precios asociados al artículo
-    editData.precios = (await getByArticuloId(editData.id)).data
+    const precios = (await getByArticuloId(editData.id)).data as Precio[]
+    let logos: any[] = []
+    for (const precio of precios) {
+      let logo = logos.find((logo: any) => logo.establecimientoId === precio.establecimiento!.id)
+      if (!logo) {
+        logo = { logo: (await getLogo(precio.establecimiento!.id)).data, establecimientoId: precio.establecimiento!.id }
+        logos.push(logo)
+      }
+      precio.establecimiento!.logo = logo.logo
+      for (const um of precio.unidadesMedida) {
+        const equivalencias = await getEquivalencias(um.id)
+        um.equivalencias = []
+        um.equivalencias?.push( ...(equivalencias.data as Equivalencia[]))
+      }
+    }
+    editData.precios = precios
   }
   const unidadesBorradas = ref<any[]>([])
   // Validations
