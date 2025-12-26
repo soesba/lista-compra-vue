@@ -164,9 +164,9 @@
   }
 
   onMounted(() => {
-    setTimeout(() => {
-      setActionColumnWidth()
-    }, 200)
+    // setTimeout(() => {
+    //   setActionColumnWidth()
+    // }, 200)
   })
 
   // Ajuste del ancho de la columna de acciones al contenido
