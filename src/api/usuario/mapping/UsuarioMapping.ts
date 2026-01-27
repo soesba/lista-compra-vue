@@ -3,8 +3,6 @@ import UsuarioDTO from '../dto/UsuarioDTO'
 import PermisoDTO from '../dto/PermisoDTO'
 import Permiso from '@/services/auth/models/Permiso'
 import { dateToFront, StringToDate } from '@/utils/utils'
-import UsuarioDeleteResponseDTO from '../dto/UsuarioDeleteResponseDTO'
-import UsuarioDeleteResponse from '@/services/usuario/models/UsuarioDeleteResponse'
 
 export const DtoToModel = (dto: UsuarioDTO): Usuario => {
   const model: Usuario = {

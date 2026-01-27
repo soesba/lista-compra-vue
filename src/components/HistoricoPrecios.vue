@@ -116,7 +116,7 @@
         },
         {
           component: VBtn,
-          props: { icon: 'mdi-delete', variant: 'text' },
+          props: { icon: 'mdi-delete', variant: 'text', color: 'red' },
           action: (data: any) => {
             onClickDelete(data)
           }
