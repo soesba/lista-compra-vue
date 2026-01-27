@@ -117,8 +117,8 @@ const isValidDate = (value: any) => {
     return !isNaN(value.getTime())
   }
   const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/
-  if (regex.test(value) && new Date(value)) {
-    return !isNaN(new Date(value).getTime())
+  if (regex.test(value)) {
+    return !isNaN(new Date(StringToDate(value)).getTime())
   }
   return false
 }
