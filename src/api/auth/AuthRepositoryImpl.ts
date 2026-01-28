@@ -18,11 +18,8 @@ export default class AuthRepositoryImpl implements AuthRepository {
       username,
       password
     }
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
 
-    const response = await xhr.post<LoginRequestDTO, LoginResponseDTO>(endpoint, params, { headers })
+    const response = await xhr.post<LoginRequestDTO, LoginResponseDTO>(endpoint, params)
     return {
       status: response.status,
       data: {
@@ -65,16 +62,13 @@ export default class AuthRepositoryImpl implements AuthRepository {
    */
   async changePassword(username: string, newPassword: string): Promise<any> {
     const endpoint = '/auth/change-password'
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
 
     const request = {
       username,
       newPassword
     }
 
-    const response = await xhr.post<any, any>(endpoint, request, { headers })
+    const response = await xhr.post<any, any>(endpoint, request)
     return {
       status: response.status,
       data: response.data
@@ -90,15 +84,12 @@ export default class AuthRepositoryImpl implements AuthRepository {
    */
   async register(username: string, email: string, password: string): Promise<any> {
     const endpoint = '/auth/register'
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
     const request = {
       username,
       email,
       password
     }
-    const response = await xhr.post<any, any>(endpoint, request, { headers })
+    const response = await xhr.post<any, any>(endpoint, request)
     return {
       status: response.status,
       data: response.data

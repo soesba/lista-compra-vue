@@ -93,7 +93,6 @@
       colType: 'html',
       valueGetter: (params: any) => {
         const { value, data } = params
-        console.log('LOG~ ~ :96 ~ value, data:', value, data)
         let html = ''
         value.forEach((medida: any) => {
           const precio = getPrecioEquivalencias.value(medida, data.precio)

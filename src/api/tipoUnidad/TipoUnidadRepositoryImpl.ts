@@ -21,10 +21,7 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
       orderBy: mapping[orderReq.field] || orderReq.field,
       direction: orderReq.direction
     }).toString()
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.get<TiposUnidadResponseDTO>(endpoint, { headers })
+    const response = await xhr.get<TiposUnidadResponseDTO>(endpoint)
     const result = {
       data: response.data.data.map((item: TipoUnidadDTO) => DtoToModel(item)),
       respuesta: response.status
@@ -34,10 +31,7 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
 
   async getById(id: string): Promise<TipoUnidadResponse> {
     const endpoint = `/api/tipos-unidad/${id}`
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.get<TipoUnidadResponseDTO>(endpoint, { headers })
+    const response = await xhr.get<TipoUnidadResponseDTO>(endpoint)
     const result = {
       data: DtoToModel(response.data.data),
       respuesta: response.status
@@ -47,10 +41,7 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
 
   async getEquivalencias(id: string): Promise<EquivalenciaResponse> {
     const endpoint = `/api/tipos-unidad/${id}/equivalencias`
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.get<EquivalenciaResponse>(endpoint, { headers })
+    const response = await xhr.get<EquivalenciaResponse>(endpoint, { showMask: false })
     return {
       respuesta: response.status,
       data: response.data.data
@@ -62,10 +53,7 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
       orderBy: mapping[orderReq.field] || orderReq.field,
       direction: orderReq.direction
     }).toString()
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.get<TiposUnidadResponseDTO>(endpoint, { headers })
+    const response = await xhr.get<TiposUnidadResponseDTO>(endpoint)
     const result = {
       data: response.data.data.map((item: TipoUnidadDTO) => DtoToModel(item)),
       respuesta: response.status
@@ -75,11 +63,8 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
 
   async insert(request: TipoUnidadRequest): Promise<TipoUnidadResponse> {
     const endpoint = `/api/tipos-unidad/`
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
     const requestDTO = requestModelToDto(request)
-    const response = await xhr.post<TipoUnidadRequestDTO, TipoUnidadResponseDTO>(endpoint, requestDTO, { headers })
+    const response = await xhr.post<TipoUnidadRequestDTO, TipoUnidadResponseDTO>(endpoint, requestDTO)
     const result = {
       data: DtoToModel(response.data.data),
       respuesta: response.status
@@ -89,11 +74,8 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
 
   async update(request: TipoUnidadRequest): Promise<TipoUnidadResponse> {
     const endpoint = `/api/tipos-unidad/${request.id}`
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
     const requestDTO = requestModelToDto(request)
-    const response = await xhr.put<TipoUnidadRequestDTO, TipoUnidadResponseDTO>(endpoint, requestDTO, { headers })
+    const response = await xhr.put<TipoUnidadRequestDTO, TipoUnidadResponseDTO>(endpoint, requestDTO)
     const result = {
       data: DtoToModel(response.data.data),
       respuesta: response.status
@@ -103,10 +85,7 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
 
   async delete(id: string): Promise<TipoUnidadResponse> {
     const endpoint = `/api/tipos-unidad/${id}`
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.delete<TipoUnidadResponseDTO>(endpoint, { headers })
+    const response = await xhr.delete<TipoUnidadResponseDTO>(endpoint)
     const result = {
       data: DtoToModel(response.data.data),
       respuesta: response.status
@@ -116,10 +95,7 @@ export default class TipoUnidadRepositoryImpl implements TipoUnidadRepository {
 
   async checkData(): Promise<CheckDataResponse> {
     const endpoint = `/api/tipos-unidad/checkData`
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.get<CheckDataResponse>(endpoint, { headers })
+    const response = await xhr.get<CheckDataResponse>(endpoint)
     return {
       respuesta: response.status,
       data: response.data.data

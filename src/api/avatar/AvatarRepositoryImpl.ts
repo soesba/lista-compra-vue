@@ -10,10 +10,7 @@ import Avatar from '@/services/avatar/models/Avatar';
 export default class AvatarRepositoryImpl implements AvatarRepository {
   async get(): Promise<AvatarResponse> {
     const endpoint = '/api/avatares'
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.get<AvataresResponseDTO>(endpoint, { headers })
+    const response = await xhr.get<AvataresResponseDTO>(endpoint)
     const result = {
       data: response.data.data.map((item: AvatarDTO) => DtoToModel(item)),
       respuesta: response.status
@@ -23,10 +20,7 @@ export default class AvatarRepositoryImpl implements AvatarRepository {
 
   async getById(id: string): Promise<AvatarResponse> {
     const endpoint = `/api/avatares/${id}`
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.get<AvatarResponseDTO>(endpoint, { headers })
+    const response = await xhr.get<AvatarResponseDTO>(endpoint)
     const result = {
       data: DtoToModel(response.data.data),
       respuesta: response.status
@@ -36,11 +30,8 @@ export default class AvatarRepositoryImpl implements AvatarRepository {
 
   async insert(data: Avatar): Promise<AvatarResponse> {
     const endpoint = '/api/avatares'
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
     const dataDTO: AvatarDTO = ModelToDto(data)
-    const response = await xhr.post<AvatarDTO, AvatarResponseDTO>(endpoint, dataDTO, { headers })
+    const response = await xhr.post<AvatarDTO, AvatarResponseDTO>(endpoint, dataDTO)
     const result = {
       data: DtoToModel(response.data.data),
       respuesta: response.status
@@ -50,10 +41,7 @@ export default class AvatarRepositoryImpl implements AvatarRepository {
 
   async delete(id: string): Promise<AvatarResponse> {
     const endpoint = `/api/avatares/${id}`
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.delete<AvatarResponseDTO>(endpoint, { headers})
+    const response = await xhr.delete<AvatarResponseDTO>(endpoint)
     const result = {
       data: DtoToModel(response.data.data),
       respuesta: response.status
