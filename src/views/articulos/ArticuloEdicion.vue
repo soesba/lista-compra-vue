@@ -13,7 +13,7 @@
           @input="v$.editData.nombre.$touch"></v-text-field>
       </div>
       <div class="inputGroup">
-        <v-text-field variant="underlined" label="Descripción" v-model="editData.descripcion"></v-text-field>
+        <v-text-field variant="underlined" label="Descripción" v-model="editData.descripcion"  @input="v$.editData.descripcion.$touch"></v-text-field>
       </div>
       <div class="inputGroup">
         <v-checkbox
@@ -71,7 +71,7 @@
 
   // Computed
   const canSave = computed(() => {
-    return !v$.value.$invalid && v$.value.editData.$anyDirty
+    return !v$.value.editData.$invalid && v$.value.editData.$anyDirty
   })
 
   // Data
@@ -170,10 +170,10 @@
             console.log('LOG~ ~ :145 ~ save ~ response:', response)
           })
         })
+        editData.precios.unidadesMedida = editData.precios.unidadesMedida.filter((um: any) => {
+          return !unidadesBorradas.value.find((u: any) => u.id === um.id)
+        })
       }
-      editData.precios.unidadesMedida = editData.precios.unidadesMedida.filter((um: any) => {
-        return !unidadesBorradas.value.find((u: any) => u.id === um.id)
-      })
       updateArticulo(editData)
     }
   }

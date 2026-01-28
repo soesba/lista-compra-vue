@@ -179,10 +179,10 @@
             (acc: any, button: any) => acc + (button as HTMLElement).offsetWidth,
             0
           ) as number)
-        : 0
+        : 60
       if (actionColumn) {
         actionColumn.forEach(actionCol => {
-          ;(actionCol as HTMLElement).style.width = `${buttonsWidth + 40}px`
+          (actionCol as HTMLElement).style.width = `${buttonsWidth + 40}px`
         })
       }
     }

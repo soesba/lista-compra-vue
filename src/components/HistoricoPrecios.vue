@@ -66,7 +66,7 @@
       width: 150,
       alignment: 'center',
       valueGetter: ({ value }: any) => {
-        return value.logo.content ?
+        return  value.logo && value.logo.content ?
           { html: `<div class="logo">
                     <img src="${value.logo.content}" class="logo" />
                   </div>` }
@@ -93,6 +93,7 @@
       colType: 'html',
       valueGetter: (params: any) => {
         const { value, data } = params
+        console.log('LOG~ ~ :96 ~ value, data:', value, data)
         let html = ''
         value.forEach((medida: any) => {
           const precio = getPrecioEquivalencias.value(medida, data.precio)
@@ -130,8 +131,9 @@
       const equivalencia = medida.equivalencias ? medida.equivalencias[0] : null
       if (equivalencia) {
         return `${formatCurrency(precio / (medida.valor * equivalencia.factor))} ${pluralize(equivalencia.to.nombre, medida.valor * equivalencia.factor)}`
+      } else {
+        return `${formatCurrency(precio / medida.valor)} ${medida.nombre}`
       }
-      return ''
     }
   })
 
