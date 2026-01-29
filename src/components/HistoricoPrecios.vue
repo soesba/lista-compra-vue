@@ -66,7 +66,7 @@
       width: 150,
       alignment: 'center',
       valueGetter: ({ value }: any) => {
-        return value.logo.content ?
+        return  value.logo && value.logo.content ?
           { html: `<div class="logo">
                     <img src="${value.logo.content}" class="logo" />
                   </div>` }
@@ -130,8 +130,9 @@
       const equivalencia = medida.equivalencias ? medida.equivalencias[0] : null
       if (equivalencia) {
         return `${formatCurrency(precio / (medida.valor * equivalencia.factor))} ${pluralize(equivalencia.to.nombre, medida.valor * equivalencia.factor)}`
+      } else {
+        return `${formatCurrency(precio / medida.valor)} ${medida.nombre}`
       }
-      return ''
     }
   })
 

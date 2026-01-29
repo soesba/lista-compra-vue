@@ -22,10 +22,7 @@ export default class EstablecimientoRepositoryImpl implements EstablecimientoRep
       orderBy: mapping[orderReq.field] || orderReq.field,
       direction: orderReq.direction
     }).toString()
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.get<EstablecimientosResponseDTO>(endpoint, { headers })
+    const response = await xhr.get<EstablecimientosResponseDTO>(endpoint)
     const result = {
       data: response.data.data.map((item: EstablecimientoDTO) => DtoToModel(item)),
       respuesta: response.status
@@ -35,10 +32,7 @@ export default class EstablecimientoRepositoryImpl implements EstablecimientoRep
 
   async getById(id: string): Promise<EstablecimientoResponse> {
     const endpoint = `/api/establecimientos/${id}`
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.get<EstablecimientoResponseDTO>(endpoint, { headers })
+    const response = await xhr.get<EstablecimientoResponseDTO>(endpoint)
     const result = {
       data: DtoToModel(response.data.data),
       respuesta: response.status
@@ -48,10 +42,7 @@ export default class EstablecimientoRepositoryImpl implements EstablecimientoRep
 
   async getLogo(id: string): Promise<Imagen> {
     const endpoint = `/api/establecimientos/${id}/logo`
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.get<ImagenDTO>(endpoint, { headers })
+    const response = await xhr.get<ImagenDTO>(endpoint, { showMask: false })
     return response.data
   }
 
@@ -60,10 +51,7 @@ export default class EstablecimientoRepositoryImpl implements EstablecimientoRep
       orderBy: mapping[orderReq.field] || orderReq.field,
       direction: orderReq.direction
     }).toString()
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.get<EstablecimientosResponseDTO>(endpoint, { headers })
+    const response = await xhr.get<EstablecimientosResponseDTO>(endpoint)
     const result = {
       data: response.data.data.map((item: EstablecimientoDTO) => DtoToModel(item)),
       respuesta: response.status
@@ -73,11 +61,8 @@ export default class EstablecimientoRepositoryImpl implements EstablecimientoRep
 
   async insert(request: EstablecimientoRequest): Promise<EstablecimientoResponse> {
     const endpoint = `/api/establecimientos`
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
     const requestDTO = requestModelToDto(request)
-    const response = await xhr.post<EstablecimientoRequestDTO, EstablecimientoResponseDTO>(endpoint, requestDTO, { headers })
+    const response = await xhr.post<EstablecimientoRequestDTO, EstablecimientoResponseDTO>(endpoint, requestDTO)
     const result = {
       data: DtoToModel(response.data.data),
       respuesta: response.status
@@ -87,11 +72,8 @@ export default class EstablecimientoRepositoryImpl implements EstablecimientoRep
 
   async update(request: EstablecimientoRequest): Promise<EstablecimientoResponse> {
     const endpoint = `/api/establecimientos/${request.id}`
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
     const requestDTO = requestModelToDto(request)
-    const response = await xhr.put<EstablecimientoRequestDTO, EstablecimientoResponseDTO>(endpoint, requestDTO, { headers })
+    const response = await xhr.put<EstablecimientoRequestDTO, EstablecimientoResponseDTO>(endpoint, requestDTO)
     const result = {
       data: DtoToModel(response.data.data),
       respuesta: response.status
@@ -101,10 +83,7 @@ export default class EstablecimientoRepositoryImpl implements EstablecimientoRep
 
   async delete(id: string): Promise<EstablecimientoResponse> {
     const endpoint = `/api/establecimientos/${id}`
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.delete<EstablecimientoResponseDTO>(endpoint, { headers })
+    const response = await xhr.delete<EstablecimientoResponseDTO>(endpoint)
     const result = {
       data: DtoToModel(response.data.data),
       respuesta: response.status
@@ -114,10 +93,7 @@ export default class EstablecimientoRepositoryImpl implements EstablecimientoRep
 
   async checkData(): Promise<CheckDataResponse> {
     const endpoint = `/api/establecimientos/checkData`
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.get<CheckDataResponse>(endpoint, { headers })
+    const response = await xhr.get<CheckDataResponse>(endpoint)
     return {
       respuesta: response.status,
       data: response.data.data

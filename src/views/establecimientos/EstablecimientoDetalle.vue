@@ -19,6 +19,10 @@
         <label class="labelFor">Categoría</label>
         <label>{{ data.tipoEstablecimiento.nombre }}</label>
       </div>
+      <div class="inputGroup" v-if="data.notas">
+        <div class="labelFor">Notas</div>
+        <label>{{ data.notas }}</label>
+      </div>
       <div class="inputGroup">
         <label class="labelFor">Direcciones</label>
         <label v-if="!mostrarDirecciones"> No hay direcciones </label>

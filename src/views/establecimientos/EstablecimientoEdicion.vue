@@ -16,6 +16,7 @@
         <v-checkbox
           label="Protección contra borrado accidental"
           v-model="editData.borrable"
+          @input="v$.editData.borrable.$touch"
           :true-value="false"
           :false-value="true"></v-checkbox>
       </div>
@@ -37,6 +38,14 @@
           required
           :error-messages="v$.editData.tipoEstablecimiento.$errors.map(e => e.$message)"
           @blur="v$.editData.tipoEstablecimiento.$touch"></combo-component>
+      </div>
+      <div class="inputGroup">
+        <v-text-field
+          variant="underlined"
+          label="Notas"
+          v-model="editData.notas"
+          @input="v$.editData.notas.$touch"
+          @blur="v$.editData.notas.$touch"></v-text-field>
       </div>
       <div class="inputGroup">
         <label class="labelFor">Direcciones</label>
@@ -100,6 +109,7 @@
         id: { required: requiredIf(!adding.value) },
         nombre: { required },
         tipoEstablecimiento: { required },
+        notas: {},
         borrable: { required }
       }
     }

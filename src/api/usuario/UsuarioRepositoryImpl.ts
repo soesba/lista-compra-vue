@@ -16,10 +16,7 @@ import UsuarioDeleteResponseDTO from './dto/UsuarioDeleteResponseDTO';
 export default class UsuarioRepositoryImpl implements UsuarioRepository {
   async get(): Promise<UsuarioResponse> {
     const endpoint = '/api/usuarios'
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.get<UsuariosResponseDTO>(endpoint, { headers })
+    const response = await xhr.get<UsuariosResponseDTO>(endpoint)
     const result = {
       data: response.data.data.map((item: UsuarioDTO) => DtoToModel(item)),
       respuesta: response.status
@@ -29,10 +26,7 @@ export default class UsuarioRepositoryImpl implements UsuarioRepository {
 
   async getById(id: string): Promise<UsuarioResponse> {
     const endpoint = `/api/usuarios?id=${id}`
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.get<UsuarioResponseDTO>(endpoint, { headers })
+    const response = await xhr.get<UsuarioResponseDTO>(endpoint)
     const result = {
       data: DtoToModel(response.data.data),
       respuesta: response.status
@@ -42,10 +36,7 @@ export default class UsuarioRepositoryImpl implements UsuarioRepository {
 
   async getByUsername(username: string): Promise<UsuarioResponse> {
     const endpoint = `/api/usuarios?username=${username}`
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.get<UsuarioResponseDTO>(endpoint, { headers })
+    const response = await xhr.get<UsuarioResponseDTO>(endpoint)
     const result = {
       data: DtoToModel(response.data.data),
       respuesta: response.status
@@ -55,11 +46,8 @@ export default class UsuarioRepositoryImpl implements UsuarioRepository {
 
   async update(data: Usuario): Promise<UsuarioResponse> {
     const endpoint = '/api/usuarios'
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
     const dataDTO: UsuarioDTO = ModelToDto(data)
-    const response = await xhr.put<UsuarioDTO, UsuarioResponseDTO>(endpoint, dataDTO, { headers })
+    const response = await xhr.put<UsuarioDTO, UsuarioResponseDTO>(endpoint, dataDTO)
     const result = {
       data: DtoToModel(response.data.data),
       respuesta: response.status
@@ -69,13 +57,8 @@ export default class UsuarioRepositoryImpl implements UsuarioRepository {
 
   async delete(id: string): Promise<UsuarioResponse> {
     const endpoint = `/api/usuarios/${id}`
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.delete<UsuarioDeleteResponseDTO>(endpoint, { headers })
-    console.log('LOG~ ~ :75 ~ UsuarioRepositoryImpl ~ delete ~ response:', response)
+    const response = await xhr.delete<UsuarioDeleteResponseDTO>(endpoint)
     const data = response.data
-    console.log('LOG~ ~ :78 ~ UsuarioRepositoryImpl ~ delete ~ data:', data)
     const result = {
       data: DtoToModel(data.data.result),
       respuesta: response.status
@@ -85,29 +68,20 @@ export default class UsuarioRepositoryImpl implements UsuarioRepository {
 
   async getPreferencias(userId: string): Promise<PreferenciaResponse> {
     const endpoint = `/api/usuarios/preferencias/${userId}`
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.get<PreferenciaResponse>(endpoint, { headers })
+    const response = await xhr.get<PreferenciaResponse>(endpoint)
     return response.data
   }
 
   async getFoto(request: FotoRequest): Promise<ImagenResponse> {
     const requestEndpoint = request.username ? `?username=${request.username}` : `?id=${request.userId}`
     const endpoint = `/api/usuarios/foto${requestEndpoint}`
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.get<ImagenResponseDTO>(endpoint, { headers })
+    const response = await xhr.get<ImagenResponseDTO>(endpoint)
     return response.data
   }
 
   async checkData(): Promise<CheckDataResponse> {
     const endpoint = `/api/usuarios/checkData`
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.get<CheckDataResponse>(endpoint, { headers })
+    const response = await xhr.get<CheckDataResponse>(endpoint)
     return {
       respuesta: response.status,
       data: response.data.data

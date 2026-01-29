@@ -12,10 +12,7 @@ import EquivalenciaRequestDTO from './dto/EquivalenciaRequestDTO'
 export default class EquivalenciaRepositoryImpl implements EquivalenciaRepository {
 	async get (): Promise<EquivalenciaResponse> {
 		const endpoint = '/api/tipos-unidad-equivalencia'
-		const headers = {
-			'Content-Type': 'application/json;charset=UTF-8'
-		}
-		const response = await xhr.get<EquivalenciasResponseDTO>(endpoint, { headers})
+		const response = await xhr.get<EquivalenciasResponseDTO>(endpoint)
 		const result = {
 			data: response.data.data.map((item:EquivalenciaDTO) => DtoToModel(item)),
 			respuesta: response.status
@@ -25,10 +22,7 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 
 	async getById (id: string): Promise<EquivalenciaResponse> {
 		const endpoint = `/api/tipos-unidad-equivalencia/${id}`
-		const headers = {
-			'Content-Type': 'application/json;charset=UTF-8'
-		}
-		const response = await xhr.get<EquivalenciaResponseDTO>(endpoint, { headers})
+		const response = await xhr.get<EquivalenciaResponseDTO>(endpoint)
 		const result = {
 			data: DtoToModel(response.data.data),
 			respuesta: response.status
@@ -38,10 +32,7 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 
 	async getByFrom (request: string): Promise<EquivalenciaResponse> {
 		const endpoint = `/api/tipos-unidad-equivalencia/from/${request}`
-		const headers = {
-			'Content-Type': 'application/json;charset=UTF-8'
-		}
-		const response = await xhr.get<EquivalenciasResponseDTO>(endpoint, { headers})
+		const response = await xhr.get<EquivalenciasResponseDTO>(endpoint)
 		const result = {
 			data: response.data.data.map((item:EquivalenciaDTO) => DtoToModel(item)),
 			respuesta: response.status
@@ -51,10 +42,7 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 
 	async getByFromMultiple (request: Array<string>): Promise<EquivalenciaResponse> {
 		const endpoint = `/api/tipos-unidad-equivalencia/from-multiple/${request}`
-		const headers = {
-			'Content-Type': 'application/json;charset=UTF-8'
-		}
-		const response = await xhr.get<EquivalenciasResponseDTO>(endpoint, { headers})
+		const response = await xhr.get<EquivalenciasResponseDTO>(endpoint)
 		const result = {
 			data: response.data.data.map((item:EquivalenciaDTO) => DtoToModel(item)),
 			respuesta: response.status
@@ -64,10 +52,7 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 
 	async search (request: string): Promise<EquivalenciaResponse> {
 		const endpoint = `/api/tipos-unidad-equivalencia/search/${request}`
-		const headers = {
-			'Content-Type': 'application/json;charset=UTF-8'
-		}
-		const response = await xhr.get<EquivalenciasResponseDTO>(endpoint, { headers})
+		const response = await xhr.get<EquivalenciasResponseDTO>(endpoint)
 		const result = {
 			data: response.data.data.map((item:EquivalenciaDTO) => DtoToModel(item)),
 			respuesta: response.status
@@ -77,11 +62,8 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 
   async save(request: Equivalencia[]): Promise<EquivalenciaResponse> {
     const endpoint = `/api/tipos-unidad-equivalencia/save/`
-		const headers = {
-			'Content-Type': 'application/json;charset=UTF-8'
-		}
 		const requestDTO = request.map((item: Equivalencia) => ModelToDto(item))
-		const response = await xhr.post<EquivalenciaDTO[], EquivalenciaResponseDTO>(endpoint, requestDTO, { headers})
+		const response = await xhr.post<EquivalenciaDTO[], EquivalenciaResponseDTO>(endpoint, requestDTO)
 		const result = {
 			data: DtoToModel(response.data.data),
 			respuesta: response.status
@@ -91,11 +73,8 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 
 	async insert(request: EquivalenciaRequest): Promise<EquivalenciaResponse> {
 		const endpoint = `/api/tipos-unidad-equivalencia/`
-		const headers = {
-			'Content-Type': 'application/json;charset=UTF-8'
-		}
 		const requestDTO = requestModelToDto(request)
-		const response = await xhr.post<EquivalenciaRequestDTO, EquivalenciaResponseDTO>(endpoint, requestDTO, { headers})
+		const response = await xhr.post<EquivalenciaRequestDTO, EquivalenciaResponseDTO>(endpoint, requestDTO)
 		const result = {
 			data: DtoToModel(response.data.data),
 			respuesta: response.status
@@ -105,11 +84,8 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 
 	async update(request: EquivalenciaRequest): Promise<EquivalenciaResponse> {
 		const endpoint = `/api/tipos-unidad-equivalencia/${request.id}`
-		const headers = {
-			'Content-Type': 'application/json;charset=UTF-8'
-		}
 		const requestDTO = requestModelToDto(request)
-		const response = await xhr.put<EquivalenciaRequestDTO, EquivalenciaResponseDTO>(endpoint, requestDTO, { headers})
+		const response = await xhr.put<EquivalenciaRequestDTO, EquivalenciaResponseDTO>(endpoint, requestDTO)
 		const result = {
 			data: DtoToModel(response.data.data),
 			respuesta: response.status
@@ -119,10 +95,7 @@ export default class EquivalenciaRepositoryImpl implements EquivalenciaRepositor
 
 	async delete(id: string): Promise<EquivalenciaResponse> {
 		const endpoint = `/api/tipos-unidad-equivalencia/${id}`
-		const headers = {
-			'Content-Type': 'application/json;charset=UTF-8'
-		}
-		const response = await xhr.delete<EquivalenciaResponseDTO>(endpoint, { headers})
+		const response = await xhr.delete<EquivalenciaResponseDTO>(endpoint)
 		const result = {
 			data: DtoToModel(response.data.data),
 			respuesta: response.status

@@ -13,14 +13,20 @@
           @input="v$.editData.nombre.$touch"></v-text-field>
       </div>
       <div class="inputGroup">
-        <v-text-field variant="underlined" label="Descripción" v-model="editData.descripcion"></v-text-field>
+        <v-text-field
+          variant="underlined"
+          label="Descripción"
+          v-model="editData.descripcion"
+          @input="v$.editData.descripcion.$touch"
+          @blur="v$.editData.descripcion.$touch"></v-text-field>
       </div>
       <div class="inputGroup">
         <v-checkbox
           label="Protección contra borrado accidental"
           v-model="editData.borrable"
           :true-value="false"
-          :false-value="true"></v-checkbox>
+          :false-value="true"
+          @input="v$.editData.borrable.$touch"></v-checkbox>
       </div>
       <div class="inputGroup">
         <combo-component
@@ -36,7 +42,12 @@
       </div>
       <span class="text-small secondary">{{ messageHelperTiposUnidad }}</span>
       <div class="inputGroup">
-        <v-text-field variant="underlined" label="Notas" v-model="editData.notas"></v-text-field>
+        <v-text-field
+          variant="underlined"
+          label="Notas"
+          v-model="editData.notas"
+          @input="v$.editData.notas.$touch"
+          @blur="v$.editData.notas.$touch"></v-text-field>
       </div>
       <div v-if="editData.id">
         <div class="inputGroup">
@@ -71,7 +82,7 @@
 
   // Computed
   const canSave = computed(() => {
-    return !v$.value.$invalid && v$.value.editData.$anyDirty
+    return !v$.value.editData.$invalid && v$.value.editData.$anyDirty
   })
 
   // Data
@@ -113,7 +124,8 @@
         nombre: { required },
         descripcion: {},
         tiposUnidad: { required, maxTiposUnidad },
-        borrable: { required }
+        borrable: { required },
+        notas: {}
       }
     }
   })
@@ -170,10 +182,10 @@
             console.log('LOG~ ~ :145 ~ save ~ response:', response)
           })
         })
+        editData.precios.unidadesMedida = editData.precios.unidadesMedida.filter((um: any) => {
+          return !unidadesBorradas.value.find((u: any) => u.id === um.id)
+        })
       }
-      editData.precios.unidadesMedida = editData.precios.unidadesMedida.filter((um: any) => {
-        return !unidadesBorradas.value.find((u: any) => u.id === um.id)
-      })
       updateArticulo(editData)
     }
   }

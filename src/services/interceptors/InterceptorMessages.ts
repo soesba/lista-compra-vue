@@ -5,12 +5,6 @@ import { authStore, uiStore } from "@/main"
 export default class InterceptorMessages implements Interceptor {
   private _token: string = ''
 
-  private NO_MASK_ENDPOINTS = new Set<string>([
-    '/api/modelos',
-    '/api/configuracion',
-  ])
-
-
   constructor(private xhrs: Xhr) {
     console.log('Se ha creado el interceptor de mensajes')
   }
@@ -19,8 +13,8 @@ export default class InterceptorMessages implements Interceptor {
     const axiosInstance = this.xhrs.getAxios()
 
     // Request interceptor
-    axiosInstance.interceptors.request.use(config => {
-      if (![...this.NO_MASK_ENDPOINTS].some((ep) => config.url?.startsWith(ep))) {
+    axiosInstance.interceptors.request.use((config: any) => {
+      if (config.showMask !== false) {
         uiStore.showMask()
       }
       // Modify the request config here
@@ -32,8 +26,8 @@ export default class InterceptorMessages implements Interceptor {
     })
 
     // Response interceptor
-    axiosInstance.interceptors.response.use((response) => {
-      if (![...this.NO_MASK_ENDPOINTS].some((ep) => response.config.url?.startsWith(ep))) {
+    axiosInstance.interceptors.response.use((response: any) => {
+      if (response.config.showMask !== false) {
         uiStore.hideMask()
       }
       // console.log("🚀 ~ InterceptorMessages ~ axiosInstance.interceptors.response.use ~ response:", response)
@@ -46,11 +40,13 @@ export default class InterceptorMessages implements Interceptor {
         return Promise.reject(response);
       }
       return response
-    }, (error) => {
+    }, (error: any) => {
       // Handle errors here
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
-      uiStore.hideMask()
+      if (error.config.showMask !== false) {
+        uiStore.hideMask()
+      }
       if (error.response) {
         if (!error.response.request.responseURL.includes('login')) {
           if (error.response?.status === 401) {

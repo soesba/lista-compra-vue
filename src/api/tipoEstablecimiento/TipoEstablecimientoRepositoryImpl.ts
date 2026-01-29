@@ -20,10 +20,7 @@ export default class TipoEstablecimientoRepositoryImpl implements TipoEstablecim
       orderBy: mapping[orderReq.field] || orderReq.field,
       direction: orderReq.direction
     }).toString()
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.get<TiposEstablecimientoResponseDTO>(endpoint, { headers })
+    const response = await xhr.get<TiposEstablecimientoResponseDTO>(endpoint)
     const result = {
       data: response.data.data.map((item: TipoEstablecimientoDTO) => DtoToModel(item)),
       respuesta: response.status
@@ -33,10 +30,7 @@ export default class TipoEstablecimientoRepositoryImpl implements TipoEstablecim
 
   async getById(id: string): Promise<TipoEstablecimientoResponse> {
     const endpoint = `/api/tipo-establecimientos/${id}`
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.get<TipoEstablecimientoResponseDTO>(endpoint, { headers })
+    const response = await xhr.get<TipoEstablecimientoResponseDTO>(endpoint)
     const result = {
       data: DtoToModel(response.data.data),
       respuesta: response.status
@@ -49,10 +43,7 @@ export default class TipoEstablecimientoRepositoryImpl implements TipoEstablecim
       orderBy: mapping[orderReq.field] || orderReq.field,
       direction: orderReq.direction
     }).toString()
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.get<TiposEstablecimientoResponseDTO>(endpoint, { headers })
+    const response = await xhr.get<TiposEstablecimientoResponseDTO>(endpoint)
     const result = {
       data: response.data.data.map((item: TipoEstablecimientoDTO) => DtoToModel(item)),
       respuesta: response.status
@@ -62,11 +53,8 @@ export default class TipoEstablecimientoRepositoryImpl implements TipoEstablecim
 
   async insert(request: TipoEstablecimientoRequest): Promise<TipoEstablecimientoResponse> {
     const endpoint = `/api/tipo-establecimientos/`
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
     const requestDTO = requestModelToDto(request)
-    const response = await xhr.post<TipoEstablecimientoRequestDTO, TipoEstablecimientoResponseDTO>(endpoint, requestDTO, { headers })
+    const response = await xhr.post<TipoEstablecimientoRequestDTO, TipoEstablecimientoResponseDTO>(endpoint, requestDTO)
     const result = {
       data: DtoToModel(response.data.data),
       respuesta: response.status
@@ -76,11 +64,8 @@ export default class TipoEstablecimientoRepositoryImpl implements TipoEstablecim
 
   async update(request: TipoEstablecimientoRequest): Promise<TipoEstablecimientoResponse> {
     const endpoint = `/api/tipo-establecimientos/${request.id}`
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
     const requestDTO = requestModelToDto(request)
-    const response = await xhr.put<TipoEstablecimientoRequestDTO, TipoEstablecimientoResponseDTO>(endpoint, requestDTO, { headers })
+    const response = await xhr.put<TipoEstablecimientoRequestDTO, TipoEstablecimientoResponseDTO>(endpoint, requestDTO)
     const result = {
       data: DtoToModel(response.data.data),
       respuesta: response.status
@@ -90,10 +75,7 @@ export default class TipoEstablecimientoRepositoryImpl implements TipoEstablecim
 
   async delete(id: string): Promise<TipoEstablecimientoResponse> {
     const endpoint = `/api/tipo-establecimientos/${id}`
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.delete<TipoEstablecimientoResponseDTO>(endpoint, { headers })
+    const response = await xhr.delete<TipoEstablecimientoResponseDTO>(endpoint)
     const result = {
       data: DtoToModel(response.data.data),
       respuesta: response.status
@@ -103,10 +85,7 @@ export default class TipoEstablecimientoRepositoryImpl implements TipoEstablecim
 
   async checkData(): Promise<CheckDataResponse> {
     const endpoint = `/api/tipo-establecimientos/checkData`
-    const headers = {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-    const response = await xhr.get<CheckDataResponse>(endpoint, { headers })
+    const response = await xhr.get<CheckDataResponse>(endpoint)
     return {
       respuesta: response.status,
       data: response.data.data
