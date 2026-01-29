@@ -6,6 +6,7 @@
         <v-checkbox
           label="Protección contra borrado accidental"
           v-model="editData.borrable"
+          @input="v$.editData.borrable.$touch"
           :true-value="false"
           :false-value="true"></v-checkbox>
       </div>
@@ -74,7 +75,12 @@
         </div>
       </div>
       <div class="inputGroup">
-        <v-text-field variant="underlined" label="Notas" v-model="editData.notas"></v-text-field>
+        <v-text-field
+          variant="underlined"
+          label="Notas"
+          v-model="editData.notas"
+          @input="v$.editData.notas.$touch"
+          @blur="v$.editData.notas.$touch"></v-text-field>
       </div>
     </div>
   </div>
@@ -166,7 +172,8 @@ const isValidDate = (value: any) => {
         establecimiento: { required },
         precio: { required },
         fechaCompra: { required, fechaCompraValid },
-        borrable: { required }
+        borrable: { required },
+        notas: {}
       }
     }
   })
