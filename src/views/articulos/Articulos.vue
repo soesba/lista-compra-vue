@@ -10,10 +10,11 @@
   import searchArticulo from '@/services/articulo/searchArticulo.service'
   import create from '@/services/articulo/createArticulo.service'
   import update from '@/services/articulo/updateArticulo.service'
-  import { eventStore, modelStore } from '@/main'
+  import { eventStore, modelStore, uiStore } from '@/main'
   import type ArticuloRequest from '@/services/articulo/models/ArticuloRequest'
   import type ArticuloResponse from '@/services/articulo/models/ArticuloResponse'
   import router from '@/router'
+import getArticuloWithDetail from '@/services/articulo/getArticuloWithDetail.service'
 
   const emit = defineEmits(['close-dialog'])
 
@@ -27,6 +28,9 @@
         break
       case 'sortCards':
         onSortCards(args[0])
+        break
+      case 'showCards':
+        onShowCards(args[0])
         break
     }
   })
@@ -60,15 +64,27 @@
     return cardClass.value ? cardClass.value.join(' ') : ''
   })
 
+  const vistaDetalle = computed(() => {
+    console.log('LOG~ ~ :67 ~ uiStore.getMenuShowCards:', uiStore.getMenuShowCards)
+    return uiStore.getMenuShowCards === 3
+  })
+
   // Methods
   const onAddCard = () => {
     router.push(routes.add)
   }
 
-  const getAllData = () => {
-    get(orderReq.value).then((response: ArticuloResponse) => {
-      list.value = response.data as []
-    })
+  const getAllData = (detail: boolean = false) => {
+    if (!detail && !vistaDetalle.value) {
+      get(orderReq.value).then((response: ArticuloResponse) => {
+        list.value = response.data as []
+      })
+    } else {
+      console.log('Vista detalle')
+      getArticuloWithDetail(orderReq.value).then((response: ArticuloResponse) => {
+        list.value = response.data as []
+      })
+    }
   }
 
   const onSaveCard = (cardData: any) => {
@@ -112,5 +128,14 @@
       direction: evt.order === 1 ? 'asc' : 'desc'
     }
     getAllData()
+  }
+
+  const onShowCards = (evt: any) => {
+    const newValue = evt.show
+    const oldValue = evt.oldValue
+
+    if (newValue !== oldValue && newValue === 3) {
+      getAllData(true)
+    }
   }
 </script>

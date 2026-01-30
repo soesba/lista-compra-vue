@@ -135,7 +135,7 @@
       eventStore.sortCards({ order: direccion, field })
       uiStore.setMenuSortCards(index)
     } else {
-      eventStore.showCards({ show: index })
+      eventStore.showCards({ show: index, oldValue: uiStore.getMenuShowCards })
       uiStore.setMenuShowCards(index)
     }
   }

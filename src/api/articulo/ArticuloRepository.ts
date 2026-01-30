@@ -5,6 +5,7 @@ import OrderRequest from '@/services/commons/models/OrderRequest';
 
 export default interface ArticuloRepository {
 	get(orderReq: OrderRequest): Promise<ArticuloResponse>;
+  getWithDetail(orderReq: OrderRequest): Promise<ArticuloResponse>;
 	getById(id: string): Promise<ArticuloResponse>;
 	search(request: string, orderReq: OrderRequest): Promise<ArticuloResponse>;
 	insert(request: ArticuloRequest): Promise<ArticuloResponse>;

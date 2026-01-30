@@ -1,3 +1,4 @@
+import PrecioDTO from '@/api/precio/dto/PrecioDTO';
 import type TipoUnidadDTO from "@/api/tipoUnidad/dto/TipoUnidadDTO";
 
 export default interface ArticuloDTO {
@@ -9,4 +10,5 @@ export default interface ArticuloDTO {
 	tienePrecios: boolean;
 	borrable: boolean;
   notas: string;
+  precios?: Array<PrecioDTO>;
 }

@@ -18,7 +18,34 @@ export const DtoToModel = (origin: ArticuloDTO): Articulo => {
 		fechaCreacion: origin.fechaCreacion ? dateToFront(origin.fechaCreacion) : '',
 		borrable: origin.borrable,
 		tienePrecios: origin.tienePrecios,
-    notas: origin.notas
+    notas: origin.notas,
+    precios: origin.precios ? origin.precios.map(item => {
+      return {
+        id: item.id,
+        articulo: {
+          id: item.articulo.id,
+          nombre: item.articulo.nombre
+        },
+        precio: item.precio,
+        marca: item.marca,
+        fechaCompra: item.fechaCompra,
+        fechaCreacion: item.fechaCreacion ? dateToFront(item.fechaCreacion) : '',
+        notas: item.notas,
+        borrable: item.borrable,
+        establecimiento: item.establecimiento ? {
+          id: item.establecimiento.id,
+          nombre: item.establecimiento.nombre,
+          logo: item.establecimiento.logo
+        } : null,
+        unidadesMedida: item.unidadesMedida ? item.unidadesMedida.map(um => {
+          return {
+            id: um.id,
+            nombre: um.nombre,
+            valor: um.valor
+          }
+        }) : []
+      }
+     }) : []
 	}
 	return model
 }

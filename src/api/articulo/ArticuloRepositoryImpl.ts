@@ -28,6 +28,20 @@ export default class ArticuloRepositoryImpl implements ArticuloRepository {
 		return result
 	}
 
+  async getWithDetail(orderReq: OrderRequest): Promise<ArticuloResponse> {
+    const endpoint = '/api/articulos?' + new URLSearchParams({
+      orderBy: mapping[orderReq.field] || orderReq.field,
+      direction: orderReq.direction,
+      detail: 'true'
+    }).toString()
+		const response = await xhr.get<ArticulosResponseDTO>(endpoint)
+		const result = {
+			data: response.data.data.map((item: ArticuloDTO) => DtoToModel(item)),
+			respuesta: response.status
+		}
+		return result
+  }
+
 	async getById(id: string): Promise<ArticuloResponse> {
 		const endpoint = `/api/articulos/${id}`
 		const response = await xhr.get<ArticuloResponseDTO>(endpoint)

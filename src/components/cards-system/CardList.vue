@@ -1,7 +1,8 @@
 <template>
   <div class="wrapper-list">
     <div class="list-container" v-if="items && items?.length > 0" :class="cardClass">
-      <Card :logo="logo" :mapping="mapping" v-for="item in items" :key="item.id" :card-data="item" />
+      <DetailCard v-if="showDetailCard" :logo="logo" :mapping="mapping" v-for="item in items" :key="item.id" :card-data="item" />
+      <Card v-if="!showDetailCard" :logo="logo" :mapping="mapping" v-for="item in items" :key="item.id" :card-data="item" />
     </div>
     <div v-else>
       <empty-card></empty-card>
@@ -22,9 +23,10 @@
 <script setup lang="ts">
   import { default as EmptyCard } from '@/components/cards-system/EmptyCard.vue'
   import { default as Card } from '@/components/cards-system/Card.vue'
+  import { default as DetailCard } from '@/components/cards-system/DetailCard.vue'
   import { eventStore } from '@/main'
   import router from '@/router'
-  import { ref } from 'vue'
+  import { computed, ref } from 'vue'
   import OrderRequest from '@/services/commons/models/OrderRequest'
 
   const emit = defineEmits(['addCard', 'sortCards'])
@@ -66,6 +68,10 @@
   const cardClass = ref([props.class])
   const routes = eventStore.getRoutes
 
+  const showDetailCard = computed(() => {
+    return cardClass.value.includes('detail-list')
+  })
+
   // Methods
   const addCard = () => {
     router.push(routes.add)
@@ -89,6 +95,9 @@
         break
       case 2:
         cardClass.value = ['list']
+        break
+    case 3:
+        cardClass.value = ['detail-list']
         break
     }
   }
@@ -160,6 +169,42 @@
           .logo {
             height: 64px;
             width: auto;
+          }
+        }
+      }
+      &.detail-list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 0 auto;
+        margin-bottom: 60px; // salvar boton de añadir
+        :deep(a) {
+          width: 90%;
+          max-width: 90%;
+        }
+        :deep(.v-card) {
+          // box-shadow: none;
+          // margin: 0px;
+          display: flex;
+          flex-direction: column;
+          text-align: left;
+          .v-card-title {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+          }
+          .v-card-subtitle {
+            font-size: 1rem;
+            margin-bottom: 8px;
+          }
+          .text-small {
+            text-align: right;
+          }
+
+          .logo {
+            height: 64px;
+            width: auto;
+            margin-bottom: 8px;
           }
         }
       }
