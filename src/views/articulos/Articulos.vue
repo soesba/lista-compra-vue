@@ -1,11 +1,30 @@
 <template>
   <TitleView :titulo="titulo" :modelo="modelo" />
   <SearchBox @search="onSearch"></SearchBox>
-  <CardList :items="list" :class="getClasses" :mapping="mapping" />
+  <CardList :items="list" :class="getClasses">
+    <template v-if="list.length > 0" #card-list_content>
+      <v-card
+        v-if="!vistaDetalle"
+        v-for="item in list"
+        :key="item.id"
+        :card-data="item"
+        link
+        :to="getRoute(item)">
+        <v-card-title>{{ item.nombre }}</v-card-title>
+        <v-card-subtitle>{{ item.descripcion }}</v-card-subtitle>
+        <v-card-text v-html="getText(item)" class="text-small" />
+      </v-card>
+      <v-card v-else></v-card>
+    </template>
+    <template v-else #card-list_empty>
+      <empty-card></empty-card>
+    </template>
+  </CardList>
 </template>
 
 <script setup lang="ts">
   import { computed, ref } from 'vue'
+  import { default as EmptyCard } from '@/components/cards-system/EmptyCard.vue'
   import get from '@/services/articulo/getArticulo.service'
   import searchArticulo from '@/services/articulo/searchArticulo.service'
   import create from '@/services/articulo/createArticulo.service'
@@ -14,7 +33,7 @@
   import type ArticuloRequest from '@/services/articulo/models/ArticuloRequest'
   import type ArticuloResponse from '@/services/articulo/models/ArticuloResponse'
   import router from '@/router'
-import getArticuloWithDetail from '@/services/articulo/getArticuloWithDetail.service'
+  import getArticuloWithDetail from '@/services/articulo/getArticuloWithDetail.service'
 
   const emit = defineEmits(['close-dialog'])
 
@@ -38,16 +57,9 @@ import getArticuloWithDetail from '@/services/articulo/getArticuloWithDetail.ser
   const modelo = 'Articulo'
   let cardClass = ref()
   const titulo = ref('Articulos')
-  const list = ref([])
+  const list = ref<Array<any>>([])
   const orderReq = ref()
-  const mapping = {
-    id: 'id',
-    title: 'nombre',
-    subtitle: 'descripcion',
-    text: (item: any) =>
-      // item.tienePrecios ? 'Se han introducido precios' : 'No se han introducido precios',
-      item.tienePrecios ? '<i class="f-18 mdi mdi-currency-eur"></i>' : '<div>&nbsp</div>'
-  }
+
   const routes = {
     detail: '/articulo-detalle',
     edit: '/articulo-edicion',
@@ -65,11 +77,19 @@ import getArticuloWithDetail from '@/services/articulo/getArticuloWithDetail.ser
   })
 
   const vistaDetalle = computed(() => {
-    console.log('LOG~ ~ :67 ~ uiStore.getMenuShowCards:', uiStore.getMenuShowCards)
     return uiStore.getMenuShowCards === 3
   })
 
   // Methods
+
+  const getRoute = (item: any) => {
+    return `${routes.detail}/${item.id}`
+  }
+
+  const getText = (item: any) => {
+    return item.tienePrecios ? '<i class="f-18 mdi mdi-currency-eur"></i>' : '<div>&nbsp</div>'
+  }
+
   const onAddCard = () => {
     router.push(routes.add)
   }

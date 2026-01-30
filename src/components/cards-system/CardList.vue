@@ -1,11 +1,8 @@
 <template>
-  <div class="wrapper-list">
-    <div class="list-container" v-if="items && items?.length > 0" :class="cardClass">
-      <DetailCard v-if="showDetailCard" :logo="logo" :mapping="mapping" v-for="item in items" :key="item.id" :card-data="item" />
-      <Card v-if="!showDetailCard" :logo="logo" :mapping="mapping" v-for="item in items" :key="item.id" :card-data="item" />
-    </div>
-    <div v-else>
-      <empty-card></empty-card>
+  <div class="card-list_wrapper">
+    <div class="card-list_container" :class="cardClass">
+      <slot name="card-list_content"></slot>
+      <slot name="card-list_empty" />
     </div>
     <div v-if="addButton" class="wrapper-add-button">
       <v-fab
@@ -21,12 +18,9 @@
 </template>
 
 <script setup lang="ts">
-  import { default as EmptyCard } from '@/components/cards-system/EmptyCard.vue'
-  import { default as Card } from '@/components/cards-system/Card.vue'
-  import { default as DetailCard } from '@/components/cards-system/DetailCard.vue'
   import { eventStore } from '@/main'
   import router from '@/router'
-  import { computed, ref } from 'vue'
+  import { ref } from 'vue'
   import OrderRequest from '@/services/commons/models/OrderRequest'
 
   const emit = defineEmits(['addCard', 'sortCards'])
@@ -43,14 +37,6 @@
   })
 
   const props = defineProps({
-    items: {
-      type: Array<any>,
-      required: true
-    },
-    logo: {
-      type: Boolean,
-      default: false
-    },
     addButton: {
       type: Boolean,
       default: true
@@ -58,19 +44,11 @@
     class: {
       type: String,
       default: 'card'
-    },
-    mapping: {
-      type: Object,
-      default: () => ({})
     }
   })
 
   const cardClass = ref([props.class])
   const routes = eventStore.getRoutes
-
-  const showDetailCard = computed(() => {
-    return cardClass.value.includes('detail-list')
-  })
 
   // Methods
   const addCard = () => {
@@ -103,7 +81,7 @@
   }
 </script>
 <style lang="scss" scoped>
-  .wrapper-list {
+  .card-list_wrapper {
     color: rgb(var(--v-theme-primary));
     .wrapper-add-button {
       position: fixed;
@@ -111,7 +89,7 @@
       bottom: 40px;
       right: 20px;
     }
-    .list-container {
+    .card-list_container {
       &.card {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -136,17 +114,14 @@
         flex-wrap: wrap;
         margin: 0 auto;
         margin-bottom: 60px; // salvar boton de añadir
-        :deep(a) {
+        :deep(.v-card) {
           width: 90%;
           max-width: 90%;
-        }
-        :deep(.v-card) {
-          // box-shadow: none;
-          // margin: 0px;
           display: flex;
           flex-direction: row;
           text-align: left;
           .v-card-title {
+            color: rgb(var(--v-theme-primary));
             flex: 1.5;
             @media (max-width: 640px) {
               flex: 3;
@@ -157,6 +132,7 @@
             flex: 1;
             align-self: center;
             font-size: 1rem;
+            min-height: 19.94px;
             @media (max-width: 640px) {
               display: none;
             }

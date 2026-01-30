@@ -1,5 +1,5 @@
 <template>
-	<v-card class="cursor">
+	<v-card>
 		<v-card-title>
 			<div>
 				No hay datos
@@ -12,7 +12,10 @@
 </script>
 <style lang="scss" scoped>
 	.v-card {
-		margin: 10px;
+		margin: auto;
+    width: 90%;
+    max-width: 90%;
+    text-align: center;
 		.v-card-title {
       color: rgb(var(--v-theme-primary));
 			display: flex;
